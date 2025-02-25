@@ -2,23 +2,39 @@ package dev.emberline.core;
 
 import dev.emberline.core.render.Renderer;
 import dev.emberline.core.update.Updater;
+import javafx.scene.canvas.Canvas;
+import javafx.stage.Stage;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameLoop extends Thread {
+    // JavaFX Stage
+    private final Stage stage;
+
+    // Components
+    private final Renderer renderer;
+    private final Updater updater;
+
+    // Game loop settings
     private final long TICKS_PER_SECOND = 20;
     private final long NS_PER_UPDATE = (long) 1e9 / TICKS_PER_SECOND;
-    public AtomicBoolean running = new AtomicBoolean(false);
-    private Renderer renderer;
-    private Updater updater;
+
+    // To stop the game loop
+    public final AtomicBoolean running = new AtomicBoolean(false);
+
+    public GameLoop(String threadName, Stage stage, Canvas canvas) {
+        super(threadName);
+        this.stage = stage;
+        renderer = new Renderer(canvas);
+        updater = new Updater();
+    }
 
     @Override
     public void run() {
-        running.set(true);
-        Thread.currentThread().setName("Game thread");
-
         long previous = System.nanoTime();
         long lagUpdate = 0;
+
+        running.set(true);
         while(running.get()) {
             // Timings
             long now = System.nanoTime();
@@ -28,7 +44,7 @@ public class GameLoop extends Thread {
 
             // Input todo
 
-            // Update
+            // Update with fixed time step
             while(lagUpdate >= NS_PER_UPDATE) {
                 updater.update(elapsed);
                 lagUpdate -= NS_PER_UPDATE;
