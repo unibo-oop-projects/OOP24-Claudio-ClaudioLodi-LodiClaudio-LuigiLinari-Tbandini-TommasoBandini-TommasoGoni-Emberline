@@ -1,5 +1,5 @@
 package dev.emberline.core;
 
-public class GameState {
+public class Game {
 
 }

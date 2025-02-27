@@ -11,6 +11,9 @@ public class GameLoop extends Thread {
     // JavaFX Stage
     private final Stage stage;
 
+    // Game object
+    // public static final Game game = new Game();
+
     // Components
     private final Renderer renderer;
     private final Updater updater;
@@ -22,8 +25,8 @@ public class GameLoop extends Thread {
     // To stop the game loop
     public final AtomicBoolean running = new AtomicBoolean(false);
 
-    public GameLoop(String threadName, Stage stage, Canvas canvas) {
-        super(threadName);
+    public GameLoop(Stage stage, Canvas canvas) {
+        super("Game Thread");
         this.stage = stage;
         renderer = new Renderer(canvas);
         updater = new Updater();
