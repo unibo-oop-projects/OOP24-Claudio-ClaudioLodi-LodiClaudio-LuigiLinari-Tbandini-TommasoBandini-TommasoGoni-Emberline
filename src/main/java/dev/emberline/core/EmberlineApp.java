@@ -1,8 +1,14 @@
 package dev.emberline.core;
 
+import dev.emberline.core.input.InputDispatcher;
+
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -26,10 +32,15 @@ public class EmberlineApp extends Application {
         canvas.widthProperty().bind(root.widthProperty());
         canvas.heightProperty().bind(root.heightProperty());
         root.getChildren().add(canvas);
-
+        
         // Scene
         Scene scene = new Scene(root);
         stage.setScene(scene);
+
+        // Routing of input events
+        EventHandler<InputEvent> eventHandler = InputDispatcher::sendInput;
+        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
 
         // Stage settings
         stage.setMaximized(true);

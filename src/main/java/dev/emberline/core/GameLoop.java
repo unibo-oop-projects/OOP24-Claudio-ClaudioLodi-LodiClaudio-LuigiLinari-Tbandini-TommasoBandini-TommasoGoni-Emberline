@@ -1,7 +1,10 @@
 package dev.emberline.core;
 
-import dev.emberline.core.render.Renderer;
+import dev.emberline.core.input.InputDispatcher;
 import dev.emberline.core.update.Updater;
+import dev.emberline.core.render.Renderer;
+import dev.emberline.core.nodes.Game;
+
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
 
@@ -15,8 +18,9 @@ public class GameLoop extends Thread {
     // public static final Game game = new Game();
 
     // Components
-    private final Renderer renderer;
     private final Updater updater;
+    private final Renderer renderer;
+    private final InputDispatcher inputDispatcher;
 
     // Game loop settings
     private final long TICKS_PER_SECOND = 20;
@@ -28,8 +32,11 @@ public class GameLoop extends Thread {
     public GameLoop(Stage stage, Canvas canvas) {
         super("Game Thread");
         this.stage = stage;
-        renderer = new Renderer(canvas);
-        updater = new Updater();
+
+        Game game = new Game();
+        renderer = new Renderer(canvas, game);
+        updater = new Updater(game);
+        inputDispatcher = new InputDispatcher(game);
     }
 
     @Override
@@ -45,15 +52,20 @@ public class GameLoop extends Thread {
             previous = now;
             lagUpdate += elapsed;
 
-            // Input todo
+            // Resolve inputs
+            inputDispatcher.dispatchInputs();
 
             // Update with fixed time step
             while(lagUpdate >= NS_PER_UPDATE) {
-                updater.update(elapsed);
                 lagUpdate -= NS_PER_UPDATE;
+                updater.update(elapsed);
             }
-
+            
+            // Render (maybe add a syncronization concept to avoid the busy waiting)
             renderer.render();
+
+            // sleep (for fixed FPS, although I'm not sure if we actually have control over
+            // the rate at which JavaFX sends screen update requests)
         }
     }
 }

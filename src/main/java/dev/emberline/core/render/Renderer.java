@@ -11,11 +11,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.DoubleFunction;
 
+import dev.emberline.core.game.components.Renderable;
+
 public class Renderer {
     // JavaFX Canvas, only JavaFX thread can modify the scene graph, do not modify the scene graph from another thread
     private final Canvas canvas;
     private final GraphicsContext gc;
     private final AtomicBoolean isRunningLater = new AtomicBoolean(false);
+
+    private final Renderable root;
 
     /////// DEBUG ///////
     private final int _IMAGE_N = 39;
@@ -23,9 +27,11 @@ public class Renderer {
     private final AtomicLong _PREV = new AtomicLong(0);
     /////////////////////
 
-    public Renderer(Canvas canvas) {
+    public Renderer(Canvas canvas, Renderable root) {
         this.canvas = canvas;
         gc = canvas.getGraphicsContext2D();
+
+        this.root = root;
 
         /////// DEBUG ///////
         for (int i = 1; i <= _IMAGE_N; ++i) {
@@ -39,6 +45,13 @@ public class Renderer {
         if (isRunningLater.get()) return; // Busy waiting
         isRunningLater.set(true);
 
+        Platform.runLater(() -> {
+            root.render();
+            isRunningLater.set(false);
+        });
+    }
+
+    private void drawRegionDEBUG() {
         /////// DEBUG ///////
         // Screen coordinates:  [SCREEN]
         // World coordinates:   [WORLD]
