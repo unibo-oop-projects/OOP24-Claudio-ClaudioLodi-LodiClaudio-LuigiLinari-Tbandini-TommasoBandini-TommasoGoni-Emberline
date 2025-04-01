@@ -2,8 +2,11 @@ package dev.emberline.core.nodes;
 
 import dev.emberline.core.game.components.Updatable;
 import dev.emberline.core.game.components.Renderable;
+import dev.emberline.core.render.RenderPriority;
+import dev.emberline.core.render.RenderTask;
+import dev.emberline.core.render.Renderer;
 
-public class Fast implements Updatable, Renderable{
+public class Fast implements Updatable, Renderable {
     
     public Fast() {
         super();
@@ -17,6 +20,10 @@ public class Fast implements Updatable, Renderable{
 
     @Override
     public void render() {
-        System.out.println("Rendered Running Fast");
+        //System.out.println("Rendered Running Fast " + Thread.currentThread().getName());
+
+        Renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
+            // Chiamate al GC
+        }));
     }
 }

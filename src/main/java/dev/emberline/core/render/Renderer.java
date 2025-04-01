@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.*;
 
 import java.util.Objects;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.DoubleFunction;
@@ -20,6 +21,9 @@ public class Renderer {
     private final AtomicBoolean isRunningLater = new AtomicBoolean(false);
 
     private final Renderable root;
+
+    // Rendering queue
+    private static final PriorityBlockingQueue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
 
     /////// DEBUG ///////
     private final int _IMAGE_N = 39;
@@ -45,8 +49,16 @@ public class Renderer {
         if (isRunningLater.get()) return; // Busy waiting
         isRunningLater.set(true);
 
+        // Fills up the renderQueue
+        root.render();
+
         Platform.runLater(() -> {
-            root.render();
+            while (true) {
+                RenderTask rt = Renderer.renderQueue.poll();
+                if (rt == null) break;
+                rt.run();
+            }
+
             isRunningLater.set(false);
         });
     }
@@ -135,5 +147,9 @@ public class Renderer {
             isRunningLater.set(false);
         });
         /////////////////////
+    }
+
+    public static void addRenderTask(RenderTask rt) {
+        renderQueue.offer(rt);
     }
 }
