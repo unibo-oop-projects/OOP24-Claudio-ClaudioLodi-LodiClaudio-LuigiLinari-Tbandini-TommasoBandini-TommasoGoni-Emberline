@@ -5,6 +5,8 @@ import dev.emberline.core.game.components.Renderable;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Paint;
 
 public class Fast implements Updatable, Renderable {
     
@@ -20,10 +22,14 @@ public class Fast implements Updatable, Renderable {
 
     @Override
     public void render() {
-        //System.out.println("Rendered Running Fast " + Thread.currentThread().getName());
+        if (Renderer.getGraphicsContext().isEmpty())
+            return;
+
+        GraphicsContext gc = Renderer.getGraphicsContext().get();
 
         Renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
-            // Chiamate al GC
+            gc.setFill(Paint.valueOf("#f00"));
+            gc.fillRect(0,0,100,100);
         }));
     }
 }

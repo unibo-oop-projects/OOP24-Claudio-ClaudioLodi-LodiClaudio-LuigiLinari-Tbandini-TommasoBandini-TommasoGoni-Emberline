@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.*;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -17,7 +18,7 @@ import dev.emberline.core.game.components.Renderable;
 public class Renderer {
     // JavaFX Canvas, only JavaFX thread can modify the scene graph, do not modify the scene graph from another thread
     private final Canvas canvas;
-    private final GraphicsContext gc;
+    private static GraphicsContext gc = null; //Nullable
     private final AtomicBoolean isRunningLater = new AtomicBoolean(false);
 
     private final Renderable root;
@@ -33,7 +34,7 @@ public class Renderer {
 
     public Renderer(Canvas canvas, Renderable root) {
         this.canvas = canvas;
-        gc = canvas.getGraphicsContext2D();
+        Renderer.gc = canvas.getGraphicsContext2D();
 
         this.root = root;
 
@@ -45,6 +46,11 @@ public class Renderer {
         /////////////////////
     }
 
+    // Could return null
+    public static Optional<GraphicsContext> getGraphicsContext() {
+        return Optional.ofNullable(Renderer.gc);
+    }
+
     public void render() {
         if (isRunningLater.get()) return; // Busy waiting
         isRunningLater.set(true);
@@ -53,6 +59,9 @@ public class Renderer {
         root.render();
 
         Platform.runLater(() -> {
+            gc.setImageSmoothing(false);
+            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
             while (true) {
                 RenderTask rt = Renderer.renderQueue.poll();
                 if (rt == null) break;
