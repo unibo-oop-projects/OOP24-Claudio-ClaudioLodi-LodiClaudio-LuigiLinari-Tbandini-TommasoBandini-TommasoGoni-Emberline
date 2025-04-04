@@ -62,9 +62,8 @@ public class Renderer {
             gc.setImageSmoothing(false);
             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-            while (true) {
+            while (!Renderer.renderQueue.isEmpty()) {
                 RenderTask rt = Renderer.renderQueue.poll();
-                if (rt == null) break;
                 rt.run();
             }
 
@@ -158,7 +157,13 @@ public class Renderer {
         /////////////////////
     }
 
-    public static void addRenderTask(RenderTask rt) {
-        renderQueue.offer(rt);
+    /**
+     * Aggiunge un task alla coda di rendering.
+     *
+     * @param renderTask il task da aggiungere, non può essere null
+     * @throws NullPointerException se renderTask è null
+     */
+    public static void addRenderTask(RenderTask renderTask) {
+        renderQueue.offer(Objects.requireNonNull(renderTask));
     }
 }
