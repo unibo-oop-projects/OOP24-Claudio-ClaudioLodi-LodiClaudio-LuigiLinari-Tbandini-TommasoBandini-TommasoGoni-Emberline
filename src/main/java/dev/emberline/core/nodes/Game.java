@@ -1,51 +1,50 @@
 package dev.emberline.core.nodes;
 
-import dev.emberline.core.game.GeneralParent;
+import dev.emberline.core.game.components.Inputable;
+import dev.emberline.core.game.components.Renderable;
+import dev.emberline.core.game.components.Updatable;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class Game extends GeneralParent {
-
-    private Walking walking = new Walking();
-    private Running running = new Running();
+public class Game implements Inputable, Renderable, Updatable {
+    private final Walking walking = new Walking();
+    private final Running running = new Running();
+    private State state;
 
     public Game() {
-        super();
-        super.addActiveUpdatable(walking);
-        super.addActiveRenderable(walking);
+        state = walking;
     }
 
     @Override
     public void processInput(InputEvent inputEvent) {
+        if (state == running) {
+            running.processInput(inputEvent);
+        }
+
+        if (inputEvent.isConsumed()) return;
+
         if (inputEvent.getEventType() == KeyEvent.KEY_PRESSED) {
             KeyEvent keyEvent = (KeyEvent)inputEvent;
 
             if (keyEvent.getCode() == KeyCode.W) {
-                startWalking();
+                inputEvent.consume();
+                state = walking;
             } else if (keyEvent.getCode() == KeyCode.R) {
+                inputEvent.consume();
                 running.goSlow();
-                startRunning();
+                state = running;
             }
         }
-        super.processInput(inputEvent);
     }
 
-    public void startWalking() {
-        super.removeActiveInputable(running);
-        super.removeActiveUpdatable(running);
-        super.removeActiveRenderable(running);
-
-        super.addActiveUpdatable(walking);
-        super.addActiveRenderable(walking);
+    @Override
+    public void render() {
+        state.render();
     }
 
-    public void startRunning() {
-        super.removeActiveUpdatable(walking);
-        super.removeActiveRenderable(walking);
+    @Override
+    public void update(long elapsed)  {
 
-        super.addActiveInputable(running);
-        super.addActiveUpdatable(running);
-        super.addActiveRenderable(running);
     }
 }

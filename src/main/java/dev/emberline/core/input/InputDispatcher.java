@@ -23,7 +23,6 @@ public class InputDispatcher {
     public void dispatchInputs() {
         while (!inputs.isEmpty()) {
             InputEvent inputEvent = inputs.poll();
-            inputEvent.consume();
 
             root.processInput(inputEvent);
         }

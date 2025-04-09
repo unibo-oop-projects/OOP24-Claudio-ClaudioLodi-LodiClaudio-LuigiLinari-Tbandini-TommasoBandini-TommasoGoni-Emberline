@@ -1,19 +1,17 @@
 package dev.emberline.core.nodes;
 
-import dev.emberline.core.game.GeneralParent;
+import dev.emberline.core.game.components.Inputable;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class Running extends GeneralParent {
-
+public class Running implements State, Inputable {
     private final Slow slow = new Slow();
     private final Fast fast = new Fast();
+    private RunningState runningState;
 
     public Running() {
-        super();
-        super.addActiveUpdatable(slow);
-        super.addActiveRenderable(slow);
+        runningState = slow;
     }
 
     @Override
@@ -22,27 +20,25 @@ public class Running extends GeneralParent {
             KeyEvent keyEvent = (KeyEvent)inputEvent;
 
             if (keyEvent.getCode() == KeyCode.F) {
+                inputEvent.consume();
                 goFast();
             } else if (keyEvent.getCode() == KeyCode.S) {
+                inputEvent.consume();
                 goSlow();
             }
         }
     }
 
     public void goFast() {
-        super.removeActiveUpdatable(slow);
-        super.removeActiveRenderable(slow);
-
-        super.addActiveUpdatable(fast);
-        super.addActiveRenderable(fast);
-
+        runningState = fast;
     }
 
     public void goSlow() {
-        super.removeActiveUpdatable(fast);
-        super.removeActiveRenderable(fast);
+        runningState = slow;
+    }
 
-        super.addActiveUpdatable(slow);
-        super.addActiveRenderable(slow);
+    @Override
+    public void render() {
+        runningState.render();
     }
 }
