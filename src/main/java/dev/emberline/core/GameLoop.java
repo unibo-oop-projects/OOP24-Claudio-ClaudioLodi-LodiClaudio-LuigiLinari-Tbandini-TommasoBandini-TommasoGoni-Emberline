@@ -11,11 +11,12 @@ import javafx.stage.Stage;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameLoop extends Thread {
+    // GameLoop initialized only once
+    private static GameLoop instance;
+    private static boolean initialized = false;
+
     // JavaFX Stage
     private final Stage stage;
-
-    // Game object
-    // public static final Game game = new Game();
 
     // Components
     private final Updater updater;
@@ -29,14 +30,32 @@ public class GameLoop extends Thread {
     // To stop the game loop
     public final AtomicBoolean running = new AtomicBoolean(false);
 
-    public GameLoop(Stage stage, Canvas canvas) {
+    // Game
+    private final Game game;
+
+    private GameLoop(Stage stage, Canvas canvas) {
         super("Game Thread");
         this.stage = stage;
 
-        Game game = new Game();
-        renderer = new Renderer(canvas, game);
+        game = new Game();
+        renderer = new Renderer(game, canvas);
         updater = new Updater(game);
         inputDispatcher = new InputDispatcher(game);
+    }
+
+    public static synchronized void init(Stage stage, Canvas canvas) {
+        if (instance != null) {
+            throw new IllegalStateException("GameLoop already initialized");
+        }
+        instance = new GameLoop(stage, canvas);
+        initialized = true;
+    }
+
+    public static synchronized GameLoop getInstance() {
+        if (!initialized) {
+            throw new IllegalStateException("GameLoop not initialized yet. Call init() first.");
+        }
+        return instance;
     }
 
     @Override
@@ -58,14 +77,26 @@ public class GameLoop extends Thread {
             // Update with fixed time step
             while(lagUpdate >= NS_PER_UPDATE) {
                 lagUpdate -= NS_PER_UPDATE;
-                updater.update(elapsed);
+                updater.update(NS_PER_UPDATE);
             }
-            
+
             // Render (maybe add a syncronization concept to avoid the busy waiting)
             renderer.render();
 
             // sleep (for fixed FPS, although I'm not sure if we actually have control over
             // the rate at which JavaFX sends screen update requests)
         }
+    }
+
+    public Updater getUpdater() {
+        return updater;
+    }
+
+    public InputDispatcher getInputDispatcher() {
+        return inputDispatcher;
+    }
+
+    public Renderer getRenderer() {
+        return renderer;
     }
 }

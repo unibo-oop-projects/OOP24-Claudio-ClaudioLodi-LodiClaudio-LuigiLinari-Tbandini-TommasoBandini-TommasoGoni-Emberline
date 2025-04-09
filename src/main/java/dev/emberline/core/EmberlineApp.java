@@ -51,7 +51,8 @@ public class EmberlineApp extends Application {
         stage.show();
 
         // Starting the Game Thread
-        this.gameLoop = new GameLoop(stage, canvas);
+        GameLoop.init(stage, canvas);
+        this.gameLoop = GameLoop.getInstance();
         this.gameLoop.start();
     }
 
