@@ -18,10 +18,13 @@ import dev.emberline.core.game.components.Renderable;
 public class Renderer {
     // JavaFX Canvas, only JavaFX thread can modify the scene graph, do not modify the scene graph from another thread
     private final Canvas canvas;
-    private static GraphicsContext gc = null; //Nullable
+    private static GraphicsContext gc = null; // Nullable
     private final AtomicBoolean isRunningLater = new AtomicBoolean(false);
 
     private final Renderable root;
+
+    private static CoordinateSystem WorldCs;
+    private static CoordinateSystem GuiCs;
 
     // Rendering queue
     private static final PriorityBlockingQueue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
@@ -37,6 +40,9 @@ public class Renderer {
         Renderer.gc = canvas.getGraphicsContext2D();
 
         this.root = root;
+
+        WorldCs = new CoordinateSystem(canvas);
+        GuiCs = new CoordinateSystem(canvas);
 
         /////// DEBUG ///////
         for (int i = 1; i <= _IMAGE_N; ++i) {
@@ -55,6 +61,10 @@ public class Renderer {
         if (isRunningLater.get()) return; // Busy waiting
         isRunningLater.set(true);
 
+        // Updates of the coordinate systems
+        WorldCs.update();
+        GuiCs.update();
+
         // Fills up the renderQueue
         root.render();
 
@@ -69,6 +79,14 @@ public class Renderer {
 
             isRunningLater.set(false);
         });
+    }
+
+    public static CoordinateSystem getWorldCs() {
+        return WorldCs;
+    }
+
+    public static CoordinateSystem getGuiCs() {
+        return GuiCs;
     }
 
     private void drawRegionDEBUG() {
