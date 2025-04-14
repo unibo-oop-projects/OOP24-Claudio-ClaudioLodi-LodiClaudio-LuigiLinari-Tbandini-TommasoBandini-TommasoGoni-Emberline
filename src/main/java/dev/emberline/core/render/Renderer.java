@@ -19,8 +19,8 @@ public class Renderer {
 
     private final Renderable root;
 
-    private static CoordinateSystem WorldCs;
-    private static CoordinateSystem GuiCs;
+    private final RenderContext worldContext;
+    private final RenderContext guiContext;
 
     // Rendering queue
     private final PriorityBlockingQueue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
@@ -29,10 +29,24 @@ public class Renderer {
         this.root = root;
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
+
+        CoordinateSystem worldCS = new CoordinateSystem(0, 0, 25, 15);
+        CoordinateSystem guiCS = new CoordinateSystem(0, 0, 15, 5);
+
+        this.worldContext = new RenderContext(canvas, worldCS);
+        this.guiContext = new RenderContext(canvas, guiCS);
     }
 
     public GraphicsContext getGraphicsContext() {
         return gc;
+    }
+
+    public RenderContext getWorldContext() {
+        return worldContext;
+    }
+
+    public RenderContext getGuiContext() {
+        return guiContext;
     }
 
     public void render() {
@@ -40,8 +54,8 @@ public class Renderer {
         isRunningLater.set(true);
 
         // Updates of the coordinate systems
-        WorldCs.update();
-        GuiCs.update();
+        worldContext.update();
+        guiContext.update();
 
         // Fills up the renderQueue
         root.render();

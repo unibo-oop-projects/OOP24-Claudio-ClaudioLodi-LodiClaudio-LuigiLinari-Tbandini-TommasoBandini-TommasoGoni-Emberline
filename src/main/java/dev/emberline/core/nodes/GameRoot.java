@@ -1,55 +1,50 @@
 package dev.emberline.core.nodes;
 
-import dev.emberline.core.game.GeneralParent;
+import dev.emberline.core.game.components.Inputable;
+import dev.emberline.core.game.components.Renderable;
+import dev.emberline.core.game.components.Updatable;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class GameRoot extends GeneralParent {
+public class GameRoot implements Inputable, Renderable, Updatable {
 
-    private Menu menu = new Menu();
-    private Options options = new Options();
-    private GameSaves gameSaves = new GameSaves();
+    private final Menu menu = new Menu();
+    private final Options options = new Options();
+    private final GameSaves gameSaves = new GameSaves();
+    private NavigationState navigationState;
 
     public GameRoot() {
-        super();
-        goToMenu();   // default
+        navigationState = menu;
     }
 
     @Override
     public void processInput(InputEvent inputEvent) {
+
         if (inputEvent.getEventType() == KeyEvent.KEY_PRESSED) {
             KeyEvent keyEvent = (KeyEvent)inputEvent;
 
-            switch (keyEvent.getCode()) {
-                case KeyCode.M -> goToMenu();
-                case KeyCode.O -> goToOptions();
-                case KeyCode.G -> goToGameSaves();
-                default -> {break;}
+            if (keyEvent.getCode() == KeyCode.M) {
+                navigationState = menu;
+            } else if (keyEvent.getCode() == KeyCode.O) {
+                navigationState = options;
+            } else if (keyEvent.getCode() == KeyCode.G) {
+                navigationState = gameSaves;
+            } else {
+                return;
             }
+
+            inputEvent.consume();
        }
-        super.processInput(inputEvent);
     }
 
-    public void goToMenu() {
-        super.removeAllActives(gameSaves.asInputable(), gameSaves.asUpdatable(), gameSaves.asRenderable());
-        super.removeAllActives(options.asInputable(), options.asUpdatable(), options.asRenderable());
-
-        super.addAllActives(menu.asInputable(), menu.asUpdatable(), menu.asRenderable());
+    @Override
+    public void render() {
+        navigationState.render();
     }
 
-    public void goToOptions() {
-        super.removeAllActives(gameSaves.asInputable(), gameSaves.asUpdatable(), gameSaves.asRenderable());
-        super.removeAllActives(menu.asInputable(), menu.asUpdatable(), menu.asRenderable());
-        
-        super.addAllActives(options.asInputable(), options.asUpdatable(), options.asRenderable());
-    }
-
-    public void goToGameSaves() {
-        super.removeAllActives(menu.asInputable(), menu.asUpdatable(), menu.asRenderable());
-        super.removeAllActives(options.asInputable(), options.asUpdatable(), options.asRenderable());
-        
-        super.addAllActives(gameSaves.asInputable(), gameSaves.asUpdatable(), gameSaves.asRenderable());
+    @Override
+    public void update(long elapsed) {
     }
 
 }

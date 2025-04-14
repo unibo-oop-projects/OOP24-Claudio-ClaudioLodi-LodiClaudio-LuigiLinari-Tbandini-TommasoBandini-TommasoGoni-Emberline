@@ -1,30 +1,36 @@
 package dev.emberline.core.nodes;
 
-import dev.emberline.core.game.components.Updatable;
-import dev.emberline.core.game.components.Inputable;
-import dev.emberline.core.game.components.Renderable;
+import dev.emberline.core.render.RenderContext;
+import dev.emberline.core.render.RenderPriority;
+import dev.emberline.core.render.RenderTask;
+import dev.emberline.core.render.Renderer;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Paint;
+import dev.emberline.core.GameLoop;
 
-public class Options {
-    public final OptionsInput inputer;
-    public final OptionsUpdate updater;
-    public final OptionsRender renderer;
+public class Options implements NavigationState {
 
     public Options () {
-        this.inputer = new OptionsInput();
-        this.updater = new OptionsUpdate();
-        this.renderer = new OptionsRender();
     }
 
-    public Inputable asInputable() {
-        return inputer;
-    }
+    public void render() {
+        Renderer renderer = GameLoop.getInstance().getRenderer();
+        GraphicsContext gc = renderer.getGraphicsContext();
+        RenderContext worldContext = renderer.getWorldContext();
 
-    public Updatable asUpdatable() {
-        return updater;
-    }
+        double squareSize = 3.0;
 
-    public Renderable asRenderable() {
-        return renderer;
+        double centerX = worldContext.getCS().getRegionCenterX();
+        double centerY = worldContext.getCS().getRegionCenterY();
+
+        double screenX = worldContext.getCS().toScreenX(centerX - squareSize / 2);
+        double screenY = worldContext.getCS().toScreenY(centerY - squareSize / 2);
+        double screenSize = squareSize * worldContext.getCS().getScale();
+
+        renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
+            gc.setFill(Paint.valueOf("#f00"));
+            gc.fillRect(screenX, screenY, screenSize, screenSize);
+        }));
     }
 }
 

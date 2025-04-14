@@ -3,8 +3,7 @@ package dev.emberline.core;
 import dev.emberline.core.input.InputDispatcher;
 import dev.emberline.core.update.Updater;
 import dev.emberline.core.render.Renderer;
-import dev.emberline.core.nodes.Game;
-
+import dev.emberline.core.nodes.GameRoot;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
 
@@ -31,16 +30,16 @@ public class GameLoop extends Thread {
     public final AtomicBoolean running = new AtomicBoolean(false);
 
     // Game
-    private final Game game;
+    private final GameRoot gameRoot;
 
     private GameLoop(Stage stage, Canvas canvas) {
         super("Game Thread");
         this.stage = stage;
 
-        game = new Game();
-        renderer = new Renderer(game, canvas);
-        updater = new Updater(game);
-        inputDispatcher = new InputDispatcher(game);
+        gameRoot = new GameRoot();
+        renderer = new Renderer(gameRoot, canvas);
+        updater = new Updater(gameRoot);
+        inputDispatcher = new InputDispatcher(gameRoot);
     }
 
     public static synchronized void init(Stage stage, Canvas canvas) {
