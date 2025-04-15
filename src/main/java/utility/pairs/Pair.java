@@ -10,19 +10,19 @@ public class Pair<A,B> {
         this.y = y;
     }
 
-    public A X() {
+    public A getX() {
         return x;
     }
     
-    public B Y() {
+    public B getY() {
         return y;
     }
-
-    protected void setX(A x) {
+    
+    public void setX(A x) {
         this.x = x;
     }
 
-    protected void setY(B y) {
+    public void setY(B y) {
         this.y = y;
     }
     
