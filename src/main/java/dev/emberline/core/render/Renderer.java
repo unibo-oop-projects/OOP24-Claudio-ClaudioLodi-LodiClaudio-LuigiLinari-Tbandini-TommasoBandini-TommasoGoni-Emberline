@@ -19,8 +19,8 @@ public class Renderer {
 
     private final Renderable root;
 
-    private final RenderContext worldContext;
-    private final RenderContext guiContext;
+    private final CoordinateSystem worldCoordinateSystem = new CoordinateSystem(0, 0, 32, 18);
+    private final CoordinateSystem guiCoordinateSystem = new CoordinateSystem(0, 0, 32, 18);
 
     // Rendering queue
     private final PriorityBlockingQueue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
@@ -29,24 +29,6 @@ public class Renderer {
         this.root = root;
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
-
-        // Rendering Contexts
-        CoordinateSystem worldCS = new CoordinateSystem(0, 0, 32, 18);
-        CoordinateSystem guiCS = new CoordinateSystem(0, 0, 32, 18);
-        this.worldContext = new RenderContext(canvas, worldCS);
-        this.guiContext = new RenderContext(canvas, guiCS);
-    }
-
-    public GraphicsContext getGraphicsContext() {
-        return gc;
-    }
-
-    public RenderContext getWorldContext() {
-        return worldContext;
-    }
-
-    public RenderContext getGuiContext() {
-        return guiContext;
     }
 
     public void render() {
@@ -54,8 +36,8 @@ public class Renderer {
         isRunningLater.set(true);
 
         // Updates of the coordinate systems
-        worldContext.update();
-        guiContext.update();
+        worldCoordinateSystem.update(canvas.getWidth(), canvas.getHeight());
+        guiCoordinateSystem.update(canvas.getWidth(), canvas.getHeight());
 
         // Fills up the renderQueue
         root.render();
@@ -81,5 +63,17 @@ public class Renderer {
      */
     public void addRenderTask(RenderTask renderTask) {
         renderQueue.offer(Objects.requireNonNull(renderTask));
+    }
+
+    public GraphicsContext getGraphicsContext() {
+        return gc;
+    }
+
+    public CoordinateSystem getWorldCoordinateSystem() {
+        return worldCoordinateSystem;
+    }
+
+    public CoordinateSystem getGuiCoordinateSystem() {
+        return guiCoordinateSystem;
     }
 }

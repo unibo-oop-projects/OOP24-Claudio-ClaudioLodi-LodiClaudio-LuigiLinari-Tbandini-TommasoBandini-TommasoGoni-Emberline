@@ -19,7 +19,7 @@ public class Menu implements NavigationState {
         GraphicsContext gc = renderer.getGraphicsContext();
 
         // GUI CONTEXT //
-        CoordinateSystem guiCS = renderer.getGuiContext().getCS();
+        CoordinateSystem guiCS = renderer.getGuiCoordinateSystem();
         Image logoImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/menu_assets/logo.png")));
         Image playImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/menu_assets/play.png")));
         Image optionsImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/menu_assets/options.png")));
