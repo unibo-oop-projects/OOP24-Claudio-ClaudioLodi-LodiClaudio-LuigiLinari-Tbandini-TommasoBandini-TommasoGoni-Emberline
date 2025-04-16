@@ -3,10 +3,12 @@ package dev.emberline.game.world.entities.enemy;
 import java.util.LinkedList;
 import java.util.List;
 
+import dev.emberline.core.components.Renderable;
+import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 import javafx.geometry.Point2D;
 
-public class EnemiesManager {
+public class EnemiesManager implements Updatable, Renderable {
 
     // TODO data structure: efficient querying based on area
     private final List<Enemy> enemies = new LinkedList<>();
@@ -25,13 +27,15 @@ public class EnemiesManager {
         throw new UnsupportedOperationException();
     }
 
-    public void updateEnemies(long elapsed) {
+    @Override
+    public void update(long elapsed) {
         for (final Enemy enemy : enemies) {
             enemy.update(elapsed);
         }
     }
 
-    public void renderEnemies() {
+    @Override
+    public void render() {
         for (final Enemy enemy : enemies) {
             enemy.render();
         }

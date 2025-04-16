@@ -1,4 +1,4 @@
-package dev.emberline.core.game.components;
+package dev.emberline.core.components;
 
 import javafx.scene.input.InputEvent;
 

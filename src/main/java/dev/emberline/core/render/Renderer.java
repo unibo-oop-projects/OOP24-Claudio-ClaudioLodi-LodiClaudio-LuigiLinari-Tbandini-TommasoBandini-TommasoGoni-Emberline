@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import dev.emberline.core.game.components.Renderable;
+import dev.emberline.core.components.Renderable;
 
 public class Renderer {
     // JavaFX Canvas, only JavaFX thread can modify the scene graph, do not modify the scene graph from another thread

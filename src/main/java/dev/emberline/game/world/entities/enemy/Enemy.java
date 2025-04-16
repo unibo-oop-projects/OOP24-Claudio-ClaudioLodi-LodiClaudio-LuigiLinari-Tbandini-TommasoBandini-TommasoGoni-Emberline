@@ -1,9 +1,11 @@
 package dev.emberline.game.world.entities.enemy;
 
+import dev.emberline.core.components.Renderable;
+import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 import javafx.geometry.Point2D;
 
-public class Enemy {
+public class Enemy implements Updatable, Renderable {
 
     // Up to debate if we actually want to use the Point2D class for vectors (sqrt for magnitude, immutable...) TODO
     private Point2D position;
@@ -23,10 +25,12 @@ public class Enemy {
         // this.velocityVector = destination.subtract(position).normalize().multiply(VELOCITY_MAG);
     }
 
+    @Override
     public void update(long elapsed) {
         
     }
 
+    @Override
     public void render() {
         
     }
