@@ -10,7 +10,7 @@ public class CoordinateSystem {
     private double regionX2;
     private double regionY2;
 
-    // private final double tolerance = 10;
+    private final double tolerance = 10;
 
     // Screen Dimensions [SCREEN]
     private double screenWidth;
@@ -65,6 +65,14 @@ public class CoordinateSystem {
         return screenOriginY;
     }
 
+    public double getPlayableScreenWidth() {
+        return (regionX2 - regionX1) * scale;
+    }
+    
+    public double getPlayableScreenHeight() {
+        return (regionY2 - regionY1) * scale;
+    }
+
     public double toWorldX(double screenX) {
         return screenOriginX + screenX / scale;
     }
@@ -79,6 +87,10 @@ public class CoordinateSystem {
 
     public double toScreenY(double worldY) {
         return (worldY - screenOriginY) * scale;
+    }
+
+    public double getTolerance() {
+        return tolerance;
     }
 
     public double getScale() {

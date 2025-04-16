@@ -25,17 +25,17 @@ public class Renderer {
     // Rendering queue
     private final PriorityBlockingQueue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
 
-    public Renderer(Renderable root, Canvas canvas) {
-        this.root = root;
-        this.canvas = canvas;
-        this.gc = canvas.getGraphicsContext2D();
+        public Renderer(Renderable root, Canvas canvas) {
+            this.root = root;
+            this.canvas = canvas;
+            this.gc = canvas.getGraphicsContext2D();
 
-        CoordinateSystem worldCS = new CoordinateSystem(0, 0, 25, 15);
-        CoordinateSystem guiCS = new CoordinateSystem(0, 0, 15, 5);
+            CoordinateSystem worldCS = new CoordinateSystem(0, 0, 32, 18);
+            CoordinateSystem guiCS = new CoordinateSystem(0, 0, 32, 18);
 
-        this.worldContext = new RenderContext(canvas, worldCS);
-        this.guiContext = new RenderContext(canvas, guiCS);
-    }
+            this.worldContext = new RenderContext(canvas, worldCS);
+            this.guiContext = new RenderContext(canvas, guiCS);
+        }
 
     public GraphicsContext getGraphicsContext() {
         return gc;
