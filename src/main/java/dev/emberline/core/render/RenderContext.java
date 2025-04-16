@@ -5,18 +5,16 @@ public class RenderContext {
     private final Canvas canvas;
     private final CoordinateSystem cs;
 
-    public RenderContext(Canvas canvas, CoordinateSystem cs) {
+    // Package private, should only be constructed by Renderer
+    RenderContext(Canvas canvas, CoordinateSystem cs) {
         this.canvas = canvas;
         this.cs = cs;
         update();
     }
 
-    public void update() {
+    // Package private, should only be called by Renderer
+    void update() {
         cs.update(canvas.getWidth(), canvas.getHeight());
-    }
-
-    public Canvas getCanvas() {
-        return canvas;
     }
 
     public CoordinateSystem getCS() {

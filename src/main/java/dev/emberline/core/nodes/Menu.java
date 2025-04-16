@@ -1,14 +1,9 @@
 package dev.emberline.core.nodes;
 
-import dev.emberline.core.render.RenderContext;
-import dev.emberline.core.render.RenderPriority;
-import dev.emberline.core.render.RenderTask;
-import dev.emberline.core.render.Renderer;
+import dev.emberline.core.render.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Paint;
 
-import java.io.InputStream;
 import java.util.Objects;
 
 import dev.emberline.core.GameLoop;
@@ -24,9 +19,7 @@ public class Menu implements NavigationState {
         GraphicsContext gc = renderer.getGraphicsContext();
 
         // GUI CONTEXT //
-        RenderContext guiContext = renderer.getGuiContext();
-        var guiCS = guiContext.getCS();
-
+        CoordinateSystem guiCS = renderer.getGuiContext().getCS();
         Image logoImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/menu_assets/logo.png")));
         Image playImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/menu_assets/play.png")));
         Image optionsImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/menu_assets/options.png")));
@@ -57,17 +50,6 @@ public class Menu implements NavigationState {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
             gc.drawImage(backgroundImage, guiCS.toScreenX(0), guiCS.toScreenY(0), backgroundWidth * guiCS.getScale(), backgroundHeight * guiCS.getScale());
-        }));
-
-        // WORLD CONTEXT //
-        RenderContext worldContext = renderer.getWorldContext();
-        
-        double screenHeight = worldContext.getCanvas().getHeight();
-        double screenWidth = worldContext.getCanvas().getWidth(); 
-
-        renderer.addRenderTask(new RenderTask(RenderPriority.LETTERBOXING, () -> {
-            gc.setFill(Paint.valueOf("#aaa"));
-            gc.fillRect(0, 0, screenWidth, screenHeight);
         }));
     }
 }
