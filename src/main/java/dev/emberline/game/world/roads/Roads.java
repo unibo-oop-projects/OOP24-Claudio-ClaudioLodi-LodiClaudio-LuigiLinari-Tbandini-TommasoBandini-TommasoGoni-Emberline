@@ -1,8 +1,6 @@
-package dev.emberline.roads;
+package dev.emberline.game.world.roads;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -56,7 +54,7 @@ public class Roads {
         }
     }
 
-    //file template: (from node) (to node) (weight)
+    //TODO
     private void loadGraph(String file) {
         
     }
