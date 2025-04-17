@@ -1,5 +1,7 @@
 package utility.pairs;
 
+import java.util.Objects;
+
 public class Pair<A,B> {
 
     private A x;
@@ -26,4 +28,28 @@ public class Pair<A,B> {
         this.y = y;
     }
     
+    @Override
+	public int hashCode() {
+		return Objects.hash(x, y);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Pair other = (Pair) obj;
+		return Objects.equals(x, other.x) && Objects.equals(y, other.y);
+	}
+
+	@Override
+	public String toString() {
+		return "Pair [x=" + x + ", y=" + y + "]";
+	}
 }
