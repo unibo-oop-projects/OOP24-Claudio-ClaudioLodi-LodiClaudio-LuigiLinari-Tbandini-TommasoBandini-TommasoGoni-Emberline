@@ -1,6 +1,6 @@
 package dev.emberline.core.update;
 
-import dev.emberline.core.game.components.Updatable;
+import dev.emberline.core.components.Updatable;
 
 public class Updater {
 

@@ -1,9 +1,11 @@
 package dev.emberline.game.world;
 
+import dev.emberline.core.components.Renderable;
+import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.entities.enemy.EnemiesManager;
 import dev.emberline.game.world.waves.WaveManager;
 
-public class World {
+public class World implements Updatable, Renderable {
     
     // Enemies
     private final EnemiesManager enemiesManager;
@@ -22,5 +24,15 @@ public class World {
 
     public WaveManager getWaveManager() {
         return waveManager;
+    }
+
+    @Override
+    public void update(long elapsed) {
+        enemiesManager.update(elapsed);
+    }
+
+    @Override
+    public void render() {
+        enemiesManager.render();
     }
 }

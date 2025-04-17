@@ -2,7 +2,7 @@ package dev.emberline.core.input;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import dev.emberline.core.game.components.Inputable;
+import dev.emberline.core.components.Inputable;
 import javafx.scene.input.InputEvent;
 
 public class InputDispatcher {

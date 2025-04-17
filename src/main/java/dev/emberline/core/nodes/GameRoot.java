@@ -1,8 +1,8 @@
 package dev.emberline.core.nodes;
 
-import dev.emberline.core.game.components.Inputable;
-import dev.emberline.core.game.components.Renderable;
-import dev.emberline.core.game.components.Updatable;
+import dev.emberline.core.components.Inputable;
+import dev.emberline.core.components.Renderable;
+import dev.emberline.core.components.Updatable;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
