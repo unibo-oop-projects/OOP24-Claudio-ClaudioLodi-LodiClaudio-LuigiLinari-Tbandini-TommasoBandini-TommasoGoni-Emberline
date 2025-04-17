@@ -1,9 +1,17 @@
 package dev.emberline.game.world.entities.enemy;
 
+import dev.emberline.core.render.CoordinateSystem;
+import dev.emberline.core.render.RenderPriority;
+import dev.emberline.core.render.RenderTask;
+import dev.emberline.core.render.Renderer;
+import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
+import utility.pairs.Pair;
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Paint;
 
 public class Enemy implements Updatable, Renderable {
 
@@ -14,25 +22,41 @@ public class Enemy implements Updatable, Renderable {
 
     private World world;
 
-    private final double VELOCITY_MAG = 0.0000001;
+    private final double VELOCITY_MAG = 0.000000001;
     /// Other stats
     ///
     
     public Enemy(Point2D spawnPoint, World world) {
         this.position = spawnPoint;
         this.world = world;
+
+        Pair<Integer,Integer> next = world.getWaveManager().getWave().getNext(
+            new Pair<>((int)position.getX(), (int)position.getY())
+        );
+        this.destination = new Point2D(next.getX(), next.getY());
+
         // this.destination = world.getWave().getNextDestination(position);
-        // this.velocityVector = destination.subtract(position).normalize().multiply(VELOCITY_MAG);
+        this.velocityVector = destination.subtract(position).normalize().multiply(VELOCITY_MAG);
     }
 
     @Override
     public void update(long elapsed) {
-        
+        move(elapsed);
     }
 
     @Override
     public void render() {
-        
+        Renderer renderer = GameLoop.getInstance().getRenderer();
+        CoordinateSystem cs = renderer.getWorldContext().getCS();
+
+        double screenX = cs.toScreenX(position.getX());
+        double screenY = cs.toScreenY(position.getY());
+
+        renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
+            GraphicsContext gc = renderer.getGraphicsContext();
+            gc.setFill(Paint.valueOf("#fff"));
+            gc.fillRect(screenX, screenY, 50, 50);
+        }));
     }
 
     private void move(long elapsed) {
@@ -57,11 +81,13 @@ public class Enemy implements Updatable, Renderable {
         // go back to destination and do the difference in movement in the new direction
 
         double overshootAmount = posToDest.magnitude();
-        // Point2D newDestination = world.getWave().getNextDestination(destination);
-        // Point2D newDirection = newDestination.subtract(destination).normalize();
 
-        // position = destination.add(newDirection.scale(overshootAmount));
-        // destination = newDestination;
-        // velocityVector = newDirection.multiply(VELOCITY_MAG);
+        Pair<Integer,Integer> next = world.getWaveManager().getWave().getNext(new Pair<>((int)destination.getX(), (int)destination.getY()));
+        Point2D newDestination = new Point2D(next.getX(), next.getY());
+        Point2D newDirection = newDestination.subtract(destination).normalize();
+
+        position = destination.add(newDirection.multiply(overshootAmount));
+        destination = newDestination;
+        velocityVector = newDirection.multiply(VELOCITY_MAG);
     }
 }

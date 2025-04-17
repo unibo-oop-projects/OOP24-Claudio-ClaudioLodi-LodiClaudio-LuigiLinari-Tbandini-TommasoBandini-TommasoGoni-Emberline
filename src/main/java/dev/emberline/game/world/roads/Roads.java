@@ -1,13 +1,14 @@
 package dev.emberline.game.world.roads;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import utility.pairs.Pair;
 
 public class Roads {
+    
     /*
      * graph data structure
      * the map associates values as follows:
@@ -19,39 +20,41 @@ public class Roads {
      * 
      * (from nome), pair((to node), (enemies left, tot enemies) to send)
      */
-    private Map<Pair<Integer, Integer>, Queue<Pair<Pair<Integer, Integer>, Pair<Integer,Integer>>>> roads = new HashMap<>();
+    private Map<Pair<Integer, Integer>, Node> posToNode = new HashMap<>();
 
-    private Pair<Integer,Integer> _start = new Pair<Integer,Integer>(2, 6);
-    private Pair<Integer,Integer> _end = new Pair<Integer,Integer>(2, 0);
+    private Pair<Integer,Integer> _start = new Pair<Integer,Integer>(2, 10);
+    private Pair<Integer,Integer> _end = new Pair<Integer,Integer>(2, 0);//sopra
+    private Pair<Integer,Integer> _end1 = new Pair<Integer,Integer>(0, 0);//left
+    private Pair<Integer,Integer> _end2 = new Pair<Integer,Integer>(5, 0);//right
     private Pair<Integer,Integer> _weight = new Pair<Integer,Integer>(1, 1);
+    private Pair<Integer,Integer> _weight1 = new Pair<Integer,Integer>(0, 0);
+
 
     public Roads(String file) {
-        //hardcoded road
-        Queue<Pair<Pair<Integer, Integer>, Pair<Integer,Integer>>> queue =  new ConcurrentLinkedQueue<>();
-        queue.offer(new Pair<>(_end, _weight));
-        roads.put(_start, queue);
+        // hardcoded
+        Node start = new Node(_start);
+        posToNode.put(_start, start);
 
-        loadGraph(file);
+        Node intersection = new Node(_end);
+        posToNode.put(_end, intersection);
+
+        Node left = new Node(_end1);
+        posToNode.put(_end1, left);
+
+        Node right = new Node(_end2);
+        posToNode.put(_end2, right);
+        
+        start.addNeighbour(intersection, 1);
+        intersection.addNeighbour(left, 1);
+        intersection.addNeighbour(right, 2);
+        
+        //loadGraph(file);
     }
     
     //if "weight" enemies were sent to the given node, place the node at the back of the queue
     //and reset the counter on it
     public Pair<Integer,Integer> getNextNode(Pair<Integer,Integer> pos) {
-        if (!roads.get(pos).isEmpty()) {
-            Pair<Pair<Integer,Integer>, Pair<Integer,Integer>> next;
-            if (roads.get(pos).peek().getY().getX() > 0) {
-                next = roads.get(pos).peek();
-                //updates numbers of enemies to send this way (-1)
-                roads.get(pos).peek().getY().setX(next.getY().getX()-1);
-            } else {
-                next = roads.get(pos).poll();
-                //pushes at the end of the queue the current position, resetting the enemies counter
-                roads.get(pos).offer(new Pair<>(next.getX(), new Pair<>(next.getY().getY(), next.getY().getY())));
-            }
-            return next.getX();
-        } else {
-            return pos;
-        }
+        return posToNode.get(pos).getNext();
     }
 
     //TODO

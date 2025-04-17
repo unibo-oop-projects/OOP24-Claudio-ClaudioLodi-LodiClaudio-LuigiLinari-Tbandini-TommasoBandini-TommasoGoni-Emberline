@@ -2,6 +2,7 @@ package dev.emberline.game.world.entities.enemy;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
@@ -21,7 +22,7 @@ public class EnemiesManager implements Updatable, Renderable {
     public void addEnemy(Point2D spawnPoint) {
         enemies.add(new Enemy(spawnPoint, world));
     }
-
+    
     public List<Enemy> getEnemiesInArea(/* Area */) {
         // TODO
         throw new UnsupportedOperationException();

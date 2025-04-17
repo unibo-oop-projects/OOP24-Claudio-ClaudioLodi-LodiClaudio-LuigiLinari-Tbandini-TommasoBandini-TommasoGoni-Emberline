@@ -29,6 +29,7 @@ public class World implements Updatable, Renderable {
     @Override
     public void update(long elapsed) {
         enemiesManager.update(elapsed);
+        waveManager.update(elapsed);
     }
 
     @Override

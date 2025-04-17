@@ -3,6 +3,7 @@ package dev.emberline.core.nodes;
 import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
+import dev.emberline.game.world.World;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -13,6 +14,10 @@ public class GameRoot implements Inputable, Renderable, Updatable {
     private final Options options = new Options();
     private final GameSaves gameSaves = new GameSaves();
     private NavigationState navigationState;
+
+    // TESTING
+    private final World world = new World();
+    //
 
     public GameRoot() {
         navigationState = menu;
@@ -40,11 +45,13 @@ public class GameRoot implements Inputable, Renderable, Updatable {
 
     @Override
     public void render() {
-        navigationState.render();
+        // navigationState.render();
+        world.render();
     }
 
     @Override
     public void update(long elapsed) {
+        world.update(elapsed);
     }
 
 }

@@ -1,0 +1,43 @@
+package dev.emberline.game.world.roads;
+
+import utility.pairs.Pair;
+import java.util.List;
+import java.util.ArrayList;
+
+class Node {
+    private final Pair<Integer, Integer> pos;
+    private final List<Pair<Node, Integer>> neighbours;
+
+    private int cnt;
+    private int currIdx;
+
+    public Node(Pair<Integer, Integer> pos) {
+        this.pos = pos;
+        this.neighbours = new ArrayList<>();
+
+        this.currIdx = -1;
+        this.cnt = -1;
+    }
+
+    public void addNeighbour(Node neighbour, Integer weight) {
+        neighbours.add(new Pair<>(neighbour, weight));
+    }
+
+    public Pair<Integer, Integer> getNext() {
+        if (neighbours.isEmpty()) {
+            return pos;
+        }
+
+        while (cnt <= 0) {
+            currIdx = (currIdx + 1) % neighbours.size();
+            cnt = neighbours.get(currIdx).getY();
+        }
+        cnt--;
+
+        return neighbours.get(currIdx).getX().getPosition();
+    }
+
+    public Pair<Integer, Integer> getPosition() {
+        return pos;
+    }
+}
