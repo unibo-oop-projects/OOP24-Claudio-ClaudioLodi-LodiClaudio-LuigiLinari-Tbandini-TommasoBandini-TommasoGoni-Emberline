@@ -4,14 +4,21 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import dev.emberline.core.GameLoop;
+import dev.emberline.core.animations.Animation;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 import utility.pairs.Pair;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Paint;
+import javafx.scene.image.Image;
 
 public class Enemy implements Updatable, Renderable {
 
@@ -22,41 +29,61 @@ public class Enemy implements Updatable, Renderable {
 
     private World world;
 
-    private final double VELOCITY_MAG = 0.000000001;
+    private final double VELOCITY_MAG = 0.000000002;
+    private final int    FULL_HEALTH  = 500;
+
+    private int health;
     /// Other stats
     ///
+    
+    private Animation animation;
     
     public Enemy(Point2D spawnPoint, World world) {
         this.position = spawnPoint;
         this.world = world;
 
-        Pair<Integer,Integer> next = world.getWaveManager().getWave().getNext(
+        Optional<Pair<Integer, Integer>> next = world.getWaveManager().getWave().getNext(
             new Pair<>((int)position.getX(), (int)position.getY())
         );
-        this.destination = new Point2D(next.getX(), next.getY());
-
+        this.destination = next.isEmpty() ? position : new Point2D(next.get().getX(), next.get().getY());
         // this.destination = world.getWave().getNextDestination(position);
+
         this.velocityVector = destination.subtract(position).normalize().multiply(VELOCITY_MAG);
+        this.health = FULL_HEALTH;
+
+        List<Image> animationStates = new ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            animationStates.add(
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/debug/" + i + ".png")))
+            );
+        }
+        animation = new Animation(animationStates, 1_000_000_000);
     }
 
     @Override
     public void update(long elapsed) {
+        animation.update(elapsed);
         move(elapsed);
     }
 
     @Override
     public void render() {
         Renderer renderer = GameLoop.getInstance().getRenderer();
+        GraphicsContext gc = renderer.getGraphicsContext();
         CoordinateSystem cs = renderer.getWorldContext().getCS();
 
         double screenX = cs.toScreenX(position.getX());
         double screenY = cs.toScreenY(position.getY());
 
+        Image currAnimationState = animation.getAnimationState();
+
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
-            GraphicsContext gc = renderer.getGraphicsContext();
-            gc.setFill(Paint.valueOf("#fff"));
-            gc.fillRect(screenX, screenY, 50, 50);
+            gc.drawImage(currAnimationState, screenX, screenY, 75, 75);
         }));
+    }
+
+    public boolean isDead() {
+        return health <= 0;
     }
 
     private void move(long elapsed) {
@@ -82,8 +109,16 @@ public class Enemy implements Updatable, Renderable {
 
         double overshootAmount = posToDest.magnitude();
 
-        Pair<Integer,Integer> next = world.getWaveManager().getWave().getNext(new Pair<>((int)destination.getX(), (int)destination.getY()));
-        Point2D newDestination = new Point2D(next.getX(), next.getY());
+        Optional<Pair<Integer,Integer>> next = world.getWaveManager().getWave().getNext(new Pair<>((int)destination.getX(), (int)destination.getY()));
+        /// TEST (TODO)
+        if (next.isEmpty()) {
+            position = destination;
+            destination = position;
+            health = 0;
+            return;
+        }
+        /// 
+        Point2D newDestination = new Point2D(next.get().getX(), next.get().getY());
         Point2D newDirection = newDestination.subtract(destination).normalize();
 
         position = destination.add(newDirection.multiply(overshootAmount));

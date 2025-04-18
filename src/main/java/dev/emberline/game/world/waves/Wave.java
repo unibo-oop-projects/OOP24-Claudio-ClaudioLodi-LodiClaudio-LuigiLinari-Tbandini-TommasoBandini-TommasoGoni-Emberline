@@ -3,6 +3,7 @@ package dev.emberline.game.world.waves;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 
 import dev.emberline.core.components.Updatable;
@@ -22,7 +23,7 @@ public class Wave implements Updatable {
     private long c = 2_000_000_000L;
     //(x,y) coords for example road (check roads, (2,6) should be the spawnpoint)
     private int a = 2;
-    private int b = 10;
+    private int b = 5;
 
     private long acc = 0;
 
@@ -40,8 +41,7 @@ public class Wave implements Updatable {
         enemiesToSpawn.add(tempQueue);
     }
 
-
-    public Pair<Integer,Integer> getNext(Pair<Integer,Integer> pos) {
+    public Optional<Pair<Integer,Integer>> getNext(Pair<Integer,Integer> pos) {
         return roads.getNextNode(pos);
     }
 

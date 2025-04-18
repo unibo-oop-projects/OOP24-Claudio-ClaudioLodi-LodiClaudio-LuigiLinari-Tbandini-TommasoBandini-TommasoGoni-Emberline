@@ -2,6 +2,7 @@ package dev.emberline.game.world.roads;
 
 import utility.pairs.Pair;
 import java.util.List;
+import java.util.Optional;
 import java.util.ArrayList;
 
 class Node {
@@ -23,9 +24,9 @@ class Node {
         neighbours.add(new Pair<>(neighbour, weight));
     }
 
-    public Pair<Integer, Integer> getNext() {
+    public Optional<Pair<Integer, Integer>> getNext() {
         if (neighbours.isEmpty()) {
-            return pos;
+            return Optional.empty();
         }
 
         while (cnt <= 0) {
@@ -34,7 +35,7 @@ class Node {
         }
         cnt--;
 
-        return neighbours.get(currIdx).getX().getPosition();
+        return Optional.of(neighbours.get(currIdx).getX().getPosition());
     }
 
     public Pair<Integer, Integer> getPosition() {

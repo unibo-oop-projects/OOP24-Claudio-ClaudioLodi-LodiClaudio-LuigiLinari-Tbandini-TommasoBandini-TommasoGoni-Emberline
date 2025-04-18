@@ -1,8 +1,8 @@
 package dev.emberline.game.world.entities.enemy;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
@@ -30,8 +30,15 @@ public class EnemiesManager implements Updatable, Renderable {
 
     @Override
     public void update(long elapsed) {
-        for (final Enemy enemy : enemies) {
-            enemy.update(elapsed);
+        Iterator<Enemy> it = enemies.iterator();
+        Enemy currEnemy;
+        while (it.hasNext()) {
+            currEnemy = it.next();
+
+            currEnemy.update(elapsed);
+            if (currEnemy.isDead()) {
+                it.remove();
+            }
         }
     }
 

@@ -1,9 +1,8 @@
 package dev.emberline.game.world.roads;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
+import java.util.Optional;
 
 import utility.pairs.Pair;
 
@@ -22,38 +21,59 @@ public class Roads {
      */
     private Map<Pair<Integer, Integer>, Node> posToNode = new HashMap<>();
 
-    private Pair<Integer,Integer> _start = new Pair<Integer,Integer>(2, 10);
-    private Pair<Integer,Integer> _end = new Pair<Integer,Integer>(2, 0);//sopra
-    private Pair<Integer,Integer> _end1 = new Pair<Integer,Integer>(0, 0);//left
-    private Pair<Integer,Integer> _end2 = new Pair<Integer,Integer>(5, 0);//right
-    private Pair<Integer,Integer> _weight = new Pair<Integer,Integer>(1, 1);
-    private Pair<Integer,Integer> _weight1 = new Pair<Integer,Integer>(0, 0);
-
-
     public Roads(String file) {
         // hardcoded
+        Pair<Integer,Integer> _start = new Pair<Integer,Integer>(2, 5);
         Node start = new Node(_start);
         posToNode.put(_start, start);
 
-        Node intersection = new Node(_end);
-        posToNode.put(_end, intersection);
+        Pair<Integer, Integer> intersectionPos = new Pair<>(8, 5);
+        Node intersection = new Node(intersectionPos);
+        posToNode.put(intersectionPos, intersection);
 
-        Node left = new Node(_end1);
-        posToNode.put(_end1, left);
+        Pair<Integer, Integer> upPos = new Pair<>(8, 2);
+        Node up = new Node(upPos);
+        posToNode.put(upPos, up);
 
-        Node right = new Node(_end2);
-        posToNode.put(_end2, right);
+        Pair<Integer, Integer> intersection2Pos = new Pair<>(15, 5);
+        Node intersection2 = new Node(intersection2Pos);
+        posToNode.put(intersection2Pos, intersection2);
+
+        Pair<Integer, Integer> downPos = new Pair<>(8, 8);
+        Node down = new Node(downPos);
+        posToNode.put(downPos, down);
+
+        Pair<Integer, Integer> upRightPos = new Pair<>(15, 2);
+        Node upRight = new Node(upRightPos);
+        posToNode.put(upRightPos, upRight);
+
+        Pair<Integer, Integer> downRightPos = new Pair<>(15, 8);
+        Node downRight = new Node(downRightPos);
+        posToNode.put(downRightPos, downRight);
+
+        Pair<Integer, Integer> endPos = new Pair<>(22, 5);
+        Node end = new Node(endPos);
+        posToNode.put(endPos, end);
         
         start.addNeighbour(intersection, 1);
-        intersection.addNeighbour(left, 1);
-        intersection.addNeighbour(right, 2);
+
+        intersection.addNeighbour(up, 1);
+        intersection.addNeighbour(down, 1);
+
+        up.addNeighbour(upRight, 1);
+        down.addNeighbour(downRight, 1);
+
+        upRight.addNeighbour(intersection2, 1);
+        downRight.addNeighbour(intersection2, 1);
+
+        intersection2.addNeighbour(end, 1);
         
         //loadGraph(file);
     }
     
     //if "weight" enemies were sent to the given node, place the node at the back of the queue
     //and reset the counter on it
-    public Pair<Integer,Integer> getNextNode(Pair<Integer,Integer> pos) {
+    public Optional<Pair<Integer,Integer>> getNextNode(Pair<Integer,Integer> pos) {
         return posToNode.get(pos).getNext();
     }
 
