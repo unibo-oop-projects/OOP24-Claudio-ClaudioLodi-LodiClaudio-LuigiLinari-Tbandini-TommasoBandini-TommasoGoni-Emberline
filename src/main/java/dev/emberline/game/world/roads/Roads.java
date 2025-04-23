@@ -1,5 +1,8 @@
 package dev.emberline.game.world.roads;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -32,7 +35,8 @@ public class Roads {
 
     public Roads(String file) {
         // hardcoded
-        Node start = new Node(_start);
+        
+        /* Node start = new Node(_start);
         posToNode.put(_start, start);
 
         Node intersection = new Node(_end);
@@ -47,8 +51,8 @@ public class Roads {
         start.addNeighbour(intersection, 1);
         intersection.addNeighbour(left, 1);
         intersection.addNeighbour(right, 2);
-        
-        //loadGraph(file);
+         */
+        loadGraph(file);
     }
     
     //if "weight" enemies were sent to the given node, place the node at the back of the queue
@@ -57,8 +61,26 @@ public class Roads {
         return posToNode.get(pos).getNext();
     }
 
-    //TODO
     private void loadGraph(String file) {
-        
+        try {
+            final BufferedReader r = new BufferedReader(new FileReader(file));
+            String line = null;
+            while ((line = r.readLine()) != null) {
+                
+                String[] numbers = line.split(" ");
+                
+                Node fromNode = new Node(new Pair<>(Integer.parseInt(numbers[1]), Integer.parseInt(numbers[0])));
+                Node toNode = new Node(new Pair<>(Integer.parseInt(numbers[3]), Integer.parseInt(numbers[2])));
+                Integer weight = Integer.parseInt(numbers[4]);
+                
+                posToNode.putIfAbsent(fromNode.getPosition(), fromNode);
+                posToNode.get(fromNode.getPosition()).addNeighbour(toNode, weight);
+
+                posToNode.putIfAbsent(toNode.getPosition(), toNode);
+            }
+            r.close();
+        } catch (IOException e) {
+            System.out.println("error loading file: " + file);
+        }
     }
 }
