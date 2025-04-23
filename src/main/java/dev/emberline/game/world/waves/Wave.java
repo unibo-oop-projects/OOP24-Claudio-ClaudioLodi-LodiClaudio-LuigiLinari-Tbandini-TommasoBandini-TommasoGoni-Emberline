@@ -16,6 +16,8 @@ import utility.pairs.Pair;
 public class Wave implements Updatable {
     
     private World world;
+    //getting the file path should be done with methods such as
+    //getResources() or similar
     private Roads roads = new Roads("./src/main/resources/loadingFiles/roads.txt");
     private Spawnpoints spawnpoints = new Spawnpoints("./src/main/resources/loadingFiles/spawnpoints.txt");
     
