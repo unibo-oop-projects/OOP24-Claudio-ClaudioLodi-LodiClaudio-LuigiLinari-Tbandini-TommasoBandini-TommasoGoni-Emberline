@@ -3,6 +3,7 @@ package dev.emberline.game.world.waves;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 
 import dev.emberline.core.components.Updatable;
@@ -24,8 +25,7 @@ public class Wave implements Updatable {
         this.world = world;
     }
 
-
-    public Pair<Integer,Integer> getNext(Pair<Integer,Integer> pos) {
+    public Optional<Pair<Integer,Integer>> getNext(Pair<Integer,Integer> pos) {
         return roads.getNextNode(pos);
     }
 
