@@ -22,10 +22,13 @@ import javafx.scene.image.Image;
 
 public class Enemy implements Updatable, Renderable {
 
+    private enum EnemyBehaviour { MOVING, ATTACKING }
+
     // Up to debate if we actually want to use the Point2D class for vectors (sqrt for magnitude, immutable...) TODO
     private Point2D position;
-    private Point2D velocityVector;
-    private Point2D destination;
+    private Point2D velocity;
+    private List<Point2D> destinations;
+    private int destinationsIdx = 0;
 
     private World world;
 
@@ -37,33 +40,48 @@ public class Enemy implements Updatable, Renderable {
     ///
     
     private Animation animation;
+
+    private EnemyBehaviour enemyBehaviour;
     
     public Enemy(Point2D spawnPoint, World world) {
         this.position = spawnPoint;
         this.world = world;
-
+        
+        destinations = new ArrayList<>();
         Optional<Pair<Integer, Integer>> next = world.getWaveManager().getWave().getNext(
             new Pair<>((int)position.getX(), (int)position.getY())
         );
-        this.destination = next.isEmpty() ? position : new Point2D(next.get().getX(), next.get().getY());
-        // this.destination = world.getWave().getNextDestination(position);
+        while (next.isPresent()) {
+            destinations.add(
+                new Point2D(next.get().getX(), next.get().getY())
+            );
+            next = world.getWaveManager().getWave().getNext(
+                new Pair<>((int)destinations.getLast().getX(), (int)destinations.getLast().getY())
+            );
+        }
 
-        this.velocityVector = destination.subtract(position).normalize().multiply(VELOCITY_MAG);
+        this.velocity = destinations.get(destinationsIdx).subtract(position).normalize().multiply(VELOCITY_MAG);
         this.health = FULL_HEALTH;
 
         List<Image> animationStates = new ArrayList<>();
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= 4; i++) {
             animationStates.add(
-                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/debug/" + i + ".png")))
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/enemies/" + i + ".png")))
             );
         }
-        animation = new Animation(animationStates, 1_000_000_000);
+        animation = new Animation(animationStates, 250_000_000);
+
+        this.enemyBehaviour = destinationsIdx != destinations.size() ? 
+            EnemyBehaviour.MOVING : EnemyBehaviour.ATTACKING;
     }
 
     @Override
     public void update(long elapsed) {
         animation.update(elapsed);
-        move(elapsed);
+        
+        if (enemyBehaviour == EnemyBehaviour.MOVING) {
+            move(elapsed);
+        }
     }
 
     @Override
@@ -87,42 +105,54 @@ public class Enemy implements Updatable, Renderable {
     }
 
     private void move(long elapsed) {
+        Point2D currDestination = destinations.get(destinationsIdx);
+
         // move along the velocity vector
-        position = position.add(velocityVector.multiply(elapsed));
+        position = position.add(velocity.multiply(elapsed));
 
-        // position -> destination same direction as the velocity     => didn't reach destination
-        // position -> destination direction opposite to the velocity => overshot destination
-        // position -> destination = (0, 0)                           => exactly arrived at destination
+        // position -> destination vector
+        Point2D posToDest = currDestination.subtract(position);
+        double dot = posToDest.dotProduct(velocity);
+        // dot <= 0 => either overshot or exactly at currDestination
+        while (dot <= 0) {
+            // if overshot => go back to destination and do the difference in movement in the next direction
+            double overshootAmount = posToDest.magnitude();
+            
+            position = currDestination;
+            if (currDestination == destinations.getLast()) {
+                enemyBehaviour = EnemyBehaviour.ATTACKING;
+                return;
+            }
+            currDestination = destinations.get(++destinationsIdx);
+            
+            // correction
+            Point2D nextDirection = currDestination.subtract(position).normalize();
+            position = position.add(nextDirection.multiply(overshootAmount));
 
-        Point2D posToDest = destination.subtract(position);
-        double dot = posToDest.dotProduct(velocityVector);
-        
-        // same direction
-        if (dot > 0) {
-            return;
+            velocity = nextDirection.multiply(VELOCITY_MAG);
+
+            posToDest = currDestination.subtract(position);
+            dot = posToDest.dotProduct(velocity);
         }
+    }
 
-        // dot <= 0 => either arrived perfectly at destination or overshot (->v * ->0 = 0)
+    /**
+     * @param deltaTime nanoseconds in the future
+     * @return The position of the enemy after {@code deltaTime} nanoseconds
+     */
+    public Point2D getPositionAfter(long deltaTime) {
+        Point2D currPosition = new Point2D(position.getX(), position.getY());
+        Point2D currVelocity = new Point2D(velocity.getX(), velocity.getY());
+        int currDestinationIdx = destinationsIdx;
+
+        // simulated movement
+        move(deltaTime);
+        Point2D predictedPosition = new Point2D(position.getX(), position.getY());
         
-        // if the new position exceeds the destination
-        // go back to destination and do the difference in movement in the new direction
+        position = currPosition;
+        velocity = currVelocity;
+        destinationsIdx = currDestinationIdx;
 
-        double overshootAmount = posToDest.magnitude();
-
-        Optional<Pair<Integer,Integer>> next = world.getWaveManager().getWave().getNext(new Pair<>((int)destination.getX(), (int)destination.getY()));
-        /// TEST (TODO)
-        if (next.isEmpty()) {
-            position = destination;
-            destination = position;
-            health = 0;
-            return;
-        }
-        /// 
-        Point2D newDestination = new Point2D(next.get().getX(), next.get().getY());
-        Point2D newDirection = newDestination.subtract(destination).normalize();
-
-        position = destination.add(newDirection.multiply(overshootAmount));
-        destination = newDestination;
-        velocityVector = newDirection.multiply(VELOCITY_MAG);
+        return predictedPosition;
     }
 }
