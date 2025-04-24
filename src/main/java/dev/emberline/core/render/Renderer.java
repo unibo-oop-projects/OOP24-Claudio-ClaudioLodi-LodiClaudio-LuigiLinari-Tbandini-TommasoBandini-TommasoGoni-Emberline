@@ -8,9 +8,12 @@ import java.util.Objects;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import dev.emberline.core.game.components.Renderable;
+import dev.emberline.core.components.Renderable;
 
 public class Renderer {
+    public static final int GUICS_HEIGHT = 18;
+    public static final int GUICS_WIDTH = 32;
+
     // JavaFX Canvas, only JavaFX thread can modify the scene graph, do not modify the scene graph from another thread
     private final Canvas canvas;
 
@@ -20,7 +23,7 @@ public class Renderer {
     private final Renderable root;
 
     private final CoordinateSystem worldCoordinateSystem = new CoordinateSystem(0, 0, 32, 18);
-    private final CoordinateSystem guiCoordinateSystem = new CoordinateSystem(0, 0, 32, 18);
+    private final CoordinateSystem guiCoordinateSystem = new CoordinateSystem(0, 0, GUICS_WIDTH, GUICS_HEIGHT);
 
     // Rendering queue
     private final PriorityBlockingQueue<RenderTask> renderQueue = new PriorityBlockingQueue<>();

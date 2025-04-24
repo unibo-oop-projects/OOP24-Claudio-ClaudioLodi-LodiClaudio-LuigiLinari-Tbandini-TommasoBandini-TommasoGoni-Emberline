@@ -1,50 +1,55 @@
 package dev.emberline.core.nodes;
 
-import dev.emberline.core.game.components.Inputable;
-import dev.emberline.core.game.components.Renderable;
-import dev.emberline.core.game.components.Updatable;
+import dev.emberline.core.components.Inputable;
+import dev.emberline.core.components.NavigationState;
+import dev.emberline.core.components.Renderable;
+import dev.emberline.core.components.Updatable;
+import dev.emberline.core.gui.GuiLayer;
+import dev.emberline.core.gui.GuiLayers;
+import dev.emberline.core.input.InputResult;
+import dev.emberline.game.world.World;
 import javafx.scene.input.InputEvent;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 public class GameRoot implements Inputable, Renderable, Updatable {
-
-    private final Menu menu = new Menu();
-    private final Options options = new Options();
-    private final GameSaves gameSaves = new GameSaves();
-    private NavigationState navigationState;
+    // Navigation States
+    private final World world = new World();
+    private final GuiLayer menu = GuiLayers.MENU.get();
+    private final GuiLayer settings = GuiLayers.SETTINGS.get();
+    private NavigationState navigationState = menu;
 
     public GameRoot() {
-        navigationState = menu;
+
     }
 
     @Override
-    public void processInput(InputEvent inputEvent) {
+    public InputResult processInput(InputEvent inputEvent) {
+        if (!(navigationState instanceof Inputable)) return null;
 
-        if (inputEvent.getEventType() == KeyEvent.KEY_PRESSED) {
-            KeyEvent keyEvent = (KeyEvent)inputEvent;
+        InputResult result = ((Inputable) navigationState).processInput(inputEvent);
 
-            if (keyEvent.getCode() == KeyCode.M) {
-                navigationState = menu;
-            } else if (keyEvent.getCode() == KeyCode.O) {
-                navigationState = options;
-            } else if (keyEvent.getCode() == KeyCode.G) {
-                navigationState = gameSaves;
-            } else {
-                return;
-            }
+        if (result == InputResult.GOTO_WORLD)
+            navigationState = world;
 
-            inputEvent.consume();
-       }
+        if (result == InputResult.GOTO_SETTINGS)
+            navigationState = GuiLayers.SETTINGS.get();
+
+        if (result == InputResult.PREVIOUS_GUI && navigationState == settings)
+            navigationState = menu;
+
+        return null;
     }
 
     @Override
     public void render() {
-        navigationState.render();
+        if (navigationState instanceof Renderable) {
+            ((Renderable) navigationState).render();
+        }
     }
 
     @Override
     public void update(long elapsed) {
+        if (navigationState instanceof Updatable) {
+            ((Updatable) navigationState).update(elapsed);
+        }
     }
-
 }

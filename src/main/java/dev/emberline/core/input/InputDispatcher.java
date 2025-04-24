@@ -2,7 +2,7 @@ package dev.emberline.core.input;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import dev.emberline.core.game.components.Inputable;
+import dev.emberline.core.components.Inputable;
 import javafx.scene.input.InputEvent;
 
 public class InputDispatcher {
@@ -19,7 +19,7 @@ public class InputDispatcher {
         inputs.add(input);
     }
 
-    // Maybe other than having a non static root, it may be passed as a parameter to this function
+    // Maybe other than having a non-static root, it may be passed as a parameter to this function
     public void dispatchInputs() {
         while (!inputs.isEmpty()) {
             InputEvent inputEvent = inputs.poll();
