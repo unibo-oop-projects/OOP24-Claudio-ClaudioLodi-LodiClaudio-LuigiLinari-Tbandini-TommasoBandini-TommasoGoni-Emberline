@@ -30,7 +30,7 @@ public class Renderer {
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
 
-        CoordinateSystem worldCS = new CoordinateSystem(0, 0, 25, 15);
+        CoordinateSystem worldCS = new CoordinateSystem(0, 0, 32, 18);
         CoordinateSystem guiCS = new CoordinateSystem(0, 0, 15, 5);
 
         this.worldContext = new RenderContext(canvas, worldCS);

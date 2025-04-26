@@ -77,8 +77,8 @@ public class Enemy implements Updatable, Renderable {
 
         Image currAnimationState = animation.getAnimationState();
 
-        renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
-            gc.drawImage(currAnimationState, screenX, screenY, 75, 75);
+        renderer.addRenderTask(new RenderTask(RenderPriority.ENEMIES, () -> {
+            gc.drawImage(currAnimationState, screenX, screenY, 25, 25);
         }));
     }
 
