@@ -72,13 +72,16 @@ public class Enemy implements Updatable, Renderable {
         GraphicsContext gc = renderer.getGraphicsContext();
         CoordinateSystem cs = renderer.getWorldContext().getCS();
 
-        double screenX = cs.toScreenX(position.getX());
-        double screenY = cs.toScreenY(position.getY());
+        double sizeX = 25;
+        double sizeY = 25;
+
+        double screenX = cs.toScreenX(position.getX() + 0.5) - sizeX/2;
+        double screenY = cs.toScreenY(position.getY() + 0.5) - sizeY/2;
 
         Image currAnimationState = animation.getAnimationState();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.ENEMIES, () -> {
-            gc.drawImage(currAnimationState, screenX, screenY, 25, 25);
+            gc.drawImage(currAnimationState, screenX, screenY, sizeX, sizeY);
         }));
     }
 
