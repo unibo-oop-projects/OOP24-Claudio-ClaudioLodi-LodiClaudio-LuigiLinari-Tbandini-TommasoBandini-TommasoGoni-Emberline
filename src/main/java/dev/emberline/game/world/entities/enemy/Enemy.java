@@ -25,7 +25,6 @@ public class Enemy implements Updatable, Renderable {
 
     private enum EnemyBehaviour { MOVING, ATTACKING }
 
-    // Up to debate if we actually want to use the Coordinate2D class for vectors (sqrt for magnitude, immutable...) TODO
     private Coordinate2D position;
     private Coordinate2D velocity;
     private List<Coordinate2D> destinations;

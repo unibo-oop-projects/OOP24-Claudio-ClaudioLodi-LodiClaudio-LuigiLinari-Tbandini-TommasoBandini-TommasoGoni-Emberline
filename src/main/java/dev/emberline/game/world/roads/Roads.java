@@ -24,15 +24,7 @@ import utility.Tile;
 public class Roads implements Renderable {
     
     /*
-     * graph data structure
-     * the map associates values as follows:
-     * every position (pair or coordinates) has a list of the other positions it leads to
-     * this list is stored as a queue, because the enemies are sent to each other position in a cyclical way,
-     * starting from the head of the list to the last element.
-     * the second pair in each element of the queue represents the number of enemies that must be sent that way before switching position,
-     * in particular (remaining enemies to send that way, tot enemies to send that way for this cycle) 
-     * 
-     * (from nome), pair((to node), (enemies left, tot enemies) to send)
+     * graph data structure, represents the walkable roads on the map
      */
     private Map<Tile, Node> posToNode = new HashMap<>();
     
@@ -40,20 +32,8 @@ public class Roads implements Renderable {
         loadGraph(file);
     }
     
-    //if "weight" enemies were sent to the given node, place the node at the back of the queue
-    //and reset the counter on it
     public Optional<Tile> getNextNode(Tile pos) {
         return posToNode.get(pos).getNext();
-    }
-
-    private void print() {
-        posToNode
-                .entrySet()
-                .forEach(e -> 
-                {
-                    System.out.println(e.getKey() + " " + e.getValue().getNext());
-                }
-        );
     }
 
     private void loadGraph(String file) {
@@ -79,6 +59,9 @@ public class Roads implements Renderable {
         }
     }
 
+    /*
+     * loads the map as one png since all the components of it do not perform any action/interaction with the user
+     */
     @Override
     public void render() {
         Renderer renderer = GameLoop.getInstance().getRenderer();

@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 class Node {
     private final Tile pos;
+    /*
+     * List of Nodes this Node is connected to with a given weight each.
+     * The weight determines the number of enemies that go that way.
+     */
     private final List<Pair<Node, Integer>> neighbours;
 
     private int cnt;
@@ -18,6 +22,9 @@ class Node {
         this.pos = pos;
         this.neighbours = new ArrayList<>();
 
+        /*
+         * index of the current Node this Node is pointing to, rotates cyclically through the List
+         */
         this.currIdx = -1;
         this.cnt = -1;
     }

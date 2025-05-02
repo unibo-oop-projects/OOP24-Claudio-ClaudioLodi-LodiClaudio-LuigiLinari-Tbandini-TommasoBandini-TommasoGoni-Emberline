@@ -43,7 +43,6 @@ public class Wave implements Updatable, Renderable {
     public void sendEnemies() {
         List<Tile> enemiesQueue = spawnpoints.getEnemies(acc);
         for (var enemy : enemiesQueue) {
-            //will switch to a same type of pairs, and erase this since hence usless
             Coordinate2D p2 = new Coordinate2D(enemy.getX(), enemy.getY());
             world.getEnemiesManager().addEnemy(p2);
         }

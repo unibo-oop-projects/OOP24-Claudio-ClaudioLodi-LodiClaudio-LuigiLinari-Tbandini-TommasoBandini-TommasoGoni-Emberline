@@ -2,6 +2,9 @@ package utility;
 
 import java.util.Objects;
 
+/*
+ * Generic pair class
+ */
 public class Pair<A,B> {
 
     private A x;

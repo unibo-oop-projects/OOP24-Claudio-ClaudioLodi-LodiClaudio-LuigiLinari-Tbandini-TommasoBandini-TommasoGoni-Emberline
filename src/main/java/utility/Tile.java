@@ -2,6 +2,9 @@ package utility;
 
 import java.util.Objects;
 
+/*
+ * This class is used to represent Integer 2D Points, in a simple way
+ */
 public class Tile {
     
     private Integer x;

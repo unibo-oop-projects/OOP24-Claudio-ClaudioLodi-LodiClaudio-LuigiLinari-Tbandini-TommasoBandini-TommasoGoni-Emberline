@@ -11,7 +11,7 @@ import utility.Tile;
 import utility.Pair;
 
 public class Spawnpoints {
-    
+    //for each spawnpoint there's a queue of enemies to spawn at a given time
     private List<Pair<Tile,Queue<Long>>> enemiesToSpawn = new ArrayList<>();
 
     //temp variables to delete later
