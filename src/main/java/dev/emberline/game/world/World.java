@@ -2,7 +2,6 @@ package dev.emberline.game.world;
 
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.NavigationState;
 import dev.emberline.core.input.MouseLocation;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
@@ -12,7 +11,7 @@ import dev.emberline.game.world.entities.enemy.EnemiesManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class World implements NavigationState, Renderable {
+public class World implements Renderable {
     
     // Enemies
     private final EnemiesManager enemiesManager;
@@ -37,7 +36,7 @@ public class World implements NavigationState, Renderable {
         double height = Renderer.GUICS_HEIGHT * guics.getScale();
 
         gameRenderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
-            gc.setFill(Color.GREENYELLOW);
+            gc.setFill(MouseLocation.isMouseInside() ? Color.GREENYELLOW : Color.RED);
             gc.fillRect(guics.toScreenX(0),guics.toScreenY(0),width,height);
             gc.setFill(Color.BLUE);
             if (MouseLocation.isMouseInside())
