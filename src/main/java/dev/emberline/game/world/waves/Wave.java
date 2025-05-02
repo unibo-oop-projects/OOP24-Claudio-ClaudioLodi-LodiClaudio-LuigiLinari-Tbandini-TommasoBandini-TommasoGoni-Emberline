@@ -11,8 +11,9 @@ import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.roads.Roads;
 import dev.emberline.game.world.spawnpoints.Spawnpoints;
-import javafx.geometry.Point2D;
-import utility.pairs.Pair;
+import utility.Coordinate2D;
+import utility.Pair;
+import utility.Tile;
 
 public class Wave implements Updatable, Renderable {
     
@@ -28,7 +29,7 @@ public class Wave implements Updatable, Renderable {
         this.world = world;
     }
 
-    public Optional<Pair<Integer,Integer>> getNext(Pair<Integer,Integer> pos) {
+    public Optional<Tile> getNext(Tile pos) {
         return roads.getNextNode(pos);
     }
 
@@ -40,10 +41,10 @@ public class Wave implements Updatable, Renderable {
     }
 
     public void sendEnemies() {
-        List<Pair<Integer,Integer>> enemiesQueue = spawnpoints.getEnemies(acc);
+        List<Tile> enemiesQueue = spawnpoints.getEnemies(acc);
         for (var enemy : enemiesQueue) {
             //will switch to a same type of pairs, and erase this since hence usless
-            Point2D p2 = new Point2D(enemy.getX(), enemy.getY());
+            Coordinate2D p2 = new Coordinate2D(enemy.getX(), enemy.getY());
             world.getEnemiesManager().addEnemy(p2);
         }
     }

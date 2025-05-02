@@ -15,8 +15,9 @@ import dev.emberline.core.animations.Animation;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
-import utility.pairs.Pair;
-import javafx.geometry.Point2D;
+import utility.Pair;
+import utility.Tile;
+import utility.Coordinate2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -24,10 +25,10 @@ public class Enemy implements Updatable, Renderable {
 
     private enum EnemyBehaviour { MOVING, ATTACKING }
 
-    // Up to debate if we actually want to use the Point2D class for vectors (sqrt for magnitude, immutable...) TODO
-    private Point2D position;
-    private Point2D velocity;
-    private List<Point2D> destinations;
+    // Up to debate if we actually want to use the Coordinate2D class for vectors (sqrt for magnitude, immutable...) TODO
+    private Coordinate2D position;
+    private Coordinate2D velocity;
+    private List<Coordinate2D> destinations;
     private int destinationsIdx = 0;
 
     private World world;
@@ -43,20 +44,20 @@ public class Enemy implements Updatable, Renderable {
 
     private EnemyBehaviour enemyBehaviour;
     
-    public Enemy(Point2D spawnPoint, World world) {
+    public Enemy(Coordinate2D spawnPoint, World world) {
         this.position = spawnPoint;
         this.world = world;
         
         destinations = new ArrayList<>();
-        Optional<Pair<Integer, Integer>> next = world.getWaveManager().getWave().getNext(
-            new Pair<>((int)position.getX(), (int)position.getY())
+        Optional<Tile> next = world.getWaveManager().getWave().getNext(
+            new Tile((int)position.getX(), (int)position.getY())
         );
         while (next.isPresent()) {
             destinations.add(
-                new Point2D(next.get().getX(), next.get().getY())
+                new Coordinate2D(next.get().getX(), next.get().getY())
             );
             next = world.getWaveManager().getWave().getNext(
-                new Pair<>((int)destinations.getLast().getX(), (int)destinations.getLast().getY())
+                new Tile((int)destinations.getLast().getX(), (int)destinations.getLast().getY())
             );
         }
 
@@ -66,7 +67,7 @@ public class Enemy implements Updatable, Renderable {
         List<Image> animationStates = new ArrayList<>();
         for (int i = 1; i <= 4; i++) {
             animationStates.add(
-                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/enemies/" + i + ".png")))
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/debug/" + i + ".png")))
             );
         }
         animation = new Animation(animationStates, 250_000_000);
@@ -108,13 +109,13 @@ public class Enemy implements Updatable, Renderable {
     }
 
     private void move(long elapsed) {
-        Point2D currDestination = destinations.get(destinationsIdx);
+        Coordinate2D currDestination = destinations.get(destinationsIdx);
 
         // move along the velocity vector
         position = position.add(velocity.multiply(elapsed));
 
         // position -> destination vector
-        Point2D posToDest = currDestination.subtract(position);
+        Coordinate2D posToDest = currDestination.subtract(position);
         double dot = posToDest.dotProduct(velocity);
         // dot <= 0 => either overshot or exactly at currDestination
         while (dot <= 0) {
@@ -129,7 +130,7 @@ public class Enemy implements Updatable, Renderable {
             currDestination = destinations.get(++destinationsIdx);
             
             // correction
-            Point2D nextDirection = currDestination.subtract(position).normalize();
+            Coordinate2D nextDirection = currDestination.subtract(position).normalize();
             position = position.add(nextDirection.multiply(overshootAmount));
 
             velocity = nextDirection.multiply(VELOCITY_MAG);
@@ -143,14 +144,14 @@ public class Enemy implements Updatable, Renderable {
      * @param deltaTime nanoseconds in the future
      * @return The position of the enemy after {@code deltaTime} nanoseconds
      */
-    public Point2D getPositionAfter(long deltaTime) {
-        Point2D currPosition = new Point2D(position.getX(), position.getY());
-        Point2D currVelocity = new Point2D(velocity.getX(), velocity.getY());
+    public Coordinate2D getPositionAfter(long deltaTime) {
+        Coordinate2D currPosition = new Coordinate2D(position.getX(), position.getY());
+        Coordinate2D currVelocity = new Coordinate2D(velocity.getX(), velocity.getY());
         int currDestinationIdx = destinationsIdx;
 
         // simulated movement
         move(deltaTime);
-        Point2D predictedPosition = new Point2D(position.getX(), position.getY());
+        Coordinate2D predictedPosition = new Coordinate2D(position.getX(), position.getY());
         
         position = currPosition;
         velocity = currVelocity;

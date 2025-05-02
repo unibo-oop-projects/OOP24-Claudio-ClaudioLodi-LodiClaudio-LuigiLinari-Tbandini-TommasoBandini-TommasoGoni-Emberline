@@ -15,9 +15,11 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import utility.pairs.Pair;
+import utility.Pair;
+import utility.Tile;
 
 public class Roads implements Renderable {
     
@@ -32,7 +34,7 @@ public class Roads implements Renderable {
      * 
      * (from nome), pair((to node), (enemies left, tot enemies) to send)
      */
-    private Map<Pair<Integer, Integer>, Node> posToNode = new HashMap<>();
+    private Map<Tile, Node> posToNode = new HashMap<>();
     
     public Roads(String file) {
         loadGraph(file);
@@ -40,8 +42,18 @@ public class Roads implements Renderable {
     
     //if "weight" enemies were sent to the given node, place the node at the back of the queue
     //and reset the counter on it
-    public Optional<Pair<Integer,Integer>> getNextNode(Pair<Integer,Integer> pos) {
+    public Optional<Tile> getNextNode(Tile pos) {
         return posToNode.get(pos).getNext();
+    }
+
+    private void print() {
+        posToNode
+                .entrySet()
+                .forEach(e -> 
+                {
+                    System.out.println(e.getKey() + " " + e.getValue().getNext());
+                }
+        );
     }
 
     private void loadGraph(String file) {
@@ -52,8 +64,8 @@ public class Roads implements Renderable {
                 
                 String[] numbers = line.split(" ");
                 
-                Node fromNode = new Node(new Pair<>(Integer.parseInt(numbers[1]), Integer.parseInt(numbers[0])));
-                Node toNode = new Node(new Pair<>(Integer.parseInt(numbers[3]), Integer.parseInt(numbers[2])));
+                Node fromNode = new Node(new Tile(Integer.parseInt(numbers[1]), Integer.parseInt(numbers[0])));
+                Node toNode = new Node(new Tile(Integer.parseInt(numbers[3]), Integer.parseInt(numbers[2])));
                 Integer weight = Integer.parseInt(numbers[4]);
                 
                 posToNode.putIfAbsent(fromNode.getPosition(), fromNode);

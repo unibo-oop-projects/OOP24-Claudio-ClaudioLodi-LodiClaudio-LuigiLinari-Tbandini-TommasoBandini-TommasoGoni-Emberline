@@ -1,18 +1,20 @@
 package dev.emberline.game.world.roads;
 
-import utility.pairs.Pair;
+import utility.Pair;
+import utility.Tile;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
 
 class Node {
-    private final Pair<Integer, Integer> pos;
+    private final Tile pos;
     private final List<Pair<Node, Integer>> neighbours;
 
     private int cnt;
     private int currIdx;
 
-    public Node(Pair<Integer, Integer> pos) {
+    public Node(Tile pos) {
         this.pos = pos;
         this.neighbours = new ArrayList<>();
 
@@ -24,7 +26,7 @@ class Node {
         neighbours.add(new Pair<>(neighbour, weight));
     }
 
-    public Optional<Pair<Integer, Integer>> getNext() {
+    public Optional<Tile> getNext() {
         if (neighbours.isEmpty()) {
             return Optional.empty();
         }
@@ -38,7 +40,7 @@ class Node {
         return Optional.of(neighbours.get(currIdx).getX().getPosition());
     }
 
-    public Pair<Integer, Integer> getPosition() {
+    public Tile getPosition() {
         return pos;
     }
 }
