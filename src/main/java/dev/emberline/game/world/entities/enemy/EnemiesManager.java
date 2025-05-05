@@ -25,7 +25,8 @@ public class EnemiesManager implements Updatable, Renderable {
     
     public List<Enemy> getEnemiesInArea(/* Area */) {
         // TODO
-        throw new UnsupportedOperationException();
+        return enemies;
+        /*throw new UnsupportedOperationException();*/
     }
 
     @Override
@@ -46,6 +47,7 @@ public class EnemiesManager implements Updatable, Renderable {
     public void render() {
         for (final Enemy enemy : enemies) {
             enemy.render();
+            break; // DEBUG
         }
     }
 }

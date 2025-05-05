@@ -21,6 +21,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Enemy implements Updatable, Renderable {
+    
+    /** 
+     * Uniform motion (s_0 + v * t) with t in [0, {@code duration}] ns
+    */
+    public record UniformMotion(Point2D origin, Point2D velocity, long duration) {};
 
     private enum EnemyBehaviour { MOVING, ATTACKING }
 
@@ -32,7 +37,7 @@ public class Enemy implements Updatable, Renderable {
 
     private World world;
 
-    private final double VELOCITY_MAG = 0.000000002;
+    private final double VELOCITY_MAG = 0.000000001;
     private final int    FULL_HEALTH  = 500;
 
     private int health;
@@ -66,7 +71,7 @@ public class Enemy implements Updatable, Renderable {
         List<Image> animationStates = new ArrayList<>();
         for (int i = 1; i <= 4; i++) {
             animationStates.add(
-                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/enemies/" + i + ".png")))
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/enemies/pigs/" + i + ".png")))
             );
         }
         animation = new Animation(animationStates, 250_000_000);
@@ -137,22 +142,27 @@ public class Enemy implements Updatable, Renderable {
     }
 
     /**
-     * @param deltaTime nanoseconds in the future
-     * @return The position of the enemy after {@code deltaTime} nanoseconds
+     * @param time time of truncation
+     * @return All the uniform motions starting from the current position of the enemy
+     * That is described by a list of {@code UniformMotion}
      */
-    public Point2D getPositionAfter(long deltaTime) {
-        Point2D currPosition = new Point2D(position.getX(), position.getY());
-        Point2D currVelocity = new Point2D(velocity.getX(), velocity.getY());
-        int currDestinationIdx = destinationsIdx;
+    public List<UniformMotion> getMotionUntil(long time) {
+        Point2D curr = new Point2D(position.getX(), position.getY());
+        List<UniformMotion> enemyMotion = new ArrayList<>();
 
-        // simulated movement
-        move(deltaTime);
-        Point2D predictedPosition = new Point2D(position.getX(), position.getY());
-        
-        position = currPosition;
-        velocity = currVelocity;
-        destinationsIdx = currDestinationIdx;
+        long durationAcc = 0;
+        for (int i = destinationsIdx; i < destinations.size() && durationAcc < time; curr = destinations.get(i), i++) {
+            Point2D velocity = destinations.get(i).subtract(curr).normalize().multiply(VELOCITY_MAG);
+            Long duration = (long)(curr.distance(destinations.get(i)) / VELOCITY_MAG);
+            durationAcc += duration;
+            
+            enemyMotion.add(new UniformMotion(curr, velocity, duration));
+        }
+        // leftover time
+        if (durationAcc < time) {
+            enemyMotion.add(new UniformMotion(curr, Point2D.ZERO, time - durationAcc));
+        }
 
-        return predictedPosition;
+        return enemyMotion;
     }
 }
