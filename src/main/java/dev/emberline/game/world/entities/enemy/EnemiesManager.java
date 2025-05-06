@@ -20,6 +20,10 @@ public class EnemiesManager implements Updatable, Renderable {
     }
 
     public void addEnemy(Point2D spawnPoint) {
+        // TEST
+        if (enemies.size() == 1)
+            return;
+        // TEST
         enemies.add(new Enemy(spawnPoint, world));
     }
     

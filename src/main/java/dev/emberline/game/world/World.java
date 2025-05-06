@@ -56,7 +56,7 @@ public class World implements Updatable, Renderable {
             while (enemiesIt.hasNext() && !foundEnemy) {
                 Enemy currEnemy = enemiesIt.next();
                 try {
-                    Projectile projectile = new Projectile(new Point2D(1, 1), currEnemy, this);
+                    Projectile projectile = new Projectile(new Point2D(16, 8), currEnemy, this);
                     projectiles.add(projectile);
                     foundEnemy = true;
                     acc = 0;

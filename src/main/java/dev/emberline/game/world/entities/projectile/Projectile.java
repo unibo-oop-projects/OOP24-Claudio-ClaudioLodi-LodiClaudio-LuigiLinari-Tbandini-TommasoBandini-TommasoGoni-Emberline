@@ -18,18 +18,18 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
 
 public class Projectile implements Updatable, Renderable {
-
+    
     private record PositionAndRotation(Point2D position, Double rotation) {}
     private record Trajectory(Function<Long, PositionAndRotation> getPositionAndRotationAt, Long flightTime) {}
 
     private static final long MAX_FLIGHT_TIME = 10_000_000_000L; // 10s
-    private static final double VELOCITY_MAG = 0.000000008;
+    private static final double VELOCITY_MAG = 0.000000002;
 
     /// Parameters defining the parabolic motion (arc of a circle) with a scaling factor of 1 
     private static final double startTheta =        (3.0/4) * Math.PI;
     private static final double endTheta =          startTheta - (1.0/2 * Math.PI);
-    private static final double unitRadius =       1.0/(2*Math.cos(endTheta));
-    private static final double unitArcLenght =    unitRadius * (startTheta - endTheta);
+    private static final double unitRadius =        1.0/(2*Math.cos(endTheta));
+    private static final double unitArcLength =     unitRadius * (startTheta - endTheta);
     ///
 
     private final long flightTime;
@@ -111,7 +111,7 @@ public class Projectile implements Updatable, Renderable {
         var motionsIt = enemyMotion.iterator();
         Enemy.UniformMotion currMotion = null;
 
-        long bestDeltaT = -1, t_0 = 0;
+        double bestDeltaT = -1, t_0 = 0;
         boolean found = false;
         while (motionsIt.hasNext() && !found) {
             currMotion = motionsIt.next();
@@ -121,7 +121,7 @@ public class Projectile implements Updatable, Renderable {
 
             /// Solve quadratic
             // (l / v_proj) ^ 2
-            double lv_projSq = (unitArcLenght / VELOCITY_MAG) * (unitArcLenght / VELOCITY_MAG);
+            double lv_projSq = (unitArcLength / VELOCITY_MAG) * (unitArcLength / VELOCITY_MAG);
 
             double A1 = lv_projSq * (v_E.magnitude() * v_E.magnitude());
             double A = 1.0 - A1;
@@ -137,19 +137,19 @@ public class Projectile implements Updatable, Renderable {
             // sqrt delta
             double sqrtD = Math.sqrt(B*B - 4*A*C);
 
-            long deltaT1 = (long)((-B + sqrtD) / (2*A));
-            long deltaT2 = (long)((-B - sqrtD) / (2*A));
+            double deltaT1 = (-B + sqrtD) / (2*A);
+            double deltaT2 = (-B - sqrtD) / (2*A);
             ///
 
             // The t is valid only if it's > 0 and inside that specific uniform motion
             bestDeltaT = Stream.of(deltaT1, deltaT2)
-                                .filter((t) -> (t >= 0) && (t <= duration))
-                                .min(Long::compareUnsigned)
-                                .orElse(-1L);
-            found = bestDeltaT != -1;
+                                .filter((t) -> (t.compareTo(0.0) >= 0) && (t.compareTo((double)duration) <= 0))
+                                .min(Double::compare)
+                                .orElse(-1.0);
+            found = Double.compare(bestDeltaT, -1.0) != 0;
 
             if (!found) {
-                t_0 += duration;
+                t_0 += (double)duration;
             }
         }
 
@@ -189,7 +189,7 @@ public class Projectile implements Updatable, Renderable {
         double radius = scalingFactor * unitRadius;
         double angularVelocity = -(VELOCITY_MAG / radius);
         
-        long timeInAir = (long)((scalingFactor * unitArcLenght) / VELOCITY_MAG);
+        long timeInAir = (long)((scalingFactor * unitArcLength) / VELOCITY_MAG);
         return new Trajectory((t) -> {
             if (t > flightTime) {
                 t = flightTime;
