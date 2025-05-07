@@ -13,7 +13,8 @@ import dev.emberline.game.world.roads.Roads;
 import dev.emberline.game.world.spawnpoints.Spawnpoints;
 import utility.Coordinate2D;
 import utility.Pair;
-import utility.Tile;
+import utility.IntegerPoint2D;
+import utility.Vector2D;
 
 public class Wave implements Updatable, Renderable {
     
@@ -29,7 +30,7 @@ public class Wave implements Updatable, Renderable {
         this.world = world;
     }
 
-    public Optional<Tile> getNext(Tile pos) {
+    public Optional<IntegerPoint2D> getNext(IntegerPoint2D pos) {
         return roads.getNextNode(pos);
     }
 
@@ -41,9 +42,9 @@ public class Wave implements Updatable, Renderable {
     }
 
     public void sendEnemies() {
-        List<Tile> enemiesQueue = spawnpoints.getEnemies(acc);
+        List<IntegerPoint2D> enemiesQueue = spawnpoints.getEnemies(acc);
         for (var enemy : enemiesQueue) {
-            Coordinate2D p2 = new Coordinate2D(enemy.getX(), enemy.getY());
+            Vector2D p2 = new Coordinate2D(enemy.getX(), enemy.getY());
             world.getEnemiesManager().addEnemy(p2);
         }
     }

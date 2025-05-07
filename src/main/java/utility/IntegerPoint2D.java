@@ -5,12 +5,12 @@ import java.util.Objects;
 /*
  * This class is used to represent Integer 2D Points, in a simple way
  */
-public class Tile {
+public class IntegerPoint2D {
     
     private Integer x;
     private Integer y;
 
-    public Tile(Integer x, Integer y) {
+    public IntegerPoint2D(Integer x, Integer y) {
         this.x = x;
         this.y = y;
     }
@@ -39,7 +39,7 @@ public class Tile {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Tile other = (Tile) obj;
+		IntegerPoint2D other = (IntegerPoint2D) obj;
 		return Objects.equals(x, other.x) && Objects.equals(y, other.y);
 	}
 

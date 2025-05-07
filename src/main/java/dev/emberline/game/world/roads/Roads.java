@@ -19,20 +19,20 @@ import javafx.geometry.Pos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import utility.Pair;
-import utility.Tile;
+import utility.IntegerPoint2D;
 
 public class Roads implements Renderable {
     
     /*
      * graph data structure, represents the walkable roads on the map
      */
-    private Map<Tile, Node> posToNode = new HashMap<>();
+    private Map<IntegerPoint2D, Node> posToNode = new HashMap<>();
     
     public Roads(String file) {
         loadGraph(file);
     }
     
-    public Optional<Tile> getNextNode(Tile pos) {
+    public Optional<IntegerPoint2D> getNextNode(IntegerPoint2D pos) {
         return posToNode.get(pos).getNext();
     }
 
@@ -44,8 +44,8 @@ public class Roads implements Renderable {
                 
                 String[] numbers = line.split(" ");
                 
-                Node fromNode = new Node(new Tile(Integer.parseInt(numbers[1]), Integer.parseInt(numbers[0])));
-                Node toNode = new Node(new Tile(Integer.parseInt(numbers[3]), Integer.parseInt(numbers[2])));
+                Node fromNode = new Node(new IntegerPoint2D(Integer.parseInt(numbers[1]), Integer.parseInt(numbers[0])));
+                Node toNode = new Node(new IntegerPoint2D(Integer.parseInt(numbers[3]), Integer.parseInt(numbers[2])));
                 Integer weight = Integer.parseInt(numbers[4]);
                 
                 posToNode.putIfAbsent(fromNode.getPosition(), fromNode);

@@ -16,7 +16,8 @@ import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 import utility.Pair;
-import utility.Tile;
+import utility.IntegerPoint2D;
+import utility.Vector2D;
 import utility.Coordinate2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -25,8 +26,8 @@ public class Enemy implements Updatable, Renderable {
 
     private enum EnemyBehaviour { MOVING, ATTACKING }
 
-    private Coordinate2D position;
-    private Coordinate2D velocity;
+    private Vector2D position;
+    private Vector2D velocity;
     private List<Coordinate2D> destinations;
     private int destinationsIdx = 0;
 
@@ -43,20 +44,20 @@ public class Enemy implements Updatable, Renderable {
 
     private EnemyBehaviour enemyBehaviour;
     
-    public Enemy(Coordinate2D spawnPoint, World world) {
+    public Enemy(Vector2D spawnPoint, World world) {
         this.position = spawnPoint;
         this.world = world;
         
         destinations = new ArrayList<>();
-        Optional<Tile> next = world.getWaveManager().getWave().getNext(
-            new Tile((int)position.getX(), (int)position.getY())
+        Optional<IntegerPoint2D> next = world.getWaveManager().getWave().getNext(
+            new IntegerPoint2D((int)position.getX(), (int)position.getY())
         );
         while (next.isPresent()) {
             destinations.add(
                 new Coordinate2D(next.get().getX(), next.get().getY())
             );
             next = world.getWaveManager().getWave().getNext(
-                new Tile((int)destinations.getLast().getX(), (int)destinations.getLast().getY())
+                new IntegerPoint2D((int)destinations.getLast().getX(), (int)destinations.getLast().getY())
             );
         }
 
@@ -108,13 +109,13 @@ public class Enemy implements Updatable, Renderable {
     }
 
     private void move(long elapsed) {
-        Coordinate2D currDestination = destinations.get(destinationsIdx);
+        Vector2D currDestination = destinations.get(destinationsIdx);
 
         // move along the velocity vector
         position = position.add(velocity.multiply(elapsed));
 
         // position -> destination vector
-        Coordinate2D posToDest = currDestination.subtract(position);
+        Vector2D posToDest = currDestination.subtract(position);
         double dot = posToDest.dotProduct(velocity);
         // dot <= 0 => either overshot or exactly at currDestination
         while (dot <= 0) {
@@ -129,7 +130,7 @@ public class Enemy implements Updatable, Renderable {
             currDestination = destinations.get(++destinationsIdx);
             
             // correction
-            Coordinate2D nextDirection = currDestination.subtract(position).normalize();
+            Vector2D nextDirection = currDestination.subtract(position).normalize();
             position = position.add(nextDirection.multiply(overshootAmount));
 
             velocity = nextDirection.multiply(VELOCITY_MAG);
@@ -143,14 +144,14 @@ public class Enemy implements Updatable, Renderable {
      * @param deltaTime nanoseconds in the future
      * @return The position of the enemy after {@code deltaTime} nanoseconds
      */
-    public Coordinate2D getPositionAfter(long deltaTime) {
-        Coordinate2D currPosition = new Coordinate2D(position.getX(), position.getY());
-        Coordinate2D currVelocity = new Coordinate2D(velocity.getX(), velocity.getY());
+    public Vector2D getPositionAfter(long deltaTime) {
+        Vector2D currPosition = new Coordinate2D(position.getX(), position.getY());
+        Vector2D currVelocity = new Coordinate2D(velocity.getX(), velocity.getY());
         int currDestinationIdx = destinationsIdx;
 
         // simulated movement
         move(deltaTime);
-        Coordinate2D predictedPosition = new Coordinate2D(position.getX(), position.getY());
+        Vector2D predictedPosition = new Coordinate2D(position.getX(), position.getY());
         
         position = currPosition;
         velocity = currVelocity;
