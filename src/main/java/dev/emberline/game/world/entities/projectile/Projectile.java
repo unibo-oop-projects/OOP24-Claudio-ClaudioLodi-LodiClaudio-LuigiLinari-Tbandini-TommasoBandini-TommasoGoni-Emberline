@@ -76,20 +76,23 @@ public class Projectile implements Updatable, Renderable {
     public void render() {
         Renderer renderer = GameLoop.getInstance().getRenderer();
         GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem cs = renderer.getWorldContext().getCS();
+        CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
         double positionScreenX = cs.toScreenX(position.getX());
         double positionScreenY = cs.toScreenY(position.getY());
+
+        double width = 10;
+        double height = 5;
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             gc.save();
 
             // hit the middle of the enemy
-            gc.translate(positionScreenX + 37.5, positionScreenY);
+            gc.translate(positionScreenX + 17, positionScreenY);
             gc.rotate(rotation);
             
             gc.setFill(Paint.valueOf("#FFF"));
-            gc.fillRect(-30, -12, 30, 12); // make so that the tip of the projectile hits
+            gc.fillRect(-width, -height, width, height); // make so that the tip of the projectile hits
 
             gc.restore();
         }));

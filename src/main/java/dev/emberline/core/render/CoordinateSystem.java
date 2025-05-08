@@ -10,7 +10,7 @@ public class CoordinateSystem {
     private double regionX2;
     private double regionY2;
 
-    // private final double tolerance = 10;
+    private final double tolerance = 10;
 
     // Screen Dimensions [SCREEN]
     private double screenWidth;
@@ -23,7 +23,8 @@ public class CoordinateSystem {
     private double screenOriginX;
     private double screenOriginY;
 
-    public CoordinateSystem(double regionX1, double regionY1, double regionX2, double regionY2) {
+    // Package private, should only be constructed by Renderer
+    CoordinateSystem(double regionX1, double regionY1, double regionX2, double regionY2) {
         setRegion(regionX1, regionY1, regionX2, regionY2);
     }
 
@@ -34,7 +35,8 @@ public class CoordinateSystem {
         this.regionY2 = regionY2;
     }
 
-    public void update(double screenWidth, double screenHeight) {
+    // Package private method, should only be called by the associated RenderingContext
+    void update(double screenWidth, double screenHeight) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
@@ -65,6 +67,14 @@ public class CoordinateSystem {
         return screenOriginY;
     }
 
+    public double getPlayableScreenWidth() {
+        return (regionX2 - regionX1) * scale;
+    }
+    
+    public double getPlayableScreenHeight() {
+        return (regionY2 - regionY1) * scale;
+    }
+
     public double toWorldX(double screenX) {
         return screenOriginX + screenX / scale;
     }
@@ -79,6 +89,10 @@ public class CoordinateSystem {
 
     public double toScreenY(double worldY) {
         return (worldY - screenOriginY) * scale;
+    }
+
+    public double getTolerance() {
+        return tolerance;
     }
 
     public double getScale() {

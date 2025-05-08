@@ -69,8 +69,11 @@ public class World implements Updatable, Renderable {
     @Override
     public void render() {
         enemiesManager.render();
+
         for (final Projectile p : projectiles) {
             p.render();
         }
+        
+        waveManager.getWave().render();
     }
 }

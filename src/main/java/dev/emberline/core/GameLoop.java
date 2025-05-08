@@ -3,7 +3,7 @@ package dev.emberline.core;
 import dev.emberline.core.input.InputDispatcher;
 import dev.emberline.core.update.Updater;
 import dev.emberline.core.render.Renderer;
-import dev.emberline.core.nodes.GameRoot;
+import dev.emberline.game.nodes.GameRoot;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
 

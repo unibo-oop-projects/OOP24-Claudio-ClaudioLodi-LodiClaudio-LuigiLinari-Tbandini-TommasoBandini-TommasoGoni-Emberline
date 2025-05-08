@@ -1,33 +1,28 @@
-package utility.pairs;
+package utility;
 
 import java.util.Objects;
 
-public class Pair<A,B> {
+/*
+ * This class is used to represent Integer 2D Points, in a simple way
+ */
+public class Tile {
+    
+    private Integer x;
+    private Integer y;
 
-    private A x;
-    private B y;
-
-    public Pair(A x, B y) {
+    public Tile(Integer x, Integer y) {
         this.x = x;
         this.y = y;
     }
 
-    public A getX() {
+    public Integer getX() {
         return x;
     }
-    
-    public B getY() {
+
+    public Integer getY() {
         return y;
     }
-    
-    public void setX(A x) {
-        this.x = x;
-    }
 
-    public void setY(B y) {
-        this.y = y;
-    }
-    
     @Override
 	public int hashCode() {
 		return Objects.hash(x, y);
@@ -44,12 +39,12 @@ public class Pair<A,B> {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Pair other = (Pair) obj;
+		Tile other = (Tile) obj;
 		return Objects.equals(x, other.x) && Objects.equals(y, other.y);
 	}
 
 	@Override
 	public String toString() {
-		return "Pair [x=" + x + ", y=" + y + "]";
+		return "Tile [x=" + x + ", y=" + y + "]";
 	}
 }

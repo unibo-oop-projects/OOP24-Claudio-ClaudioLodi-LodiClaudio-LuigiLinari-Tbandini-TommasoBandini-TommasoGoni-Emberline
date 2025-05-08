@@ -7,7 +7,7 @@ import java.util.List;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
-import javafx.geometry.Point2D;
+import utility.Coordinate2D;
 
 public class EnemiesManager implements Updatable, Renderable {
 
@@ -19,11 +19,7 @@ public class EnemiesManager implements Updatable, Renderable {
         this.world = world;
     }
 
-    public void addEnemy(Point2D spawnPoint) {
-        // TEST
-        if (enemies.size() == 1)
-            return;
-        // TEST
+    public void addEnemy(Coordinate2D spawnPoint) {
         enemies.add(new Enemy(spawnPoint, world));
     }
     
