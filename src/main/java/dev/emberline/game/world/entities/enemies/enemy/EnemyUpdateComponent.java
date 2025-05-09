@@ -1,57 +1,39 @@
-package dev.emberline.game.world.entities.enemy;
-
-import dev.emberline.core.render.CoordinateSystem;
-import dev.emberline.core.render.RenderPriority;
-import dev.emberline.core.render.RenderTask;
-import dev.emberline.core.render.Renderer;
+package dev.emberline.game.world.entities.enemies.enemy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
-import dev.emberline.core.GameLoop;
-import dev.emberline.core.animations.Animation;
-import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
+import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
-import utility.Pair;
-import utility.Tile;
-import utility.Coordinate2D;
+import dev.emberline.game.world.entities.enemies.enemy.IEnemy.UniformMotion;
 import javafx.geometry.Point2D;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
+import utility.Coordinate2D;
+import utility.Tile;
 
-public class Enemy implements Updatable, Renderable {
-    
-    /** 
-     * Uniform motion (s_0 + v * t) with t in [0, {@code duration}] ns
-    */
-    public record UniformMotion(Point2D origin, Point2D velocity, long duration) {};
+public class EnemyUpdateComponent implements Updatable {
 
     private enum EnemyBehaviour { MOVING, ATTACKING }
 
+    private final double VELOCITY_MAG = 0.000000001;
     private Coordinate2D position;
     private Coordinate2D velocity;
     private List<Coordinate2D> destinations;
     private int destinationsIdx = 0;
 
-    private World world;
-
-    private final double VELOCITY_MAG = 0.000000001;
-    private final int    FULL_HEALTH  = 500;
-
-    private int health;
-    /// Other stats
-    ///
+    private final double FULL_HEALTH = 50;
+    private double health;
     
-    private Animation animation;
-
+    private EnchantmentEffect activeEffect;
+    
     private EnemyBehaviour enemyBehaviour;
     
-    public Enemy(Coordinate2D spawnPoint, World world) {
+    private final Enemy owner;
+
+    public EnemyUpdateComponent(Coordinate2D spawnPoint, World world, Enemy owner) {
+        this.owner = owner;
         this.position = spawnPoint;
-        this.world = world;
         
         destinations = new ArrayList<>();
         Optional<Tile> next = world.getWaveManager().getWave().getNext(
@@ -69,48 +51,28 @@ public class Enemy implements Updatable, Renderable {
         this.velocity = destinations.get(destinationsIdx).subtract(position).normalize().multiply(VELOCITY_MAG);
         this.health = FULL_HEALTH;
 
-        List<Image> animationStates = new ArrayList<>();
-        for (int i = 1; i <= 4; i++) {
-            animationStates.add(
-                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/enemies/pigs/" + i + ".png")))
-            );
-        }
-        animation = new Animation(animationStates, 250_000_000);
-
         this.enemyBehaviour = destinationsIdx != destinations.size() ? 
             EnemyBehaviour.MOVING : EnemyBehaviour.ATTACKING;
+
+        this.activeEffect = new EnchantmentEffect() {
+            @Override
+            public boolean isExpired() {
+                return true;
+            }
+        };
     }
 
     @Override
     public void update(long elapsed) {
-        animation.update(elapsed);
+        // animation.update(elapsed);
+
+        if (!activeEffect.isExpired()) {
+            // activeEffect.updateEffect(elapsed, owner);
+        }
         
         if (enemyBehaviour == EnemyBehaviour.MOVING) {
             move(elapsed);
         }
-    }
-
-    @Override
-    public void render() {
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem cs = renderer.getWorldCoordinateSystem();
-
-        double sizeX = 25;
-        double sizeY = 25;
-
-        double screenX = cs.toScreenX(position.getX() + 0.5) - sizeX/2;
-        double screenY = cs.toScreenY(position.getY() + 0.5) - sizeY/2;
-
-        Image currAnimationState = animation.getAnimationState();
-
-        renderer.addRenderTask(new RenderTask(RenderPriority.ENEMIES, () -> {
-            gc.drawImage(currAnimationState, screenX, screenY, sizeX, sizeY);
-        }));
-    }
-
-    public boolean isDead() {
-        return health <= 0;
     }
 
     private void move(long elapsed) {
@@ -170,5 +132,25 @@ public class Enemy implements Updatable, Renderable {
             enemyMotion.add(new UniformMotion(curr, Point2D.ZERO, time - durationAcc));
         }
         return enemyMotion;
+    }
+
+    public boolean isDead() {
+        return health <= 0;
+    }
+
+    public void dealDamage(double damage) {
+        health -= damage;
+    }
+
+    public void applyEffect(EnchantmentEffect effect) {
+        this.activeEffect = effect;
+    }
+
+    double getHealthPercentage() {
+        return health / FULL_HEALTH;
+    }
+
+    Coordinate2D getPosition() {
+        return position;
     }
 }
