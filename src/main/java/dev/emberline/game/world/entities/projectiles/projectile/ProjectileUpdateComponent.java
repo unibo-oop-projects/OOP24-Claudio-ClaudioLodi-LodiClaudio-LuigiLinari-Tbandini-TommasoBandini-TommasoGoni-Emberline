@@ -1,4 +1,4 @@
-package dev.emberline.game.world.entities.projectile;
+package dev.emberline.game.world.entities.projectiles.projectile;
 
 import java.util.List;
 import java.util.function.Function;
@@ -34,9 +34,7 @@ public class ProjectileUpdateComponent implements Updatable {
 
     private final ProjectileHitListener projectileHitListener;
     private final ProjectileHitEvent projectileHitEvent;
-
-    private final World world;
-    private final Projectile owner;
+    private boolean hasHit = false;
 
     public ProjectileUpdateComponent(Point2D start, IEnemy target, 
     ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world, Projectile owner) throws IllegalStateException {
@@ -53,9 +51,6 @@ public class ProjectileUpdateComponent implements Updatable {
 
         this.projectileHitEvent = new ProjectileHitEvent(prediction, projInfo, enchInfo);
         this.projectileHitListener = world.getProjectileHitListener();
-
-        this.world = world;
-        this.owner = owner;
     }
 
     @Override
@@ -68,9 +63,12 @@ public class ProjectileUpdateComponent implements Updatable {
             rotation = positionAndRotation.rotation();
         } else {
             projectileHitListener.onProjectileHit(projectileHitEvent);
-            // remove projectile (TODO)
-            world.removeProjectile(owner);
+            hasHit = true;
         }
+    }
+
+    public boolean hasHit() {
+        return hasHit;
     }
 
     Projectile.PositionAndRotation getPositionAndRotation() {

@@ -1,14 +1,12 @@
-package dev.emberline.game.world.entities.projectile;
+package dev.emberline.game.world.entities.projectiles.projectile;
 
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import javafx.geometry.Point2D;
 
-public class Projectile implements Updatable, Renderable {
+public class Projectile implements IProjectile {
     
     record PositionAndRotation(Point2D position, Double rotation) {}
 
@@ -28,6 +26,11 @@ public class Projectile implements Updatable, Renderable {
     @Override
     public void render() {
         projectileRenderComponent.render();
+    }
+
+    @Override
+    public boolean hasHit() {
+        return projectileUpdateComponent.hasHit();
     }
 
     PositionAndRotation getPositionAndRotation() {

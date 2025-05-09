@@ -1,4 +1,4 @@
-package dev.emberline.game.world.entities.projectile;
+package dev.emberline.game.world.entities.projectiles.projectile;
 
 import java.util.Optional;
 
