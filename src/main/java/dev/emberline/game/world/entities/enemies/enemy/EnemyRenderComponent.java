@@ -12,10 +12,10 @@ import utility.Coordinate2D;
 
 public class EnemyRenderComponent implements Renderable {
     
-    private final Enemy onwer;
+    private final Enemy owner;
 
-    public EnemyRenderComponent(Enemy onwer) {
-        this.onwer = onwer;
+    public EnemyRenderComponent(Enemy owner) {
+        this.owner = owner;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class EnemyRenderComponent implements Renderable {
         double sizeX = 25;
         double sizeY = 25;
 
-        Coordinate2D position = onwer.getPosition();
+        Coordinate2D position = owner.getPosition();
         double screenX = cs.toScreenX(position.getX() + 0.5) - sizeX/2;
         double screenY = cs.toScreenY(position.getY() + 0.5) - sizeY/2;
 
@@ -35,6 +35,8 @@ public class EnemyRenderComponent implements Renderable {
         double healthbarScreenY = cs.toScreenY(position.getY() - 0.2);
         double healthbarFullWidth = 40;
         double healthbarHeight = 10;
+
+        // FacingDirection facingDirection = owner.getFacingDirection();
 
         // Image currAnimationState = animation.getAnimationState();
 
@@ -46,7 +48,7 @@ public class EnemyRenderComponent implements Renderable {
             gc.setFill(Paint.valueOf("#696969"));
             gc.fillRect(healthbarScreenX, healthbarScreenY, healthbarFullWidth, healthbarHeight);
             gc.setFill(Paint.valueOf("#00CC00"));
-            gc.fillRect(healthbarScreenX, healthbarScreenY, (onwer.getHealthPercentage()) * healthbarFullWidth, healthbarHeight);
+            gc.fillRect(healthbarScreenX, healthbarScreenY, (owner.getHealthPercentage()) * healthbarFullWidth, healthbarHeight);
         }));
     }
 }

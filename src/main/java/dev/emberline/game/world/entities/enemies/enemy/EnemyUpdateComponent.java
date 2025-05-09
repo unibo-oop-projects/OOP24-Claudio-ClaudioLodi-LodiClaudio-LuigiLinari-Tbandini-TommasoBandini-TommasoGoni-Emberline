@@ -7,6 +7,7 @@ import java.util.Optional;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
+import dev.emberline.game.world.entities.enemies.enemy.Enemy.FacingDirection;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy.UniformMotion;
 import javafx.geometry.Point2D;
 import utility.Coordinate2D;
@@ -16,7 +17,9 @@ public class EnemyUpdateComponent implements Updatable {
 
     private enum EnemyBehaviour { MOVING, ATTACKING }
 
-    private final double VELOCITY_MAG = 0.000000001;
+    private final double VELOCITY_MAG = 1.0 / 1e9; // 1 tile/s
+    private double slowFactor = 1;
+
     private Coordinate2D position;
     private Coordinate2D velocity;
     private List<Coordinate2D> destinations;
@@ -79,7 +82,7 @@ public class EnemyUpdateComponent implements Updatable {
         Coordinate2D currDestination = destinations.get(destinationsIdx);
 
         // move along the velocity vector
-        position = position.add(velocity.multiply(elapsed));
+        position = position.add(velocity.multiply(slowFactor).multiply(elapsed));
 
         // position -> destination vector
         Coordinate2D posToDest = currDestination.subtract(position);
@@ -95,9 +98,9 @@ public class EnemyUpdateComponent implements Updatable {
                 return;
             }
             currDestination = destinations.get(++destinationsIdx);
+            Coordinate2D nextDirection = currDestination.subtract(position).normalize();
             
             // correction
-            Coordinate2D nextDirection = currDestination.subtract(position).normalize();
             position = position.add(nextDirection.multiply(overshootAmount));
 
             velocity = nextDirection.multiply(VELOCITY_MAG);
@@ -134,16 +137,20 @@ public class EnemyUpdateComponent implements Updatable {
         return enemyMotion;
     }
 
-    public boolean isDead() {
-        return health <= 0;
-    }
-
     public void dealDamage(double damage) {
         health -= damage;
     }
 
     public void applyEffect(EnchantmentEffect effect) {
         this.activeEffect = effect;
+    }
+    
+    public void setSlowFactor(double slowFactor) {
+        this.slowFactor = slowFactor;
+    }
+    
+    public boolean isDead() {
+        return health <= 0;
     }
 
     double getHealthPercentage() {
@@ -152,5 +159,18 @@ public class EnemyUpdateComponent implements Updatable {
 
     Coordinate2D getPosition() {
         return position;
+    }
+
+    FacingDirection getFacingDirection() {
+        int angle = Math.round(
+            (float)Math.toDegrees(Math.atan2(velocity.getY(), velocity.getX()))
+        );
+        return switch(angle) {
+            case 180 -> FacingDirection.LEFT;
+            case 90 -> FacingDirection.UP;
+            case 0 -> FacingDirection.RIGHT;
+            case -90 -> FacingDirection.DOWN;
+            default -> throw new IllegalStateException("The only handled cases of velocity are: LEFT, UP, RIGHT, DOWN");
+        };
     }
 }

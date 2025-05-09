@@ -9,21 +9,23 @@ import javafx.geometry.Point2D;
 
 public interface IEnemy extends Updatable, Renderable {
 
-    public void applyEffect(EnchantmentEffect effect);
+    void dealDamage(double damage);
     
-    public void dealDamage(double damage);
+    void applyEffect(EnchantmentEffect effect);
     
-    public boolean isDead();
+    void setSlowFactor(double slowFactor);
+    
+    boolean isDead();
 
     /** 
      * Uniform motion (s_0 + v * t) with t in [0, {@code duration}] ns
      */
-    public record UniformMotion(Point2D origin, Point2D velocity, long duration) {};
+    record UniformMotion(Point2D origin, Point2D velocity, long duration) {};
 
     /**
      * @param time time of truncation
      * @return All the uniform motions starting from the current position of the enemy.
      * That is described by a list of {@code UniformMotion}
      */
-    public List<UniformMotion> getMotionUntil(long time);
+    List<UniformMotion> getMotionUntil(long time);
 }

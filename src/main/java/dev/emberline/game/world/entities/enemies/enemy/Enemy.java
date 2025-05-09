@@ -7,6 +7,8 @@ import utility.Coordinate2D;
 
 public class Enemy implements IEnemy {
 
+    enum FacingDirection { UP, RIGHT, DOWN, LEFT }
+
     private final EnemyUpdateComponent updateComponent;
     private final EnemyRenderComponent renderComponent;
 
@@ -26,14 +28,19 @@ public class Enemy implements IEnemy {
     }
 
     @Override
+    public void dealDamage(double damage) {
+        updateComponent.dealDamage(damage);
+    }
+
+    @Override
     public void applyEffect(EnchantmentEffect effect) {
         updateComponent.applyEffect(effect);
     }
 
     @Override
-    public void dealDamage(double damage) {
-        updateComponent.dealDamage(damage);
-    }
+    public void setSlowFactor(double slowFactor) {
+        updateComponent.setSlowFactor(slowFactor);
+    };
 
     @Override
     public boolean isDead() {
@@ -56,5 +63,9 @@ public class Enemy implements IEnemy {
 
     double getHealthPercentage() {
         return updateComponent.getHealthPercentage();
+    }
+
+    FacingDirection getFacingDirection() {
+        return updateComponent.getFacingDirection();
     }
 }

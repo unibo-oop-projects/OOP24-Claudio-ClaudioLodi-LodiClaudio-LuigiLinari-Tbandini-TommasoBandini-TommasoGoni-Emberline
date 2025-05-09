@@ -16,7 +16,7 @@ public class ProjectileUpdateComponent implements Updatable {
     private record Trajectory(Function<Long, Projectile.PositionAndRotation> getPositionAndRotationAt, Long flightTime) {}
 
     private static final long MAX_FLIGHT_TIME = 10_000_000_000L; // 10s
-    private static final double VELOCITY_MAG = 0.000000008;
+    private final double VELOCITY_MAG;
 
     /// Parameters defining the parabolic motion (arc of a circle) with a scaling factor of 1 
     private static final double startTheta =        (3.0/4) * Math.PI;
@@ -38,6 +38,8 @@ public class ProjectileUpdateComponent implements Updatable {
 
     public ProjectileUpdateComponent(Point2D start, IEnemy target, 
     ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world, Projectile owner) throws IllegalStateException {
+        this.VELOCITY_MAG = projInfo.getProjectileSpeed() / 1e9; // Converted to tile/ns
+        
         Point2D prediction = enemyPrediction(start, target);
 
         Trajectory _trajectory = calculateTrajectory(start, prediction);
