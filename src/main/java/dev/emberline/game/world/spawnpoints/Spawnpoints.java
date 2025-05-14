@@ -12,19 +12,18 @@ import utility.Pair;
 
 public class Spawnpoints {
     //for each spawnpoint there's a queue of enemies to spawn at a given time
-    private List<Pair<IntegerPoint2D,Queue<Long>>> enemiesToSpawn = new ArrayList<>();
-
+    private final List<Pair<IntegerPoint2D,Queue<Long>>> enemiesToSpawn = new ArrayList<>();
     //temp variables to delete later
     private long timeFromStart = 5_000_000_000L;
     private long c = 2_000_000_000L;
 
-    public Spawnpoints(String file) {
-        loadSpawnpoints(file);
+    public Spawnpoints(String wavePath) {
+        loadSpawnpoints(wavePath + "spawnpoints.txt");
     }
 
     /*
      * this method returns the list of enemies that must be spawned at the current time
-     * note that right now the enemies are all of the same type
+     * note that right now the enemies are all the same type
      * this may be changed later
      */
     public List<IntegerPoint2D> getEnemies(Long time) {

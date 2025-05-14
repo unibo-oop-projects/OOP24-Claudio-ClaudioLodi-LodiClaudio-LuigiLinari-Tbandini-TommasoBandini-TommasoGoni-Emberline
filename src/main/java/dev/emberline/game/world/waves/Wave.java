@@ -1,10 +1,8 @@
 package dev.emberline.game.world.waves;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
-import java.util.Queue;
 
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
@@ -12,7 +10,6 @@ import dev.emberline.game.world.World;
 import dev.emberline.game.world.roads.Roads;
 import dev.emberline.game.world.spawnpoints.Spawnpoints;
 import utility.Coordinate2D;
-import utility.Pair;
 import utility.IntegerPoint2D;
 import utility.Vector2D;
 
@@ -21,13 +18,17 @@ public class Wave implements Updatable, Renderable {
     private World world;
     //getting the file path should be done with methods such as
     //getResources() or similar
-    private Roads roads = new Roads("./src/main/resources/loadingFiles/roads.txt");
-    private Spawnpoints spawnpoints = new Spawnpoints("./src/main/resources/loadingFiles/spawnpoints.txt");
-    
+    private Roads roads;
+    private Spawnpoints spawnpoints;
+    private String wavePath;
+
     private long acc = 0;
 
-    public Wave(World world) {
+    public Wave(World world, String wavePath) {
         this.world = world;
+        this.wavePath = wavePath;
+        roads = new Roads(wavePath);
+        spawnpoints = new Spawnpoints(wavePath);
     }
 
     public Optional<IntegerPoint2D> getNext(IntegerPoint2D pos) {
@@ -41,7 +42,7 @@ public class Wave implements Updatable, Renderable {
         sendEnemies();
     }
 
-    public void sendEnemies() {
+    private void sendEnemies() {
         List<IntegerPoint2D> enemiesQueue = spawnpoints.getEnemies(acc);
         for (var enemy : enemiesQueue) {
             Vector2D p2 = new Coordinate2D(enemy.getX(), enemy.getY());

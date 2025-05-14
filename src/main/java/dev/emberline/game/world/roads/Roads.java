@@ -26,10 +26,10 @@ public class Roads implements Renderable {
     /*
      * graph data structure, represents the walkable roads on the map
      */
-    private Map<IntegerPoint2D, Node> posToNode = new HashMap<>();
+    private final Map<IntegerPoint2D, Node> posToNode = new HashMap<>();
     
-    public Roads(String file) {
-        loadGraph(file);
+    public Roads(String wavePath) {
+        loadGraph(wavePath + "roads.txt");
     }
     
     public Optional<IntegerPoint2D> getNextNode(IntegerPoint2D pos) {
