@@ -16,8 +16,8 @@ import javafx.stage.Stage;
 
 public class EmberlineApp extends Application {
 
-    private final long MIN_WINDOW_WIDTH = 400;
-    private final long MIN_WINDOW_HEIGHT = 400;
+    private static final long MIN_WINDOW_WIDTH = 400;
+    private static final long MIN_WINDOW_HEIGHT = 400;
     private GameLoop gameLoop;
 
     @Override
@@ -41,6 +41,10 @@ public class EmberlineApp extends Application {
         EventHandler<InputEvent> eventHandler = InputDispatcher::sendInput;
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
         scene.addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
+        // MouseLocation events
+        scene.addEventHandler(MouseEvent.MOUSE_ENTERED, eventHandler);
+        scene.addEventHandler(MouseEvent.MOUSE_EXITED, eventHandler);
+        scene.addEventHandler(MouseEvent.MOUSE_MOVED, eventHandler);
 
         // Stage settings
         stage.setMaximized(true);

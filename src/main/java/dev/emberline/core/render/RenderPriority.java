@@ -1,8 +1,8 @@
 package dev.emberline.core.render;
 
 public enum RenderPriority {
-    GUI(0),
-    BACKGROUND(5),
+    BACKGROUND(1),
+    GUI(2),
     ENEMIES(10);
 
     private final int priority;
