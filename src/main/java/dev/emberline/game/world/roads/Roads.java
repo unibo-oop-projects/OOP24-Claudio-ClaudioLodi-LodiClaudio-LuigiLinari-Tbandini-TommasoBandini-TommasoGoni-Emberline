@@ -66,7 +66,7 @@ public class Roads implements Renderable {
     public void render() {
         Renderer renderer = GameLoop.getInstance().getRenderer();
         GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem cs = renderer.getWorldContext().getCS();
+        CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
         double screenX = cs.toScreenX(0);
         double screenY = cs.toScreenY(0);

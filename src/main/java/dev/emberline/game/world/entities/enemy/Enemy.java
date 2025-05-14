@@ -89,7 +89,7 @@ public class Enemy implements Updatable, Renderable {
     public void render() {
         Renderer renderer = GameLoop.getInstance().getRenderer();
         GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem cs = renderer.getWorldContext().getCS();
+        CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
         double sizeX = 25;
         double sizeY = 25;

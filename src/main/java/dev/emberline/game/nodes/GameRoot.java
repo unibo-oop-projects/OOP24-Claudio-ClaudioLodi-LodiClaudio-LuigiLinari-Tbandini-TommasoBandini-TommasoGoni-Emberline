@@ -19,7 +19,9 @@ public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListe
     public void processInput(InputEvent inputEvent) {}
 
     @Override
-    public void update(long elapsed) {}
+    public void update(long elapsed) {
+        world.update(elapsed);
+    }
 
     @Override
     public void render() {
