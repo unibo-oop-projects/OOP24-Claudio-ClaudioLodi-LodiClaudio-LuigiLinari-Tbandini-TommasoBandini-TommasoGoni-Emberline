@@ -3,7 +3,7 @@ package dev.emberline.game.world.roads;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.CharBuffer;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -15,10 +15,8 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
-import javafx.geometry.Pos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import utility.Pair;
 import utility.IntegerPoint2D;
 
 public class Roads implements Renderable {
@@ -27,8 +25,10 @@ public class Roads implements Renderable {
      * graph data structure, represents the walkable roads on the map
      */
     private final Map<IntegerPoint2D, Node> posToNode = new HashMap<>();
-    
+    private String wavePath;
+
     public Roads(String wavePath) {
+        this.wavePath = wavePath;
         loadGraph(wavePath + "roads.txt");
     }
     
@@ -38,7 +38,8 @@ public class Roads implements Renderable {
 
     private void loadGraph(String file) {
         try {
-            final BufferedReader r = new BufferedReader(new FileReader(file));
+            URL fileURL = Objects.requireNonNull(getClass().getResource(file));
+            final BufferedReader r = new BufferedReader(new FileReader(fileURL.getPath()));
             String line = null;
             while ((line = r.readLine()) != null) {
                 
@@ -71,8 +72,8 @@ public class Roads implements Renderable {
         double screenX = cs.toScreenX(0);
         double screenY = cs.toScreenY(0);
 
-        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/debug/map.png")));
-        
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(wavePath + "map.png")));
+
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
             gc.drawImage(image, screenX, screenY, 32*cs.getScale(), 18*cs.getScale());
         }));

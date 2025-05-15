@@ -3,10 +3,10 @@ package dev.emberline.game.world.spawnpoints;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.*;
+
 import utility.IntegerPoint2D;
 import utility.Pair;
 
@@ -40,7 +40,8 @@ public class Spawnpoints {
 
     private void loadSpawnpoints(String file) {
         try {
-            final BufferedReader r = new BufferedReader(new FileReader(file));
+            URL fileURL = Objects.requireNonNull(getClass().getResource(file));
+            final BufferedReader r = new BufferedReader( new FileReader(fileURL.getPath()));
             String line = null;
             while ((line = r.readLine()) != null) {
                 

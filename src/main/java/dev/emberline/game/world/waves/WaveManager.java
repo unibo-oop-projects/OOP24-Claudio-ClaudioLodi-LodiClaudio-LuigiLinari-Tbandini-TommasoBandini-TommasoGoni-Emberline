@@ -13,13 +13,13 @@ public class WaveManager implements Updatable {
     //this will be one of the n waves contained in the list
     private List<Wave> waves = new ArrayList<>();
     private Integer currentWave = 0;
-    private String wavesPath = File.separator + "loadingFiles" + File.separator + "wave";
+    private String wavesPath = "/loadingFiles/wave";
 
     public WaveManager(World world) {
         this.world = world;
         //maybe get number of waves from file
         for (int i = 0; i < 2; i++) {
-            waves.add(new Wave(world, wavesPath + i + File.separator));
+            waves.add(new Wave(world, wavesPath + i + "/"));
         }
     }
     
