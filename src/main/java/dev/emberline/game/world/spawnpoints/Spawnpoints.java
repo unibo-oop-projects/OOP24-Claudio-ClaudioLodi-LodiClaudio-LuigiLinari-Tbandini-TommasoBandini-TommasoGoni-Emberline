@@ -21,6 +21,15 @@ public class Spawnpoints {
         loadSpawnpoints(wavePath + "spawnpoints.txt");
     }
 
+    public boolean hasMoreToSpawn() {
+        for (var spawnpoint : enemiesToSpawn) {
+            if (!spawnpoint.getY().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /*
      * this method returns the list of enemies that must be spawned at the current time
      * note that right now the enemies are all the same type
@@ -51,7 +60,7 @@ public class Spawnpoints {
                 for (int i = 0; i < Integer.parseInt(numbers[2]); i++) {
                     enemiesQueue.add(timeFromStart + c*i);
                 }
-                enemiesToSpawn.add(new Pair<>(new IntegerPoint2D(Integer.parseInt(numbers[1]), Integer.parseInt(numbers[0])), enemiesQueue));
+                enemiesToSpawn.add(new Pair<>(new IntegerPoint2D(Integer.parseInt(numbers[0]), Integer.parseInt(numbers[1])), enemiesQueue));
                 //end
             }
             r.close();

@@ -1,16 +1,18 @@
 package dev.emberline.game.world.roads;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 
 import dev.emberline.core.GameLoop;
+import dev.emberline.core.animations.OneShotAnimation;
 import dev.emberline.core.components.Renderable;
+import dev.emberline.core.components.Updatable;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
@@ -19,21 +21,42 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import utility.IntegerPoint2D;
 
-public class Roads implements Renderable {
+public class Roads implements Renderable, Updatable {
     
     /*
      * graph data structure, represents the walkable roads on the map
      */
     private final Map<IntegerPoint2D, Node> posToNode = new HashMap<>();
-    private String wavePath;
+    private Optional<OneShotAnimation> mapAnimation;
+    private Image mapImage;
 
     public Roads(String wavePath) {
-        this.wavePath = wavePath;
+        loadMapAnimation(wavePath + "mapAnimation/");
         loadGraph(wavePath + "roads.txt");
+        loadMapImage(wavePath + "map.png");
     }
-    
+
     public Optional<IntegerPoint2D> getNextNode(IntegerPoint2D pos) {
         return posToNode.get(pos).getNext();
+    }
+
+    private void loadMapImage(String file) {
+        mapImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(file)));
+    }
+
+    private void loadMapAnimation(String file) {
+        try {
+            List<Image> animationStates = new ArrayList<>();
+            for (int i = 1; i <= 4; i++) {
+                Image image = new Image(
+                        Objects.requireNonNull(
+                                getClass().getResourceAsStream(file + "map" + i + ".png")));
+                animationStates.add(image);
+            }
+            mapAnimation = Optional.of(new OneShotAnimation(animationStates, 1_000_000_000L));
+        } catch (NullPointerException e){
+            mapAnimation = Optional.empty();
+        }
     }
 
     private void loadGraph(String file) {
@@ -45,8 +68,8 @@ public class Roads implements Renderable {
                 
                 String[] numbers = line.split(" ");
                 
-                Node fromNode = new Node(new IntegerPoint2D(Integer.parseInt(numbers[1]), Integer.parseInt(numbers[0])));
-                Node toNode = new Node(new IntegerPoint2D(Integer.parseInt(numbers[3]), Integer.parseInt(numbers[2])));
+                Node fromNode = new Node(new IntegerPoint2D(Integer.parseInt(numbers[0]), Integer.parseInt(numbers[1])));
+                Node toNode = new Node(new IntegerPoint2D(Integer.parseInt(numbers[2]), Integer.parseInt(numbers[3])));
                 Integer weight = Integer.parseInt(numbers[4]);
                 
                 posToNode.putIfAbsent(fromNode.getPosition(), fromNode);
@@ -68,14 +91,24 @@ public class Roads implements Renderable {
         Renderer renderer = GameLoop.getInstance().getRenderer();
         GraphicsContext gc = renderer.getGraphicsContext();
         CoordinateSystem cs = renderer.getWorldCoordinateSystem();
-
+        
         double screenX = cs.toScreenX(0);
         double screenY = cs.toScreenY(0);
 
-        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(wavePath + "map.png")));
+        Image imageToRender;
+        if (mapAnimation.isEmpty() || mapAnimation.get().hasEnded()) {
+            imageToRender = mapImage;
+        } else {
+            imageToRender = mapAnimation.get().getAnimationState();
+        }
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
-            gc.drawImage(image, screenX, screenY, 32*cs.getScale(), 18*cs.getScale());
+            gc.drawImage(imageToRender, screenX, screenY, 32*cs.getScale(), 18*cs.getScale());
         }));
+    }
+
+    @Override
+    public void update(long elapsed) {
+        mapAnimation.ifPresent(oneShotAnimation -> oneShotAnimation.update(elapsed));
     }
 }

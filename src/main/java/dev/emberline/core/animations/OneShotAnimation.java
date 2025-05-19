@@ -22,12 +22,16 @@ public class OneShotAnimation implements Updatable {
         return animationStates.get(currState);
     }
 
+    public boolean hasEnded() {
+        return currState >= animationStates.size();
+    }
+
     @Override
     public void update(long elapsed) {
-        if (currState < animationStates.size()) {
+        if (!hasEnded()) {
             intervalAcc += elapsed;
 
-            while (intervalAcc >= interval && currState < animationStates.size()) {
+            while (intervalAcc >= interval && !hasEnded()) {
                 currState++;
                 intervalAcc -= interval;
             }

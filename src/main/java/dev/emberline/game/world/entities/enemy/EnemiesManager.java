@@ -28,6 +28,10 @@ public class EnemiesManager implements Updatable, Renderable {
         throw new UnsupportedOperationException();
     }
 
+    public boolean areAllDead() {
+        return enemies.isEmpty();
+    }
+
     @Override
     public void update(long elapsed) {
         Iterator<Enemy> it = enemies.iterator();
