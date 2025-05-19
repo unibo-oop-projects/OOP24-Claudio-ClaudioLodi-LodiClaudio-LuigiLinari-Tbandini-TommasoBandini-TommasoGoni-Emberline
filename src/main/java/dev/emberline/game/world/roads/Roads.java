@@ -1,12 +1,9 @@
 package dev.emberline.game.world.roads;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 
 import dev.emberline.core.GameLoop;
@@ -19,14 +16,15 @@ import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import utility.IntegerPoint2D;
+import utility.Coordinate2D;
+import utility.Vector2D;
 
 public class Roads implements Renderable, Updatable {
     
     /*
      * graph data structure, represents the walkable roads on the map
      */
-    private final Map<IntegerPoint2D, Node> posToNode = new HashMap<>();
+    private final Map<Vector2D, Node> posToNode = new HashMap<>();
     private Optional<OneShotAnimation> mapAnimation;
     private Image mapImage;
 
@@ -36,7 +34,11 @@ public class Roads implements Renderable, Updatable {
         loadMapImage(wavePath + "map.png");
     }
 
-    public Optional<IntegerPoint2D> getNextNode(IntegerPoint2D pos) {
+    /**
+     * @param pos is the current position.
+     * @return the next node of the graph based on the current state.
+     */
+    public Optional<Vector2D> getNextNode(Vector2D pos) {
         return posToNode.get(pos).getNext();
     }
 
@@ -68,8 +70,8 @@ public class Roads implements Renderable, Updatable {
                 
                 String[] numbers = line.split(" ");
                 
-                Node fromNode = new Node(new IntegerPoint2D(Integer.parseInt(numbers[0]), Integer.parseInt(numbers[1])));
-                Node toNode = new Node(new IntegerPoint2D(Integer.parseInt(numbers[2]), Integer.parseInt(numbers[3])));
+                Node fromNode = new Node(new Coordinate2D(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[1])));
+                Node toNode = new Node(new Coordinate2D(Double.parseDouble(numbers[2]), Double.parseDouble(numbers[3])));
                 Integer weight = Integer.parseInt(numbers[4]);
                 
                 posToNode.putIfAbsent(fromNode.getPosition(), fromNode);
@@ -83,8 +85,8 @@ public class Roads implements Renderable, Updatable {
         }
     }
 
-    /*
-     * loads the map as one png since all the components of it do not perform any action/interaction with the user
+    /**
+     * Adds the map png based on its current state.
      */
     @Override
     public void render() {
@@ -107,6 +109,10 @@ public class Roads implements Renderable, Updatable {
         }));
     }
 
+    /**
+     * Updates any animation in the map if present.
+     * @param elapsed
+     */
     @Override
     public void update(long elapsed) {
         mapAnimation.ifPresent(oneShotAnimation -> oneShotAnimation.update(elapsed));

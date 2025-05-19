@@ -1,14 +1,14 @@
 package dev.emberline.game.world.roads;
 
 import utility.Pair;
-import utility.IntegerPoint2D;
+import utility.Vector2D;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.ArrayList;
 
 class Node {
-    private final IntegerPoint2D pos;
+    private final Vector2D pos;
     /*
      * List of Nodes this Node is connected to with a given weight each.
      * The weight determines the number of enemies that go that way.
@@ -18,7 +18,7 @@ class Node {
     private int cnt;
     private int currIdx;
 
-    public Node(IntegerPoint2D pos) {
+    public Node(Vector2D pos) {
         this.pos = pos;
         this.neighbours = new ArrayList<>();
 
@@ -33,7 +33,7 @@ class Node {
         neighbours.add(new Pair<>(neighbour, weight));
     }
 
-    public Optional<IntegerPoint2D> getNext() {
+    public Optional<Vector2D> getNext() {
         if (neighbours.isEmpty()) {
             return Optional.empty();
         }
@@ -47,7 +47,7 @@ class Node {
         return Optional.of(neighbours.get(currIdx).getX().getPosition());
     }
 
-    public IntegerPoint2D getPosition() {
+    public Vector2D getPosition() {
         return pos;
     }
 }

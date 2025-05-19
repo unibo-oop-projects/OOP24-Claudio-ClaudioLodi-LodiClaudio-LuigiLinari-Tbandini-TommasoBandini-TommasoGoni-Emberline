@@ -1,26 +1,23 @@
 package dev.emberline.game.world.entities.enemy;
 
+import dev.emberline.core.GameLoop;
+import dev.emberline.core.animations.Animation;
+import dev.emberline.core.components.Renderable;
+import dev.emberline.core.components.Updatable;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
+import dev.emberline.game.world.World;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import utility.Coordinate2D;
+import utility.Vector2D;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import dev.emberline.core.GameLoop;
-import dev.emberline.core.animations.Animation;
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
-import dev.emberline.game.world.World;
-import utility.Pair;
-import utility.IntegerPoint2D;
-import utility.Vector2D;
-import utility.Coordinate2D;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 
 public class Enemy implements Updatable, Renderable {
 
@@ -49,15 +46,15 @@ public class Enemy implements Updatable, Renderable {
         this.world = world;
         
         destinations = new ArrayList<>();
-        Optional<IntegerPoint2D> next = world.getWaveManager().getWave().getNext(
-            new IntegerPoint2D((int)position.getX(), (int)position.getY())
+        Optional<Vector2D> next = world.getWaveManager().getWave().getNext(
+            new Coordinate2D(position.getX(), position.getY())
         );
         while (next.isPresent()) {
             destinations.add(
                 new Coordinate2D(next.get().getX(), next.get().getY())
             );
             next = world.getWaveManager().getWave().getNext(
-                new IntegerPoint2D((int)destinations.getLast().getX(), (int)destinations.getLast().getY())
+                    new Coordinate2D(destinations.getLast().getX(), destinations.getLast().getY())
             );
         }
 
@@ -79,7 +76,7 @@ public class Enemy implements Updatable, Renderable {
     @Override
     public void update(long elapsed) {
         animation.update(elapsed);
-        
+        health -= 4;
         if (enemyBehaviour == EnemyBehaviour.MOVING) {
             move(elapsed);
         }
@@ -91,8 +88,8 @@ public class Enemy implements Updatable, Renderable {
         GraphicsContext gc = renderer.getGraphicsContext();
         CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
-        double sizeX = 25;
-        double sizeY = 25;
+        double sizeX = cs.getScale()*0.5;
+        double sizeY = cs.getScale()*0.5;
 
         double screenX = cs.toScreenX(position.getX() + 0.5) - sizeX/2;
         double screenY = cs.toScreenY(position.getY() + 0.5) - sizeY/2;
