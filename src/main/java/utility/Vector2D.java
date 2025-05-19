@@ -43,7 +43,6 @@ public interface Vector2D {
       * @param x the X coordinate addition
       * @param y the Y coordinate addition
       * @return the point with added coordinates
-      * @since JavaFX 8.0
       */
     Vector2D add(double x, double y);
 
@@ -53,7 +52,6 @@ public interface Vector2D {
       * @param point the point whose coordinates are to be added
       * @return the point with added coordinates
       * @throws NullPointerException if the specified {@code point} is null
-      * @since JavaFX 8.0
       */
     Vector2D add(Vector2D point);
 
@@ -63,7 +61,6 @@ public interface Vector2D {
       * @param x the X coordinate subtraction
       * @param y the Y coordinate subtraction
       * @return the point with subtracted coordinates
-      * @since JavaFX 8.0
       */
     Vector2D subtract(double x, double y);
 
@@ -72,7 +69,6 @@ public interface Vector2D {
       * by the specified factor
       * @param factor the factor multiplying the coordinates
       * @return the point with multiplied coordinates
-      * @since JavaFX 8.0
       */
     Vector2D multiply(double factor);
 
@@ -82,7 +78,6 @@ public interface Vector2D {
       * @param point the point whose coordinates are to be subtracted
       * @return the point with subtracted coordinates
       * @throws NullPointerException if the specified {@code point} is null
-      * @since JavaFX 8.0
       */
     Vector2D subtract(Vector2D point);
 
@@ -91,29 +86,8 @@ public interface Vector2D {
       * Returns a vector with the same direction and magnitude equal to 1.
       * If this is a zero vector, a zero vector is returned.
       * @return the normalized vector represented by a {@code Point2D} instance
-      * @since JavaFX 8.0
       */
     Vector2D normalize();
-
-    /**
-      * Returns a point which lies in the middle between this point and the
-      * specified coordinates.
-      * @param x the X coordinate of the second endpoint
-      * @param y the Y coordinate of the second endpoint
-      * @return the point in the middle
-      * @since JavaFX 8.0
-      */
-    Vector2D midpoint(double x, double y);
-
-    /**
-      * Returns a point which lies in the middle between this point and the
-      * specified point.
-      * @param point the other endpoint
-      * @return the point in the middle
-      * @throws NullPointerException if the specified {@code point} is null
-      * @since JavaFX 8.0
-      */
-    Vector2D midpoint(Vector2D point);
 
     /**
       * Computes the angle (in degrees) between the vector represented
@@ -121,7 +95,6 @@ public interface Vector2D {
       * @param x the X magnitude of the other vector
       * @param y the Y magnitude of the other vector
       * @return the angle between the two vectors measured in degrees
-      * @since JavaFX 8.0
       */
     double angle(double x, double y);
 
@@ -132,7 +105,6 @@ public interface Vector2D {
       * @return the angle between the two vectors measured in degrees,
       *         {@code NaN} if any of the two vectors is a zero vector
       * @throws NullPointerException if the specified {@code point} is null
-      * @since JavaFX 8.0
       */
     double angle(Vector2D point);
 
@@ -145,7 +117,6 @@ public interface Vector2D {
       *         in degrees, {@code NaN} if the three points are not different
       *         from one another
       * @throws NullPointerException if {@code p1} or {@code p2} is null
-      * @since JavaFX 8.0
       */
     double angle(Vector2D p1, Vector2D p2);
 
@@ -153,7 +124,6 @@ public interface Vector2D {
       * Computes magnitude (length) of the relative magnitude vector represented
       * by this instance.
       * @return magnitude of the vector
-      * @since JavaFX 8.0
       */
     double magnitude();
 
@@ -163,7 +133,6 @@ public interface Vector2D {
       * @param x the X magnitude of the other vector
       * @param y the Y magnitude of the other vector
       * @return the dot product of the two vectors
-      * @since JavaFX 8.0
       */
     double dotProduct(double x, double y);
 
@@ -173,16 +142,8 @@ public interface Vector2D {
       * @param vector the other vector
       * @return the dot product of the two vectors
       * @throws NullPointerException if the specified {@code vector} is null
-      * @since JavaFX 8.0
       */
     double dotProduct(Vector2D vector);
-
-    /**
-      * {@inheritDoc}
-      *
-      * @since 13
-      */
-    Vector2D interpolate(Vector2D endValue, double t);
 
     /**
       * Indicates whether some other object is "equal to" this one.
