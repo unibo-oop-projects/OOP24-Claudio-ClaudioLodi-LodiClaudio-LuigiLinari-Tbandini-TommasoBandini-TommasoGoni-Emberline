@@ -109,18 +109,6 @@ public interface Vector2D {
     double angle(Vector2D point);
 
     /**
-      * Computes the angle (in degrees) between the three points with this point
-      * as a vertex.
-      * @param p1 one point
-      * @param p2 other point
-      * @return angle between the vectors (this, p1) and (this, p2) measured
-      *         in degrees, {@code NaN} if the three points are not different
-      *         from one another
-      * @throws NullPointerException if {@code p1} or {@code p2} is null
-      */
-    double angle(Vector2D p1, Vector2D p2);
-
-    /**
       * Computes magnitude (length) of the relative magnitude vector represented
       * by this instance.
       * @return magnitude of the vector

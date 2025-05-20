@@ -1,14 +1,17 @@
- package utility;
- /**
+package utility;
+
+import org.apache.commons.geometry.core.Vector;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+
+/**
   * A 2D geometric point that represents the x, y coordinates.
   */
- public class Coordinate2D implements Vector2D {
- 
-     /**
-      * The x coordinate.
-      * DefaultValue 0.0
-      */
-     private final double x;
+public class Coordinate2D implements utility.Vector2D {
+
+    /**
+     * Point 2d with x and y coordinates.
+     */
+    Vector2D point2D;
  
      /**
       * The x coordinate.
@@ -16,14 +19,9 @@
       */
      @Override
     public final double getX() {
-         return x;
+         return point2D.getX();
      }
- 
-     /**
-      * The y coordinate.
-      * DefaultValue 0.0
-      */
-     private final double y;
+
  
      /**
       * The y coordinate.
@@ -31,7 +29,7 @@
       */
      @Override
     public final double getY() {
-         return y;
+         return point2D.getY();
      }
  
      /**
@@ -45,8 +43,7 @@
       * @param y the y coordinate of the point
       */
      public Coordinate2D(double x, double y) {
-         this.x = x;
-         this.y = y;
+         point2D = Vector2D.of(x, y);
      }
  
      /**
@@ -58,9 +55,7 @@
       */
      @Override
     public double distance(double x1, double y1) {
-         double a = getX() - x1;
-         double b = getY() - y1;
-         return Math.sqrt(a * a + b * b);
+         return point2D.distance(Vector2D.of(x1, y1));
      }
  
      /**
@@ -71,7 +66,7 @@
       * @throws NullPointerException if the specified {@code point} is null
       */
      @Override
-    public double distance(Vector2D point) {
+     public double distance(utility.Vector2D point) {
          return distance(point.getX(), point.getY());
      }
  
@@ -83,10 +78,9 @@
       * @return the point with added coordinates
       */
      @Override
-    public Vector2D add(double x, double y) {
-         return new Coordinate2D(
-                 getX() + x,
-                 getY() + y);
+    public utility.Vector2D add(double x, double y) {
+         Vector2D sum = point2D.add(Vector2D.of(x, y));
+         return new Coordinate2D(sum.getX(), sum.getY());
      }
  
      /**
@@ -97,7 +91,7 @@
       * @throws NullPointerException if the specified {@code point} is null
       */
      @Override
-    public Vector2D add(Vector2D point) {
+    public utility.Vector2D add(utility.Vector2D point) {
          return add(point.getX(), point.getY());
      }
  
@@ -109,10 +103,9 @@
       * @return the point with subtracted coordinates
       */
      @Override
-    public Vector2D subtract(double x, double y) {
-         return new Coordinate2D(
-                 getX() - x,
-                 getY() - y);
+    public utility.Vector2D subtract(double x, double y) {
+         Vector2D difference = point2D.subtract(Vector2D.of(x, y));
+         return new Coordinate2D(difference.getX(), difference.getY());
      }
  
      /**
@@ -122,7 +115,7 @@
       * @return the point with multiplied coordinates
       */
      @Override
-    public Vector2D multiply(double factor) {
+    public utility.Vector2D multiply(double factor) {
          return new Coordinate2D(getX() * factor, getY() * factor);
      }
  
@@ -134,7 +127,7 @@
       * @throws NullPointerException if the specified {@code point} is null
       */
      @Override
-    public Vector2D subtract(Vector2D point) {
+    public utility.Vector2D subtract(utility.Vector2D point) {
          return subtract(point.getX(), point.getY());
      }
  
@@ -145,16 +138,9 @@
       * @return the normalized vector represented by a {@code Point2D} instance
       */
      @Override
-    public Vector2D normalize() {
-         final double mag = magnitude();
- 
-         if (mag == 0.0) {
-             return new Coordinate2D(0.0, 0.0);
-         }
- 
-         return new Coordinate2D(
-                 getX() / mag,
-                 getY() / mag);
+    public utility.Vector2D normalize() {
+         Vector2D sum = point2D.normalize();
+         return new Coordinate2D(sum.getX(), sum.getY());
      }
 
      /**
@@ -166,20 +152,7 @@
       */
      @Override
     public double angle(double x, double y) {
-         final double ax = getX();
-         final double ay = getY();
- 
-         final double delta = (ax * x + ay * y) / Math.sqrt(
-                 (ax * ax + ay * ay) * (x * x + y * y));
- 
-         if (delta > 1.0) {
-             return 0.0;
-         }
-         if (delta < -1.0) {
-             return 180.0;
-         }
- 
-         return Math.toDegrees(Math.acos(delta));
+         return point2D.angle(Vector2D.of(x, y));
      }
  
      /**
@@ -191,43 +164,10 @@
       * @throws NullPointerException if the specified {@code point} is null
       */
      @Override
-    public double angle(Vector2D point) {
+    public double angle(utility.Vector2D point) {
          return angle(point.getX(), point.getY());
      }
- 
-     /**
-      * Computes the angle (in degrees) between the three points with this point
-      * as a vertex.
-      * @param p1 one point
-      * @param p2 other point
-      * @return angle between the vectors (this, p1) and (this, p2) measured
-      *         in degrees, {@code NaN} if the three points are not different
-      *         from one another
-      * @throws NullPointerException if {@code p1} or {@code p2} is null
-      */
-     @Override
-    public double angle(Vector2D p1, Vector2D p2) {
-         final double x = getX();
-         final double y = getY();
- 
-         final double ax = p1.getX() - x;
-         final double ay = p1.getY() - y;
-         final double bx = p2.getX() - x;
-         final double by = p2.getY() - y;
- 
-         final double delta = (ax * bx + ay * by) / Math.sqrt(
-                 (ax * ax + ay * ay) * (bx * bx + by * by));
- 
-         if (delta > 1.0) {
-             return 0.0;
-         }
-         if (delta < -1.0) {
-             return 180.0;
-         }
- 
-         return Math.toDegrees(Math.acos(delta));
-     }
- 
+
      /**
       * Computes magnitude (length) of the relative magnitude vector represented
       * by this instance.
@@ -235,10 +175,7 @@
       */
      @Override
     public double magnitude() {
-         final double x = getX();
-         final double y = getY();
- 
-         return Math.sqrt(x * x + y * y);
+         return point2D.normSq();
      }
  
      /**
@@ -250,7 +187,7 @@
       */
      @Override
     public double dotProduct(double x, double y) {
-         return getX() * x + getY() * y;
+         return point2D.dot(Vector2D.of(x, y));
      }
  
      /**
@@ -261,7 +198,7 @@
       * @throws NullPointerException if the specified {@code vector} is null
       */
      @Override
-    public double dotProduct(Vector2D vector) {
+    public double dotProduct(utility.Vector2D vector) {
          return dotProduct(vector.getX(), vector.getY());
      }
 
@@ -273,9 +210,8 @@
        */
      @Override public boolean equals(Object obj) {
          if (obj == this) return true;
-         if (obj instanceof Coordinate2D) {
-             Vector2D other = (Vector2D) obj;
-             return getX() == other.getX() && getY() == other.getY();
+         if (obj instanceof Coordinate2D other) {
+             return point2D.equals(Vector2D.of(other.getX(), other.getY()));
          } else return false;
      }
  
