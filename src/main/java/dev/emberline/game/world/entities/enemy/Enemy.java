@@ -91,8 +91,8 @@ public class Enemy implements Updatable, Renderable {
         double sizeX = cs.getScale()*0.5;
         double sizeY = cs.getScale()*0.5;
 
-        double screenX = cs.toScreenX(position.getX() + 0.5) - sizeX/2;
-        double screenY = cs.toScreenY(position.getY() + 0.5) - sizeY/2;
+        double screenX = cs.toScreenX(position.getX()) - sizeX/2;
+        double screenY = cs.toScreenY(position.getY()) - sizeY;
 
         Image currAnimationState = animation.getAnimationState();
 

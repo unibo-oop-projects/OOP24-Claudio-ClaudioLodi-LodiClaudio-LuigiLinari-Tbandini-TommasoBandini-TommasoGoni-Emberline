@@ -60,7 +60,9 @@ public class Spawnpoints {
                 for (int i = 0; i < Integer.parseInt(numbers[2]); i++) {
                     enemiesQueue.add(timeFromStart + c*i);
                 }
-                enemiesToSpawn.add(new Pair<>(new Coordinate2D(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[1])), enemiesQueue));
+                //summing (0.5, 0.5) to center
+                enemiesToSpawn.add(new Pair<>(
+                        new Coordinate2D(Double.parseDouble(numbers[0]) + 0.5, Double.parseDouble(numbers[1]) + 0.5), enemiesQueue));
                 //end
             }
             r.close();

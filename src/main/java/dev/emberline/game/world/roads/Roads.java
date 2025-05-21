@@ -69,9 +69,11 @@ public class Roads implements Renderable, Updatable {
             while ((line = r.readLine()) != null) {
                 
                 String[] numbers = line.split(" ");
-                
-                Node fromNode = new Node(new Coordinate2D(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[1])));
-                Node toNode = new Node(new Coordinate2D(Double.parseDouble(numbers[2]), Double.parseDouble(numbers[3])));
+                //summing (0.5, 0.5) to center
+                Node fromNode = new Node(
+                        new Coordinate2D(Double.parseDouble(numbers[0]) + 0.5, Double.parseDouble(numbers[1]) + 0.5));
+                Node toNode = new Node(
+                        new Coordinate2D(Double.parseDouble(numbers[2]) + 0.5, Double.parseDouble(numbers[3]) + 0.5));
                 Integer weight = Integer.parseInt(numbers[4]);
                 
                 posToNode.putIfAbsent(fromNode.getPosition(), fromNode);
