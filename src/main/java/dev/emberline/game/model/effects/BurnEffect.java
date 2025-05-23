@@ -1,6 +1,10 @@
 package dev.emberline.game.model.effects;
 
-// TODO change this to a class when implementing the effect behaviour, duration must not be immutable
+import dev.emberline.gui.towerdialog.stats.TowerStat;
+import dev.emberline.gui.towerdialog.stats.TowerStat.TowerStatType;
+
+import java.util.List;
+
 /**
  * Represents a burn effect that deals damage over time.
  * The effect is associated with fire enchantments in the game.
@@ -14,5 +18,12 @@ public record BurnEffect(double damagePerSecond, double duration) implements Enc
     @Override
     public boolean isExpired() {
         return false;
+    }
+
+    @Override
+    public List<TowerStat> getTowerStats() {
+        return List.of(new TowerStat(TowerStatType.BURN_EFFECT, damagePerSecond),
+                new TowerStat(TowerStatType.EFFECT_DURATION, duration)
+        );
     }
 }
