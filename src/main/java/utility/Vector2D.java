@@ -134,6 +134,23 @@ public interface Vector2D {
     double dotProduct(Vector2D vector);
 
     /**
+     * Return the unit vector representing the direction of displacement
+     * from this vector to the given vector.
+     * @param x
+     * @param y
+     * @return
+     */
+    public utility.Vector2D directionTo(double x, double y);
+
+    /**
+     * Return the unit vector representing the direction of displacement
+     * from this vector to the given vector.
+     * @param vector
+     * @return
+     */
+    public utility.Vector2D directionTo(utility.Vector2D vector);
+
+    /**
       * Indicates whether some other object is "equal to" this one.
       *
       * @param obj the reference object with which to compare
