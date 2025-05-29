@@ -28,7 +28,7 @@ public class CoordinateSystem {
         setRegion(regionX1, regionY1, regionX2, regionY2);
     }
 
-    public void setRegion(double regionX1, double regionY1, double regionX2, double regionY2) {
+    public synchronized void setRegion(double regionX1, double regionY1, double regionX2, double regionY2) {
         this.regionX1 = regionX1;
         this.regionY1 = regionY1;
         this.regionX2 = regionX2;
@@ -51,43 +51,43 @@ public class CoordinateSystem {
         screenOriginY = regionCenterY - screenCenterY / scale;
     }
 
-    public double getRegionCenterX() {
+    public synchronized double getRegionCenterX() {
         return (regionX1 + regionX2) / 2;
     }
     
-    public double getRegionCenterY() {
+    public synchronized double getRegionCenterY() {
         return (regionY1 + regionY2) / 2;
     }
 
-    public double getScreenOriginX() {
+    public synchronized double getScreenOriginX() {
         return screenOriginX;
     }
 
-    public double getScreenOriginY() {
+    public synchronized double getScreenOriginY() {
         return screenOriginY;
     }
 
-    public double getPlayableScreenWidth() {
+    public synchronized double getPlayableScreenWidth() {
         return (regionX2 - regionX1) * scale;
     }
     
-    public double getPlayableScreenHeight() {
+    public synchronized double getPlayableScreenHeight() {
         return (regionY2 - regionY1) * scale;
     }
 
-    public double toWorldX(double screenX) {
+    public synchronized double toWorldX(double screenX) {
         return screenOriginX + screenX / scale;
     }
 
-    public double toWorldY(double screenY) {
+    public synchronized double toWorldY(double screenY) {
         return screenOriginY + screenY / scale;
     }
 
-    public double toScreenX(double worldX) {
+    public synchronized double toScreenX(double worldX) {
         return (worldX - screenOriginX) * scale;
     }
 
-    public double toScreenY(double worldY) {
+    public synchronized double toScreenY(double worldY) {
         return (worldY - screenOriginY) * scale;
     }
 
@@ -95,7 +95,7 @@ public class CoordinateSystem {
         return tolerance;
     }
 
-    public double getScale() {
+    public synchronized double getScale() {
         return scale;
     }
 }

@@ -1,6 +1,5 @@
 package utility;
 
-import org.apache.commons.geometry.core.Vector;
 import org.apache.commons.geometry.euclidean.twod.Vector2D;
 
 /**

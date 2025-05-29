@@ -140,7 +140,7 @@ public interface Vector2D {
      * @param y
      * @return
      */
-    public utility.Vector2D directionTo(double x, double y);
+    utility.Vector2D directionTo(double x, double y);
 
     /**
      * Return the unit vector representing the direction of displacement
@@ -148,7 +148,7 @@ public interface Vector2D {
      * @param vector
      * @return
      */
-    public utility.Vector2D directionTo(utility.Vector2D vector);
+    utility.Vector2D directionTo(utility.Vector2D vector);
 
     /**
       * Indicates whether some other object is "equal to" this one.
