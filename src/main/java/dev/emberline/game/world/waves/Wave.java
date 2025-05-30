@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
+import dev.emberline.core.render.Zoom;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.roads.Roads;
 import dev.emberline.game.world.spawnpoints.Spawnpoints;
@@ -13,10 +14,9 @@ import utility.Vector2D;
 public class Wave implements Updatable, Renderable {
     
     private final World world;
-    //getting the file path should be done with methods such as
-    //getResources() or similar
     private final Roads roads;
     private final Spawnpoints spawnpoints;
+    private final Zoom csManager;
 
     private long acc = 0;
 
@@ -24,6 +24,7 @@ public class Wave implements Updatable, Renderable {
         this.world = world;
         roads = new Roads(wavePath);
         spawnpoints = new Spawnpoints(wavePath);
+        csManager = new Zoom(wavePath);
     }
 
     public Optional<Vector2D> getNext(Vector2D pos) {
@@ -46,6 +47,9 @@ public class Wave implements Updatable, Renderable {
         acc += elapsed;
 
         sendEnemies();
+
+        csManager.update(elapsed);
+        csManager.updateCS();
 
         roads.update(elapsed);
     }

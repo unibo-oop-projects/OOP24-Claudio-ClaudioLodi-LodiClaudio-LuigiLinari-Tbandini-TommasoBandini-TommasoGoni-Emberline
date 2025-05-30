@@ -59,7 +59,7 @@ public class Zoom implements Updatable {
         try {
             URL fileURL = Objects.requireNonNull(getClass().getResource(file));
             final BufferedReader r = new BufferedReader(new FileReader(fileURL.getPath()));
-            String line = null;
+            String line;
             if ((line = r.readLine()) != null) {
                 String[] numbers = line.split(" ");
 
