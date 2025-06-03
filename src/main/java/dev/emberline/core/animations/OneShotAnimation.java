@@ -23,7 +23,7 @@ public class OneShotAnimation implements Updatable {
     }
 
     public boolean hasEnded() {
-        return currState >= animationStates.size();
+        return currState + 1 >= animationStates.size();
     }
 
     @Override

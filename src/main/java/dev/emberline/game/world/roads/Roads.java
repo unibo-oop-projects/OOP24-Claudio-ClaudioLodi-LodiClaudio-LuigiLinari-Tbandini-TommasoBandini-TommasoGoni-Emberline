@@ -25,13 +25,11 @@ public class Roads implements Renderable, Updatable {
      * graph data structure, represents the walkable roads on the map
      */
     private final Map<Vector2D, Node> posToNode = new HashMap<>();
-    private Optional<OneShotAnimation> mapAnimation;
-    private Image mapImage;
+    private OneShotAnimation mapAnimation;
 
     public Roads(String wavePath) {
         loadMapAnimation(wavePath + "mapAnimation/");
         loadGraph(wavePath + "roads.txt");
-        loadMapImage(wavePath + "map.png");
     }
 
     /**
@@ -42,23 +40,21 @@ public class Roads implements Renderable, Updatable {
         return posToNode.get(pos).getNext();
     }
 
-    private void loadMapImage(String file) {
-        mapImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(file)));
+    private Image loadMapImage(String file) {
+        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(file)));
     }
 
     private void loadMapAnimation(String file) {
+        List<Image> animationStates = new ArrayList<>();
         try {
-            List<Image> animationStates = new ArrayList<>();
             for (int i = 1; i <= 4; i++) {
-                Image image = new Image(
-                        Objects.requireNonNull(
-                                getClass().getResourceAsStream(file + "map" + i + ".png")));
+                Image image = loadMapImage(file + "map" + i + ".png");
                 animationStates.add(image);
             }
-            mapAnimation = Optional.of(new OneShotAnimation(animationStates, 1_000_000_000L));
-        } catch (NullPointerException e){
-            mapAnimation = Optional.empty();
+        } catch (NullPointerException e) {
+            //nothing needed here, either 1 or 4 images are found in the mapAnimation folder
         }
+        mapAnimation = new OneShotAnimation(animationStates, 1_000_000_000L);
     }
 
     private void loadGraph(String file) {
@@ -99,12 +95,7 @@ public class Roads implements Renderable, Updatable {
         double screenX = cs.toScreenX(0);
         double screenY = cs.toScreenY(0);
 
-        Image imageToRender;
-        if (mapAnimation.isEmpty() || mapAnimation.get().hasEnded()) {
-            imageToRender = mapImage;
-        } else {
-            imageToRender = mapAnimation.get().getAnimationState();
-        }
+        Image imageToRender = mapAnimation.getAnimationState();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
             gc.drawImage(imageToRender, screenX, screenY, 32*cs.getScale(), 18*cs.getScale());
@@ -117,6 +108,6 @@ public class Roads implements Renderable, Updatable {
      */
     @Override
     public void update(long elapsed) {
-        mapAnimation.ifPresent(oneShotAnimation -> oneShotAnimation.update(elapsed));
+        mapAnimation.update(elapsed);
     }
 }
