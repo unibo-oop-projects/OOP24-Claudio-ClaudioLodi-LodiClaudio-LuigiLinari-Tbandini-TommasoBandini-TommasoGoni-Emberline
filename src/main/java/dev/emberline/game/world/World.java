@@ -3,7 +3,10 @@ package dev.emberline.game.world;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.entities.enemy.EnemiesManager;
+import dev.emberline.game.world.statistics.Statistics;
 import dev.emberline.game.world.waves.WaveManager;
+
+import java.io.Serializable;
 
 public class World implements Updatable, Renderable {
     
@@ -12,10 +15,12 @@ public class World implements Updatable, Renderable {
     // Towers
     // Waves
     private final WaveManager waveManager;
+    private final Statistics statistics;
 
     public World() {
         this.enemiesManager = new EnemiesManager(this);
         this.waveManager = new WaveManager(this);
+        this.statistics = new Statistics(this);
     }
 
     public EnemiesManager getEnemiesManager() {
@@ -30,6 +35,7 @@ public class World implements Updatable, Renderable {
     public void update(long elapsed) {
         enemiesManager.update(elapsed);
         waveManager.update(elapsed);
+        statistics.update(elapsed);
     }
 
     @Override

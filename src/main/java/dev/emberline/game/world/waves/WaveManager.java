@@ -29,6 +29,10 @@ public class WaveManager implements Updatable {
         return this.waves.get(currentWave);
     }
 
+    public int getCurrentWave() {
+        return currentWave;
+    }
+
     /**
      * @param elapsed
      * Updates the current wave and check weather it is over.
