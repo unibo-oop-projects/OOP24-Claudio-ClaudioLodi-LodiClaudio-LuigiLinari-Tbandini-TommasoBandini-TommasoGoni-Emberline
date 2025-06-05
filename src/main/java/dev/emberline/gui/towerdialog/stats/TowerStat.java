@@ -1,5 +1,6 @@
 package dev.emberline.gui.towerdialog.stats;
 
+import dev.emberline.gui._TemporarySpriteProvider;
 import javafx.scene.image.Image;
 import dev.emberline.gui.towerdialog.stats.TowerStatsViewsBuilder.TowerStatView;
 
@@ -15,16 +16,16 @@ import dev.emberline.gui.towerdialog.stats.TowerStatsViewsBuilder.TowerStatView;
  */
 public record TowerStat(TowerStatType type, double value) {
     public enum TowerStatType {
-        // Projectile stats TODO ICONS
-        FIRE_RATE("Fire Rate", null),
-        DAMAGE("Damage", null),
-        DAMAGE_AREA("Damage Radius", null),
-        PROJECTILE_SPEED("Projectile Speed", null),
-        TOWER_RANGE("Tower Range", null),
+        // Projectile stats
+        FIRE_RATE("Fire Rate", _TemporarySpriteProvider.FIRE_RATE.getImage()),
+        DAMAGE("Damage", _TemporarySpriteProvider.DAMAGE.getImage()),
+        PROJECTILE_SPEED("Projectile Speed", _TemporarySpriteProvider.PROJECTILE_SPEED.getImage()),
+        TOWER_RANGE("Tower Range", _TemporarySpriteProvider.TOWER_RANGE.getImage()),
+        DAMAGE_AREA("Damage Radius", _TemporarySpriteProvider.DAMAGE_AREA.getImage()),
         // Enchantment stats
-        EFFECT_DURATION("Effect Duration", null),
-        BURN_EFFECT("Damage per sec", null),
-        SLOW_EFFECT("Slowing Factor", null);
+        EFFECT_DURATION("Effect Duration", _TemporarySpriteProvider.EFFECT_DURATION.getImage()),
+        BURN_EFFECT("Dmg per sec", _TemporarySpriteProvider.BURN_EFFECT.getImage()),
+        SLOW_EFFECT("Slowing Factor", _TemporarySpriteProvider.SLOW_EFFECT.getImage());
 
         private final String displayName;
         private final Image icon;
