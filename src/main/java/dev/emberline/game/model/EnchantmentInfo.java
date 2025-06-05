@@ -142,9 +142,7 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
         List<TowerStat> towerStats = new ArrayList<>();
 
         // Optional effect
-        getEffect().ifPresent(effect -> {
-            towerStats.addAll(effect.getTowerStats());
-        });
+        getEffect().ifPresent(effect -> towerStats.addAll(effect.getTowerStats()));
 
         return towerStats;
     }
