@@ -96,6 +96,11 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
         throw new IllegalStateException("Cannot change type of enchantment of type " + type + " at level " + level);
     }
 
+    @Override
+    public EnchantmentInfo getDefault() {
+        return new EnchantmentInfo(Type.BASE, 0);
+    }
+
     // STATS //
     private static class Stats {
         // Upgrade costs

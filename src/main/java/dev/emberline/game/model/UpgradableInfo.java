@@ -4,6 +4,20 @@ public interface UpgradableInfo<T extends UpgradableInfo.InfoType, SELF extends 
     interface InfoType {}
 
     /**
+     * Retrieves the current level of the object.
+     *
+     * @return the current level value.
+     */
+    int level();
+
+    /**
+     * Retrieves the type information of the current object.
+     *
+     * @return the type instance associated with this object.
+     */
+    T type();
+
+    /**
      * Retrieves the maximum level to which the current object can be upgraded.
      *
      * @return the maximum upgrade level for this object.
@@ -52,4 +66,11 @@ public interface UpgradableInfo<T extends UpgradableInfo.InfoType, SELF extends 
      * @return The cost associated with either upgrading to the next level or switching from the base type.
      */
     int getUpgradeCost();
+
+    /**
+     * Retrieves the default instance of the implementing object.
+     *
+     * @return the default instance of the object.
+     */
+    SELF getDefault();
 }

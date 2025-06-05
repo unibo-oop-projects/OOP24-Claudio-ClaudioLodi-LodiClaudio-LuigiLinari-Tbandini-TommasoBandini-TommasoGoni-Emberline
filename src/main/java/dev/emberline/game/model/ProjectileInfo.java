@@ -93,6 +93,11 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
         throw new IllegalStateException("Cannot change type of projectile: " + this);
     }
 
+    @Override
+    public ProjectileInfo getDefault() {
+        return new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
+    }
+
     // STATS //
     private static class Stats {
         private static final int BASE_UPGRADE_COST = 50;
