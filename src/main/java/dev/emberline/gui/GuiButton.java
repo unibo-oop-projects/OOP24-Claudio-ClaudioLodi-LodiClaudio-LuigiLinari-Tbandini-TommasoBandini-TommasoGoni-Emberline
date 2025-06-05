@@ -18,15 +18,18 @@ import javafx.scene.paint.Paint;
 import java.util.Objects;
 
 public class GuiButton implements Inputable, Renderable {
-    private final Image normalSprite;
-    private final Image hoverSprite; // Can be null
-    private final double x;
-    private final double y;
-    private final double width;
-    private final double height;
-    private Runnable onClick;
-    private Runnable onMouseEnter;
-    private Runnable onMouseLeave;
+    protected final Image normalSprite;
+    protected final Image hoverSprite; // Can be null
+    protected final double x;
+    protected final double y;
+    protected final double width;
+    protected final double height;
+    protected Runnable onClick;
+    protected Runnable onMouseEnter;
+    protected Runnable onMouseLeave;
+    // use this only for holding the previous hovered state, use hovered to communicate to the outside world
+    private boolean wasHovered = false;
+    // this is needed if isHovered() is called from onMouseEnter or onMouseLeave, because the wasHovered state is not updated yet.
     private boolean hovered = false;
 
     /**
@@ -100,36 +103,40 @@ public class GuiButton implements Inputable, Renderable {
         Renderer renderer = GameLoop.getInstance().getRenderer();
         GraphicsContext gc = renderer.getGraphicsContext();
         CoordinateSystem guics = renderer.getGuiCoordinateSystem();
-        // Positioning
-        double x = guics.toScreenX(this.x);
-        double y = guics.toScreenY(this.y);
-        double width = guics.getScale() * this.width;
-        double height = guics.getScale() * this.height;
         // Mouse hovering
-        double mx = guics.toWorldX(MouseLocation.getX());
-        double my = guics.toWorldY(MouseLocation.getY());
-        boolean nowHovered = isInside(mx, my);
-        if (nowHovered && !hovered && onMouseEnter != null) onMouseEnter.run();
-        if (hovered && !nowHovered && onMouseLeave != null) onMouseLeave.run();
-        hovered = nowHovered;
+        computeHoverState(guics.toWorldX(MouseLocation.getX()), guics.toWorldY(MouseLocation.getY()));
+
+        // Positioning
+        double screenX = guics.toScreenX(this.x);
+        double screenY = guics.toScreenY(this.y);
+        double screenWidth = guics.getScale() * this.width;
+        double screenHeight = guics.getScale() * this.height;
 
         // Render task
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI_HIGH, () -> {
             if (hovered && hoverSprite == null) {
-                gc.drawImage(normalSprite, x, y, width, height);
+                gc.drawImage(normalSprite, screenX, screenY, screenWidth, screenHeight);
                 Paint previousFill = gc.getFill();
                 gc.setFill(Color.rgb(10,10,10,0.2));
-                gc.fillRect(x, y, width, height);
+                gc.fillRect(screenX, screenY, screenWidth, screenHeight);
                 gc.setFill(previousFill);
             } else {
-                gc.drawImage(hovered ? hoverSprite : normalSprite, x, y, width, height);
+                gc.drawImage(hovered ? hoverSprite : normalSprite, screenX, screenY, screenWidth, screenHeight);
             }
         }));
     }
 
-    private boolean isInside(double x, double y) {
+    // In GUI coordinates
+    protected boolean isInside(double x, double y) {
         if (x < this.x || x > this.x + width) return false;
         if (y < this.y || y > this.y + height) return false;
         return true;
+    }
+
+    protected void computeHoverState(double mouseGuiX, double mouseGuiY) {
+        hovered = isInside(mouseGuiX, mouseGuiY);
+        if (hovered && !wasHovered && onMouseEnter != null) onMouseEnter.run();
+        if (wasHovered && !hovered && onMouseLeave != null) onMouseLeave.run();
+        wasHovered = hovered;
     }
 }
