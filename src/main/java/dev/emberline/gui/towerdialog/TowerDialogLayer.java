@@ -186,14 +186,14 @@ public class TowerDialogLayer extends GuiLayer {
             GuiButton upgradeButton = new PricingGuiButton(
                     Layout.Selector.UPGRADE_BTN_X, Layout.Selector.UPGRADE_BTN_Y + yOffset,
                     Layout.Selector.UPGRADE_BTN_SIDE, Layout.Selector.UPGRADE_BTN_SIDE,
-                    _TemporarySpriteProvider.UPGRADE_ENCH_BUTTON.getImage(), -element.getUpgradeCost() //TODO GENERIC UPGRADE IMGE
+                    _TemporarySpriteProvider.UPGRADE_BUTTON.getImage(), -element.getUpgradeCost()
             );
             // On the last level, disable the upgrade button
             if (!element.canUpgrade()) {
                 upgradeButton = new GuiButton(
                         Layout.Selector.UPGRADE_BTN_X, Layout.Selector.UPGRADE_BTN_Y + yOffset,
                         Layout.Selector.UPGRADE_BTN_SIDE, Layout.Selector.UPGRADE_BTN_SIDE,
-                        _TemporarySpriteProvider.UPGRADE_ENCH_BUTTON.getImage() //TODO PUT DISABLED BUTTON IMAGE
+                        _TemporarySpriteProvider.DISABLED_UPGRADE_BUTTON.getImage()
                 );
             }
             GuiButton resetButton = new GuiButton(
@@ -336,7 +336,6 @@ public class TowerDialogLayer extends GuiLayer {
             Image sprite = (i < info.level()) ? _TemporarySpriteProvider.FULL_UPGRADE_LEVEL.getImage() : _TemporarySpriteProvider.EMPTY_UPGRADE_LEVEL.getImage();
             Renderer.drawImage(sprite, gc, cs, x, y, width, height);
         }
-        // TODO PUT SEPARATOR
     }
 
     // Utility method to get the icon for the given UpgradableInfo, does not cover the BASE types.
