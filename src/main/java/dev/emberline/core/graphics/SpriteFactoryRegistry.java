@@ -2,6 +2,7 @@ package dev.emberline.core.graphics;
 
 import dev.emberline.core.graphics.spritefactories.SpriteFactory;
 import dev.emberline.core.graphics.spritefactories.StringSpriteFactory;
+import dev.emberline.core.graphics.spritefactories.UISpriteFactory;
 import dev.emberline.core.graphics.spritekeys.SpriteKey;
 
 import java.util.*;
@@ -30,5 +31,6 @@ class SpriteFactoryRegistry {
 
     static {
         registerFactory(new StringSpriteFactory());
+        registerFactory(new UISpriteFactory());
     }
 }
