@@ -15,11 +15,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class RoadsRenderComponent implements Renderable, Updatable {
+/**
+ * A class that represents the Road's class view.
+ */
+class RoadsViewComponent implements Renderable, Updatable {
 
     private OneShotAnimation mapAnimation;
 
-    RoadsRenderComponent(String wavePath) {
+    /**
+     * Creates a new instance of {@code RoadsRenderComponent}
+     * @param wavePath represents the path of the files regarding the current wave
+     */
+    RoadsViewComponent(String wavePath) {
         loadMapAnimation(wavePath + "mapAnimation/");
     }
 

@@ -12,14 +12,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-public class RoadsUpdateComponent {
+/**
+ * A class that represents the Road's class logic.
+ */
+class RoadsModelComponent {
 
     /**
      * graph data structure, represents the walkable roads on the map
      */
     private final Map<Vector2D, Node> posToNode = new HashMap<>();
 
-    RoadsUpdateComponent(String wavePath) {
+    /**
+     * Creates a new instance of {@code RoadsUpdateComponent}
+     * @param wavePath represents the path of the files regarding the current wave
+     */
+    RoadsModelComponent(String wavePath) {
         loadGraph(wavePath + "roads.txt");
     }
 
@@ -27,7 +34,7 @@ public class RoadsUpdateComponent {
      * @param pos is the current position.
      * @return the next node of the graph based on the current state.
      */
-    public Optional<Vector2D> getNextNode(Vector2D pos) {
+    Optional<Vector2D> getNextNode(Vector2D pos) {
         return posToNode.get(pos).getNext();
     }
 
