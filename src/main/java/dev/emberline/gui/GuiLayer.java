@@ -26,7 +26,7 @@ public class GuiLayer implements Renderable, Inputable {
     }
 
     @Override
-    public void processInput(InputEvent input) {
+    public final void processInput(InputEvent input) {
         for (GuiButton button : buttons) {
             button.processInput(input);
         }
