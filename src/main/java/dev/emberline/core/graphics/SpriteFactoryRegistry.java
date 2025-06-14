@@ -1,6 +1,7 @@
 package dev.emberline.core.graphics;
 
 import dev.emberline.core.graphics.spritefactories.SpriteFactory;
+import dev.emberline.core.graphics.spritefactories.StringSpriteFactory;
 import dev.emberline.core.graphics.spritekeys.SpriteKey;
 
 import java.util.*;
@@ -25,5 +26,9 @@ class SpriteFactoryRegistry {
             }
         }
         throw new IllegalArgumentException("No factory found for key type: " + keyType.getName());
+    }
+
+    static {
+        registerFactory(new StringSpriteFactory());
     }
 }
