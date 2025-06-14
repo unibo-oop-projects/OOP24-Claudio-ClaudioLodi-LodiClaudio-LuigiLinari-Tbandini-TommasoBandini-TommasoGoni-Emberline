@@ -60,10 +60,6 @@ public class Spawnpoints {
         return enemiesList;
     }
 
-    /*
-     file format is the following:
-     "x y" "numero of enemies" "time type" "time type" ...
-     */
     private void loadSpawnpoints(String file) {
         try {
             URL fileURL = Objects.requireNonNull(getClass().getResource(file));
@@ -71,19 +67,24 @@ public class Spawnpoints {
             String line = null;
             while ((line = r.readLine()) != null) {
                 
-                String[] numbers = line.split(" ");
-
+                String[] coordinates = line.split(" ");
                 Queue<Pair<String, Long>> enemiesQueue = new LinkedList<>();
-                for (int i = 0; i < Integer.parseInt(numbers[2]); i++) {
-                    //+3 represents the offset to the first enemy in the line
-                    //i*2 because there's 2 parameters per enemy
-                    Long spawnTime = Long.parseLong(numbers[i*2+4]);
-                    String type = numbers[i*2+3];
-                    enemiesQueue.add(new Pair<>(type, spawnTime));
+
+                while ((line = r.readLine()) != null && !line.equals("/")) {
+                    String[] enemyGroup = line.split(" ");
+
+                    double groupSpawnTime = Double.parseDouble(enemyGroup[0]) + timeFromStart;
+                    double deltaT = Double.parseDouble(enemyGroup[1]);
+
+                    for (int i = 2; i < enemyGroup.length; i++) {
+                        long spawnTime = (long) (i * deltaT * 1_000_000_000 + groupSpawnTime);
+                        String type = enemyGroup[i];
+                        enemiesQueue.add(new Pair<>(type, spawnTime));
+                    }
                 }
                 //summing (0.5, 0.5) to center
                 enemiesToSpawn.add(new Pair<>(
-                        new Coordinate2D(Double.parseDouble(numbers[0]) + 0.5, Double.parseDouble(numbers[1]) + 0.5), enemiesQueue));
+                        new Coordinate2D(Double.parseDouble(coordinates[0]) + 0.5, Double.parseDouble(coordinates[1]) + 0.5), enemiesQueue));
             }
             r.close();
         } catch (IOException e) {

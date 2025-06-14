@@ -1,4 +1,13 @@
-8 15 4 a 1 a 2 a 3 a 4
-29 11 2 a 0 a 1
-14 2 3 a 2 a 3 a 4
-22 3 3 a 0 a 1 a 3
+8 15
+0 1 base base base
+3 0.5 base base base base
+/
+29 11
+0 1 base base
+/
+14 2
+1 0.5 base base base base base
+5 0.1 base base
+/
+22 3
+0 0.3 base base base
