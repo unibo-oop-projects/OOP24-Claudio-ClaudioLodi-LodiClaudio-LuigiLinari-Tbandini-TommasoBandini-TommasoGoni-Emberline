@@ -22,7 +22,8 @@ public class EnemiesManager implements Updatable, Renderable {
         this.world = world;
     }
 
-    public void addEnemy(Vector2D spawnPoint) {
+    public void addEnemy(Vector2D spawnPoint, String enemyType) {
+        //use factory to create new enemies
         enemies.add(new Enemy(spawnPoint, world));
     }
     
