@@ -2,15 +2,21 @@ package utility;
 
 import org.apache.commons.geometry.euclidean.twod.Vector2D;
 
+import java.io.Serializable;
+
 /**
  * A 2D geometric point that represents the x, y coordinates.
  */
-public class Coordinate2D implements utility.Vector2D {
+public class Coordinate2D implements utility.Vector2D, Serializable {
 
     /**
-     * Point 2d with x and y coordinates.
+     * x coordinate
      */
-    Vector2D point2D;
+    private double x;
+    /**
+     * y coordinate
+     */
+    private double y;
 
     /**
      * The x coordinate.
@@ -19,7 +25,7 @@ public class Coordinate2D implements utility.Vector2D {
      */
     @Override
     public final double getX() {
-        return point2D.getX();
+        return x;
     }
 
 
@@ -30,19 +36,23 @@ public class Coordinate2D implements utility.Vector2D {
      */
     @Override
     public final double getY() {
-        return point2D.getY();
+        return y;
     }
 
     /**
-     * Creates a new instance of {@code Point2D}.
+     * Creates a new instance of {@code Coordinate2D}.
      *
      * @param x the x coordinate of the point
      * @param y the y coordinate of the point
      */
     public Coordinate2D(double x, double y) {
-        point2D = Vector2D.of(x, y);
+        this.x = x;
+        this.y = y;
     }
 
+    private Vector2D toPoint2D(double x, double y) {
+        return Vector2D.of(x, y);
+    }
     /**
      * Computes the distance between this point and point {@code (x1, y1)}.
      *
@@ -52,7 +62,7 @@ public class Coordinate2D implements utility.Vector2D {
      */
     @Override
     public double distance(double x1, double y1) {
-        return point2D.distance(Vector2D.of(x1, y1));
+        return toPoint2D(this.x,this.y).distance(Vector2D.of(x1, y1));
     }
 
     /**
@@ -77,7 +87,7 @@ public class Coordinate2D implements utility.Vector2D {
      */
     @Override
     public utility.Vector2D add(double x, double y) {
-        Vector2D sum = point2D.add(Vector2D.of(x, y));
+        Vector2D sum = toPoint2D(this.x,this.y).add(Vector2D.of(x, y));
         return new Coordinate2D(sum.getX(), sum.getY());
     }
 
@@ -104,7 +114,7 @@ public class Coordinate2D implements utility.Vector2D {
      */
     @Override
     public utility.Vector2D subtract(double x, double y) {
-        Vector2D difference = point2D.subtract(Vector2D.of(x, y));
+        Vector2D difference = toPoint2D(this.x,this.y).subtract(Vector2D.of(x, y));
         return new Coordinate2D(difference.getX(), difference.getY());
     }
 
@@ -138,11 +148,11 @@ public class Coordinate2D implements utility.Vector2D {
      * Returns a vector with the same direction and magnitude equal to 1.
      * If this is a zero vector, a zero vector is returned.
      *
-     * @return the normalized vector represented by a {@code Point2D} instance
+     * @return the normalized vector represented by a {@code Coordinate2D} instance
      */
     @Override
     public utility.Vector2D normalize() {
-        Vector2D sum = point2D.normalize();
+        Vector2D sum = toPoint2D(this.x,this.y).normalize();
         return new Coordinate2D(sum.getX(), sum.getY());
     }
 
@@ -156,7 +166,7 @@ public class Coordinate2D implements utility.Vector2D {
      */
     @Override
     public double angle(double x, double y) {
-        return point2D.angle(Vector2D.of(x, y));
+        return toPoint2D(this.x,this.y).angle(Vector2D.of(x, y));
     }
 
     /**
@@ -181,7 +191,7 @@ public class Coordinate2D implements utility.Vector2D {
      */
     @Override
     public double magnitude() {
-        return point2D.normSq();
+        return toPoint2D(this.x,this.y).normSq();
     }
 
     /**
@@ -194,7 +204,7 @@ public class Coordinate2D implements utility.Vector2D {
      */
     @Override
     public double dotProduct(double x, double y) {
-        return point2D.dot(Vector2D.of(x, y));
+        return toPoint2D(this.x,this.y).dot(Vector2D.of(x, y));
     }
 
     /**
@@ -219,7 +229,12 @@ public class Coordinate2D implements utility.Vector2D {
      */
     public utility.Vector2D directionTo(double x, double y) {
         Vector2D vector = Vector2D.of(x, y);
-        Vector2D direction = point2D.directionTo(vector);
+        Vector2D direction;
+        if (vector.equals(Vector2D.of(this.x, this.y))) {
+            direction = Vector2D.ZERO;
+        } else {
+            direction = toPoint2D(this.x,this.y).directionTo(vector);
+        }
         return new Coordinate2D(direction.getX(), direction.getY());
     }
 
@@ -243,7 +258,7 @@ public class Coordinate2D implements utility.Vector2D {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj instanceof Coordinate2D other) {
-            return point2D.equals(Vector2D.of(other.getX(), other.getY()));
+            return toPoint2D(this.x,this.y).equals(Vector2D.of(other.getX(), other.getY()));
         } else return false;
     }
 
@@ -254,11 +269,11 @@ public class Coordinate2D implements utility.Vector2D {
      */
     @Override
     public int hashCode() {
-        return point2D.hashCode();
+        return toPoint2D(this.x,this.y).hashCode();
     }
 
     /**
-     * Returns a string representation of this {@code Point2D}.
+     * Returns a string representation of this {@code Coordinate2D}.
      * This method is intended to be used only for informational purposes.
      * The content and format of the returned string might vary between
      * implementations.
@@ -266,6 +281,6 @@ public class Coordinate2D implements utility.Vector2D {
      */
     @Override
     public String toString() {
-        return point2D.toString();
+        return toPoint2D(this.x,this.y).toString();
     }
 }

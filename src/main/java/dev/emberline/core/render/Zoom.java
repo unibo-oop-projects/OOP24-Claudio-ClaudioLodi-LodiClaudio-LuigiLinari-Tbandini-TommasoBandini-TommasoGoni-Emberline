@@ -6,13 +6,11 @@ import utility.Coordinate2D;
 import utility.Pair;
 import utility.Vector2D;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 
-public class Zoom implements Updatable {
+public class Zoom implements Updatable, Serializable {
 
     private Pair<Vector2D, Vector2D> curr;
     private Pair<Vector2D, Vector2D> to;
