@@ -1,6 +1,9 @@
 package dev.emberline.gui.towerdialog;
 
 import dev.emberline.core.GameLoop;
+import dev.emberline.core.graphics.SpriteLoader;
+import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
+import dev.emberline.core.graphics.spritekeys.UISpriteKey;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
@@ -11,7 +14,6 @@ import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
-import dev.emberline.gui._TemporarySpriteProvider;
 import dev.emberline.gui.event.ResetTowerInfoEvent;
 import dev.emberline.gui.event.SetTowerInfoEvent;
 import dev.emberline.gui.event.UpgradeTowerInfoEvent;
@@ -151,13 +153,13 @@ public class TowerDialogLayer extends GuiLayer {
         // Building buttons
         addSelectorButtons(
                 displayedEnchantment,
-                new Image[]{_TemporarySpriteProvider.ICE_BUTTON.getImage(), _TemporarySpriteProvider.FIRE_BUTTON.getImage()},
+                new Image[]{SpriteLoader.loadSprite(UISpriteKey.ICE_BUTTON).getImage(), SpriteLoader.loadSprite(UISpriteKey.FIRE_BUTTON).getImage()},
                 new EnchantmentInfo.Type[]{EnchantmentInfo.Type.ICE, EnchantmentInfo.Type.FIRE},
                 0
         );
         addSelectorButtons(
                 displayedProjectile,
-                new Image[]{_TemporarySpriteProvider.SMALL_BUTTON.getImage(), _TemporarySpriteProvider.BIG_BUTTON.getImage()},
+                new Image[]{SpriteLoader.loadSprite(UISpriteKey.SMALL_BUTTON).getImage(), SpriteLoader.loadSprite(UISpriteKey.BIG_BUTTON).getImage()},
                 new ProjectileInfo.Type[]{ProjectileInfo.Type.SMALL, ProjectileInfo.Type.BIG},
                 Layout.Selector.TOTAL_HEIGHT
         );
@@ -186,20 +188,21 @@ public class TowerDialogLayer extends GuiLayer {
             GuiButton upgradeButton = new PricingGuiButton(
                     Layout.Selector.UPGRADE_BTN_X, Layout.Selector.UPGRADE_BTN_Y + yOffset,
                     Layout.Selector.UPGRADE_BTN_SIDE, Layout.Selector.UPGRADE_BTN_SIDE,
-                    _TemporarySpriteProvider.UPGRADE_BUTTON.getImage(), -element.getUpgradeCost()
+                    SpriteLoader.loadSprite(UISpriteKey.UPGRADE_BUTTON).getImage(),
+                    -element.getUpgradeCost()
             );
             // On the last level, disable the upgrade button
             if (!element.canUpgrade()) {
                 upgradeButton = new GuiButton(
                         Layout.Selector.UPGRADE_BTN_X, Layout.Selector.UPGRADE_BTN_Y + yOffset,
                         Layout.Selector.UPGRADE_BTN_SIDE, Layout.Selector.UPGRADE_BTN_SIDE,
-                        _TemporarySpriteProvider.DISABLED_UPGRADE_BUTTON.getImage()
+                        SpriteLoader.loadSprite(UISpriteKey.DISABLED_UPGRADE_BUTTON).getImage()
                 );
             }
             GuiButton resetButton = new GuiButton(
                     Layout.Selector.RESET_BTN_X, Layout.Selector.RESET_BTN_Y + yOffset,
                     Layout.Selector.RESET_BTN_WIDTH, Layout.Selector.RESET_BTN_HEIGHT,
-                    _TemporarySpriteProvider.CANCEL_BUTTON.getImage()
+                    SpriteLoader.loadSprite(UISpriteKey.CANCEL_BUTTON).getImage()
             );
             upgradeButton.setOnClick(() -> throwEvent(new UpgradeTowerInfoEvent(this, null, element)));
             resetButton.setOnClick(() -> throwEvent(new ResetTowerInfoEvent(this, null, element)));
@@ -231,11 +234,11 @@ public class TowerDialogLayer extends GuiLayer {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             // Background
-            Renderer.drawImage(_TemporarySpriteProvider.TDL_BACKGROUND.getImage(), gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
+            Renderer.drawImage(SpriteLoader.loadSprite(UISpriteKey.TDL_BACKGROUND).getImage(), gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
             // Title
-            Renderer.drawImageFit(_TemporarySpriteProvider.TOWER_TEXT.getImage(), gc, guics, Layout.TITLE_X, Layout.TITLE_Y, Layout.TITLE_WIDTH, Layout.TITLE_HEIGHT);
+            Renderer.drawImageFit(SpriteLoader.loadSprite(UISpriteKey.TOWER_TEXT).getImage(), gc, guics, Layout.TITLE_X, Layout.TITLE_Y, Layout.TITLE_WIDTH, Layout.TITLE_HEIGHT);
             // Stats Background
-            Renderer.drawImage(_TemporarySpriteProvider.STATS_BACKGROUND.getImage(), gc, guics, Layout.Stats.X, Layout.Stats.Y, Layout.Stats.WIDTH, Layout.Stats.HEIGHT);
+            Renderer.drawImage(SpriteLoader.loadSprite(UISpriteKey.STATS_BACKGROUND).getImage(), gc, guics, Layout.Stats.X, Layout.Stats.Y, Layout.Stats.WIDTH, Layout.Stats.HEIGHT);
             // Stats Overlay
             drawStatsOverlay(statsViews, gc, guics);
 
@@ -333,7 +336,7 @@ public class TowerDialogLayer extends GuiLayer {
             double y = Layout.Selector.UPGRADE_Y + verticalOffset;
             double width = Layout.Selector.LEVEL_MARKER_WIDTH;
             double height = Layout.Selector.UPGRADE_HEIGHT;
-            Image sprite = (i < info.level()) ? _TemporarySpriteProvider.FULL_UPGRADE_LEVEL.getImage() : _TemporarySpriteProvider.EMPTY_UPGRADE_LEVEL.getImage();
+            Image sprite = (i < info.level()) ? SpriteLoader.loadSprite(UISpriteKey.FULL_UPGRADE_LEVEL).getImage() : SpriteLoader.loadSprite(UISpriteKey.EMPTY_UPGRADE_LEVEL).getImage();
             Renderer.drawImage(sprite, gc, cs, x, y, width, height);
         }
     }
@@ -341,16 +344,16 @@ public class TowerDialogLayer extends GuiLayer {
     // Utility method to get the icon for the given UpgradableInfo, does not cover the BASE types.
     // If an icon cannot be found, an empty image is returned (the space character).
     private static Image getIcon(UpgradableInfo<?, ?> info) {
-        Image empty = _TemporarySpriteProvider.getCharImage(' ');
+        Image empty = SpriteLoader.loadSprite(new StringSpriteKey(" ")).getImage();
         return switch (info) {
             case EnchantmentInfo e -> {
-                if (e.type() == EnchantmentInfo.Type.FIRE) yield _TemporarySpriteProvider.FIRE_ICON.getImage();
-                if (e.type() == EnchantmentInfo.Type.ICE) yield _TemporarySpriteProvider.ICE_ICON.getImage();
+                if (e.type() == EnchantmentInfo.Type.FIRE) yield SpriteLoader.loadSprite(UISpriteKey.FIRE_ICON).getImage();
+                if (e.type() == EnchantmentInfo.Type.ICE) yield SpriteLoader.loadSprite(UISpriteKey.ICE_ICON).getImage();
                 yield empty;
             }
             case ProjectileInfo p -> {
-                if (p.type() == ProjectileInfo.Type.SMALL) yield _TemporarySpriteProvider.SMALL_ICON.getImage();
-                if (p.type() == ProjectileInfo.Type.BIG) yield _TemporarySpriteProvider.BIG_ICON.getImage();
+                if (p.type() == ProjectileInfo.Type.SMALL) yield SpriteLoader.loadSprite(UISpriteKey.SMALL_ICON).getImage();
+                if (p.type() == ProjectileInfo.Type.BIG) yield SpriteLoader.loadSprite(UISpriteKey.BIG_ICON).getImage();
                 yield empty;
             }
             default -> empty;

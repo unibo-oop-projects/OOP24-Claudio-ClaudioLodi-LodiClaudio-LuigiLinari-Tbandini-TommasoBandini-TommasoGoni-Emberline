@@ -1,11 +1,12 @@
 package dev.emberline.gui.towerdialog;
 
 import dev.emberline.core.GameLoop;
+import dev.emberline.core.graphics.SpriteLoader;
+import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
 import dev.emberline.gui.GuiButton;
-import dev.emberline.gui._TemporarySpriteProvider;
 import javafx.scene.image.Image;
 
 import java.text.DecimalFormat;
@@ -38,8 +39,8 @@ public class PricingGuiButton extends GuiButton {
 
     private void drawPrice(Renderer renderer) {
         // Draw price
-        String priceString = new DecimalFormat("+0.##;-0.##").format(price);
-        Image pricingImage = _TemporarySpriteProvider.getStringImage(priceString + "$");
+        String priceString = new DecimalFormat("+0.##;0.##").format(price); // Negative prices won't show a sign, positive prices will show a plus sign
+        Image pricingImage = SpriteLoader.loadSprite(new StringSpriteKey(priceString + "$")).getImage();
         double priceWidth = this.width * Layout.PRICE_WIDTH_RATIO;
         double priceHeight = this.height * Layout.PRICE_HEIGHT_RATIO;
         double priceX = this.x + (this.width-priceWidth)*Layout.PRICE_X_OFFSET;

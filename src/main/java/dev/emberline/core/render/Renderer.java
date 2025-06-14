@@ -1,6 +1,7 @@
 package dev.emberline.core.render;
 
-import dev.emberline.gui._TemporarySpriteProvider;
+import dev.emberline.core.graphics.SpriteLoader;
+import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -84,7 +85,7 @@ public class Renderer {
         return guiCoordinateSystem;
     }
 
-    // UTILITY METHODS FOR RENDERING; must be called from the JavaFX Application Thread (rendertask lambda) //
+    // UTILITY METHODS FOR RENDERING; must be called from the JavaFX Application Thread (rendertask lambda) // TODO DOCUMENTATION
     public static void drawImage(Image image, GraphicsContext gc, CoordinateSystem cs, double x, double y, double width, double height) {
         gc.drawImage(image, cs.toScreenX(x), cs.toScreenY(y), cs.getScale() * width, cs.getScale() * height);
     }
@@ -120,7 +121,7 @@ public class Renderer {
         // Use image smoothing if the area is too small
         if (height * cs.getScale() < MIN_TEXT_HEIGHT_PX_SMOOTH) gc.setImageSmoothing(true);
         // Fit image or stretch vertically
-        Image image = _TemporarySpriteProvider.getStringImage(text);
+        Image image = SpriteLoader.loadSprite(new StringSpriteKey(text)).getImage();
         if (width / image.getWidth() < height / image.getHeight()) {
             drawImage(image, gc, cs, x, y + height * CENTER_TEXT_H_MARGIN, width, height * (1 - 2 * CENTER_TEXT_H_MARGIN));
         } else {
