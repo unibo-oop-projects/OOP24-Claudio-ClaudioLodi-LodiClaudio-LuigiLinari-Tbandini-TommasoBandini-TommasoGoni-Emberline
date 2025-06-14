@@ -1,14 +1,9 @@
 package dev.emberline.gui.event;
 
-public class GuiEvent {
-    private final String sourceId; // ad esempio ID del pulsante
-    private final Object payload;  // può essere null o qualsiasi cosa
+import java.util.EventObject;
 
-    public GuiEvent(String sourceId, Object payload) {
-        this.sourceId = sourceId;
-        this.payload = payload;
+public abstract class GuiEvent extends EventObject {
+    protected GuiEvent(Object source) {
+        super(source);
     }
-
-    public String getSourceId() { return sourceId; }
-    public Object getPayload() { return payload; }
 }

@@ -3,7 +3,11 @@ package dev.emberline.game.model;
 import dev.emberline.game.model.effects.BurnEffect;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.model.effects.SlowEffect;
+import dev.emberline.gui.towerdialog.stats.TowerStat;
+import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,13 +21,13 @@ import java.util.Optional;
  *
  * @see EnchantmentEffect
  */
-public record EnchantmentInfo(Type type, int level) {
+public record EnchantmentInfo(Type type, int level) implements TowerStatsProvider, UpgradableInfo<EnchantmentInfo.Type, EnchantmentInfo> {
 
     /**
      * Represents the type of enchantment in the game.
      * The type of enchantment influences its {@code EnchantmentEffect}.
      */
-    public enum Type {
+    public enum Type implements UpgradableInfo.InfoType {
         /** The default enchantment type. It has no effect and cannot be upgraded. */
         BASE,
         /** Represents a fire enchantment that deals a {@link BurnEffect}. */
@@ -61,51 +65,58 @@ public record EnchantmentInfo(Type type, int level) {
         }
     }
 
-    /**
-     * Determines whether the enchantment can be upgraded. A enchantment can be upgraded
-     * if its current type is not {@code Type.BASE} and its level is lower than the maximum level.
-     * An enchantment of type {@code Type.BASE} cannot be upgraded and can only be changed to a specific type.
-     *
-     * @see #canChangeType()
-     * @return {@code true} if the enchantment can be upgraded, otherwise {@code false}.
-     */
+    @Override
     public boolean canUpgrade() {
         return type != Type.BASE && level < MAX_LEVEL;
     }
 
-    /**
-     * Determines whether the enchantment's type can be changed.
-     * An enchantment's type can be changed if its level is currently 0.
-     *
-     * @see #canUpgrade()
-     * @return {@code true} if the current level is 0 and the type can be changed,
-     *         otherwise {@code false}.
-     */
+    @Override
+    public int getMaxLevel() {
+        return MAX_LEVEL;
+    }
+
+    @Override
     public boolean canChangeType() {
-        return level == 0;
+        return type == Type.BASE;
+    }
+
+    @Override
+    public EnchantmentInfo getUpgrade() {
+        if (canUpgrade()) {
+            return new EnchantmentInfo(type, level + 1);
+        }
+        throw new IllegalStateException("Cannot upgrade enchantment of type " + type + " at level " + level);
+    }
+
+    @Override
+    public EnchantmentInfo getChangeType(Type newType) {
+        if (canChangeType()) {
+            return new EnchantmentInfo(newType, 0);
+        }
+        throw new IllegalStateException("Cannot change type of enchantment of type " + type + " at level " + level);
+    }
+
+    @Override
+    public EnchantmentInfo getDefault() {
+        return new EnchantmentInfo(Type.BASE, 0);
     }
 
     // STATS //
-    // Upgrade costs
-    private static final int BASE_UPGRADE_COST = 50;
-    private static final int[] UPGRADE_COSTS = {100, 100, 100, 100, 0};
-    // Effect duration
-    private static final double[] EFFECT_DURATION = {3, 3.2, 3.4, 3.6, 3.8};
-    // Effects
-    private static final double[] FIRE_DAMAGE_PER_SECOND = {20,25,30,35,40};
-    private static final double[] ICE_SLOWING_FACTOR = {0.9,0.8,0.7,0.6,0.5};
+    private static class Stats {
+        // Upgrade costs
+        private static final int BASE_UPGRADE_COST = 50;
+        private static final int[] UPGRADE_COSTS = {100, 100, 100, 100, 0};
+        // Effect duration
+        private static final double[] EFFECT_DURATION = {3, 3.2, 3.4, 3.6, 3.8};
+        // Effects
+        private static final double[] FIRE_DAMAGE_PER_SECOND = {20,25,30,35,40};
+        private static final double[] ICE_SLOWING_FACTOR = {0.9,0.8,0.7,0.6,0.5};
+    }
 
-    /**
-     * <p> Calculates and retrieves the cost required for upgrading the enchantment to the next level
-     * or transitioning from the base type to a specific enchantment type. </p>
-     * <p> The presence of an upgrade cost does not guarantee that upgrading is possible, you must always check
-     * {@link #canUpgrade()} before attempting to upgrade or {@link #canChangeType()} before changing the type. </p>
-     *
-     * @return The cost associated with either upgrading to the next level or switching from the base type.
-     */
+    @Override
     public int getUpgradeCost() {
-        if (type == Type.BASE) return BASE_UPGRADE_COST;
-        return UPGRADE_COSTS[level];
+        if (type == Type.BASE) return Stats.BASE_UPGRADE_COST;
+        return Stats.UPGRADE_COSTS[level];
     }
 
     /**
@@ -118,11 +129,21 @@ public record EnchantmentInfo(Type type, int level) {
      *         or an empty {@code Optional} if no effect is associated with the enchantment.
      */
     public Optional<EnchantmentEffect> getEffect() {
-        double duration = EFFECT_DURATION[level];
+        double duration = Stats.EFFECT_DURATION[level];
         return Optional.ofNullable(switch (type) {
-            case Type.ICE -> new SlowEffect(ICE_SLOWING_FACTOR[level], duration);
-            case Type.FIRE -> new BurnEffect(FIRE_DAMAGE_PER_SECOND[level], duration);
+            case Type.ICE -> new SlowEffect(Stats.ICE_SLOWING_FACTOR[level], duration);
+            case Type.FIRE -> new BurnEffect(Stats.FIRE_DAMAGE_PER_SECOND[level], duration);
             case Type.BASE -> null;
         });
+    }
+
+    @Override
+    public List<TowerStat> getTowerStats() {
+        List<TowerStat> towerStats = new ArrayList<>();
+
+        // Optional effect
+        getEffect().ifPresent(effect -> towerStats.addAll(effect.getTowerStats()));
+
+        return towerStats;
     }
 }
