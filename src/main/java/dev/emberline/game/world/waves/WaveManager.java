@@ -3,10 +3,14 @@ package dev.emberline.game.world.waves;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WaveManager implements Updatable {
+/**
+ * A class that keeps track of all the waves, and the current wave.
+ */
+public class WaveManager implements Updatable, Serializable {
     
     private final World world;
     //this will be one of the n waves contained in the list
@@ -14,6 +18,10 @@ public class WaveManager implements Updatable {
     private Integer currentWave = 0;
     private final Integer nWaves = 2;
 
+    /**
+     * Creates a new instance of {@code WaveManager}
+     * @param world is the reference to the World
+     */
     public WaveManager(World world) {
         this.world = world;
 
@@ -23,19 +31,22 @@ public class WaveManager implements Updatable {
     }
 
     /**
-     * @return the current wave.
+     * @return the current {@code Wave}
      */
     public Wave getWave() {
         return this.waves.get(currentWave);
     }
 
+    /**
+     * @return the number of the current wave
+     */
     public int getCurrentWave() {
         return currentWave;
     }
 
     /**
-     * @param elapsed
      * Updates the current wave and check weather it is over.
+     * @param elapsed
      */
     @Override
     public void update(long elapsed) {

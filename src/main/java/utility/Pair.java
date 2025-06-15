@@ -1,11 +1,12 @@
 package utility;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /*
  * Generic pair class
  */
-public class Pair<A,B> {
+public class Pair<A,B> implements Serializable {
 
     private A x;
     private B y;

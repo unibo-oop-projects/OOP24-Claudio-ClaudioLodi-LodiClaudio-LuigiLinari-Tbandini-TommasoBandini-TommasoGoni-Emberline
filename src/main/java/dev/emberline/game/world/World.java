@@ -8,7 +8,7 @@ import dev.emberline.game.world.waves.WaveManager;
 
 import java.io.Serializable;
 
-public class World implements Updatable, Renderable {
+public class World implements Updatable, Renderable, Serializable {
     
     // Enemies
     private final EnemiesManager enemiesManager;

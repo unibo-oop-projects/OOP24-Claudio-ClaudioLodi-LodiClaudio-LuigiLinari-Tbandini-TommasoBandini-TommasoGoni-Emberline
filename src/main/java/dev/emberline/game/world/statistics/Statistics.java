@@ -3,7 +3,12 @@ package dev.emberline.game.world.statistics;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 
-public class Statistics implements Updatable {
+import java.io.Serializable;
+
+/**
+ * A class that keeps all the statistics of the game.
+ */
+public class Statistics implements Updatable, Serializable {
 
     private final World world;
     private int enemiesKilled = 0;
@@ -11,6 +16,8 @@ public class Statistics implements Updatable {
     private long timeInGame = 0;
     private int playerHealth = 0;
     private int dps = 0;
+
+    private long acc = 0;
 
     public Statistics(World world) {
         this.world = world;
@@ -31,9 +38,9 @@ public class Statistics implements Updatable {
     public void updatePlayerHealth(int playerHealth) {
         this.playerHealth = playerHealth;
     }
+    
+    public void updateDPS(int damagePerTick, long elapsed) {
 
-    public void updateDPS(int dps) {
-        this.dps = dps;
     }
 
     public int getEnemiesKilled() {
