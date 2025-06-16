@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.EnchantmentInfo;
-import dev.emberline.game.model.EnchantmentInfo.Type;
+import dev.emberline.game.model.effects.DummyEffect;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.enemy.Enemy.EnemyState;
@@ -14,66 +14,45 @@ import dev.emberline.game.world.entities.enemies.enemy.Enemy.FacingDirection;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy.UniformMotion;
 import javafx.geometry.Point2D;
 import utility.Coordinate2D;
-import utility.Tile;
 
 public class EnemyUpdateComponent implements Updatable {
+    private static final double VELOCITY_MAG = 1.0 / 1e9; // 1 tile/s
+    private static final double FULL_HEALTH = 50;
+    private final double width = 1;
+    private final double height = 1;
 
-    private final double VELOCITY_MAG = 1.0 / 1e9; // 1 tile/s
+    private final Enemy enemy;
+    private EnemyState enemyState;
+    private EnchantmentEffect activeEffect = new DummyEffect();
+
+    private double health = FULL_HEALTH;
     private double slowFactor = 1;
 
     private Coordinate2D position;
     private Coordinate2D velocity;
-    private List<Coordinate2D> destinations;
+
+    private final List<Coordinate2D> destinations = new ArrayList<>();
     private int destinationsIdx = 0;
 
-    private double width = 1;
-    private double height = 1;
-
-    private final double FULL_HEALTH = 50;
-    private double health;
-    
-    private EnchantmentEffect activeEffect;
-    
-    private EnemyState enemyState;
-    
-    private final Enemy owner;
-
-    public EnemyUpdateComponent(Coordinate2D spawnPoint, World world, Enemy owner) {
-        this.owner = owner;
-        this.health = FULL_HEALTH;
+    public EnemyUpdateComponent(Coordinate2D spawnPoint, World world, Enemy enemy) {
+        this.enemy = enemy;
 
         // Init destinations
-        destinations = new ArrayList<>();
         for (
             Optional<Coordinate2D> next = world.getWaveManager().getWave().getNext(spawnPoint);
-            next.isPresent(); 
+            next.isPresent();
             next = world.getWaveManager().getWave().getNext(destinations.getLast())
         ) {
-            destinations.add(
-                next.get()
-            );
+            destinations.add(next.get());
         }
+
         this.position = spawnPoint.subtract(0, height/2);
-        for (int i = 0; i < destinations.size(); i++) {
-            destinations.set(i, destinations.get(i).subtract(0, height/2));
-        }
-        
-        this.enemyState = destinations.size() != 0 ? EnemyState.WALKING : EnemyState.ATTACKING;
+        destinations.replaceAll(coordinate2D -> coordinate2D.subtract(0, height / 2));
+
+        this.enemyState = !destinations.isEmpty() ? EnemyState.WALKING : EnemyState.ATTACKING;
         if (enemyState == EnemyState.WALKING) {
             this.velocity = destinations.get(destinationsIdx).subtract(position).normalize().multiply(VELOCITY_MAG);
         }
-        
-        this.activeEffect = new EnchantmentEffect() {
-            @Override
-            public Type getEffectType() {
-                return Type.BASE;
-            }
-
-            @Override
-            public boolean isExpired() {
-                return true;
-            }
-        };
     }
 
     @Override
@@ -92,20 +71,20 @@ public class EnemyUpdateComponent implements Updatable {
                 break;
 
             case DYING:
-                if (owner.getAnimation().hasEnded()) {
+                if (enemy.getAnimation().hasEnded()) {
                     enemyState = EnemyState.DEAD;
                 }
             
             case DEAD:
         }
 
-        owner.getAnimation().update(elapsed);
+        enemy.getAnimation().update(elapsed);
     }
 
     /**
      * @param time time of truncation
      * @return All the uniform motions starting from the current position of the enemy
-     * That is described by a list of {@code UniformMotion}
+     * that is described by a list of {@code UniformMotion}
      */
     public List<UniformMotion> getMotionUntil(long time) {
         Point2D curr = new Point2D(position.getX(), position.getY());
@@ -139,11 +118,11 @@ public class EnemyUpdateComponent implements Updatable {
     public void applyEffect(EnchantmentEffect effect) {
         this.activeEffect = effect;
     }
-    
+
     public void setSlowFactor(double slowFactor) {
         this.slowFactor = slowFactor;
     }
-    
+
     public boolean isDead() {
         return enemyState == EnemyState.DEAD;
     }
@@ -169,9 +148,7 @@ public class EnemyUpdateComponent implements Updatable {
     }
 
     FacingDirection getFacingDirection() {
-        int angle = Math.round(
-            (float)Math.toDegrees(Math.atan2(velocity.getY(), velocity.getX()))
-        );
+        int angle = Math.round((float)Math.toDegrees(Math.atan2(velocity.getY(), velocity.getX())));
         return switch(angle) {
             case 180 -> FacingDirection.LEFT;
             case 90 -> FacingDirection.UP;
