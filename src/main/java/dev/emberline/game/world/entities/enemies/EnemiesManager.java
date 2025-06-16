@@ -14,36 +14,55 @@ import utility.Coordinate2D;
 
 public class EnemiesManager implements Updatable, Renderable {
 
-    // TODO data structure: efficient querying based on area
     private final List<IEnemy> enemies = new LinkedList<>();
+    private final SpatialHashGrid<IEnemy> spatialHashGrid;
+
     private final World world;
 
     public EnemiesManager(World world) {
         this.world = world;
+
+        //TODO
+        this.spatialHashGrid = new SpatialHashGrid<>(
+            0, 0, 
+            32, 18
+        );
     }
 
     public void addEnemy(Coordinate2D spawnPoint) {
-        enemies.add(new Enemy(spawnPoint, world));
+        IEnemy newEnemy = new Enemy(spawnPoint, world);
+        enemies.add(newEnemy);
+        spatialHashGrid.add(newEnemy);
     }
     
     public List<IEnemy> getNear(Point2D location, double radius) {
-        // TODO
-        return enemies;
-        /*throw new UnsupportedOperationException();*/
+        return spatialHashGrid.getNear(location, radius);
     }
 
     @Override
     public void update(long elapsed) {
-        Iterator<IEnemy> it = enemies.iterator();
+        Iterator<IEnemy> enemiesIt = enemies.iterator();
         IEnemy currEnemy;
-        while (it.hasNext()) {
-            currEnemy = it.next();
-
+        while (enemiesIt.hasNext()) {
+            currEnemy = enemiesIt.next();
+            
             currEnemy.update(elapsed);
             if (currEnemy.isDead()) {
-                it.remove();
+                enemiesIt.remove();
             }
         }
+
+        List<IEnemy> toUpdate = new LinkedList<>();
+        List<IEnemy> toRemove = new LinkedList<>();
+        for (final IEnemy enemy : spatialHashGrid) {
+            if (enemy.isHittable()) {
+                toUpdate.add(enemy);
+            } else {
+                toRemove.add(enemy);
+            }
+        }
+        spatialHashGrid.updateAll(toUpdate);
+        spatialHashGrid.removeAll(toRemove);
     }
 
     @Override

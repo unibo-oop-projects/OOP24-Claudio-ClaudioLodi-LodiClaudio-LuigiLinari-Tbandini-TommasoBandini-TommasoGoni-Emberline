@@ -17,6 +17,8 @@ public interface IEnemy extends Updatable, Renderable {
     
     boolean isDead();
 
+    boolean isHittable();
+
     /** 
      * Uniform motion (s_0 + v * t) with t in [0, {@code duration}] ns
      */
@@ -28,4 +30,6 @@ public interface IEnemy extends Updatable, Renderable {
      * That is described by a list of {@code UniformMotion}
      */
     List<UniformMotion> getMotionUntil(long time);
+
+    Point2D getPosition();
 }
