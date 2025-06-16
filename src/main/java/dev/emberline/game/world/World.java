@@ -2,7 +2,7 @@ package dev.emberline.game.world;
 
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
-import dev.emberline.game.world.entities.enemy.EnemiesManager;
+import dev.emberline.game.world.entities.enemies.EnemiesManager;
 import dev.emberline.game.world.statistics.Statistics;
 import dev.emberline.game.world.entities.projectiles.ProjectilesManager;
 import dev.emberline.game.world.entities.projectiles.projectile.ProjectileHitListener;
