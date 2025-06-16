@@ -6,9 +6,8 @@ import dev.emberline.core.animations.Animation;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
 import dev.emberline.utility.Vector2D;
-import dev.emberline.game.model.EnchantmentInfo;
 
-public class Enemy implements IEnemy {
+public abstract class AbstractEnemy implements IEnemy {
 
     enum FacingDirection { UP, RIGHT, DOWN, LEFT }
     enum EnemyState      { WALKING, ATTACKING, DYING, DEAD }
@@ -16,10 +15,14 @@ public class Enemy implements IEnemy {
     private final EnemyUpdateComponent updateComponent;
     private final EnemyRenderComponent renderComponent;
 
-    public Enemy(Vector2D spawnPoint, World world) {
+    public AbstractEnemy(Vector2D spawnPoint, World world) {
         this.updateComponent = new EnemyUpdateComponent(spawnPoint, world, this);
         this.renderComponent = new EnemyRenderComponent(this);
     }
+
+    abstract protected double getWidth();
+    abstract protected double getHeight();
+    //TODO ABSTRACT METHOD FOR ANIMATION SELECTION
 
     @Override
     public void update(long elapsed) {
@@ -55,7 +58,7 @@ public class Enemy implements IEnemy {
     public boolean isHittable() {
         return updateComponent.isHittable();
     }
-    
+
     /**
      * @param time time of truncation
      * @return All the uniform motions starting from the current position of the enemy
@@ -71,14 +74,6 @@ public class Enemy implements IEnemy {
         return updateComponent.getPosition();
     }
 
-    double getWidth() {
-        return updateComponent.getWidth();
-    }
-
-    double getHeight() {
-        return updateComponent.getHeight();
-    }
-
     double getHealthPercentage() {
         return updateComponent.getHealthPercentage();
     }
@@ -91,10 +86,7 @@ public class Enemy implements IEnemy {
         return updateComponent.getEnemyState();
     }
 
-    EnchantmentInfo.Type getEffectType() {
-        return updateComponent.getEffectType();
-    }
-
+    // TODO FIX
     Animation getAnimation() {
         return renderComponent.getAnimation();
     }

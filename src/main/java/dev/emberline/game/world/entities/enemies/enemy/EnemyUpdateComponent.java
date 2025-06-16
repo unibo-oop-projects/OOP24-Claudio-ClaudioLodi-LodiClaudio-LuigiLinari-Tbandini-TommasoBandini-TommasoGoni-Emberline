@@ -5,12 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import dev.emberline.core.components.Updatable;
-import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.effects.DummyEffect;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
-import dev.emberline.game.world.entities.enemies.enemy.Enemy.EnemyState;
-import dev.emberline.game.world.entities.enemies.enemy.Enemy.FacingDirection;
+import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy.EnemyState;
+import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy.FacingDirection;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy.UniformMotion;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
@@ -18,10 +17,8 @@ import dev.emberline.utility.Vector2D;
 public class EnemyUpdateComponent implements Updatable {
     private static final double VELOCITY_MAG = 1.0 / 1e9; // 1 tile/s
     private static final double FULL_HEALTH = 50;
-    private final double width = 1;
-    private final double height = 1;
 
-    private final Enemy enemy;
+    private final AbstractEnemy enemy;
     private EnemyState enemyState;
     private EnchantmentEffect activeEffect = new DummyEffect();
 
@@ -33,20 +30,19 @@ public class EnemyUpdateComponent implements Updatable {
 
     private final List<Vector2D> destinations = new ArrayList<>();
     private int destinationsIdx = 0;
-    public EnemyUpdateComponent(Vector2D spawnPoint, World world, Enemy enemy) {
+
+    public EnemyUpdateComponent(Vector2D spawnPoint, World world, AbstractEnemy enemy) {
         this.enemy = enemy;
 
         // Init destinations
-        for (
-            Optional<Vector2D> next = world.getWaveManager().getWave().getNext(spawnPoint);
-            next.isPresent();
-            next = world.getWaveManager().getWave().getNext(destinations.getLast())
-        ) {
+        Optional<Vector2D> next = world.getWaveManager().getWave().getNext(spawnPoint);
+        while (next.isPresent()) {
             destinations.add(next.get());
+            next = world.getWaveManager().getWave().getNext(destinations.getLast());
         }
 
-        this.position = spawnPoint.subtract(0, height/2);
-        destinations.replaceAll(coordinate2D -> coordinate2D.subtract(0, height / 2));
+        this.position = spawnPoint.subtract(0, enemy.getHeight()/2);
+        destinations.replaceAll(coordinate2D -> coordinate2D.subtract(0, enemy.getHeight()/2));
 
         this.enemyState = !destinations.isEmpty() ? EnemyState.WALKING : EnemyState.ATTACKING;
         if (enemyState == EnemyState.WALKING) {
@@ -57,24 +53,21 @@ public class EnemyUpdateComponent implements Updatable {
     @Override
     public void update(long elapsed) {
         switch (enemyState) {
-            case WALKING:
+            case WALKING -> {
                 if (!activeEffect.isExpired()) {
                     // activeEffect.updateEffect(elapsed, enemy);
                 }
                 move(elapsed);
-                break;
-
-            case ATTACKING:
-                // attack();
-                enemyState = EnemyState.DEAD;
-                break;
-
-            case DYING:
+            }
+            case ATTACKING -> {
+                // attack(); //todo attacking logic
+                    enemyState = EnemyState.DYING;
+            }
+            case DYING -> {
                 if (enemy.getAnimation().hasEnded()) {
                     enemyState = EnemyState.DEAD;
                 }
-
-            case DEAD:
+            }
         }
 
         enemy.getAnimation().update(elapsed);
@@ -134,16 +127,8 @@ public class EnemyUpdateComponent implements Updatable {
         return new Coordinate2D(position.getX(), position.getY());
     }
 
-    double getWidth() {
-        return width;
-    }
-
-    double getHeight() {
-        return height;
-    }
-
     double getHealthPercentage() {
-        return health / FULL_HEALTH;
+        return Math.clamp(health / FULL_HEALTH, 0, 1);
     }
 
     FacingDirection getFacingDirection() {
@@ -159,10 +144,6 @@ public class EnemyUpdateComponent implements Updatable {
 
     EnemyState getEnemyState() {
         return enemyState;
-    }
-
-    EnchantmentInfo.Type getEnchantmentType() {
-        return activeEffect.getEnchantmentType();
     }
 
     private void move(long elapsed) {

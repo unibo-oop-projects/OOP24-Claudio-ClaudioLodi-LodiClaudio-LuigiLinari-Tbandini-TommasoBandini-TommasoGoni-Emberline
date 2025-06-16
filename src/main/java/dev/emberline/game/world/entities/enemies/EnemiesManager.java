@@ -5,9 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
-import dev.emberline.utility.Coordinate2D;
+import dev.emberline.game.world.entities.enemies.enemy.concrete.Pig;
 import dev.emberline.utility.Vector2D;
-import dev.emberline.game.world.entities.enemies.enemy.Enemy;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
@@ -30,7 +29,7 @@ public class EnemiesManager implements Updatable, Renderable {
     }
 
     public void addEnemy(Vector2D spawnPoint) {
-        IEnemy newEnemy = new Enemy(spawnPoint, world);
+        IEnemy newEnemy = new Pig(spawnPoint, world);
         enemies.add(newEnemy);
         spatialHashGrid.add(newEnemy);
     }

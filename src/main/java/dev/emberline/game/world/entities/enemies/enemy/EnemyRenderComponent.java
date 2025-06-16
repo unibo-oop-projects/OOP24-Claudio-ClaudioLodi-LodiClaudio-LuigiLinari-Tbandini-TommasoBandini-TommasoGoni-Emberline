@@ -13,21 +13,17 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Paint;
 
 public class EnemyRenderComponent implements Renderable {
-    
-    // TODO
-    private static final double healthbarFullWidth = 1;
-    private static final double healthbarHeight = 0.1;
-    private static final double healthbarXOffset = 0.1;
-    private static final double healthbarYOffset = 0.1;
-    //
+    private static class HealthbarLayout {
+        private static final double FULL_WIDTH = 1;
+        private static final double HEIGHT = 0.1;
+        private static final double X_OFFSET = 0.1;
+        private static final double Y_OFFSET = 0.1;
+    }
 
-    private final Enemy owner;
+    private final AbstractEnemy enemy;
 
-    private EnemyAnimation enemyAnimation;
-
-    public EnemyRenderComponent(Enemy owner) {
-        this.owner = owner;
-        this.enemyAnimation = new EnemyAnimation(owner);
+    public EnemyRenderComponent(AbstractEnemy enemy) {
+        this.enemy = enemy;
     }
 
     @Override
@@ -35,28 +31,27 @@ public class EnemyRenderComponent implements Renderable {
         Renderer renderer = GameLoop.getInstance().getRenderer();
         GraphicsContext gc = renderer.getGraphicsContext();
         CoordinateSystem cs = renderer.getWorldCoordinateSystem();
+        // enemy body
+        Vector2D position = enemy.getPosition();
+        double enemyScreenWidth = enemy.getWidth() * cs.getScale();
+        double enemyScreenHeight = enemy.getHeight() * cs.getScale();
+        double enemyScreenX = cs.toScreenX(position.getX()) - enemyScreenWidth/2;
+        double enemyScreenY = cs.toScreenY(position.getY()) - enemyScreenHeight/2;
+        // healthbar
+        double hbScreenWidth = HealthbarLayout.FULL_WIDTH * cs.getScale();
+        double hbScreenHeight = HealthbarLayout.HEIGHT * cs.getScale();
+        double hbScreenX = enemyScreenX + HealthbarLayout.X_OFFSET;
+        double hbScreenY = enemyScreenY + HealthbarLayout.Y_OFFSET;
 
-        double enemyWidth = owner.getWidth() * cs.getScale();
-        double enemyHeight = owner.getHeight() * cs.getScale();
-
-        Vector2D position = owner.getPosition();
-        double enemyScreenX = cs.toScreenX(position.getX()) - enemyWidth/2;
-        double enemyScreenY = cs.toScreenY(position.getY()) - enemyHeight/2;
-
-        double _healthbarFullWidth = healthbarFullWidth * cs.getScale();
-        double _healthbarHeight = healthbarHeight * cs.getScale();
-        double healthbarScreenX = enemyScreenX + healthbarXOffset;
-        double healthbarScreenY = enemyScreenY + healthbarYOffset;
-
-        Image currAnimationState = enemyAnimation.getAnimationState();
+        Image currentFrame = enemyAnimation.getAnimationState();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.ENEMIES, () -> {
-            gc.drawImage(currAnimationState, enemyScreenX, enemyScreenY, enemyWidth, enemyHeight);
+            gc.drawImage(currentFrame, enemyScreenX, enemyScreenY, enemyScreenWidth, enemyScreenHeight);
 
             gc.setFill(Paint.valueOf("#696969"));
-            gc.fillRect(healthbarScreenX, healthbarScreenY, _healthbarFullWidth, _healthbarHeight);
+            gc.fillRect(hbScreenX, hbScreenY, hbScreenWidth, hbScreenHeight);
             gc.setFill(Paint.valueOf("#00CC00"));
-            gc.fillRect(healthbarScreenX, healthbarScreenY, (owner.getHealthPercentage()) * _healthbarFullWidth, _healthbarHeight);
+            gc.fillRect(hbScreenX, hbScreenY, (enemy.getHealthPercentage()) * hbScreenWidth, hbScreenHeight);
         }));
     }
     
