@@ -3,6 +3,7 @@ package dev.emberline.core.graphics.spritefactories;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.graphics.SingleSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.UISpriteKey;
 import javafx.scene.image.Image;
@@ -30,7 +31,7 @@ public class UISpriteFactory implements SpriteFactory<UISpriteKey> {
         JsonNode currentNode = configsRoot.get(uiSpriteKey.name());
         SpriteMetadata spriteMetadata = ConfigLoader.loadConfig(currentNode, SpriteMetadata.class);
         Image spriteAtlas = new Image(Objects.requireNonNull(UISpriteFactory.class.getResourceAsStream(spriteMetadata.filename)));
-        return new Sprite(new WritableImage(spriteAtlas.getPixelReader(), spriteMetadata.x, spriteMetadata.y, spriteMetadata.width, spriteMetadata.height));
+        return new SingleSprite(new WritableImage(spriteAtlas.getPixelReader(), spriteMetadata.x, spriteMetadata.y, spriteMetadata.width, spriteMetadata.height));
     }
 
     @Override

@@ -2,6 +2,7 @@ package dev.emberline.core.graphics.spritefactories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.graphics.SingleSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
 import javafx.scene.image.Image;
@@ -35,7 +36,7 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
 
     @Override
     public Sprite loadSprite(StringSpriteKey key) {
-        return new Sprite(getStringImage(key.string()));
+        return new SingleSprite(getStringImage(key.string()));
     }
 
     public static Image getCharImage(Character c) {
