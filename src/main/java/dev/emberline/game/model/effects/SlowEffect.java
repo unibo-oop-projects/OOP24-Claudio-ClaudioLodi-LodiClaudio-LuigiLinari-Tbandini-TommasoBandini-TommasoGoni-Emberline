@@ -2,6 +2,7 @@ package dev.emberline.game.model.effects;
 
 // TODO change this to a class when implementing the effect behaviour, duration must not be immutable
 
+import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 import dev.emberline.gui.towerdialog.stats.TowerStat.TowerStatType;
 
@@ -21,6 +22,11 @@ public record SlowEffect(double slowingFactor, double duration) implements Encha
     @Override
     public boolean isExpired() {
         return false;
+    }
+
+    @Override
+    public EnchantmentInfo.Type getEnchantmentType() {
+        return EnchantmentInfo.Type.ICE;
     }
 
     @Override

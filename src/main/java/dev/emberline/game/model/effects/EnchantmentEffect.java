@@ -1,5 +1,6 @@
 package dev.emberline.game.model.effects;
 
+import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
 
 /**
@@ -15,4 +16,11 @@ public interface EnchantmentEffect extends TowerStatsProvider {
      * @return true if the effect is expired, false otherwise.
      */
     boolean isExpired();
+
+    /**
+     * Retrieves the type of enchantment associated with this effect.
+     *
+     * @return The {@link EnchantmentInfo.Type} corresponding to this enchantment effect.
+     */
+    EnchantmentInfo.Type getEnchantmentType();
 }

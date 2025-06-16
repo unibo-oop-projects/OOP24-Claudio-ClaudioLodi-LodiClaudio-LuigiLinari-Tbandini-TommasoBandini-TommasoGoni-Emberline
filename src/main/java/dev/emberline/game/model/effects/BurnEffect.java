@@ -1,5 +1,6 @@
 package dev.emberline.game.model.effects;
 
+import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 import dev.emberline.gui.towerdialog.stats.TowerStat.TowerStatType;
 
@@ -18,6 +19,11 @@ public record BurnEffect(double damagePerSecond, double duration) implements Enc
     @Override
     public boolean isExpired() {
         return false;
+    }
+
+    @Override
+    public EnchantmentInfo.Type getEnchantmentType() {
+        return EnchantmentInfo.Type.FIRE;
     }
 
     @Override
