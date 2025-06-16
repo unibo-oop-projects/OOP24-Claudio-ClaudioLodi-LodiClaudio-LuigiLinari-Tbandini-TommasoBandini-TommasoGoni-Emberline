@@ -1,13 +1,18 @@
 package dev.emberline.game.world.entities.enemies.enemy;
 
 import java.util.List;
+
+import dev.emberline.core.animations.Animation;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
+import javafx.geometry.Point2D;
+import dev.emberline.game.model.EnchantmentInfo;
 import utility.Coordinate2D;
 
 public class Enemy implements IEnemy {
 
     enum FacingDirection { UP, RIGHT, DOWN, LEFT }
+    enum EnemyState      { WALKING, ATTACKING, DYING, DEAD }
 
     private final EnemyUpdateComponent updateComponent;
     private final EnemyRenderComponent renderComponent;
@@ -46,6 +51,11 @@ public class Enemy implements IEnemy {
     public boolean isDead() {
         return updateComponent.isDead();
     }
+
+    @Override
+    public boolean isHittable() {
+        return updateComponent.isHittable();
+    }
     
     /**
      * @param time time of truncation
@@ -57,8 +67,17 @@ public class Enemy implements IEnemy {
         return updateComponent.getMotionUntil(time);
     }
 
-    Coordinate2D getPosition() {
+    @Override
+    public Point2D getPosition() {
         return updateComponent.getPosition();
+    }
+
+    double getWidth() {
+        return updateComponent.getWidth();
+    }
+
+    double getHeight() {
+        return updateComponent.getHeight();
     }
 
     double getHealthPercentage() {
@@ -67,5 +86,17 @@ public class Enemy implements IEnemy {
 
     FacingDirection getFacingDirection() {
         return updateComponent.getFacingDirection();
+    }
+
+    EnemyState getEnemyState() {
+        return updateComponent.getEnemyState();
+    }
+
+    EnchantmentInfo.Type getEffectType() {
+        return updateComponent.getEffectType();
+    }
+
+    Animation getAnimation() {
+        return renderComponent.getAnimation();
     }
 }

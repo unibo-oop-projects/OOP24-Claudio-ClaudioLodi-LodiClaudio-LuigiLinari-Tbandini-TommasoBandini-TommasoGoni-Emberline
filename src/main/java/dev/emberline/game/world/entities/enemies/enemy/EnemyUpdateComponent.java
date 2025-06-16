@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import dev.emberline.core.components.Updatable;
+import dev.emberline.game.model.EnchantmentInfo;
+import dev.emberline.game.model.EnchantmentInfo.Type;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
+import dev.emberline.game.world.entities.enemies.enemy.Enemy.EnemyState;
 import dev.emberline.game.world.entities.enemies.enemy.Enemy.FacingDirection;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy.UniformMotion;
 import javafx.geometry.Point2D;
@@ -14,8 +17,6 @@ import utility.Coordinate2D;
 import utility.Tile;
 
 public class EnemyUpdateComponent implements Updatable {
-
-    private enum EnemyBehaviour { MOVING, ATTACKING }
 
     private final double VELOCITY_MAG = 1.0 / 1e9; // 1 tile/s
     private double slowFactor = 1;
@@ -25,39 +26,49 @@ public class EnemyUpdateComponent implements Updatable {
     private List<Coordinate2D> destinations;
     private int destinationsIdx = 0;
 
+    private double width = 1;
+    private double height = 1;
+
     private final double FULL_HEALTH = 50;
     private double health;
     
     private EnchantmentEffect activeEffect;
     
-    private EnemyBehaviour enemyBehaviour;
+    private EnemyState enemyState;
     
     private final Enemy owner;
 
     public EnemyUpdateComponent(Coordinate2D spawnPoint, World world, Enemy owner) {
         this.owner = owner;
-        this.position = spawnPoint;
-        
-        destinations = new ArrayList<>();
-        Optional<Tile> next = world.getWaveManager().getWave().getNext(
-            new Tile((int)position.getX(), (int)position.getY())
-        );
-        while (next.isPresent()) {
-            destinations.add(
-                new Coordinate2D(next.get().getX(), next.get().getY())
-            );
-            next = world.getWaveManager().getWave().getNext(
-                new Tile((int)destinations.getLast().getX(), (int)destinations.getLast().getY())
-            );
-        }
-
-        this.velocity = destinations.get(destinationsIdx).subtract(position).normalize().multiply(VELOCITY_MAG);
         this.health = FULL_HEALTH;
 
-        this.enemyBehaviour = destinationsIdx != destinations.size() ? 
-            EnemyBehaviour.MOVING : EnemyBehaviour.ATTACKING;
-
+        // Init destinations
+        destinations = new ArrayList<>();
+        for (
+            Optional<Coordinate2D> next = world.getWaveManager().getWave().getNext(spawnPoint);
+            next.isPresent(); 
+            next = world.getWaveManager().getWave().getNext(destinations.getLast())
+        ) {
+            destinations.add(
+                next.get()
+            );
+        }
+        this.position = spawnPoint.subtract(0, height/2);
+        for (int i = 0; i < destinations.size(); i++) {
+            destinations.set(i, destinations.get(i).subtract(0, height/2));
+        }
+        
+        this.enemyState = destinations.size() != 0 ? EnemyState.WALKING : EnemyState.ATTACKING;
+        if (enemyState == EnemyState.WALKING) {
+            this.velocity = destinations.get(destinationsIdx).subtract(position).normalize().multiply(VELOCITY_MAG);
+        }
+        
         this.activeEffect = new EnchantmentEffect() {
+            @Override
+            public Type getEffectType() {
+                return Type.BASE;
+            }
+
             @Override
             public boolean isExpired() {
                 return true;
@@ -67,47 +78,28 @@ public class EnemyUpdateComponent implements Updatable {
 
     @Override
     public void update(long elapsed) {
-        // animation.update(elapsed);
+        switch (enemyState) {
+            case WALKING:
+                if (!activeEffect.isExpired()) {
+                    // activeEffect.updateEffect(elapsed, owner);
+                }
+                move(elapsed);
+                break;
 
-        if (!activeEffect.isExpired()) {
-            // activeEffect.updateEffect(elapsed, owner);
-        }
-        
-        if (enemyBehaviour == EnemyBehaviour.MOVING) {
-            move(elapsed);
-        }
-    }
+            case ATTACKING:
+                // attack();
+                enemyState = EnemyState.DEAD;
+                break;
 
-    private void move(long elapsed) {
-        Coordinate2D currDestination = destinations.get(destinationsIdx);
-
-        // move along the velocity vector
-        position = position.add(velocity.multiply(slowFactor).multiply(elapsed));
-
-        // position -> destination vector
-        Coordinate2D posToDest = currDestination.subtract(position);
-        double dot = posToDest.dotProduct(velocity);
-        // dot <= 0 => either overshot or exactly at currDestination
-        while (dot <= 0) {
-            // if overshot => go back to destination and do the difference in movement in the next direction
-            double overshootAmount = posToDest.magnitude();
+            case DYING:
+                if (owner.getAnimation().hasEnded()) {
+                    enemyState = EnemyState.DEAD;
+                }
             
-            position = currDestination;
-            if (currDestination == destinations.getLast()) {
-                enemyBehaviour = EnemyBehaviour.ATTACKING;
-                return;
-            }
-            currDestination = destinations.get(++destinationsIdx);
-            Coordinate2D nextDirection = currDestination.subtract(position).normalize();
-            
-            // correction
-            position = position.add(nextDirection.multiply(overshootAmount));
-
-            velocity = nextDirection.multiply(VELOCITY_MAG);
-
-            posToDest = currDestination.subtract(position);
-            dot = posToDest.dotProduct(velocity);
+            case DEAD:
         }
+
+        owner.getAnimation().update(elapsed);
     }
 
     /**
@@ -139,6 +131,9 @@ public class EnemyUpdateComponent implements Updatable {
 
     public void dealDamage(double damage) {
         health -= damage;
+        if (health <= 0) {
+            enemyState = EnemyState.DYING;
+        }
     }
 
     public void applyEffect(EnchantmentEffect effect) {
@@ -150,15 +145,27 @@ public class EnemyUpdateComponent implements Updatable {
     }
     
     public boolean isDead() {
-        return health <= 0;
+        return enemyState == EnemyState.DEAD;
+    }
+
+    public boolean isHittable() {
+        return enemyState == EnemyState.WALKING;
+    }
+
+    public Point2D getPosition() {
+        return new Point2D(position.getX(), position.getY());
+    }
+
+    double getWidth() {
+        return width;
+    }
+
+    double getHeight() {
+        return height;
     }
 
     double getHealthPercentage() {
         return health / FULL_HEALTH;
-    }
-
-    Coordinate2D getPosition() {
-        return position;
     }
 
     FacingDirection getFacingDirection() {
@@ -172,5 +179,44 @@ public class EnemyUpdateComponent implements Updatable {
             case -90 -> FacingDirection.DOWN;
             default -> throw new IllegalStateException("The only handled cases of velocity are: LEFT, UP, RIGHT, DOWN");
         };
+    }
+
+    EnemyState getEnemyState() {
+        return enemyState;
+    }
+
+    EnchantmentInfo.Type getEffectType() {
+        return activeEffect.getEffectType();
+    }
+
+    private void move(long elapsed) {
+        // move along the velocity vector
+        position = position.add(velocity.multiply(slowFactor).multiply(elapsed));
+
+        Coordinate2D currDestination = destinations.get(destinationsIdx);
+        // position -> destination vector
+        Coordinate2D posToDest = currDestination.subtract(position);
+        double dot = posToDest.dotProduct(velocity);
+        // dot <= 0 => either overshot or exactly at currDestination
+        while (dot <= 0) {
+            // if overshot => go back to destination and do the difference in movement in the next direction
+            double overshootAmount = posToDest.magnitude();
+            
+            position = currDestination;
+            if (currDestination == destinations.getLast()) {
+                enemyState = EnemyState.ATTACKING;
+                return;
+            }
+            currDestination = destinations.get(++destinationsIdx);
+            Coordinate2D nextDirection = currDestination.subtract(position).normalize();
+            
+            // correction
+            position = position.add(nextDirection.multiply(overshootAmount));
+
+            velocity = nextDirection.multiply(VELOCITY_MAG);
+
+            posToDest = currDestination.subtract(position);
+            dot = posToDest.dotProduct(velocity);
+        }
     }
 }
