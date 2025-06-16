@@ -5,7 +5,7 @@ import java.util.Optional;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.entities.enemies.EnemiesManager;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
-import javafx.geometry.Point2D;
+import dev.emberline.utility.Vector2D;
 
 public class ProjectileHitListener {
     
@@ -16,7 +16,7 @@ public class ProjectileHitListener {
     }
 
     public void onProjectileHit(ProjectileHitEvent e) {
-        Point2D landingLocation = e.getLandingLocation();
+        Vector2D landingLocation = e.getLandingLocation();
         double damage = e.getDamage();
         double damageArea = (e.getDamageArea().isPresent() ? e.getDamageArea().get() : 0.1);
         Optional<EnchantmentEffect> effect = e.getEffect();

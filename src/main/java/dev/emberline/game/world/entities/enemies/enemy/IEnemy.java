@@ -5,7 +5,7 @@ import java.util.List;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.effects.EnchantmentEffect;
-import javafx.geometry.Point2D;
+import dev.emberline.utility.Vector2D;
 
 public interface IEnemy extends Updatable, Renderable {
 
@@ -22,7 +22,7 @@ public interface IEnemy extends Updatable, Renderable {
     /** 
      * Uniform motion (s_0 + v * t) with t in [0, {@code duration}] ns
      */
-    record UniformMotion(Point2D origin, Point2D velocity, long duration) {};
+    record UniformMotion(Vector2D origin, Vector2D velocity, long duration) {};
 
     /**
      * @param time time of truncation
@@ -31,5 +31,5 @@ public interface IEnemy extends Updatable, Renderable {
      */
     List<UniformMotion> getMotionUntil(long time);
 
-    Point2D getPosition();
+    Vector2D getPosition();
 }

@@ -1,12 +1,12 @@
 package dev.emberline.game.world.roads;
 
-import utility.Pair;
-import utility.Vector2D;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import dev.emberline.utility.Pair;
+import dev.emberline.utility.Vector2D;
 
 class Node implements Serializable {
     private final Vector2D pos;

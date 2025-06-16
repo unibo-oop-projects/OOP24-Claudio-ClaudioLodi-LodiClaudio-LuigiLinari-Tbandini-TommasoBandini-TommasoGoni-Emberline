@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
-import javafx.geometry.Point2D;
+import dev.emberline.utility.Vector2D;
 
 public class SpatialHashGrid<T extends IEnemy> implements Iterable<T> {
 
@@ -99,7 +99,7 @@ public class SpatialHashGrid<T extends IEnemy> implements Iterable<T> {
         return enemyCell.keySet().iterator();
     }
     
-    public List<T> getNear(Point2D location, double radius) {
+    public List<T> getNear(Vector2D location, double radius) {
         CellIdx min = getCellIdx(location.subtract(radius, radius));
         CellIdx max = getCellIdx(location.add(radius, radius));
 
@@ -107,7 +107,7 @@ public class SpatialHashGrid<T extends IEnemy> implements Iterable<T> {
         for (int i = min.x(); i <= max.x(); i++) {
             for (int j = min.y(); j <= max.y(); j++) {
                 for (final T enemy : spatialHashGrid[i][j]) {
-                    Point2D pos = enemy.getPosition();
+                    Vector2D pos = enemy.getPosition();
                     double dstX = pos.getX() - location.getX();
                     double dstY = pos.getY() - location.getY();
                     double sqDst = dstX * dstX + dstY * dstY;
@@ -122,7 +122,7 @@ public class SpatialHashGrid<T extends IEnemy> implements Iterable<T> {
         return inside;
     }
     
-    private CellIdx getCellIdx(Point2D location) {
+    private CellIdx getCellIdx(Vector2D location) {
         if (location.getX() < x_min || location.getY() < y_min ||
             location.getX() > x_max || location.getY() > y_max) {
             throw new IllegalArgumentException("Location out of bounds of the spatial hash grid");

@@ -1,15 +1,15 @@
 package dev.emberline.game.world.spawnpoints;
 
-import utility.Coordinate2D;
-import utility.Pair;
-import utility.Vector2D;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.*;
+
+import dev.emberline.utility.Coordinate2D;
+import dev.emberline.utility.Pair;
+import dev.emberline.utility.Vector2D;
 
 /**
  * This class represents spawnpoints as containers of enemies to spawn at a given time

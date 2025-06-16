@@ -2,9 +2,9 @@ package dev.emberline.core.render;
 
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Updatable;
-import utility.Coordinate2D;
-import utility.Pair;
-import utility.Vector2D;
+import dev.emberline.utility.Coordinate2D;
+import dev.emberline.utility.Pair;
+import dev.emberline.utility.Vector2D;
 
 import java.io.*;
 import java.net.URL;

@@ -1,4 +1,4 @@
-package utility;
+package dev.emberline.utility;
 
 import org.apache.commons.geometry.euclidean.twod.Vector2D;
 
@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * A 2D geometric point that represents the x, y coordinates.
  */
-public class Coordinate2D implements utility.Vector2D, Serializable {
+public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializable {
 
     /**
      * x coordinate
@@ -73,7 +73,7 @@ public class Coordinate2D implements utility.Vector2D, Serializable {
      * @throws NullPointerException if the specified {@code point} is null
      */
     @Override
-    public double distance(utility.Vector2D point) {
+    public double distance(dev.emberline.utility.Vector2D point) {
         return distance(point.getX(), point.getY());
     }
 
@@ -86,7 +86,7 @@ public class Coordinate2D implements utility.Vector2D, Serializable {
      * @return the point with added coordinates
      */
     @Override
-    public utility.Vector2D add(double x, double y) {
+    public dev.emberline.utility.Vector2D add(double x, double y) {
         Vector2D sum = toPoint2D(this.x,this.y).add(Vector2D.of(x, y));
         return new Coordinate2D(sum.getX(), sum.getY());
     }
@@ -100,7 +100,7 @@ public class Coordinate2D implements utility.Vector2D, Serializable {
      * @throws NullPointerException if the specified {@code point} is null
      */
     @Override
-    public utility.Vector2D add(utility.Vector2D point) {
+    public dev.emberline.utility.Vector2D add(dev.emberline.utility.Vector2D point) {
         return add(point.getX(), point.getY());
     }
 
@@ -113,7 +113,7 @@ public class Coordinate2D implements utility.Vector2D, Serializable {
      * @return the point with subtracted coordinates
      */
     @Override
-    public utility.Vector2D subtract(double x, double y) {
+    public dev.emberline.utility.Vector2D subtract(double x, double y) {
         Vector2D difference = toPoint2D(this.x,this.y).subtract(Vector2D.of(x, y));
         return new Coordinate2D(difference.getX(), difference.getY());
     }
@@ -126,7 +126,7 @@ public class Coordinate2D implements utility.Vector2D, Serializable {
      * @return the point with multiplied coordinates
      */
     @Override
-    public utility.Vector2D multiply(double factor) {
+    public dev.emberline.utility.Vector2D multiply(double factor) {
         return new Coordinate2D(getX() * factor, getY() * factor);
     }
 
@@ -139,7 +139,7 @@ public class Coordinate2D implements utility.Vector2D, Serializable {
      * @throws NullPointerException if the specified {@code point} is null
      */
     @Override
-    public utility.Vector2D subtract(utility.Vector2D point) {
+    public dev.emberline.utility.Vector2D subtract(dev.emberline.utility.Vector2D point) {
         return subtract(point.getX(), point.getY());
     }
 
@@ -151,7 +151,7 @@ public class Coordinate2D implements utility.Vector2D, Serializable {
      * @return the normalized vector represented by a {@code Coordinate2D} instance
      */
     @Override
-    public utility.Vector2D normalize() {
+    public dev.emberline.utility.Vector2D normalize() {
         Vector2D sum = toPoint2D(this.x,this.y).normalize();
         return new Coordinate2D(sum.getX(), sum.getY());
     }
@@ -179,7 +179,7 @@ public class Coordinate2D implements utility.Vector2D, Serializable {
      * @throws NullPointerException if the specified {@code point} is null
      */
     @Override
-    public double angle(utility.Vector2D point) {
+    public double angle(dev.emberline.utility.Vector2D point) {
         return angle(point.getX(), point.getY());
     }
 
@@ -216,7 +216,7 @@ public class Coordinate2D implements utility.Vector2D, Serializable {
      * @throws NullPointerException if the specified {@code vector} is null
      */
     @Override
-    public double dotProduct(utility.Vector2D vector) {
+    public double dotProduct(dev.emberline.utility.Vector2D vector) {
         return dotProduct(vector.getX(), vector.getY());
     }
 
@@ -227,7 +227,7 @@ public class Coordinate2D implements utility.Vector2D, Serializable {
      * @param y
      * @return
      */
-    public utility.Vector2D directionTo(double x, double y) {
+    public dev.emberline.utility.Vector2D directionTo(double x, double y) {
         Vector2D vector = Vector2D.of(x, y);
         Vector2D direction;
         if (vector.equals(Vector2D.of(this.x, this.y))) {
@@ -244,7 +244,7 @@ public class Coordinate2D implements utility.Vector2D, Serializable {
      * @param vector
      * @return
      */
-    public utility.Vector2D directionTo(utility.Vector2D vector) {
+    public dev.emberline.utility.Vector2D directionTo(dev.emberline.utility.Vector2D vector) {
         return this.directionTo(vector.getX(), vector.getY());
     }
 

@@ -12,18 +12,18 @@ import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.enemy.Enemy.EnemyState;
 import dev.emberline.game.world.entities.enemies.enemy.Enemy.FacingDirection;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy.UniformMotion;
-import javafx.geometry.Point2D;
-import utility.Coordinate2D;
-import utility.Tile;
+import dev.emberline.gui.towerdialog.stats.TowerStat;
+import dev.emberline.utility.Coordinate2D;
+import dev.emberline.utility.Vector2D;
 
 public class EnemyUpdateComponent implements Updatable {
 
     private final double VELOCITY_MAG = 1.0 / 1e9; // 1 tile/s
     private double slowFactor = 1;
 
-    private Coordinate2D position;
-    private Coordinate2D velocity;
-    private List<Coordinate2D> destinations;
+    private Vector2D position;
+    private Vector2D velocity;
+    private List<Vector2D> destinations;
     private int destinationsIdx = 0;
 
     private double width = 1;
@@ -38,14 +38,14 @@ public class EnemyUpdateComponent implements Updatable {
     
     private final Enemy owner;
 
-    public EnemyUpdateComponent(Coordinate2D spawnPoint, World world, Enemy owner) {
+    public EnemyUpdateComponent(Vector2D spawnPoint, World world, Enemy owner) {
         this.owner = owner;
         this.health = FULL_HEALTH;
 
         // Init destinations
         destinations = new ArrayList<>();
         for (
-            Optional<Coordinate2D> next = world.getWaveManager().getWave().getNext(spawnPoint);
+            Optional<Vector2D> next = world.getWaveManager().getWave().getNext(spawnPoint);
             next.isPresent(); 
             next = world.getWaveManager().getWave().getNext(destinations.getLast())
         ) {
@@ -57,6 +57,7 @@ public class EnemyUpdateComponent implements Updatable {
         for (int i = 0; i < destinations.size(); i++) {
             destinations.set(i, destinations.get(i).subtract(0, height/2));
         }
+        //
         
         this.enemyState = destinations.size() != 0 ? EnemyState.WALKING : EnemyState.ATTACKING;
         if (enemyState == EnemyState.WALKING) {
@@ -64,15 +65,7 @@ public class EnemyUpdateComponent implements Updatable {
         }
         
         this.activeEffect = new EnchantmentEffect() {
-            @Override
-            public Type getEffectType() {
-                return Type.BASE;
-            }
-
-            @Override
-            public boolean isExpired() {
-                return true;
-            }
+            // TODO
         };
     }
 
@@ -108,14 +101,14 @@ public class EnemyUpdateComponent implements Updatable {
      * That is described by a list of {@code UniformMotion}
      */
     public List<UniformMotion> getMotionUntil(long time) {
-        Point2D curr = new Point2D(position.getX(), position.getY());
+        Vector2D curr = new Coordinate2D(position.getX(), position.getY());
         List<UniformMotion> enemyMotion = new ArrayList<>();
 
         long durationAcc = 0;
         for (int i = destinationsIdx; i < destinations.size() && durationAcc < time; i++) {
-            Point2D nextDestination = new Point2D(destinations.get(i).getX(), destinations.get(i).getY());
+            Vector2D nextDestination = new Coordinate2D(destinations.get(i).getX(), destinations.get(i).getY());
 
-            Point2D velocity = nextDestination.subtract(curr).normalize().multiply(VELOCITY_MAG);
+            Vector2D velocity = nextDestination.subtract(curr).normalize().multiply(VELOCITY_MAG);
             Long duration = (long)(curr.distance(nextDestination) / VELOCITY_MAG);
             durationAcc += duration;
             
@@ -124,7 +117,7 @@ public class EnemyUpdateComponent implements Updatable {
         }
         // leftover time
         if (durationAcc < time) {
-            enemyMotion.add(new UniformMotion(curr, Point2D.ZERO, time - durationAcc));
+            enemyMotion.add(new UniformMotion(curr, Vector2D.ZERO, time - durationAcc));
         }
         return enemyMotion;
     }
@@ -152,8 +145,8 @@ public class EnemyUpdateComponent implements Updatable {
         return enemyState == EnemyState.WALKING;
     }
 
-    public Point2D getPosition() {
-        return new Point2D(position.getX(), position.getY());
+    public Vector2D getPosition() {
+        return new Coordinate2D(position.getX(), position.getY());
     }
 
     double getWidth() {
@@ -193,10 +186,11 @@ public class EnemyUpdateComponent implements Updatable {
         // move along the velocity vector
         position = position.add(velocity.multiply(slowFactor).multiply(elapsed));
 
-        Coordinate2D currDestination = destinations.get(destinationsIdx);
         // position -> destination vector
-        Coordinate2D posToDest = currDestination.subtract(position);
+        Vector2D currDestination = destinations.get(destinationsIdx);
+        Vector2D posToDest = currDestination.subtract(position);
         double dot = posToDest.dotProduct(velocity);
+
         // dot <= 0 => either overshot or exactly at currDestination
         while (dot <= 0) {
             // if overshot => go back to destination and do the difference in movement in the next direction
@@ -208,7 +202,7 @@ public class EnemyUpdateComponent implements Updatable {
                 return;
             }
             currDestination = destinations.get(++destinationsIdx);
-            Coordinate2D nextDirection = currDestination.subtract(position).normalize();
+            Vector2D nextDirection = currDestination.subtract(position).normalize();
             
             // correction
             position = position.add(nextDirection.multiply(overshootAmount));

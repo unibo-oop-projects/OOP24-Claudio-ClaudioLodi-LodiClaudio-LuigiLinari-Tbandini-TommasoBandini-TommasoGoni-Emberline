@@ -12,7 +12,7 @@ import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.game.world.entities.projectiles.projectile.IProjectile;
 import dev.emberline.game.world.entities.projectiles.projectile.Projectile;
-import javafx.geometry.Point2D;
+import dev.emberline.utility.Vector2D;
 
 public class ProjectilesManager implements Updatable, Renderable {
     
@@ -22,7 +22,7 @@ public class ProjectilesManager implements Updatable, Renderable {
         this.projectiles = new LinkedList<>();
     }
 
-    public void addProjectile(Point2D start, IEnemy target,
+    public void addProjectile(Vector2D start, IEnemy target,
     ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world) {
         projectiles.add(new Projectile(start, target, projInfo, enchInfo, world));
     }

@@ -10,7 +10,7 @@ import dev.emberline.core.render.Renderer;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.world.entities.projectiles.projectile.Projectile.PositionAndRotation;
-import javafx.geometry.Point2D;
+import dev.emberline.utility.Vector2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -35,7 +35,7 @@ public class ProjectileRenderComponent implements Renderable {
         CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
         PositionAndRotation posAndRot = owner.getPositionAndRotation();
-        Point2D position = posAndRot.position();
+        Vector2D position = posAndRot.position();
         double rotation = posAndRot.rotation();
 
         double _width = width * cs.getScale();
