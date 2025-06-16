@@ -5,23 +5,23 @@ import java.util.Optional;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.effects.EnchantmentEffect;
-import javafx.geometry.Point2D;
+import dev.emberline.utility.Vector2D;
 
 public class ProjectileHitEvent {
 
-    private final Point2D landingLocation;
+    private final Vector2D landingLocation;
     private final double damage;
     private final Optional<Double> damageArea;
     private final Optional<EnchantmentEffect> effect;
     
-    public ProjectileHitEvent(Point2D landingLocation, ProjectileInfo projInfo, EnchantmentInfo enchInfo) {
+    public ProjectileHitEvent(Vector2D landingLocation, ProjectileInfo projInfo, EnchantmentInfo enchInfo) {
         this.landingLocation = landingLocation;
         this.damage = projInfo.getDamage();
         this.damageArea = projInfo.getDamageArea();
         this.effect = enchInfo.getEffect();
     }
 
-    public Point2D getLandingLocation() {
+    public Vector2D getLandingLocation() {
         return landingLocation;
     }
 

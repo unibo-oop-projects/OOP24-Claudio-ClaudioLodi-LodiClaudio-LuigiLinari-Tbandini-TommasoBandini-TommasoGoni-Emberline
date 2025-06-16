@@ -10,8 +10,8 @@ import dev.emberline.core.render.Zoom;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.roads.Roads;
 import dev.emberline.game.world.spawnpoints.Spawnpoints;
-import utility.Pair;
-import utility.Vector2D;
+import dev.emberline.utility.Pair;
+import dev.emberline.utility.Vector2D;
 
 /**
  * The Wave class contains all the elements that characterize a single wave

@@ -5,9 +5,8 @@ import java.util.List;
 import dev.emberline.core.animations.Animation;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
-import javafx.geometry.Point2D;
+import dev.emberline.utility.Vector2D;
 import dev.emberline.game.model.EnchantmentInfo;
-import utility.Coordinate2D;
 
 public class Enemy implements IEnemy {
 
@@ -17,7 +16,7 @@ public class Enemy implements IEnemy {
     private final EnemyUpdateComponent updateComponent;
     private final EnemyRenderComponent renderComponent;
 
-    public Enemy(Coordinate2D spawnPoint, World world) {
+    public Enemy(Vector2D spawnPoint, World world) {
         this.updateComponent = new EnemyUpdateComponent(spawnPoint, world, this);
         this.renderComponent = new EnemyRenderComponent(this);
     }
@@ -68,7 +67,7 @@ public class Enemy implements IEnemy {
     }
 
     @Override
-    public Point2D getPosition() {
+    public Vector2D getPosition() {
         return updateComponent.getPosition();
     }
 

@@ -1,4 +1,4 @@
-package utility;
+package dev.emberline.utility;
 
 import java.io.Serializable;
 import java.util.Objects;

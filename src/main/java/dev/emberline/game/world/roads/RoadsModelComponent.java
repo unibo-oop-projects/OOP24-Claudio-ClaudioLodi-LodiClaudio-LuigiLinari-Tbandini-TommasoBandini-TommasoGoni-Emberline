@@ -1,8 +1,5 @@
 package dev.emberline.game.world.roads;
 
-import utility.Coordinate2D;
-import utility.Vector2D;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+
+import dev.emberline.utility.Coordinate2D;
+import dev.emberline.utility.Vector2D;
 
 /**
  * A class that represents the Road's class logic.

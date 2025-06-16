@@ -4,7 +4,7 @@ import java.util.*;
 
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
-import utility.Vector2D;
+import dev.emberline.utility.Vector2D;
 
 /**
  * A class that represents the roads of the map, as weighted arches.

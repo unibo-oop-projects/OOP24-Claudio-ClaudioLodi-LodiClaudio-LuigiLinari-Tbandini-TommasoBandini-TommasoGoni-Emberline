@@ -9,7 +9,8 @@ import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
-import javafx.geometry.Point2D;
+import dev.emberline.utility.Coordinate2D;
+import dev.emberline.utility.Vector2D;
 
 public class ProjectileUpdateComponent implements Updatable {
     
@@ -29,7 +30,7 @@ public class ProjectileUpdateComponent implements Updatable {
     private long currFlightTime;
 
     private final Function<Long, Projectile.PositionAndRotation> getPositionAndRotationAt;
-    private Point2D position;
+    private Vector2D position;
     private Double rotation; // degrees since only used by javafx
 
     private final ProjectileHitListener projectileHitListener;
@@ -38,11 +39,11 @@ public class ProjectileUpdateComponent implements Updatable {
 
     private final Projectile owner;
 
-    public ProjectileUpdateComponent(Point2D start, IEnemy target, 
+    public ProjectileUpdateComponent(Vector2D start, IEnemy target, 
     ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world, Projectile owner) throws IllegalStateException {        
         this.VELOCITY_MAG = projInfo.getProjectileSpeed() / 1e9; // Converted to tile/ns
 
-        Point2D prediction = enemyPrediction(start, target);
+        Vector2D prediction = enemyPrediction(start, target);
 
         Trajectory _trajectory = calculateTrajectory(start, prediction);
         this.getPositionAndRotationAt = _trajectory.getPositionAndRotationAt();
@@ -94,7 +95,7 @@ public class ProjectileUpdateComponent implements Updatable {
      * to the time it takes the enemy to reach that position
      * @throws IllegalStateException if that position doesn't exist or the flight time to reach it exceeds {@code MAX_FLIGHT_TIME}
      */
-    private Point2D enemyPrediction(Point2D start, IEnemy target) throws IllegalStateException {
+    private Vector2D enemyPrediction(Vector2D start, IEnemy target) throws IllegalStateException {
         List<IEnemy.UniformMotion> targetMotion = target.getMotionUntil(MAX_FLIGHT_TIME);
         var motionsIt = targetMotion.iterator();
         IEnemy.UniformMotion currMotion = null;
@@ -103,8 +104,8 @@ public class ProjectileUpdateComponent implements Updatable {
         boolean found = false;
         while (motionsIt.hasNext() && !found) {
             currMotion = motionsIt.next();
-            Point2D E_0 = currMotion.origin();
-            Point2D v_E = currMotion.velocity();
+            Vector2D E_0 = currMotion.origin();
+            Vector2D v_E = currMotion.velocity();
             long duration = currMotion.duration();
 
             /// Solve quadratic
@@ -156,18 +157,18 @@ public class ProjectileUpdateComponent implements Updatable {
      * @param end
      * @return The {@code Trajectory} from {@code start} to {@code end}
      */
-    private Trajectory calculateTrajectory(Point2D start, Point2D end) {
+    private Trajectory calculateTrajectory(Vector2D start, Vector2D end) {
         // Start and end are in world coordinates so the y is "flipped", for simplicity convert them to canonical
-        Point2D cEnd = worldToCanonical(end);
-        Point2D cStart = worldToCanonical(start);
+        Vector2D cEnd = worldToCanonical(end);
+        Vector2D cStart = worldToCanonical(start);
 
         // Linear transformation: e1 -> B1, e2 -> B2
         // It rotates space so that the "x-axis" is aligned with the direction from the starting point to the ending point
         // The "y-axis" sits 90° from the trasformed x-axis, if the ending point is on the right of the starting point the direction is upwards otherwise is downwards
-        Point2D B1 = cEnd.subtract(cStart).normalize();
+        Vector2D B1 = cEnd.subtract(cStart).normalize();
         double signY = (B1.getX() >= 0) ? +1 : -1;
-        Point2D B2 = (new Point2D(-B1.getY(), B1.getX())).multiply(signY);
-        Function<Point2D, Point2D> rotation = (p) -> new Point2D(
+        Vector2D B2 = (new Coordinate2D(-B1.getY(), B1.getX())).multiply(signY);
+        Function<Vector2D, Vector2D> rotation = (p) -> new Coordinate2D(
             B1.getX()*p.getX() + B2.getX()*p.getY(),
             B1.getY()*p.getX() + B2.getY()*p.getY()
         );
@@ -186,9 +187,9 @@ public class ProjectileUpdateComponent implements Updatable {
             double theta = theta(t, startTheta, angularVelocity);
             
             // Compute the position on the scaled trajectory, rotate it and translate so that the starting point is cStart
-            Point2D pos = rotation.apply(r(theta, radius, startTheta)).add(cStart);
+            Vector2D pos = rotation.apply(r(theta, radius, startTheta)).add(cStart);
 
-            Point2D tangentTraj = r_derivative(theta, radius, angularVelocity);
+            Vector2D tangentTraj = r_derivative(theta, radius, angularVelocity);
             double tangentTrajAngle = Math.toDegrees(Math.atan2(tangentTraj.getY(), tangentTraj.getX()));
             double angle;
             // abs > 90 => II and III quadrant, the angle needs to be reflected
@@ -223,10 +224,10 @@ public class ProjectileUpdateComponent implements Updatable {
      * @param theta_0
      * @return the position vector on a circonference of radius {@code radius} at {@code theta}, translated so that {@code (cos(theta_0), sin(theta_0))} is in {@code (0, 0)}
      */
-    private Point2D r(double theta, double radius, double theta_0) {
+    private Vector2D r(double theta, double radius, double theta_0) {
         double x = radius * (Math.cos(theta) - Math.cos(theta_0));
         double y = radius * (Math.sin(theta) - Math.sin(theta_0));
-        return new Point2D(x, y);
+        return new Coordinate2D(x, y);
     }
 
     /**
@@ -235,18 +236,18 @@ public class ProjectileUpdateComponent implements Updatable {
      * @param w angular velocity
      * @return vector tangent to the trajectory at {@code theta}
      */
-    private Point2D r_derivative(double theta, double radius, double w) {
+    private Vector2D r_derivative(double theta, double radius, double w) {
         double x = -radius * w * Math.sin(theta);
         double y = radius * w * Math.cos(theta);
-        return new Point2D(x, y);
+        return new Coordinate2D(x, y);
     }
     ///// Circular uniform motion
     
-    private Point2D worldToCanonical(Point2D p) {
-        return new Point2D(p.getX(), -p.getY());
+    private Vector2D worldToCanonical(Vector2D p) {
+        return new Coordinate2D(p.getX(), -p.getY());
     }
 
-    private Point2D canonicalToWorld(Point2D p) {
-        return new Point2D(p.getX(), -p.getY());
+    private Vector2D canonicalToWorld(Vector2D p) {
+        return new Coordinate2D(p.getX(), -p.getY());
     }
 }

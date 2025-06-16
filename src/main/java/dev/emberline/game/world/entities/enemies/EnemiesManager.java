@@ -5,12 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
-import javafx.geometry.Point2D;
+import dev.emberline.utility.Coordinate2D;
+import dev.emberline.utility.Vector2D;
 import dev.emberline.game.world.entities.enemies.enemy.Enemy;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
-import utility.Coordinate2D;
 
 public class EnemiesManager implements Updatable, Renderable {
 
@@ -29,13 +29,13 @@ public class EnemiesManager implements Updatable, Renderable {
         );
     }
 
-    public void addEnemy(Coordinate2D spawnPoint) {
+    public void addEnemy(Vector2D spawnPoint) {
         IEnemy newEnemy = new Enemy(spawnPoint, world);
         enemies.add(newEnemy);
         spatialHashGrid.add(newEnemy);
     }
     
-    public List<IEnemy> getNear(Point2D location, double radius) {
+    public List<IEnemy> getNear(Vector2D location, double radius) {
         return spatialHashGrid.getNear(location, radius);
     }
 

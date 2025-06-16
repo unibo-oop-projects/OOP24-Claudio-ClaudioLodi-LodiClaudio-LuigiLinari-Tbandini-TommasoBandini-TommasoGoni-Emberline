@@ -5,16 +5,16 @@ import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
-import javafx.geometry.Point2D;
+import dev.emberline.utility.Vector2D;
 
 public class Projectile implements IProjectile {
     
-    record PositionAndRotation(Point2D position, Double rotation) {}
+    record PositionAndRotation(Vector2D position, Double rotation) {}
 
     private final ProjectileUpdateComponent updateComponent;
     private final ProjectileRenderComponent renderComponent;
 
-    public Projectile(Point2D start, IEnemy target, ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world) throws IllegalStateException {
+    public Projectile(Vector2D start, IEnemy target, ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world) throws IllegalStateException {
         this.updateComponent = new ProjectileUpdateComponent(start, target, projInfo, enchInfo, world, this);
         this.renderComponent = new ProjectileRenderComponent(projInfo, enchInfo, this);
     }
