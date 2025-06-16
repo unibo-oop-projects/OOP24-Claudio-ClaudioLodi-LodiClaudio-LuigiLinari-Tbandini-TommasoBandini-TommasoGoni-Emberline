@@ -40,8 +40,7 @@ public class EnemyUpdateComponent implements Updatable {
         for (
             Optional<Vector2D> next = world.getWaveManager().getWave().getNext(spawnPoint);
             next.isPresent();
-                next.isPresent();
-                next = world.getWaveManager().getWave().getNext(destinations.getLast())
+            next = world.getWaveManager().getWave().getNext(destinations.getLast())
         ) {
             destinations.add(next.get());
         }
@@ -162,8 +161,8 @@ public class EnemyUpdateComponent implements Updatable {
         return enemyState;
     }
 
-    EnchantmentInfo.Type getEffectType() {
-        return activeEffect.getEffectType();
+    EnchantmentInfo.Type getEnchantmentType() {
+        return activeEffect.getEnchantmentType();
     }
 
     private void move(long elapsed) {
