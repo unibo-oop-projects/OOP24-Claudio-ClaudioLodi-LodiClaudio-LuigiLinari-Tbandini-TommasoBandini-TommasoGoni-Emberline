@@ -1,6 +1,7 @@
 package dev.emberline.game.world.entities.projectiles.projectile;
 
 import dev.emberline.core.GameLoop;
+import dev.emberline.core.animations.Animation;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
@@ -11,16 +12,20 @@ import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.world.entities.projectiles.projectile.Projectile.PositionAndRotation;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Paint;
+import javafx.scene.image.Image;
 
 public class ProjectileRenderComponent implements Renderable {
 
+    private static final double width = 1.5;
+    private static final double height = 1.25;
+
     private final Projectile owner;
-    // sprite
+    
+    private final Animation projectileAnimation;
 
     public ProjectileRenderComponent(ProjectileInfo projInfo, EnchantmentInfo enchInfo, Projectile owner) {
         this.owner = owner;
-        // set sprite based on projInfo and enchInfo
+        this.projectileAnimation = new ProjectileAnimation(projInfo, enchInfo);
     }
 
     @Override
@@ -33,23 +38,28 @@ public class ProjectileRenderComponent implements Renderable {
         Point2D position = posAndRot.position();
         double rotation = posAndRot.rotation();
 
+        double _width = width * cs.getScale();
+        double _height = height * cs.getScale();
+
         double positionScreenX = cs.toScreenX(position.getX());
         double positionScreenY = cs.toScreenY(position.getY());
 
-        double width = 15;
-        double height = 7;
+        Image currAnimationState = projectileAnimation.getAnimationState();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             gc.save();
 
-            // hit the middle of the enemy TODO
-            gc.translate(positionScreenX + 19, positionScreenY);
+            gc.translate(positionScreenX, positionScreenY);
             gc.rotate(rotation);
-            
-            gc.setFill(Paint.valueOf("#FFF"));
-            gc.fillRect(-width, -height, width, height); // make so that the tip of the projectile hits
+
+            // make so that the tip of the projectile hits
+            gc.drawImage(currAnimationState, -_width/2, -_height/2, _width, _height);
 
             gc.restore();
         }));
+    }
+
+    Animation getAnimation() {
+        return projectileAnimation;
     }
 }

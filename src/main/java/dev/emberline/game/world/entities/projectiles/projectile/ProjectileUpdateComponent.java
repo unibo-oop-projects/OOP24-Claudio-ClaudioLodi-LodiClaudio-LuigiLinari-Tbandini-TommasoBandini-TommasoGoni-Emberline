@@ -36,10 +36,12 @@ public class ProjectileUpdateComponent implements Updatable {
     private final ProjectileHitEvent projectileHitEvent;
     private boolean hasHit = false;
 
+    private final Projectile owner;
+
     public ProjectileUpdateComponent(Point2D start, IEnemy target, 
-    ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world, Projectile owner) throws IllegalStateException {
+    ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world, Projectile owner) throws IllegalStateException {        
         this.VELOCITY_MAG = projInfo.getProjectileSpeed() / 1e9; // Converted to tile/ns
-        
+
         Point2D prediction = enemyPrediction(start, target);
 
         Trajectory _trajectory = calculateTrajectory(start, prediction);
@@ -53,6 +55,8 @@ public class ProjectileUpdateComponent implements Updatable {
 
         this.projectileHitEvent = new ProjectileHitEvent(prediction, projInfo, enchInfo);
         this.projectileHitListener = world.getProjectileHitListener();
+
+        this.owner = owner;
     }
 
     @Override
@@ -67,6 +71,8 @@ public class ProjectileUpdateComponent implements Updatable {
             projectileHitListener.onProjectileHit(projectileHitEvent);
             hasHit = true;
         }
+
+        owner.getAnimation().update(elapsed);
     }
 
     public boolean hasHit() {
