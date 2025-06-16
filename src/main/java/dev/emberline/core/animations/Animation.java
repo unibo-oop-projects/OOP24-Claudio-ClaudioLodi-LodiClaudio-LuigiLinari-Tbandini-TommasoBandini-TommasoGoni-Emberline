@@ -5,6 +5,7 @@ import java.util.List;
 import dev.emberline.core.components.Updatable;
 import javafx.scene.image.Image;
 
+@Deprecated
 public class Animation implements Updatable {
     
     private final List<Image> animationStates;

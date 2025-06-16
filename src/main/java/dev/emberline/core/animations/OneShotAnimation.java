@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 
 import java.util.List;
 
+@Deprecated
 public class OneShotAnimation implements Updatable {
 
     private final List<Image> animationStates;
