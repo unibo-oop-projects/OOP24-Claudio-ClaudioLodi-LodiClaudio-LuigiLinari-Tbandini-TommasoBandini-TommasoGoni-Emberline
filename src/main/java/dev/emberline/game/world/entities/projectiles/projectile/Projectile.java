@@ -14,7 +14,7 @@ public class Projectile implements IProjectile {
     private final ProjectileUpdateComponent updateComponent;
     private final ProjectileRenderComponent renderComponent;
 
-    public Projectile(Vector2D start, IEnemy target, ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world) throws IllegalStateException {
+    public Projectile(Vector2D start, IEnemy target, ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world) {
         this.updateComponent = new ProjectileUpdateComponent(start, target, projInfo, enchInfo, world, this);
         this.renderComponent = new ProjectileRenderComponent(projInfo, enchInfo, this);
     }

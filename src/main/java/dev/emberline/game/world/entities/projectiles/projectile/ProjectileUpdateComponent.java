@@ -40,7 +40,7 @@ public class ProjectileUpdateComponent implements Updatable {
     private final Projectile owner;
 
     public ProjectileUpdateComponent(Vector2D start, IEnemy target, 
-    ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world, Projectile owner) throws IllegalStateException {        
+    ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world, Projectile owner) {        
         this.VELOCITY_MAG = projInfo.getProjectileSpeed() / 1e9; // Converted to tile/ns
 
         Vector2D prediction = enemyPrediction(start, target);
@@ -95,7 +95,7 @@ public class ProjectileUpdateComponent implements Updatable {
      * to the time it takes the enemy to reach that position
      * @throws IllegalStateException if that position doesn't exist or the flight time to reach it exceeds {@code MAX_FLIGHT_TIME}
      */
-    private Vector2D enemyPrediction(Vector2D start, IEnemy target) throws IllegalStateException {
+    private Vector2D enemyPrediction(Vector2D start, IEnemy target) {
         List<IEnemy.UniformMotion> targetMotion = target.getMotionUntil(MAX_FLIGHT_TIME);
         var motionsIt = targetMotion.iterator();
         IEnemy.UniformMotion currMotion = null;
