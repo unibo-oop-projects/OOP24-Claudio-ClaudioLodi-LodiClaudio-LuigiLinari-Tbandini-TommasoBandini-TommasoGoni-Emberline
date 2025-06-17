@@ -11,7 +11,7 @@ import dev.emberline.game.world.waves.WaveManager;
 import java.io.Serializable;
 
 public class World implements Updatable, Renderable, Serializable {
-    
+
     // Enemies
     private final EnemiesManager enemiesManager;
     // Towers
@@ -29,7 +29,7 @@ public class World implements Updatable, Renderable, Serializable {
         this.waveManager = new WaveManager(this);
         this.statistics = new Statistics(this);
         this.projectilesManager = new ProjectilesManager();
-        projectileHitListener = new ProjectileHitListener(enemiesManager);
+        this.projectileHitListener = new ProjectileHitListener(enemiesManager);
     }
 
     public EnemiesManager getEnemiesManager() {
