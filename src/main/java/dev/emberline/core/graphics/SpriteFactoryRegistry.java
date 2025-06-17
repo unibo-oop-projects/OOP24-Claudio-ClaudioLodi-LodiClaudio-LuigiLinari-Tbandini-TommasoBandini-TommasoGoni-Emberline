@@ -1,5 +1,6 @@
 package dev.emberline.core.graphics;
 
+import dev.emberline.core.graphics.spritefactories.EnemySpriteFactory;
 import dev.emberline.core.graphics.spritefactories.SpriteFactory;
 import dev.emberline.core.graphics.spritefactories.StringSpriteFactory;
 import dev.emberline.core.graphics.spritefactories.UISpriteFactory;
@@ -32,5 +33,6 @@ class SpriteFactoryRegistry {
     static {
         registerFactory(new StringSpriteFactory());
         registerFactory(new UISpriteFactory());
+        registerFactory(new EnemySpriteFactory());
     }
 }

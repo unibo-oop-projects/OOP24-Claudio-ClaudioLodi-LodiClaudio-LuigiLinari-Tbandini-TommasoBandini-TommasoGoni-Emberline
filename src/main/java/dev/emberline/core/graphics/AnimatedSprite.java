@@ -5,12 +5,14 @@ import javafx.scene.image.Image;
 public class AnimatedSprite implements Sprite {
     private final Image[] images;
     private int frameIndex = 0;
+    private int frameTime;
 
-    public AnimatedSprite(Image[] images) {
+    public AnimatedSprite(Image[] images, int frameTime) {
         if (images == null || images.length == 0) {
             throw new IllegalArgumentException("Image array cannot be null or empty");
         }
         this.images = images;
+        this.frameTime = frameTime;
     }
 
     @Override
@@ -25,6 +27,15 @@ public class AnimatedSprite implements Sprite {
      */
     public int getFrameCount() {
         return images.length;
+    }
+
+    /**
+     * Returns the duration of each frame in the animated sprite.
+     *
+     * @return the time (in milliseconds) each frame is displayed
+     */
+    public int getFrameTime() {
+        return frameTime;
     }
 
     /**

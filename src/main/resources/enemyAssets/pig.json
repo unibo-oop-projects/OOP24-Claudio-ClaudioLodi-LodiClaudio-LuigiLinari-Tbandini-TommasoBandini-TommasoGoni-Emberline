@@ -1,0 +1,18 @@
+{
+  "width": 16,
+  "height": 16,
+  "frames": 8,
+  "frameTime": 250,
+  "direction": {
+    "front": 0,
+    "back": 16,
+    "left": 32,
+    "right": 48
+  },
+  "state": {
+    "normal": 0,
+    "burning": 16,
+    "freezing": 32,
+    "dying": 48
+  }
+}
