@@ -8,7 +8,6 @@ public enum UISpriteKey implements SpriteKey {
     EMPTY_UPGRADE_LEVEL,
     FULL_UPGRADE_LEVEL,
     ADD_BUTTON,
-    TOWER_TEXT,
     CHARS_ATLAS,
     ICE_BUTTON,
     FIRE_BUTTON,

@@ -236,7 +236,9 @@ public class TowerDialogLayer extends GuiLayer {
             // Background
             Renderer.drawImage(SpriteLoader.loadSprite(UISpriteKey.TDL_BACKGROUND).getImage(), gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
             // Title
-            Renderer.drawImageFit(SpriteLoader.loadSprite(UISpriteKey.TOWER_TEXT).getImage(), gc, guics, Layout.TITLE_X, Layout.TITLE_Y, Layout.TITLE_WIDTH, Layout.TITLE_HEIGHT);
+            gc.setEffect(Colors.STAT_TITLE);
+            Renderer.drawText("Tower:", gc, guics, Layout.TITLE_X, Layout.TITLE_Y, Layout.TITLE_WIDTH, Layout.TITLE_HEIGHT);
+            gc.setEffect(null);
             // Stats Background
             Renderer.drawImage(SpriteLoader.loadSprite(UISpriteKey.STATS_BACKGROUND).getImage(), gc, guics, Layout.Stats.X, Layout.Stats.Y, Layout.Stats.WIDTH, Layout.Stats.HEIGHT);
             // Stats Overlay
