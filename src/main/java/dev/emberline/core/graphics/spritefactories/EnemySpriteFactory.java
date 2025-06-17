@@ -4,18 +4,20 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
-import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy;
-import dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
+import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy.FacingDirection;
+import dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation.EnemyAppearance;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
-public class EnemySpriteFactory implements  SpriteFactory<EnemySpriteKey> {
+public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
     private static class Metadata {
         @JsonProperty("width")
         private int width;
@@ -26,24 +28,24 @@ public class EnemySpriteFactory implements  SpriteFactory<EnemySpriteKey> {
         @JsonProperty("frameTime")
         private int frameTime;
         @JsonProperty("direction")
-        private Map<String, Integer> direction;
+        private Map<FacingDirection, Integer> direction;
         @JsonProperty("state")
-        private Map<String, Integer> state;
+        private Map<EnemyAppearance, Integer> state;
     }
 
     @Override
     public Sprite loadSprite(EnemySpriteKey key) {
         EnemyType type = key.type();
-        AbstractEnemy.FacingDirection direction = key.direction();
-        EnemyAnimation.EnemyAppearance state = key.state();
+        FacingDirection direction = key.direction();
+        EnemyAppearance state = key.state();
 
-        String jsonPath = String.format("/sprites/enemies/%s.json", type);
+        String jsonPath = String.format("/enemyAssets/%s.json", type.name().toLowerCase());
         Metadata metadata = ConfigLoader.loadConfig(jsonPath, Metadata.class);
         
-        int xOffset = metadata.direction.get(direction.name());
-        int yOffset = metadata.state.get(state.name());
+        int xOffset = metadata.direction.get(direction);
+        int yOffset = metadata.state.get(state);
 
-        String enemyAtlasPath = String.format("/sprites/enemies/%sAtlas.png", type);
+        String enemyAtlasPath = String.format("/enemyAssets/%sAtlas.png", type.name().toLowerCase());
         Image enemyAtals = getEnemyAtlas(enemyAtlasPath);
 
         Image[] frames = new Image[metadata.frames];

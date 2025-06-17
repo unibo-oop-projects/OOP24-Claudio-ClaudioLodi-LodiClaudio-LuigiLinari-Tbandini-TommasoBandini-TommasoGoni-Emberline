@@ -1,5 +1,7 @@
 package dev.emberline.game.world.entities.enemies.enemy;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import dev.emberline.core.components.Updatable;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.SpriteLoader;
@@ -8,7 +10,14 @@ import javafx.scene.image.Image;
 
 public class EnemyAnimation implements Updatable {
 
-    public enum EnemyAppearance { NORMAL, BURNING, FREEZING, DYING }
+     public enum EnemyAppearance {
+        NORMAL, BURNING, FREEZING, DYING;
+    
+        @JsonCreator
+        public static EnemyAppearance fromString(String appearance) {
+            return EnemyAppearance.valueOf(appearance.toUpperCase());
+        }
+    }
 
     private final AbstractEnemy enemy;
     private AnimatedSprite animatedSprite;

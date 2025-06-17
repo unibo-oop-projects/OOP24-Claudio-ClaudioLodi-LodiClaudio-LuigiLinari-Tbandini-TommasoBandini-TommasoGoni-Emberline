@@ -2,14 +2,24 @@ package dev.emberline.game.world.entities.enemies.enemy;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
+import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy.FacingDirection;
 import dev.emberline.utility.Vector2D;
 
 public abstract class AbstractEnemy implements IEnemy {
 
-    public enum FacingDirection { UP, RIGHT, DOWN, LEFT }
+    public enum FacingDirection {
+        UP, RIGHT, DOWN, LEFT;
+
+        @JsonCreator
+        public static FacingDirection fromString(String direction) {
+            return FacingDirection.valueOf(direction.toUpperCase());
+        }
+    }
 
     private final EnemyUpdateComponent updateComponent;
     private final EnemyRenderComponent renderComponent;

@@ -4,8 +4,8 @@
   "frames": 8,
   "frameTime": 300,
   "direction": {
-    "front": 0,
-    "back": 16,
+    "down": 0,
+    "up": 16,
     "left": 32,
     "right": 48
   },
