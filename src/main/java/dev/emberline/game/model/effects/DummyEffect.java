@@ -1,6 +1,8 @@
 package dev.emberline.game.model.effects;
 
 import dev.emberline.game.model.EnchantmentInfo;
+import dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation;
+import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 
 import java.util.List;
@@ -16,6 +18,11 @@ import java.util.List;
  */
 public class DummyEffect implements EnchantmentEffect {
     @Override
+    public void updateEffect(IEnemy enemy, long elapsed) {
+        // TODO
+    }
+
+    @Override
     public boolean isExpired() {
         return true;
     }
@@ -28,5 +35,10 @@ public class DummyEffect implements EnchantmentEffect {
     @Override
     public List<TowerStat> getTowerStats() {
         return List.of();
+    }
+
+    @Override
+    public EnemyAnimation.EnemyAppearance getEnemyAppearance() {
+        return EnemyAnimation.EnemyAppearance.NORMAL;
     }
 }

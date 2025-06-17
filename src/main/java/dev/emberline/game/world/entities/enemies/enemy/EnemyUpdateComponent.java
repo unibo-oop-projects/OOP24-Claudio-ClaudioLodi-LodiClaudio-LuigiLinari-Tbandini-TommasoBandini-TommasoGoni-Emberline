@@ -8,13 +8,14 @@ import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.effects.DummyEffect;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
-import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy.EnemyState;
 import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy.FacingDirection;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy.UniformMotion;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
-public class EnemyUpdateComponent implements Updatable {
+class EnemyUpdateComponent implements Updatable {
+    private enum EnemyState      { WALKING, ATTACKING, DYING, DEAD }
+
     private final double SPEED;
     private final double FULL_HEALTH;
 
@@ -31,7 +32,7 @@ public class EnemyUpdateComponent implements Updatable {
     private final List<Vector2D> destinations = new ArrayList<>();
     private int destinationsIdx = 0;
 
-    public EnemyUpdateComponent(Vector2D spawnPoint, World world, AbstractEnemy enemy) {
+    EnemyUpdateComponent(Vector2D spawnPoint, World world, AbstractEnemy enemy) {
         this.enemy = enemy;
         this.SPEED = enemy.getSpeed();
         this.FULL_HEALTH = enemy.getFullHealth();
@@ -56,24 +57,31 @@ public class EnemyUpdateComponent implements Updatable {
     @Override
     public void update(long elapsed) {
         switch (enemyState) {
-            case WALKING -> {
-                if (!activeEffect.isExpired()) {
-                    // activeEffect.updateEffect(elapsed, enemy);
-                }
-                move(elapsed);
-            }
-            case ATTACKING -> {
-                // attack(); //todo attacking logic
-                    enemyState = EnemyState.DYING;
-            }
-            case DYING -> {
-                if (enemy.getAnimation().hasEnded()) {
-                    enemyState = EnemyState.DEAD;
-                }
-            }
+            case WALKING -> walk(elapsed);
+            case ATTACKING -> attack(elapsed);
+            case DYING -> dying(elapsed);
+            case DEAD -> {}
         }
+        enemy.getAnimationUpdatable().update(elapsed);
+    }
 
-        enemy.getAnimation().update(elapsed);
+    private void walk(long elapsed) {
+        if (activeEffect.isExpired()) {
+            activeEffect = new DummyEffect(); // Reset to default effect
+        } else {
+            activeEffect.updateEffect(enemy, elapsed);
+        }
+        move(elapsed);
+    }
+
+    private void attack(long elapsed) {
+        enemyState = EnemyState.DEAD;
+    }
+
+    private void dying(long elapsed) {
+        if (enemy.isDyingAnimationFinished()) {
+            enemyState = EnemyState.DEAD;
+        }
     }
 
     /**
@@ -81,7 +89,7 @@ public class EnemyUpdateComponent implements Updatable {
      * @return All the uniform motions starting from the current position of the enemy
      * that is described by a list of {@code UniformMotion}
      */
-    public List<UniformMotion> getMotionUntil(long time) {
+    List<UniformMotion> getMotionUntil(long time) {
         Vector2D curr = new Coordinate2D(position.getX(), position.getY());
         List<UniformMotion> enemyMotion = new ArrayList<>();
 
@@ -110,23 +118,27 @@ public class EnemyUpdateComponent implements Updatable {
         }
     }
 
-    public void applyEffect(EnchantmentEffect effect) {
+    void applyEffect(EnchantmentEffect effect) {
         this.activeEffect = effect;
     }
 
-    public void setSlowFactor(double slowFactor) {
+    void setSlowFactor(double slowFactor) {
         this.slowFactor = slowFactor;
     }
 
-    public boolean isDead() {
+    double getSlowFactor() {
+        return slowFactor;
+    }
+
+    boolean isDead() {
         return enemyState == EnemyState.DEAD;
     }
 
-    public boolean isHittable() {
+    boolean isHittable() {
         return enemyState == EnemyState.WALKING;
     }
 
-    public Vector2D getPosition() {
+    Vector2D getPosition() {
         return new Coordinate2D(position.getX(), position.getY());
     }
 

@@ -1,8 +1,8 @@
 package dev.emberline.game.world.entities.enemies.enemy;
 
 import dev.emberline.core.GameLoop;
-import dev.emberline.core.animations.Animation;
 import dev.emberline.core.components.Renderable;
+import dev.emberline.core.components.Updatable;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
@@ -21,9 +21,11 @@ public class EnemyRenderComponent implements Renderable {
     }
 
     private final AbstractEnemy enemy;
+    private final EnemyAnimation enemyAnimation;
 
     public EnemyRenderComponent(AbstractEnemy enemy) {
         this.enemy = enemy;
+        this.enemyAnimation = new EnemyAnimation(enemy);
     }
 
     @Override
@@ -43,7 +45,7 @@ public class EnemyRenderComponent implements Renderable {
         double hbScreenX = enemyScreenX + HealthbarLayout.X_OFFSET;
         double hbScreenY = enemyScreenY + HealthbarLayout.Y_OFFSET;
 
-        Image currentFrame = enemyAnimation.getAnimationState();
+        Image currentFrame = enemyAnimation.getImage();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.ENEMIES, () -> {
             gc.drawImage(currentFrame, enemyScreenX, enemyScreenY, enemyScreenWidth, enemyScreenHeight);
@@ -54,8 +56,12 @@ public class EnemyRenderComponent implements Renderable {
             gc.fillRect(hbScreenX, hbScreenY, (enemy.getHealthPercentage()) * hbScreenWidth, hbScreenHeight);
         }));
     }
-    
-    Animation getAnimation() {
+
+    boolean isDyingAnimationFinished() {
+        return enemyAnimation.isDyingAnimationFinished();
+    }
+
+    Updatable getAnimationUpdatable() {
         return enemyAnimation;
     }
 }

@@ -1,6 +1,8 @@
 package dev.emberline.game.model.effects;
 
 import dev.emberline.game.model.EnchantmentInfo;
+import dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation;
+import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 import dev.emberline.gui.towerdialog.stats.TowerStat.TowerStatType;
 
@@ -17,6 +19,11 @@ import java.util.List;
  */
 public record BurnEffect(double damagePerSecond, double duration) implements EnchantmentEffect {
     @Override
+    public void updateEffect(IEnemy enemy, long elapsed) {
+        // TODO
+    }
+
+    @Override
     public boolean isExpired() {
         return false;
     }
@@ -31,5 +38,10 @@ public record BurnEffect(double damagePerSecond, double duration) implements Enc
         return List.of(new TowerStat(TowerStatType.BURN_EFFECT, damagePerSecond),
                 new TowerStat(TowerStatType.EFFECT_DURATION, duration)
         );
+    }
+
+    @Override
+    public EnemyAnimation.EnemyAppearance getEnemyAppearance() {
+        return EnemyAnimation.EnemyAppearance.BURNING;
     }
 }

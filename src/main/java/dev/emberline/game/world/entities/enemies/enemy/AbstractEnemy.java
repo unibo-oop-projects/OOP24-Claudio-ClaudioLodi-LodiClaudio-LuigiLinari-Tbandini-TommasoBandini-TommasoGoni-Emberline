@@ -2,15 +2,14 @@ package dev.emberline.game.world.entities.enemies.enemy;
 
 import java.util.List;
 
-import dev.emberline.core.animations.Animation;
+import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
 import dev.emberline.utility.Vector2D;
 
 public abstract class AbstractEnemy implements IEnemy {
 
-    enum FacingDirection { UP, RIGHT, DOWN, LEFT }
-    enum EnemyState      { WALKING, ATTACKING, DYING, DEAD }
+    public enum FacingDirection { UP, RIGHT, DOWN, LEFT }
 
     private final EnemyUpdateComponent updateComponent;
     private final EnemyRenderComponent renderComponent;
@@ -24,6 +23,7 @@ public abstract class AbstractEnemy implements IEnemy {
     abstract protected double getHeight();
     abstract protected double getFullHealth();
     abstract protected double getSpeed();
+    abstract protected EnemyType getEnemyType();
     //TODO ABSTRACT METHOD FOR ANIMATION SELECTION
 
     @Override
@@ -84,12 +84,11 @@ public abstract class AbstractEnemy implements IEnemy {
         return updateComponent.getFacingDirection();
     }
 
-    EnemyState getEnemyState() {
-        return updateComponent.getEnemyState();
+    boolean isDyingAnimationFinished() {
+        return renderComponent.isDyingAnimationFinished();
     }
 
-    // TODO FIX
-    Animation getAnimation() {
-        return renderComponent.getAnimation();
+    Updatable getAnimationUpdatable() {
+        return renderComponent.getAnimationUpdatable();
     }
 }

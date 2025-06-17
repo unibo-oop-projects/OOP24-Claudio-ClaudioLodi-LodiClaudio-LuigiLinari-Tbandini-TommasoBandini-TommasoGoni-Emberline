@@ -2,6 +2,7 @@ package dev.emberline.game.world.entities.enemies.enemy.concrete;
 
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy;
+import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.utility.Vector2D;
 
 public class Ogre extends AbstractEnemy {
@@ -27,5 +28,10 @@ public class Ogre extends AbstractEnemy {
     @Override
     protected double getSpeed() {
         return 1.0 / 1e9;
+    }
+
+    @Override
+    protected EnemyType getEnemyType() {
+        return EnemyType.OGRE;
     }
 }
