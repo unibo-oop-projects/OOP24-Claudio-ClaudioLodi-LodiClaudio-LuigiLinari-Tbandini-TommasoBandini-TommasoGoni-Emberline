@@ -23,7 +23,7 @@ public class EnemyRenderComponent implements Renderable {
     private final AbstractEnemy enemy;
     private final EnemyAnimation enemyAnimation;
 
-    public EnemyRenderComponent(AbstractEnemy enemy) {
+    EnemyRenderComponent(AbstractEnemy enemy) {
         this.enemy = enemy;
         this.enemyAnimation = new EnemyAnimation(enemy);
     }

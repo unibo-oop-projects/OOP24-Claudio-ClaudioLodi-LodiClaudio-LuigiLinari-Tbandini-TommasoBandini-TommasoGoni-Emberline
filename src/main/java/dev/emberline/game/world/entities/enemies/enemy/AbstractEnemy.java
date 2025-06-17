@@ -80,8 +80,16 @@ public abstract class AbstractEnemy implements IEnemy {
         return updateComponent.getHealthPercentage();
     }
 
+    double getSlowFactor() {
+        return updateComponent.getSlowFactor();
+    }
+
     FacingDirection getFacingDirection() {
         return updateComponent.getFacingDirection();
+    }
+
+    EnemyAnimation.EnemyAppearance getEnemyAppearance() {
+        return updateComponent.getEnemyAppearance();
     }
 
     boolean isDyingAnimationFinished() {

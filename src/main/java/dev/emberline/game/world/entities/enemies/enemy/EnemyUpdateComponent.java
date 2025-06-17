@@ -111,7 +111,7 @@ class EnemyUpdateComponent implements Updatable {
         return enemyMotion;
     }
 
-    public void dealDamage(double damage) {
+    void dealDamage(double damage) {
         health -= damage;
         if (health <= 0) {
             enemyState = EnemyState.DYING;
@@ -157,8 +157,11 @@ class EnemyUpdateComponent implements Updatable {
         };
     }
 
-    EnemyState getEnemyState() {
-        return enemyState;
+    EnemyAnimation.EnemyAppearance getEnemyAppearance() {
+        if (enemyState == EnemyState.DYING) {
+            return EnemyAnimation.EnemyAppearance.DYING;
+        }
+        return activeEffect.getEnemyAppearance();
     }
 
     private void move(long elapsed) {
