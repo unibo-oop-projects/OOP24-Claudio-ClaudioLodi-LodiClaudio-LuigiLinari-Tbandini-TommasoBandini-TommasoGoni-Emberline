@@ -51,15 +51,18 @@ public class Wave implements Updatable, Renderable {
      * @return true if the wave is over
      */
     public boolean isOver() {
-        return world.getEnemiesManager().areAllDead() && spawnpoints.hasMoreToSpawn();
+        //return world.getEnemiesManager().areAllDead() && spawnpoints.hasMoreToSpawn();
+        return false;
     }
 
+    /*
     private void sendEnemies() {
         List<Pair<Vector2D, String>> enemiesQueue = spawnpoints.getEnemies(acc);
         for (var enemy : enemiesQueue) {
             world.getEnemiesManager().addEnemy(enemy.getX(), enemy.getY());
         }
     }
+    */
 
     /**
      * Updates the CoordinateSystem and sends to the EnemyManager the new enemies to spawn,
@@ -69,7 +72,7 @@ public class Wave implements Updatable, Renderable {
     public void update(long elapsed) {
         acc += elapsed;
 
-        sendEnemies();
+        //sendEnemies();
 
         csManager.update(elapsed);
         csManager.updateCS();

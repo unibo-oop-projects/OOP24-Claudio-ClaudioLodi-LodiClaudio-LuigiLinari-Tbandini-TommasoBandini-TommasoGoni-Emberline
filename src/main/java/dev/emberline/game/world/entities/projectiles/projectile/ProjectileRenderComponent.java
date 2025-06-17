@@ -25,7 +25,7 @@ public class ProjectileRenderComponent implements Renderable {
 
     public ProjectileRenderComponent(ProjectileInfo projInfo, EnchantmentInfo enchInfo, Projectile owner) {
         this.owner = owner;
-        this.projectileAnimation = new ProjectileAnimation(projInfo, enchInfo);
+        this.projectileAnimation = null;
     }
 
     @Override
