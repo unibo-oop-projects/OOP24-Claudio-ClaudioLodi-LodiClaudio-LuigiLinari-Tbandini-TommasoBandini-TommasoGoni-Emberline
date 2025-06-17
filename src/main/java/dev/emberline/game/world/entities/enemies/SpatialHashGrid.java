@@ -46,9 +46,6 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
 
     public void add(IEnemy enemy) {
         CellIdx cellIdx = getCellIdx(enemy.getPosition());
-        if (cellIdx == null) {
-            throw new IllegalArgumentException("Enemy already added to the spatial hash grid");
-        }
 
         spatialHashGrid[cellIdx.x()][cellIdx.y()].add(enemy);
         enemyCell.put(enemy, cellIdx);
