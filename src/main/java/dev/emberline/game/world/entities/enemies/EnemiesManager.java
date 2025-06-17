@@ -16,7 +16,7 @@ public class EnemiesManager implements Updatable, Renderable {
     private final EnemiesFactory enemiesFactory = new EnemiesFactory();
 
     private final List<IEnemy> enemies = new LinkedList<>();
-    private final SpatialHashGrid<IEnemy> spatialHashGrid;
+    private final SpatialHashGrid spatialHashGrid;
 
     private final World world;
 
@@ -24,8 +24,8 @@ public class EnemiesManager implements Updatable, Renderable {
         this.world = world;
 
         //TODO
-        this.spatialHashGrid = new SpatialHashGrid<>(
-            0, 0, 
+        this.spatialHashGrid = new SpatialHashGrid(
+            0, 0,
             32, 18
         );
     }

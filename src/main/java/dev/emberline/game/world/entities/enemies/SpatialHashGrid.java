@@ -12,7 +12,7 @@ import java.util.Set;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
 
-public class SpatialHashGrid<T extends IEnemy> implements Iterable<T> {
+public class SpatialHashGrid implements Iterable<IEnemy> {
 
     private record CellIdx(int x, int y) {}
 
@@ -21,8 +21,8 @@ public class SpatialHashGrid<T extends IEnemy> implements Iterable<T> {
     private final int x_min, y_min;
     private final int x_max, y_max;
 
-    private final Set<T>[][] spatialHashGrid;
-    private final Map<T, CellIdx> enemyCell;
+    private final Set<IEnemy>[][] spatialHashGrid;
+    private final Map<IEnemy, CellIdx> enemyCell;
 
     @SuppressWarnings("unchecked")
     public SpatialHashGrid(int x_min, int y_min, int x_max, int y_max) {
@@ -34,7 +34,7 @@ public class SpatialHashGrid<T extends IEnemy> implements Iterable<T> {
         this.x_max = x_max + CELL_SIZE * cols;
         this.y_max = y_max + CELL_SIZE * rows;
 
-        this.spatialHashGrid = (HashSet<T>[][])new HashSet[cols][rows];
+        this.spatialHashGrid = (HashSet<IEnemy>[][])new HashSet[cols][rows];
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
                 spatialHashGrid[i][j] = new HashSet<>();
@@ -44,7 +44,7 @@ public class SpatialHashGrid<T extends IEnemy> implements Iterable<T> {
         this.enemyCell = new HashMap<>();
     }
 
-    public void add(T enemy) {
+    public void add(IEnemy enemy) {
         CellIdx cellIdx = getCellIdx(enemy.getPosition());
         if (cellIdx == null) {
             throw new IllegalArgumentException("Enemy already added to the spatial hash grid");
@@ -54,7 +54,7 @@ public class SpatialHashGrid<T extends IEnemy> implements Iterable<T> {
         enemyCell.put(enemy, cellIdx);
     }
     
-    public void remove(T enemy) {
+    public void remove(IEnemy enemy) {
         CellIdx cellIdx = enemyCell.get(enemy);
         if (cellIdx == null) {
             throw new IllegalArgumentException("Enemy isn't present in the spatial hash grid");
@@ -64,13 +64,13 @@ public class SpatialHashGrid<T extends IEnemy> implements Iterable<T> {
         enemyCell.remove(enemy);
     }
 
-    public void removeAll(Collection<T> enemies) {
-        for (final T enemy : enemies) {
+    public void removeAll(Collection<IEnemy> enemies) {
+        for (final IEnemy enemy : enemies) {
             remove(enemy);
         }
     }
     
-    public void update(T enemy) {
+    public void update(IEnemy enemy) {
         CellIdx prevCellIdx = enemyCell.get(enemy);
         if (prevCellIdx == null) {
             throw new IllegalArgumentException("Enemy isn't present in the spatial hash grid");
@@ -86,8 +86,8 @@ public class SpatialHashGrid<T extends IEnemy> implements Iterable<T> {
         add(enemy);
     }
 
-    public void updateAll(Collection<T> enemies) {
-        for (final T enemy : enemies) {
+    public void updateAll(Collection<IEnemy> enemies) {
+        for (final IEnemy enemy : enemies) {
             update(enemy);
         }
     }
@@ -95,18 +95,18 @@ public class SpatialHashGrid<T extends IEnemy> implements Iterable<T> {
     /**
      * @return An iterator of the elements present in the {@code SpatialHashGrid}
      */
-    public Iterator<T> iterator() {
+    public Iterator<IEnemy> iterator() {
         return enemyCell.keySet().iterator();
     }
     
-    public List<T> getNear(Vector2D location, double radius) {
+    public List<IEnemy> getNear(Vector2D location, double radius) {
         CellIdx min = getCellIdx(location.subtract(radius, radius));
         CellIdx max = getCellIdx(location.add(radius, radius));
 
-        List<T> inside = new LinkedList<>();
+        List<IEnemy> inside = new LinkedList<>();
         for (int i = min.x(); i <= max.x(); i++) {
             for (int j = min.y(); j <= max.y(); j++) {
-                for (final T enemy : spatialHashGrid[i][j]) {
+                for (final IEnemy enemy : spatialHashGrid[i][j]) {
                     Vector2D pos = enemy.getPosition();
                     double dstX = pos.getX() - location.getX();
                     double dstY = pos.getY() - location.getY();

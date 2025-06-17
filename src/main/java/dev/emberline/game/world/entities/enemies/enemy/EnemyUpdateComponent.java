@@ -15,7 +15,7 @@ import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
 public class EnemyUpdateComponent implements Updatable {
-    private final double SPEED; // 1 tile/s
+    private final double SPEED;
     private final double FULL_HEALTH;
 
     private final AbstractEnemy enemy;
