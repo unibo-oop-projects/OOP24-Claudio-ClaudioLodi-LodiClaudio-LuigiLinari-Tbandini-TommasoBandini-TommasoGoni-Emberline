@@ -4,14 +4,16 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
-import dev.emberline.game.world.entities.enemies.enemy.concrete.Pig;
 import dev.emberline.utility.Vector2D;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 
 public class EnemiesManager implements Updatable, Renderable {
+
+    private final EnemiesFactory enemiesFactory = new EnemiesFactory();
 
     private final List<IEnemy> enemies = new LinkedList<>();
     private final SpatialHashGrid<IEnemy> spatialHashGrid;
@@ -28,14 +30,18 @@ public class EnemiesManager implements Updatable, Renderable {
         );
     }
 
-    public void addEnemy(Vector2D spawnPoint) {
-        IEnemy newEnemy = new Pig(spawnPoint, world);
+    public void addEnemy(Vector2D spawnPoint, EnemyType type) {
+        IEnemy newEnemy = enemiesFactory.createEnemy(spawnPoint, type, world);
         enemies.add(newEnemy);
         spatialHashGrid.add(newEnemy);
     }
     
     public List<IEnemy> getNear(Vector2D location, double radius) {
         return spatialHashGrid.getNear(location, radius);
+    }
+
+    public boolean areAllDead() {
+        return enemies.isEmpty();
     }
 
     @Override

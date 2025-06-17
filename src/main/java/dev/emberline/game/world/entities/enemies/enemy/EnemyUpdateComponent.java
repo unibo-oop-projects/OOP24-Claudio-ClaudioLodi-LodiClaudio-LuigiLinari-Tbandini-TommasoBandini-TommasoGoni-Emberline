@@ -15,14 +15,14 @@ import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
 public class EnemyUpdateComponent implements Updatable {
-    private static final double VELOCITY_MAG = 1.0 / 1e9; // 1 tile/s
-    private static final double FULL_HEALTH = 50;
+    private final double SPEED; // 1 tile/s
+    private final double FULL_HEALTH;
 
     private final AbstractEnemy enemy;
     private EnemyState enemyState;
     private EnchantmentEffect activeEffect = new DummyEffect();
 
-    private double health = FULL_HEALTH;
+    private double health;
     private double slowFactor = 1;
 
     private Vector2D position;
@@ -33,6 +33,9 @@ public class EnemyUpdateComponent implements Updatable {
 
     public EnemyUpdateComponent(Vector2D spawnPoint, World world, AbstractEnemy enemy) {
         this.enemy = enemy;
+        this.SPEED = enemy.getSpeed();
+        this.FULL_HEALTH = enemy.getFullHealth();
+        this.health = FULL_HEALTH;
 
         // Init destinations
         Optional<Vector2D> next = world.getWaveManager().getWave().getNext(spawnPoint);
@@ -46,7 +49,7 @@ public class EnemyUpdateComponent implements Updatable {
 
         this.enemyState = !destinations.isEmpty() ? EnemyState.WALKING : EnemyState.ATTACKING;
         if (enemyState == EnemyState.WALKING) {
-            this.velocity = destinations.get(destinationsIdx).subtract(position).normalize().multiply(VELOCITY_MAG);
+            this.velocity = destinations.get(destinationsIdx).subtract(position).normalize().multiply(SPEED);
         }
     }
 
@@ -86,8 +89,8 @@ public class EnemyUpdateComponent implements Updatable {
         for (int i = destinationsIdx; i < destinations.size() && durationAcc < time; i++) {
             Vector2D nextDestination = new Coordinate2D(destinations.get(i).getX(), destinations.get(i).getY());
 
-            Vector2D velocity = nextDestination.subtract(curr).normalize().multiply(VELOCITY_MAG);
-            Long duration = (long)(curr.distance(nextDestination) / VELOCITY_MAG);
+            Vector2D velocity = nextDestination.subtract(curr).normalize().multiply(SPEED);
+            Long duration = (long)(curr.distance(nextDestination) / SPEED);
             durationAcc += duration;
 
             enemyMotion.add(new UniformMotion(curr, velocity, duration));
@@ -171,7 +174,7 @@ public class EnemyUpdateComponent implements Updatable {
             // correction
             position = position.add(nextDirection.multiply(overshootAmount));
 
-            velocity = nextDirection.multiply(VELOCITY_MAG);
+            velocity = nextDirection.multiply(SPEED);
 
             posToDest = currDestination.subtract(position);
             dot = posToDest.dotProduct(velocity);

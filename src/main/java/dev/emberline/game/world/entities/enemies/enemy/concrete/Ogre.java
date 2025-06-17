@@ -18,4 +18,14 @@ public class Ogre extends AbstractEnemy {
     protected double getHeight() {
         return 1;
     }
+
+    @Override
+    protected double getFullHealth() {
+        return 50;
+    }
+
+    @Override
+    protected double getSpeed() {
+        return 1.0 / 1e9;
+    }
 }

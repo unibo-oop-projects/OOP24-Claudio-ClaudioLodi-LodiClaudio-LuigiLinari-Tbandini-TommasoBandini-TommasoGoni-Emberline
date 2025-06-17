@@ -22,6 +22,8 @@ public abstract class AbstractEnemy implements IEnemy {
 
     abstract protected double getWidth();
     abstract protected double getHeight();
+    abstract protected double getFullHealth();
+    abstract protected double getSpeed();
     //TODO ABSTRACT METHOD FOR ANIMATION SELECTION
 
     @Override
