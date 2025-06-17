@@ -9,6 +9,8 @@ import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
+import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy;
+import dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
@@ -32,8 +34,8 @@ public class EnemySpriteFactory implements  SpriteFactory<EnemySpriteKey> {
     @Override
     public Sprite loadSprite(EnemySpriteKey key) {
         EnemyType type = key.type();
-        FacingDirection direction = key.direction();
-        EnemyAppearance state = key.state();
+        AbstractEnemy.FacingDirection direction = key.direction();
+        EnemyAnimation.EnemyAppearance state = key.state();
 
         String jsonPath = String.format("/sprites/enemies/%s.json", type);
         Metadata metadata = ConfigLoader.loadConfig(jsonPath, Metadata.class);
