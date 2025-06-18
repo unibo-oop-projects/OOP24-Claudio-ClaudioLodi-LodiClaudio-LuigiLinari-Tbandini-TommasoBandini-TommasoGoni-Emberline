@@ -1,7 +1,5 @@
 package dev.emberline.game.model.effects;
 
-// TODO change this to a class when implementing the effect behaviour, duration must not be immutable
-
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
@@ -19,16 +17,40 @@ import java.util.List;
  *
  * @see dev.emberline.game.model.EnchantmentInfo.Type#ICE
  */
-public record SlowEffect(double slowingFactor, double duration) implements EnchantmentEffect {
+public class SlowEffect implements EnchantmentEffect {
+
+    private final double duration;
+    private final double slowingFactor;
+
+    private final long durationNs;
+    private long totalElapsed = 0;
+
+    private boolean isExpired = false;
+
+    public SlowEffect(double slowingFactor, double duration) {
+        this.slowingFactor = slowingFactor;
+        
+        this.duration = duration;
+        this.durationNs = (long) (duration * 1_000_000_000);
+    }
 
     @Override
     public void updateEffect(IEnemy enemy, long elapsed) {
-        // TODO
+        totalElapsed += elapsed;
+
+        if (totalElapsed >= durationNs) {
+            enemy.setSlowFactor(1.0);
+            
+            isExpired = true;
+            return;
+        }
+
+        enemy.setSlowFactor(slowingFactor);
     }
 
     @Override
     public boolean isExpired() {
-        return false;
+        return isExpired;
     }
 
     @Override
