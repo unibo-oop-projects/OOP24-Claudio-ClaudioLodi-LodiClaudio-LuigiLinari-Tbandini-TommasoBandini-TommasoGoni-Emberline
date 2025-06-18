@@ -8,12 +8,14 @@ import dev.emberline.utility.Vector2D;
 
 import java.util.List;
 
+/**
+ * Decorator for the basic enemymanager class, used for statistics.
+ */
 public class EnemiesManagerWithStats implements IEnemiesManager {
 
     private final EnemiesManager enemiesManager;
     private final Statistics statistics;
-    private int totEnemies = 0;
-    private int deadEnemies = 0;
+    private int deadEnemies;
 
     public EnemiesManagerWithStats(World world) {
         enemiesManager = new EnemiesManager(world);
@@ -40,6 +42,10 @@ public class EnemiesManagerWithStats implements IEnemiesManager {
         enemiesManager.render();
     }
 
+    /**
+     * Updates the basic enemymanager and keeps track of the dead enemy's number.
+     * @param elapsed
+     */
     @Override
     public void update(long elapsed) {
         int alivePreUpdate = enemiesManager.getAliveEnemiesNumber();
