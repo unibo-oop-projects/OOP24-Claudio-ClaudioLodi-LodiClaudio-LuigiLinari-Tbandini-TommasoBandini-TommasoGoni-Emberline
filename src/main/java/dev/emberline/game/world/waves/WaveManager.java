@@ -1,5 +1,6 @@
 package dev.emberline.game.world.waves;
 
+import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * A class that keeps track of all the waves, and the current wave.
  */
-public class WaveManager implements Updatable, Serializable {
+public class WaveManager implements Updatable, Renderable, Serializable {
     
     private final World world;
     //this will be one of the n waves contained in the list
@@ -55,5 +56,10 @@ public class WaveManager implements Updatable, Serializable {
         if (waves.get(currentWave).isOver() && currentWave+1 < waves.size()) {
             currentWave++;
         }
+    }
+
+    @Override
+    public void render() {
+        waves.get(currentWave).render();
     }
 }
