@@ -48,6 +48,10 @@ public class EnemiesManager implements Updatable, Renderable {
         return enemies.isEmpty();
     }
 
+    int getAliveEnemiesCount() {
+        return enemies.size();
+    }
+
     @Override
     public void update(long elapsed) {
         Iterator<IEnemy> enemiesIt = enemies.iterator();
