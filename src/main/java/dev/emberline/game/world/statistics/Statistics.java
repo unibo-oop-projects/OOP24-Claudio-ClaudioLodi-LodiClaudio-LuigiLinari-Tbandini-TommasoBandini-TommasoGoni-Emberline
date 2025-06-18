@@ -6,7 +6,9 @@ import dev.emberline.game.world.World;
 import java.io.Serializable;
 
 /**
- * A class that keeps all the statistics of the game.
+ * A class that keeps the statistics of the game.
+ * It is made such that it does not directly use other classes,
+ * but relies on decorators to gather data.
  */
 public class Statistics implements Updatable, Serializable {
 
@@ -21,18 +23,33 @@ public class Statistics implements Updatable, Serializable {
     private final long unitOfTime = 1_000_000_000;
     private long acc = 0;
 
+    /**
+     * this class is relative to
+     * @param world
+     */
     public Statistics(World world) {
         this.world = world;
     }
 
+    /**
+     * Sums the enemies that died in the current update
+     * to all the other enemies already dead.
+     * @param enemiesKilled
+     */
     public void updateEnemiesKilled(int enemiesKilled) {
-        this.enemiesKilled = enemiesKilled;
+        this.enemiesKilled += enemiesKilled;
     }
 
-    public void updateWavesSurvived(int wavesSurvived) {
-        this.wavesSurvived = wavesSurvived;
+    /**
+     * Whenever the current wave finishes this method increments by one the counter.
+     */
+    public void updateWavesSurvived() {
+        this.wavesSurvived++;
     }
 
+    /**
+     * sums @param elapsed to the current time spent in game.
+     */
     public void updateTimeInGame(long elapsed) {
         this.timeInGame += elapsed;
     }
@@ -41,11 +58,14 @@ public class Statistics implements Updatable, Serializable {
         this.playerHealth = playerHealth;
     }
 
+    /**
+     * Sums @param damage to the total damage already dealt by the towers to the enemies.
+     */
     public void updateTotalDamage(double damage) {
         totalDamage += damage;
     }
 
-    public void updateDPS() {
+    private void updateDPS() {
         if (timeInGame > 0) {
             dps = totalDamage / (double) (timeInGame / unitOfTime);
         }
@@ -77,8 +97,6 @@ public class Statistics implements Updatable, Serializable {
 
     @Override
     public void update(long elapsed) {
-        //updateEnemiesKilled(world.getEnemiesManager().getEnemiesKilled());
-        updateWavesSurvived(world.getWaveManager().getCurrentWave());
         updateTimeInGame(elapsed);
         //updatePlayerHealth();
         updateDPS();
