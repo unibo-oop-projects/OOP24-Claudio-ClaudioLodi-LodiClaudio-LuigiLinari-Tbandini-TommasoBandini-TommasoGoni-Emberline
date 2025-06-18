@@ -1,8 +1,6 @@
 package dev.emberline.game.world.entities.enemies;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
@@ -15,7 +13,13 @@ public class EnemiesManager implements Updatable, Renderable {
 
     private final EnemiesFactory enemiesFactory = new EnemiesFactory();
 
-    private final List<IEnemy> enemies = new LinkedList<>();
+    // Enemies are sorted by their Y position (top to bottom)
+    private final Collection<IEnemy> enemies = new TreeSet<>(
+            (e1, e2) -> {
+                return Double.compare(e1.getPosition().getY() + e1.getHeight()/2, e2.getPosition().getY() + e2.getHeight()/2);
+            }
+    );
+
     private final SpatialHashGrid spatialHashGrid;
 
     private final World world;
