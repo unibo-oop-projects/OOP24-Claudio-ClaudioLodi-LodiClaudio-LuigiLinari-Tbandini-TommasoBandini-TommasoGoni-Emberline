@@ -87,6 +87,7 @@ public class EnemyAnimation implements Updatable {
         }
 
         long frameTime = (long) (animatedSprite.getFrameTime() / enemy.getSlowFactor());
+        accumulatedTime += elapsed;
         while(accumulatedTime >= frameTime) {
             accumulatedTime -= frameTime;
             frameIndex = (frameIndex+1) % animatedSprite.getFrameCount();
