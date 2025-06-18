@@ -11,18 +11,13 @@ import java.util.List;
 /**
  * A class that keeps track of all the waves, and the current wave.
  */
-public class WaveManager implements Updatable, Renderable, Serializable {
+public class WaveManager implements IWaveManager {
     
     private final World world;
-    //this will be one of the n waves contained in the list
     private final List<Wave> waves = new ArrayList<>();
     private Integer currentWave = 0;
     private final Integer nWaves = 2;
 
-    /**
-     * Creates a new instance of {@code WaveManager}
-     * @param world is the reference to the World
-     */
     public WaveManager(World world) {
         this.world = world;
 
@@ -31,16 +26,10 @@ public class WaveManager implements Updatable, Renderable, Serializable {
         }
     }
 
-    /**
-     * @return the current {@code Wave}
-     */
     public Wave getWave() {
         return this.waves.get(currentWave);
     }
 
-    /**
-     * @return the number of the current wave
-     */
     public int getCurrentWave() {
         return currentWave;
     }

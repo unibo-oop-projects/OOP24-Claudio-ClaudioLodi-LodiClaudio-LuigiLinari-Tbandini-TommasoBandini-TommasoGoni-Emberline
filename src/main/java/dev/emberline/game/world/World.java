@@ -3,11 +3,14 @@ package dev.emberline.game.world;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.entities.enemies.EnemiesManager;
+import dev.emberline.game.world.entities.enemies.EnemiesManagerWithStats;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.statistics.Statistics;
 import dev.emberline.game.world.entities.projectiles.ProjectilesManager;
 import dev.emberline.game.world.entities.projectiles.projectile.ProjectileHitListener;
+import dev.emberline.game.world.waves.IWaveManager;
 import dev.emberline.game.world.waves.WaveManager;
+import dev.emberline.game.world.waves.WaveManagerWithStats;
 
 import java.io.Serializable;
 
@@ -19,15 +22,15 @@ public class World implements Updatable, Renderable, Serializable {
     // Projectiles
     private final ProjectilesManager projectilesManager;
     // Waves
-    private final WaveManager waveManager;
+    private final IWaveManager waveManager;
 
     private final Statistics statistics;
     // HitListener
     private final ProjectileHitListener projectileHitListener;
 
     public World() {
-        this.enemiesManager = new EnemiesManager(this);
-        this.waveManager = new WaveManager(this);
+        this.enemiesManager = new EnemiesManagerWithStats(this);
+        this.waveManager = new WaveManagerWithStats(this);
         this.statistics = new Statistics(this);
         this.projectilesManager = new ProjectilesManager();
         this.projectileHitListener = new ProjectileHitListener(enemiesManager);
@@ -41,7 +44,7 @@ public class World implements Updatable, Renderable, Serializable {
         return projectileHitListener;
     }
 
-    public WaveManager getWaveManager() {
+    public IWaveManager getWaveManager() {
         return waveManager;
     }
 
@@ -61,6 +64,6 @@ public class World implements Updatable, Renderable, Serializable {
     public void render() {
         enemiesManager.render();
         projectilesManager.render();
-        waveManager.render(); // TODO
+        waveManager.render();
     }
 }
