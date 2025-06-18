@@ -47,6 +47,11 @@ public abstract class AbstractEnemy implements IEnemy {
         return getMetadata().width;
     }
 
+    @Override
+    public double getHealth() {
+        return updateComponent.getHealth();
+    }
+
     public double getHeight() {
         return getMetadata().height;
     }

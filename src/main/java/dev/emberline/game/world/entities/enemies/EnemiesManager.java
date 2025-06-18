@@ -2,14 +2,13 @@ package dev.emberline.game.world.entities.enemies;
 
 import java.util.*;
 
+import dev.emberline.game.world.entities.enemies.enemy.EnemyWithStats;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 
-public class EnemiesManager implements Updatable, Renderable {
+public class EnemiesManager implements IEnemiesManager {
 
     private final EnemiesFactory enemiesFactory = new EnemiesFactory();
 
@@ -36,8 +35,9 @@ public class EnemiesManager implements Updatable, Renderable {
 
     public void addEnemy(Vector2D spawnPoint, EnemyType type) {
         IEnemy newEnemy = enemiesFactory.createEnemy(spawnPoint, type, world);
-        enemies.add(newEnemy);
-        spatialHashGrid.add(newEnemy);
+        IEnemy newEnemyWrapper = new EnemyWithStats(newEnemy, world.getStatistics());
+        enemies.add(newEnemyWrapper);
+        spatialHashGrid.add(newEnemyWrapper);
     }
     
     public List<IEnemy> getNear(Vector2D location, double radius) {
@@ -48,7 +48,7 @@ public class EnemiesManager implements Updatable, Renderable {
         return enemies.isEmpty();
     }
 
-    int getAliveEnemiesCount() {
+    int getAliveEnemiesNumber() {
         return enemies.size();
     }
 

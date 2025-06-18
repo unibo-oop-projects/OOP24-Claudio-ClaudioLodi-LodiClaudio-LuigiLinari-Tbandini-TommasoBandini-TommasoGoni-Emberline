@@ -3,6 +3,7 @@ package dev.emberline.game.world;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.entities.enemies.EnemiesManager;
+import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.statistics.Statistics;
 import dev.emberline.game.world.entities.projectiles.ProjectilesManager;
 import dev.emberline.game.world.entities.projectiles.projectile.ProjectileHitListener;
@@ -13,7 +14,7 @@ import java.io.Serializable;
 public class World implements Updatable, Renderable, Serializable {
 
     // Enemies
-    private final EnemiesManager enemiesManager;
+    private final IEnemiesManager enemiesManager;
     // Towers
     // Projectiles
     private final ProjectilesManager projectilesManager;
@@ -32,7 +33,7 @@ public class World implements Updatable, Renderable, Serializable {
         this.projectileHitListener = new ProjectileHitListener(enemiesManager);
     }
 
-    public EnemiesManager getEnemiesManager() {
+    public IEnemiesManager getEnemiesManager() {
         return enemiesManager;
     }
 
@@ -42,6 +43,10 @@ public class World implements Updatable, Renderable, Serializable {
 
     public WaveManager getWaveManager() {
         return waveManager;
+    }
+
+    public Statistics getStatistics() {
+        return statistics;
     }
 
     @Override
@@ -56,6 +61,6 @@ public class World implements Updatable, Renderable, Serializable {
     public void render() {
         enemiesManager.render();
         projectilesManager.render();
-        waveManager.getWave().render(); // TODO (the world should only call on managers)
+        waveManager.render(); // TODO
     }
 }

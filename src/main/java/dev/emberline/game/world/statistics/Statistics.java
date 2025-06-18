@@ -15,8 +15,10 @@ public class Statistics implements Updatable, Serializable {
     private int wavesSurvived = 0;
     private long timeInGame = 0;
     private int playerHealth = 0;
-    private int dps = 0;
+    private double totalDamage = 0;
+    private double dps = 0;
 
+    private final long unitOfTime = 1_000_000_000;
     private long acc = 0;
 
     public Statistics(World world) {
@@ -38,9 +40,15 @@ public class Statistics implements Updatable, Serializable {
     public void updatePlayerHealth(int playerHealth) {
         this.playerHealth = playerHealth;
     }
-    
-    public void updateDPS(int damagePerTick, long elapsed) {
 
+    public void updateTotalDamage(double damage) {
+        totalDamage += damage;
+    }
+
+    public void updateDPS() {
+        if (timeInGame > 0) {
+            dps = totalDamage / (double) (timeInGame / unitOfTime);
+        }
     }
 
     public int getEnemiesKilled() {
@@ -59,7 +67,11 @@ public class Statistics implements Updatable, Serializable {
         return this.playerHealth;
     }
 
-    public int getDPS() {
+    public double getTotalDamage() {
+        return totalDamage;
+    }
+
+    public double getDPS() {
         return this.playerHealth;
     }
 
@@ -69,6 +81,6 @@ public class Statistics implements Updatable, Serializable {
         updateWavesSurvived(world.getWaveManager().getCurrentWave());
         updateTimeInGame(elapsed);
         //updatePlayerHealth();
-        //updateDPS();
+        updateDPS();
     }
 }

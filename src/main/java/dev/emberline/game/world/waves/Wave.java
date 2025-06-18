@@ -8,6 +8,7 @@ import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.core.render.Zoom;
 import dev.emberline.game.world.World;
+import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.game.world.roads.Roads;
 import dev.emberline.game.world.spawnpoints.Spawnpoints;
 import dev.emberline.utility.Pair;
@@ -57,7 +58,7 @@ public class Wave implements Updatable, Renderable {
 
     /*
     private void sendEnemies() {
-        List<Pair<Vector2D, String>> enemiesQueue = spawnpoints.getEnemies(acc);
+        List<Pair<Vector2D, EnemyType>> enemiesQueue = spawnpoints.getEnemies(acc);
         for (var enemy : enemiesQueue) {
             world.getEnemiesManager().addEnemy(enemy.getX(), enemy.getY());
         }
