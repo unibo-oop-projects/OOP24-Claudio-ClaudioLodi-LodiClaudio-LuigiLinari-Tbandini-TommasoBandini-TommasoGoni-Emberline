@@ -17,11 +17,11 @@ public class EnemiesFactory {
         IEnemy createEnemy(Vector2D spawnPoint, World world);
     }
 
-    private final Map<EnemyType, EnemyCreator> creatorRegistry = new HashMap<>();
+    private static final Map<EnemyType, EnemyCreator> creatorRegistry = new HashMap<>();
 
-    {
-        creatorRegistry.put(EnemyType.PIG, (spawnPoint, world) -> new Pig(spawnPoint, world));
-        creatorRegistry.put(EnemyType.OGRE, (spawnPoint, world) -> new Ogre(spawnPoint, world));
+    static {
+        creatorRegistry.put(EnemyType.PIG, Pig::new);
+        creatorRegistry.put(EnemyType.OGRE, Ogre::new);
     }
 
     public IEnemy createEnemy(Vector2D spawnPoint, EnemyType type, World world) {
