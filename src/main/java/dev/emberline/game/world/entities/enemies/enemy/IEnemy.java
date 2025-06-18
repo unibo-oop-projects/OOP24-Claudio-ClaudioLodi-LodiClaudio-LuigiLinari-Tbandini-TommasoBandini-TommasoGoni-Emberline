@@ -9,6 +9,10 @@ import dev.emberline.utility.Vector2D;
 
 public interface IEnemy extends Updatable, Renderable {
 
+    double getHeight();
+
+    double getWidth();
+
     void dealDamage(double damage);
     
     void applyEffect(EnchantmentEffect effect);

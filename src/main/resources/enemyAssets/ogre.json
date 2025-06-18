@@ -2,7 +2,7 @@
   "width": 16,
   "height": 32,
   "frames": 8,
-  "frameTime": 300,
+  "frameTime": 300000000,
   "direction": {
     "down": 0,
     "up": 16,
@@ -14,5 +14,11 @@
     "burning": 32,
     "freezing": 64,
     "dying": 96
+  },
+  "metadata": {
+    "tileWidth": 1,
+    "tileHeight": 2,
+    "fullHealth": 50,
+    "speed": 0.000000001
   }
 }

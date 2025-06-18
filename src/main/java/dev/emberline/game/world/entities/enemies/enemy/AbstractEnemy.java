@@ -4,13 +4,24 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
-import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy.FacingDirection;
 import dev.emberline.utility.Vector2D;
 
 public abstract class AbstractEnemy implements IEnemy {
+
+    protected static class Metadata {
+        @JsonProperty("tileWidth")
+        public double width;
+        @JsonProperty("tileHeight")
+        public double height;
+        @JsonProperty("fullHealth")
+        public double fullHealth;
+        @JsonProperty("speed")
+        public double speed;
+    }
 
     public enum FacingDirection {
         UP, RIGHT, DOWN, LEFT;
@@ -29,12 +40,24 @@ public abstract class AbstractEnemy implements IEnemy {
         this.renderComponent = new EnemyRenderComponent(this);
     }
 
-    abstract protected double getWidth();
-    abstract protected double getHeight();
-    abstract protected double getFullHealth();
-    abstract protected double getSpeed();
+    abstract protected Metadata getMetadata();
     abstract protected EnemyType getEnemyType();
-    //TODO ABSTRACT METHOD FOR ANIMATION SELECTION
+
+    public double getWidth() {
+        return getMetadata().width;
+    }
+
+    public double getHeight() {
+        return getMetadata().height;
+    }
+
+    protected double getFullHealth() {
+        return getMetadata().fullHealth;
+    }
+
+    protected double getSpeed() {
+        return getMetadata().speed;
+    }
 
     @Override
     public void update(long elapsed) {
