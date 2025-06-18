@@ -29,9 +29,9 @@ public class World implements Updatable, Renderable, Serializable {
     private final ProjectileHitListener projectileHitListener;
 
     public World() {
+        this.statistics = new Statistics(this);
         this.enemiesManager = new EnemiesManagerWithStats(this);
         this.waveManager = new WaveManagerWithStats(this);
-        this.statistics = new Statistics(this);
         this.projectilesManager = new ProjectilesManager();
         this.projectileHitListener = new ProjectileHitListener(enemiesManager);
     }

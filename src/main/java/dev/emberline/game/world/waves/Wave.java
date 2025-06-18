@@ -72,7 +72,7 @@ public class Wave implements Updatable, Renderable {
         accumulatorNs += elapsed;
         sendEnemies();
         roads.update(elapsed);
-        //zoom.update(elapsed);
+        zoom.update(elapsed);
     }
 
     @Override

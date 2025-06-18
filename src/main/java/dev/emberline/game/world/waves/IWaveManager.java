@@ -18,6 +18,6 @@ public interface IWaveManager extends Updatable, Renderable, Serializable {
     /**
      * @return the number of the current wave
      */
-    int getCurrentWave();
+    int getCurrentWaveIndex();
 
 }

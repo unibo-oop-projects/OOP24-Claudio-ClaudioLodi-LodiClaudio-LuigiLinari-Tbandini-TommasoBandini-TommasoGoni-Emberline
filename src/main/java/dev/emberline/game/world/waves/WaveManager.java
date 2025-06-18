@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * A class that keeps track of all the waves, and the current wave.
  */
-public class WaveManager implements Renderable, Updatable {
+public class WaveManager implements IWaveManager {
     // Loading waves from resources
     private static final String wavesConfigPath = "/waves/waves.json";
     private static class WavesConfig {

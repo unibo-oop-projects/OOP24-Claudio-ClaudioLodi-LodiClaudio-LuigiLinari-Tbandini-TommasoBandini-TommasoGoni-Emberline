@@ -23,8 +23,8 @@ public class WaveManagerWithStats implements IWaveManager {
     }
 
     @Override
-    public int getCurrentWave() {
-        return waveManager.getCurrentWave();
+    public int getCurrentWaveIndex() {
+        return waveManager.getCurrentWaveIndex();
     }
 
     @Override
@@ -39,9 +39,9 @@ public class WaveManagerWithStats implements IWaveManager {
      */
     @Override
     public void update(long elapsed) {
-        int nWavePreUpdate = getCurrentWave();
+        int nWavePreUpdate = getCurrentWaveIndex();
         waveManager.update(elapsed);
-        int nWavePostUpdate = getCurrentWave();
+        int nWavePostUpdate = getCurrentWaveIndex();
 
         if (nWavePostUpdate - nWavePreUpdate > 0)statistics.updateWavesSurvived();
     }

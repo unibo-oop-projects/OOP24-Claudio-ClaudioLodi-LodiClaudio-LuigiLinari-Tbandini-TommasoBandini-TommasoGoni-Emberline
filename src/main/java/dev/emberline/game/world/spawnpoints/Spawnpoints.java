@@ -55,8 +55,7 @@ public class Spawnpoints {
     /**
      * Creates a new instance of {@code Wave}
      *
-     * @param world the world in which the wave is being played
-     * @param waveDirectoryPath the path of the directory containing the wave files
+     * @param wavePath the path of the directory containing the wave files
      */
     public Spawnpoints(String wavePath) {
         spawnpoints = ConfigLoader.loadConfig("/waves/wave0/spawnpoints.json", Spawnpoint[].class);
