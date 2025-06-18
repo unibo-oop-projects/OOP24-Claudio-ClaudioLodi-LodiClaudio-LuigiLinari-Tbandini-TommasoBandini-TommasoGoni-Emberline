@@ -1,33 +1,40 @@
 package dev.emberline.game.world.waves;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A class that keeps track of all the waves, and the current wave.
  */
-public class WaveManager implements Updatable, Renderable, Serializable {
-    
-    private final World world;
-    //this will be one of the n waves contained in the list
+public class WaveManager implements Renderable, Updatable {
+    // Loading waves from resources
+    private static final String wavesConfigPath = "/waves/waves.json";
+    private static class WavesConfig {
+        @JsonProperty("waves")
+        private String[] wavePaths;
+    }
+    private final static WavesConfig wavesConfig = ConfigLoader.loadConfig(wavesConfigPath, WavesConfig.class);
+
     private final List<Wave> waves = new ArrayList<>();
-    private Integer currentWave = 0;
-    private final Integer nWaves = 2;
+    private int currentWaveIndex = 0;
 
     /**
      * Creates a new instance of {@code WaveManager}
-     * @param world is the reference to the World
+     *
+     * @param world the world in which the waves are being played
      */
     public WaveManager(World world) {
-        this.world = world;
-
-        for (int i = 0; i < nWaves; i++) {
-            waves.add(new Wave(world, "/loadingFiles/wave" + i + "/"));
+        for (String wavePath : wavesConfig.wavePaths) {
+            if (wavePath == null || wavePath.isEmpty()) {
+                throw new IllegalArgumentException("Wave path cannot be null or empty");
+            }
+            waves.add(new Wave(world, wavePath));
         }
     }
 
@@ -35,14 +42,14 @@ public class WaveManager implements Updatable, Renderable, Serializable {
      * @return the current {@code Wave}
      */
     public Wave getWave() {
-        return this.waves.get(currentWave);
+        return this.waves.get(currentWaveIndex);
     }
 
     /**
      * @return the number of the current wave
      */
-    public int getCurrentWave() {
-        return currentWave;
+    public int getCurrentWaveIndex() {
+        return currentWaveIndex;
     }
 
     /**
@@ -51,15 +58,15 @@ public class WaveManager implements Updatable, Renderable, Serializable {
      */
     @Override
     public void update(long elapsed) {
-        this.waves.get(currentWave).update(elapsed);
+        getWave().update(elapsed);
 
-        if (waves.get(currentWave).isOver() && currentWave+1 < waves.size()) {
-            currentWave++;
+        if (getWave().isOver() && currentWaveIndex+1 < waves.size()) {
+            currentWaveIndex++;
         }
     }
 
     @Override
     public void render() {
-        waves.get(currentWave).render();
+        getWave().render();
     }
 }

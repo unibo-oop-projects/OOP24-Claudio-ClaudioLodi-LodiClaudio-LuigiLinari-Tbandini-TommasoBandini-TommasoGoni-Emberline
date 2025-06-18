@@ -10,17 +10,17 @@ import java.io.IOException;
 public class ConfigLoader {
     private static final ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    public static JsonNode loadConfig(String configFile) {
+    public static JsonNode loadNode(String resourcePath) {
         try {
-            return objectMapper.readTree(ConfigLoader.class.getResourceAsStream(configFile));
+            return objectMapper.readTree(ConfigLoader.class.getResourceAsStream(resourcePath));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static <T> T loadConfig(String filename, Class<T> valueType) {
+    public static <T> T loadConfig(String resourcePath, Class<T> valueType) {
         try {
-            return objectMapper.treeToValue(loadConfig(filename), valueType);
+            return objectMapper.treeToValue(loadNode(resourcePath), valueType);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

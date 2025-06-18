@@ -17,18 +17,11 @@ public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListe
     // Navigation States
     private final World world = new World();
 
-    private long acc = 0;
-    private final GuiLayer gl;
-
     public GameRoot() {
-        Tower t = new Tower();
-        gl = new TowerDialogLayer(t);
-        gl.setListener(t);
     }
 
     @Override
     public void processInput(InputEvent inputEvent) {
-        gl.processInput(inputEvent);
     }
 
     @Override
@@ -39,11 +32,8 @@ public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListe
     @Override
     public void render() {
         world.render();
-        gl.render();
     }
 
     @Override
-    public void onGuiEvent(GuiEvent event) {
-
-    }
+    public void onGuiEvent(GuiEvent event) {}
 }

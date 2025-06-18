@@ -11,7 +11,7 @@ public class Ogre extends AbstractEnemy {
     private static Metadata metadata;
     private static final String ASSET_PATH = "/sprites/enemyAssets/ogre.json";
     static {
-        JsonNode metadataNode = ConfigLoader.loadConfig(ASSET_PATH).get("metadata");
+        JsonNode metadataNode = ConfigLoader.loadNode(ASSET_PATH).get("metadata");
         metadata = ConfigLoader.loadConfig(metadataNode, Metadata.class);
     }
 

@@ -1,6 +1,5 @@
 package dev.emberline.game.world.waves;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,35 +7,33 @@ import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.core.render.Zoom;
 import dev.emberline.game.world.World;
-import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.game.world.roads.Roads;
 import dev.emberline.game.world.spawnpoints.Spawnpoints;
-import dev.emberline.utility.Pair;
+import dev.emberline.game.world.spawnpoints.Spawnpoints.EnemyToSpawn;
 import dev.emberline.utility.Vector2D;
 
 /**
  * The Wave class contains all the elements that characterize a single wave
  */
 public class Wave implements Updatable, Renderable {
-    
     private final World world;
     private final Roads roads;
     private final Spawnpoints spawnpoints;
-    private final Zoom csManager;
-
-    private long acc = 0;
+    private final Zoom zoom;
+    // In nanoseconds, keeps track of the total time elapsed from the start of the wave
+    private long accumulatorNs = 0;
 
     /**
      * Creates a new instance of {@code Wave}
      *
-     * @param world is the reference to the World
-     * @param wavePath represents the path of the files regarding the current wave
+     * @param world the world in which the wave is being played
+     * @param waveDirectoryPath the path of the directory containing the wave files
      */
-    public Wave(World world, String wavePath) {
+    public Wave(World world, String waveDirectoryPath) {
         this.world = world;
-        roads = new Roads(wavePath);
-        spawnpoints = new Spawnpoints(wavePath);
-        csManager = new Zoom(wavePath);
+        this.roads = new Roads(waveDirectoryPath);
+        this.spawnpoints = new Spawnpoints(waveDirectoryPath);
+        this.zoom = new Zoom(waveDirectoryPath);
     }
 
     /**
@@ -52,18 +49,19 @@ public class Wave implements Updatable, Renderable {
      * @return true if the wave is over
      */
     public boolean isOver() {
-        //return world.getEnemiesManager().areAllDead() && spawnpoints.hasMoreToSpawn();
-        return false;
+        return world.getEnemiesManager().areAllDead() && !spawnpoints.hasMoreEnemiesToSpawn();
     }
 
-    /*
     private void sendEnemies() {
-        List<Pair<Vector2D, EnemyType>> enemiesQueue = spawnpoints.getEnemies(acc);
-        for (var enemy : enemiesQueue) {
-            world.getEnemiesManager().addEnemy(enemy.getX(), enemy.getY());
+        List<EnemyToSpawn> enemiesToSpawn = spawnpoints.retrieveEnemiesToSpawnNanoseconds(accumulatorNs);
+
+        for (EnemyToSpawn enemyToSpawn : enemiesToSpawn) {
+            world.getEnemiesManager().addEnemy(
+                enemyToSpawn.spawnLocation(),
+                enemyToSpawn.enemyType()
+            );
         }
     }
-    */
 
     /**
      * Updates the CoordinateSystem and sends to the EnemyManager the new enemies to spawn,
@@ -71,14 +69,10 @@ public class Wave implements Updatable, Renderable {
      */
     @Override
     public void update(long elapsed) {
-        acc += elapsed;
-
-        //sendEnemies();
-
-        csManager.update(elapsed);
-        csManager.updateCS();
-
+        accumulatorNs += elapsed;
+        sendEnemies();
         roads.update(elapsed);
+        //zoom.update(elapsed);
     }
 
     @Override
