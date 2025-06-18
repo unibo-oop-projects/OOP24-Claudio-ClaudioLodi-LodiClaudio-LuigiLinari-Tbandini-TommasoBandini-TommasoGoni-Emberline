@@ -30,7 +30,7 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
         @JsonProperty("charOrder")
         private String charOrder;
     }
-    private final static Metadata metadata = ConfigLoader.loadConfig("/fonts/font.json", Metadata.class);
+    private final static Metadata metadata = ConfigLoader.loadConfig("/font/font.json", Metadata.class);
 
     private final static Map<Character, Image> CHAR_CACHE = Collections.synchronizedMap(new HashMap<>());
 

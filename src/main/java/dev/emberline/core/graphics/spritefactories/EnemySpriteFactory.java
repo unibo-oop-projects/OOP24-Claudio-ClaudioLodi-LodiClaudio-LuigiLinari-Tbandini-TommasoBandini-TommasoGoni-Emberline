@@ -1,5 +1,6 @@
 package dev.emberline.core.graphics.spritefactories;
 
+import java.io.Console;
 import java.util.Map;
 import java.util.Objects;
 
@@ -39,13 +40,13 @@ public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
         FacingDirection direction = key.direction();
         EnemyAppearance state = key.state();
 
-        String jsonPath = String.format("/enemyAssets/%s.json", type.name().toLowerCase());
+        String jsonPath = String.format("/sprites/enemyAssets/%s.json", type.name().toLowerCase());
         Metadata metadata = ConfigLoader.loadConfig(jsonPath, Metadata.class);
         
         int xOffset = metadata.direction.get(direction);
         int yOffset = metadata.state.get(state);
 
-        String enemyAtlasPath = String.format("/enemyAssets/%sAtlas.png", type.name().toLowerCase());
+        String enemyAtlasPath = String.format("/sprites/enemyAssets/%sAtlas.png", type.name().toLowerCase());
         Image enemyAtals = getEnemyAtlas(enemyAtlasPath);
 
         Image[] frames = new Image[metadata.frames];

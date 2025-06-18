@@ -1,0 +1,14 @@
+{
+    "horizontal": {
+        "priceWidthRatio": 0.6,
+        "priceHeightRatio": 0.35,
+        "priceXOffset": 0.1,
+        "priceYPosition": 0.5
+    },
+    "vertical": {
+        "priceWidthRatio": 0.7,
+        "priceHeightRatio": 0.35,
+        "priceXOffset": 0.55,
+        "priceYPosition": 0.8
+    }
+}
