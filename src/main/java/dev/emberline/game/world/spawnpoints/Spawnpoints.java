@@ -23,10 +23,6 @@ public class Spawnpoints {
     //temp variables to delete later
     private long timeFromStart = 5_000_000_000L;
 
-    /**
-     * Creates a new instance of {@code Spawnpoints}
-     * @param wavePath represents the path of the files regarding the current wave
-     */
     public Spawnpoints(String wavePath) {
         loadSpawnpoints(wavePath + "spawnpoints.txt");
     }
@@ -46,8 +42,6 @@ public class Spawnpoints {
 
     /**
      * This method returns the list of enemies that must be spawned at the current time.
-     * note that right now the enemies are all the same type
-     * this may be changed later
      */
     public List<Pair<Vector2D, EnemyType>> getEnemies(Long time) {
         List<Pair<Vector2D, EnemyType>> enemiesList = new LinkedList<>();

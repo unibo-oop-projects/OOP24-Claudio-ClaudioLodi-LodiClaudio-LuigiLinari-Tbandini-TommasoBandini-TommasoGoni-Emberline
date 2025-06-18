@@ -27,8 +27,6 @@ public class Wave implements Updatable, Renderable {
     private long acc = 0;
 
     /**
-     * Creates a new instance of {@code Wave}
-     *
      * @param world is the reference to the World
      * @param wavePath represents the path of the files regarding the current wave
      */
@@ -76,7 +74,6 @@ public class Wave implements Updatable, Renderable {
         //sendEnemies();
 
         csManager.update(elapsed);
-        csManager.updateCS();
 
         roads.update(elapsed);
     }

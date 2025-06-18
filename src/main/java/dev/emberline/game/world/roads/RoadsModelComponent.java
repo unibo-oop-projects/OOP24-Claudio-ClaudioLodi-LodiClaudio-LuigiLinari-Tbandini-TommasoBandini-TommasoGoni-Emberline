@@ -23,7 +23,6 @@ class RoadsModelComponent {
     private final Map<Vector2D, Node> posToNode = new HashMap<>();
 
     /**
-     * Creates a new instance of {@code RoadsUpdateComponent}
      * @param wavePath represents the path of the files regarding the current wave
      */
     RoadsModelComponent(String wavePath) {
