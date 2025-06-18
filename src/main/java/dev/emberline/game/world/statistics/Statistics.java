@@ -78,7 +78,7 @@ public class Statistics implements Updatable, Serializable {
     @Override
     public void update(long elapsed) {
         //updateEnemiesKilled(world.getEnemiesManager().getEnemiesKilled());
-        updateWavesSurvived(world.getWaveManager().getCurrentWave());
+        updateWavesSurvived(world.getWaveManager().getCurrentWaveIndex());
         updateTimeInGame(elapsed);
         //updatePlayerHealth();
         updateDPS();

@@ -1,0 +1,10 @@
+8 15
+0 1 base tank tank
+3 0.5 tank base tank tank
+/
+29 11
+0 1 tank tank
+/
+14 2
+1 0.5 tank base tank tank base
+5 0.1 tank tank
