@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.*;
 
+import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Pair;
 import dev.emberline.utility.Vector2D;
@@ -18,7 +19,7 @@ public class Spawnpoints {
     /**
      * Data structure that for each spawnpoint, keeps a queue of enemies to spawn at a given time
      */
-    private final List<Pair<Vector2D,Queue<Pair<String, Long>>>> enemiesToSpawn = new ArrayList<>();
+    private final List<Pair<Vector2D,Queue<Pair<EnemyType, Long>>>> enemiesToSpawn = new ArrayList<>();
     //temp variables to delete later
     private long timeFromStart = 5_000_000_000L;
 
@@ -48,13 +49,15 @@ public class Spawnpoints {
      * note that right now the enemies are all the same type
      * this may be changed later
      */
-    public List<Pair<Vector2D, String>> getEnemies(Long time) {
-        List<Pair<Vector2D, String>> enemiesList = new LinkedList<>();
-        for (int i = 0; i < enemiesToSpawn.size(); i++) {
-            Queue<Pair<String, Long>> queue = enemiesToSpawn.get(i).getY();
-            var position = enemiesToSpawn.get(i).getX();
+    public List<Pair<Vector2D, EnemyType>> getEnemies(Long time) {
+        List<Pair<Vector2D, EnemyType>> enemiesList = new LinkedList<>();
+        for (var vector2DQueuePair : enemiesToSpawn) {
+            Queue<Pair<EnemyType, Long>> queue = vector2DQueuePair.getY();
+            var position = vector2DQueuePair.getX();
             while (!queue.isEmpty() && queue.peek().getY() <= time) {
-                enemiesList.add(new Pair<>(position, queue.poll().getX()));
+                enemiesList.add(new Pair<>(
+                        position,
+                        Objects.requireNonNull(queue.poll()).getX()));
             }
         }
         return enemiesList;
@@ -68,7 +71,7 @@ public class Spawnpoints {
             while ((line = r.readLine()) != null) {
                 
                 String[] coordinates = line.split(" ");
-                Queue<Pair<String, Long>> enemiesQueue = new LinkedList<>();
+                Queue<Pair<EnemyType, Long>> enemiesQueue = new LinkedList<>();
 
                 while ((line = r.readLine()) != null && !line.equals("/")) {
                     String[] enemyGroup = line.split(" ");
@@ -79,7 +82,7 @@ public class Spawnpoints {
                     for (int i = 2; i < enemyGroup.length; i++) {
                         long spawnTime = (long) (i * deltaT * 1_000_000_000 + groupSpawnTime);
                         String type = enemyGroup[i];
-                        enemiesQueue.add(new Pair<>(type, spawnTime));
+                        enemiesQueue.add(new Pair<>(EnemyType.valueOf(type), spawnTime));
                     }
                 }
                 //summing (0.5, 0.5) to center
