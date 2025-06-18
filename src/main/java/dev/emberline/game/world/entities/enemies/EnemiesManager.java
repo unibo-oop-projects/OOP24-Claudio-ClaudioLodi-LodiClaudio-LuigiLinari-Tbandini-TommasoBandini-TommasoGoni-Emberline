@@ -2,12 +2,10 @@ package dev.emberline.game.world.entities.enemies;
 
 import java.util.*;
 
-import dev.emberline.game.world.entities.enemies.enemy.EnemyStatsDecorator;
+import dev.emberline.game.world.entities.enemies.enemy.EnemyWithStats;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 
 public class EnemiesManager implements IEnemiesManager {
@@ -37,7 +35,7 @@ public class EnemiesManager implements IEnemiesManager {
 
     public void addEnemy(Vector2D spawnPoint, EnemyType type) {
         IEnemy newEnemy = enemiesFactory.createEnemy(spawnPoint, type, world);
-        IEnemy newEnemyWrapper = new EnemyStatsDecorator(newEnemy, world.getStatistics());
+        IEnemy newEnemyWrapper = new EnemyWithStats(newEnemy, world.getStatistics());
         enemies.add(newEnemyWrapper);
         spatialHashGrid.add(newEnemyWrapper);
     }

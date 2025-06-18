@@ -8,12 +8,12 @@ import java.util.List;
 
 import static java.lang.Math.min;
 
-public class EnemyStatsDecorator implements IEnemy {
+public class EnemyWithStats implements IEnemy {
 
     private final IEnemy enemy;
     private final Statistics statistics;
 
-    public EnemyStatsDecorator(IEnemy newEnemy, Statistics statistics) {
+    public EnemyWithStats(IEnemy newEnemy, Statistics statistics) {
         this.enemy = newEnemy;
         this.statistics = statistics;
     }
