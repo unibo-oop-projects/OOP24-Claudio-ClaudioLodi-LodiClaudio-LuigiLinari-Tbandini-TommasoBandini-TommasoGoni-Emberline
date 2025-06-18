@@ -16,9 +16,6 @@ import dev.emberline.utility.Vector2D;
 class EnemyUpdateComponent implements Updatable {
     private enum EnemyState      { WALKING, ATTACKING, DYING, DEAD }
 
-    private final double SPEED;
-    private final double FULL_HEALTH;
-
     private final AbstractEnemy enemy;
     private EnemyState enemyState;
     private EnchantmentEffect activeEffect = new DummyEffect();
@@ -34,9 +31,7 @@ class EnemyUpdateComponent implements Updatable {
 
     EnemyUpdateComponent(Vector2D spawnPoint, World world, AbstractEnemy enemy) {
         this.enemy = enemy;
-        this.SPEED = enemy.getSpeed();
-        this.FULL_HEALTH = enemy.getFullHealth();
-        this.health = FULL_HEALTH;
+        this.health = enemy.getFullHealth();
 
         // Init destinations
         Optional<Vector2D> next = world.getWaveManager().getWave().getNext(spawnPoint);
@@ -50,7 +45,8 @@ class EnemyUpdateComponent implements Updatable {
 
         this.enemyState = !destinations.isEmpty() ? EnemyState.WALKING : EnemyState.ATTACKING;
         if (enemyState == EnemyState.WALKING) {
-            this.velocity = destinations.get(destinationsIdx).subtract(position).normalize().multiply(SPEED);
+            this.velocity = destinations.get(destinationsIdx).subtract(position)
+                            .normalize().multiply(enemy.getSpeed());
         }
     }
 
@@ -58,8 +54,8 @@ class EnemyUpdateComponent implements Updatable {
     public void update(long elapsed) {
         switch (enemyState) {
             case WALKING -> walk(elapsed);
-            case ATTACKING -> attack(elapsed);
-            case DYING -> dying(elapsed);
+            case ATTACKING -> attack();
+            case DYING -> dying();
             case DEAD -> {}
         }
         enemy.getAnimationUpdatable().update(elapsed);
@@ -74,11 +70,11 @@ class EnemyUpdateComponent implements Updatable {
         move(elapsed);
     }
 
-    private void attack(long elapsed) {
+    private void attack() {
         enemyState = EnemyState.DEAD;
     }
 
-    private void dying(long elapsed) {
+    private void dying() {
         if (enemy.isDyingAnimationFinished()) {
             enemyState = EnemyState.DEAD;
         }
@@ -97,8 +93,8 @@ class EnemyUpdateComponent implements Updatable {
         for (int i = destinationsIdx; i < destinations.size() && durationAcc < time; i++) {
             Vector2D nextDestination = new Coordinate2D(destinations.get(i).getX(), destinations.get(i).getY());
 
-            Vector2D velocity = nextDestination.subtract(curr).normalize().multiply(SPEED);
-            Long duration = (long)(curr.distance(nextDestination) / SPEED);
+            Vector2D velocity = nextDestination.subtract(curr).normalize().multiply(enemy.getSpeed() * slowFactor);
+            long duration = (long)(curr.distance(nextDestination) / (enemy.getSpeed() * slowFactor));
             durationAcc += duration;
 
             enemyMotion.add(new UniformMotion(curr, velocity, duration));
@@ -143,17 +139,17 @@ class EnemyUpdateComponent implements Updatable {
     }
 
     double getHealthPercentage() {
-        return Math.clamp(health / FULL_HEALTH, 0, 1);
+        return Math.clamp(health / enemy.getFullHealth(), 0, 1);
     }
 
     FacingDirection getFacingDirection() {
-        int angle = Math.round((float)Math.toDegrees(Math.atan2(velocity.getY(), velocity.getX())));
+        int angle = Math.round((float)Math.toDegrees(Math.atan2(-velocity.getY(), velocity.getX())));
         return switch(angle) {
-            case 180 -> FacingDirection.LEFT;
+            case -180 -> FacingDirection.LEFT;
             case 90 -> FacingDirection.UP;
             case 0 -> FacingDirection.RIGHT;
             case -90 -> FacingDirection.DOWN;
-            default -> throw new IllegalStateException("The only handled cases of velocity are: LEFT, UP, RIGHT, DOWN");
+            default -> throw new IllegalStateException("The only handled cases of velocity are: LEFT, UP, RIGHT, DOWN. Found angle: " + angle);
         };
     }
 
@@ -189,7 +185,7 @@ class EnemyUpdateComponent implements Updatable {
             // correction
             position = position.add(nextDirection.multiply(overshootAmount));
 
-            velocity = nextDirection.multiply(SPEED);
+            velocity = nextDirection.multiply(enemy.getSpeed());
 
             posToDest = currDestination.subtract(position);
             dot = posToDest.dotProduct(velocity);
