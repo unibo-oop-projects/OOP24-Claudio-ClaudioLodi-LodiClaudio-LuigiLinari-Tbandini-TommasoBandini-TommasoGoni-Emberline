@@ -1,0 +1,29 @@
+[
+  {
+    "x": 8,
+    "y": 15,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 0,
+        "spawnIntervalNs": 1000000000,
+        "enemies": ["ogre", "ogre", "ogre"]
+      },
+      {
+        "firstSpawnTimeNs": 3000000000,
+        "spawnIntervalNs": 500000000,
+        "enemies": ["ogre", "ogre", "ogre"]
+      }
+    ]
+  },
+  {
+    "x": 29,
+    "y": 11,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 0,
+        "spawnIntervalNs": 1000000000,
+        "enemies": ["ogre", "ogre"]
+      }
+    ]
+  }
+]

@@ -17,15 +17,43 @@ import java.util.List;
  *
  * @see dev.emberline.game.model.EnchantmentInfo.Type#FIRE
  */
-public record BurnEffect(double damagePerSecond, double duration) implements EnchantmentEffect {
+public class BurnEffect implements EnchantmentEffect {
+    
+    private final double damagePerSecond;
+    private final double damagePerNs;
+
+    private final double duration;
+    private final long durationNs;
+    private long totalElapsed = 0;
+
+    private boolean isExpired = false;
+
+    public BurnEffect(double damagePerSecond, double duration) {
+        this.damagePerSecond = damagePerSecond;
+        this.damagePerNs = (damagePerSecond / 1_000_000_000);
+
+        this.duration = duration;
+        this.durationNs = (long) (duration * 1_000_000_000);
+    }
+
     @Override
     public void updateEffect(IEnemy enemy, long elapsed) {
-        // TODO
+        if (totalElapsed + elapsed >= durationNs) {
+            long spareTime = durationNs - totalElapsed;
+            enemy.dealDamage(damagePerNs * spareTime);
+
+            totalElapsed = durationNs;
+            isExpired = true;
+            return;
+        }
+
+        totalElapsed += elapsed;
+        enemy.dealDamage(damagePerNs * elapsed);
     }
 
     @Override
     public boolean isExpired() {
-        return false;
+        return isExpired;
     }
 
     @Override

@@ -191,7 +191,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      */
     @Override
     public double magnitude() {
-        return toPoint2D(this.x,this.y).normSq();
+        return toPoint2D(this.x,this.y).distance(Vector2D.ZERO);
     }
 
     /**
