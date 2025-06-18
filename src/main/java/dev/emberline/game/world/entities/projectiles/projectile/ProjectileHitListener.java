@@ -4,14 +4,15 @@ import java.util.Optional;
 
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.entities.enemies.EnemiesManager;
+import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
 
 public class ProjectileHitListener {
     
-    private final EnemiesManager enemiesManager;
+    private final IEnemiesManager enemiesManager;
 
-    public ProjectileHitListener(EnemiesManager enemiesManager) {
+    public ProjectileHitListener(IEnemiesManager enemiesManager) {
         this.enemiesManager = enemiesManager;
     }
 
