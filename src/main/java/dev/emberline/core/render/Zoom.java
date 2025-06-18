@@ -10,20 +10,27 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * This class is used to Zoom in and out areas of the map.
+ * It requires a file with the proper indications to be used.
+ */
 public class Zoom implements Updatable, Serializable {
 
     private Pair<Vector2D, Vector2D> curr;
     private Pair<Vector2D, Vector2D> to;
     private Pair<Vector2D, Vector2D> step = new Pair<>(Coordinate2D.ZERO, Coordinate2D.ZERO);
     //make sure this number is small enough to let the "zoom" end before the wave ends
-    private final Double speedUpperBound = 0.02;
+    private final Double stepUpperBound = 0.02 ;
+    private final Double timePerStep = 50_000_000d;
+
+    private long acc = 0;
 
     public Zoom(String wavePath) {
         loadCS(wavePath + "cs.txt");
         computeSteps();
     }
 
-    public void updateCS() {
+    private void updateCS() {
         Renderer renderer = GameLoop.getInstance().getRenderer();
         CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
@@ -37,14 +44,14 @@ public class Zoom implements Updatable, Serializable {
         double mind = Math.min(d1, d2);
 
         if (maxd != 0d) {
-            double speedLowerBound = (mind / maxd) * speedUpperBound;
+            double speedLowerBound = (mind / maxd) * stepUpperBound;
             //unit directional vectors to scale propely in pair costructor
             Vector2D directionX = curr.getX().directionTo(to.getX());
             Vector2D directionY = curr.getY().directionTo(to.getY());
             if (d1 > d2) {
-                step = new Pair<>(directionX.multiply(speedUpperBound), directionY.multiply(speedLowerBound));
+                step = new Pair<>(directionX.multiply(stepUpperBound), directionY.multiply(speedLowerBound));
             } else {
-                step = new Pair<>(directionX.multiply(speedLowerBound), directionY.multiply(speedUpperBound));
+                step = new Pair<>(directionX.multiply(speedLowerBound), directionY.multiply(stepUpperBound));
             }
         }
     }
@@ -87,9 +94,14 @@ public class Zoom implements Updatable, Serializable {
 
     @Override
     public void update(long elapsed) {
-        if (!isOver()) {
-            curr.setX(curr.getX().add(step.getX()));
-            curr.setY(curr.getY().add(step.getY()));
+        acc += elapsed;
+        while (acc >= timePerStep) {
+            acc -= timePerStep;
+            if (!isOver()) {
+                curr.setX(curr.getX().add(step.getX()));
+                curr.setY(curr.getY().add(step.getY()));
+            }
         }
+        updateCS();
     }
 }
