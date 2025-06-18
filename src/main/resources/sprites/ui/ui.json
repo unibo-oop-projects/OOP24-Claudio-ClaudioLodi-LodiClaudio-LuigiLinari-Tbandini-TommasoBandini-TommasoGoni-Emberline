@@ -1,10 +1,10 @@
 {
   "STATS_BACKGROUND":       { "filename": "/sprites/ui/towerDialog.png",     "x": 0,  "y": 3, "width": 79, "height": 51 },
   "TDL_BACKGROUND":         { "filename": "/sprites/ui/towerDialog.png",     "x": 80, "y": 0, "width": 96, "height": 160 },
-  "CANCEL_BUTTON":          { "filename": "/sprites/ui/towerDialog.png",     "x": 50, "y": 55, "width": 12, "height": 19 },
+  "CANCEL_BUTTON":          { "filename": "/sprites/ui/towerButtons.png",    "x": 54, "y": 103, "width": 19, "height": 19 },
   "GENERIC_BUTTON":         { "filename": "/sprites/ui/towerDialog.png",     "x": 7,  "y": 55, "width": 35, "height": 19 },
-  "EMPTY_UPGRADE_LEVEL":    { "filename": "/sprites/ui/towerDialog.png",     "x": 57, "y": 87, "width": 8, "height": 19 },
-  "FULL_UPGRADE_LEVEL":     { "filename": "/sprites/ui/towerDialog.png",     "x": 39, "y": 87, "width": 8, "height": 19 },
+  "EMPTY_UPGRADE_LEVEL":    { "filename": "/sprites/ui/towerDialog.png",     "x": 20, "y": 70, "width": 8, "height": 19 },
+  "FULL_UPGRADE_LEVEL":     { "filename": "/sprites/ui/towerDialog.png",     "x": 4, "y": 70, "width": 8, "height": 19 },
   "ADD_BUTTON":             { "filename": "/sprites/ui/towerDialog.png",     "x": 7,  "y": 87, "width": 19, "height": 19 },
   "CHARS_ATLAS":            { "filename": "/fonts/EmberlineFont.png",        "x": 0,  "y": 0, "width": 256, "height": 96 },
   "ICE_BUTTON":             { "filename": "/sprites/ui/towerButtons.png",    "x": 6,  "y": 39, "width": 35, "height": 19 },
