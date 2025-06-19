@@ -18,7 +18,7 @@ public class ProjectileAnimation implements Updatable {
         this.projectileSprites = (AnimatedSprite) SpriteLoader.loadSprite(
             new ProjectileSpriteKey(owner.getSizeType(), owner.getEnchantmentType()));
         this.projectileSprites.setFrame(frameIndex);
-        this.frameTimeNs = (long) (projectileSprites.getFrameTime() * 1e6);
+        this.frameTimeNs = (long) (projectileSprites.getFrameTimeNs() * 1e6);
     }
 
     @Override

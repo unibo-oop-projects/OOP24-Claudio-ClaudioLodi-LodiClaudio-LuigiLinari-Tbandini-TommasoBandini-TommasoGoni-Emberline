@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class WaveManager implements IWaveManager {
     // Loading waves from resources
-    private static final String wavesConfigPath = "/waves/waves.json";
+    private static final String wavesConfigPath = "/world/waves/waves.json";
     private static class WavesConfig {
         @JsonProperty("waves")
         private String[] wavePaths;

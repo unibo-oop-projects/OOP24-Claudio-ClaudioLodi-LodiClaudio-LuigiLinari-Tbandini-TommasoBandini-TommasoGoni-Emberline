@@ -1,13 +1,11 @@
 package dev.emberline.core.graphics;
 
-import dev.emberline.core.graphics.spritefactories.EnemySpriteFactory;
-import dev.emberline.core.graphics.spritefactories.ProjectileSpriteFactory;
-import dev.emberline.core.graphics.spritefactories.SpriteFactory;
-import dev.emberline.core.graphics.spritefactories.StringSpriteFactory;
-import dev.emberline.core.graphics.spritefactories.UISpriteFactory;
+import dev.emberline.core.graphics.spritefactories.*;
 import dev.emberline.core.graphics.spritekeys.SpriteKey;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 class SpriteFactoryRegistry {
     private final static List<SpriteFactory<?>> factories = Collections.synchronizedList(new ArrayList<>());
@@ -36,5 +34,7 @@ class SpriteFactoryRegistry {
         registerFactory(new UISpriteFactory());
         registerFactory(new EnemySpriteFactory());
         registerFactory(new ProjectileSpriteFactory());
+        registerFactory(new TowerSpriteFactory());
+        registerFactory(new _CrystalSpriteFactory());
     }
 }
