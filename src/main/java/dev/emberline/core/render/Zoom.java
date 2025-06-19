@@ -1,5 +1,7 @@
 package dev.emberline.core.render;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.utility.Coordinate2D;
@@ -7,14 +9,29 @@ import dev.emberline.utility.Pair;
 import dev.emberline.utility.Vector2D;
 
 import java.io.*;
-import java.net.URL;
-import java.util.*;
 
 /**
  * This class is used to Zoom in and out areas of the map.
  * It requires a file with the proper indications to be used.
  */
 public class Zoom implements Updatable, Serializable {
+    //zoom configuration
+    private static final String roadsConfigFilename = "roads.json";
+    private static class Translation {
+        @JsonProperty("fromX")
+        private double fromX;
+        @JsonProperty("fromY")
+        private double fromY;
+        @JsonProperty("toX")
+        private double toX;
+        @JsonProperty("toY")
+        private double toY;
+    }
+    private static class Translations {
+        private Translation first;
+        private Translation second;
+    }
+    private final Translations translations;
 
     private Pair<Vector2D, Vector2D> curr;
     private Pair<Vector2D, Vector2D> to;
@@ -26,6 +43,7 @@ public class Zoom implements Updatable, Serializable {
     private long acc = 0;
 
     public Zoom(String wavePath) {
+        translations = ConfigLoader.loadConfig(wavePath + "cs.json", Translations.class);
         loadCS(wavePath + "cs.txt");
         computeSteps();
     }
@@ -57,33 +75,13 @@ public class Zoom implements Updatable, Serializable {
     }
 
     private void loadCS(String file) {
-        Vector2D currFirst = Coordinate2D.ZERO;
-        Vector2D currSecond = Coordinate2D.ZERO;
-        Vector2D toFirst = Coordinate2D.ZERO;
-        Vector2D toSecond = Coordinate2D.ZERO;
-        try {
-            URL fileURL = Objects.requireNonNull(getClass().getResource(file));
-            final BufferedReader r = new BufferedReader(new FileReader(fileURL.getPath()));
-            String line;
-            if ((line = r.readLine()) != null) {
-                String[] numbers = line.split(" ");
+        Vector2D currFirst = new Coordinate2D(translations.first.fromX, translations.first.fromY);
+        Vector2D currSecond = new Coordinate2D(translations.first.toX, translations.first.toY);
+        Vector2D toFirst = new Coordinate2D(translations.second.fromX, translations.second.fromY);
+        Vector2D toSecond = new Coordinate2D(translations.second.toX, translations.second.toY);
 
-                currFirst = new Coordinate2D(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[1]));
-                toFirst = new Coordinate2D(Double.parseDouble(numbers[2]), Double.parseDouble(numbers[3]));
-            }
-            if ((line = r.readLine()) != null) {
-                String[] numbers = line.split(" ");
-
-                currSecond = new Coordinate2D(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[1]));
-                toSecond = new Coordinate2D(Double.parseDouble(numbers[2]), Double.parseDouble(numbers[3]));
-            }
-            to = new Pair<>(toFirst, toSecond);
-            curr = new Pair<>(currFirst, currSecond);
-
-            r.close();
-        } catch (IOException e) {
-            System.out.println("error loading file: " + file);
-        }
+        to = new Pair<>(toFirst, toSecond);
+        curr = new Pair<>(currFirst, currSecond);
     }
 
     //checks if the points are no more than 1 step away from the desired coordinates

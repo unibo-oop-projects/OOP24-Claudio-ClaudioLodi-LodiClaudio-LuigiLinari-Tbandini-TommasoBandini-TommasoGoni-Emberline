@@ -58,12 +58,13 @@ public class Spawnpoints {
      * @param wavePath the path of the directory containing the wave files
      */
     public Spawnpoints(String wavePath) {
-        spawnpoints = ConfigLoader.loadConfig("/waves/wave0/spawnpoints.json", Spawnpoint[].class);
+        spawnpoints = ConfigLoader.loadConfig(wavePath + "spawnpoints.json", Spawnpoint[].class);
         populateSpawnQueue();
     }
 
     private void populateSpawnQueue() {
         for (Spawnpoint spawnpoint : spawnpoints) {
+            //adding (0.5, 0.5) to use the center of the tile's coordinates.
             Vector2D spawnLocation = new Coordinate2D(spawnpoint.x, spawnpoint.y).add(0.5, 0.5);
             for (SpawnSequence sequence : spawnpoint.spawnSequences) {
                 EnemyType[] enemies = sequence.enemies;
