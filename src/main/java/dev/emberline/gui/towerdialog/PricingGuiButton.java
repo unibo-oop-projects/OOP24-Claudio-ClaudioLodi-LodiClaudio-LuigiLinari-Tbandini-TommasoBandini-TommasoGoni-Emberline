@@ -40,7 +40,7 @@ public class PricingGuiButton extends GuiButton {
     private void drawPrice(Renderer renderer) {
         // Draw price
         String priceString = new DecimalFormat("+0.##;0.##").format(price); // Negative prices won't show a sign, positive prices will show a plus sign
-        Image pricingImage = SpriteLoader.loadSprite(new StringSpriteKey(priceString + "$")).getImage();
+        Image pricingImage = SpriteLoader.loadSprite(new StringSpriteKey(priceString + "$")).image();
         double priceWidth = this.width * Layout.PRICE_WIDTH_RATIO;
         double priceHeight = this.height * Layout.PRICE_HEIGHT_RATIO;
         double priceX = this.x + (this.width-priceWidth)*Layout.PRICE_X_OFFSET;

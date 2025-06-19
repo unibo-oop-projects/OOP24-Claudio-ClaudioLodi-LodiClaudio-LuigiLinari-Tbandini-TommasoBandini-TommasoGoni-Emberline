@@ -1,4 +1,4 @@
-package dev.emberline.game.world.towers.tower;
+package dev.emberline.game.world.buildings.tower;
 
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
@@ -13,16 +13,16 @@ import dev.emberline.core.render.Renderer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class TowerRenderComponent implements Renderable {
+class TowerRenderComponent implements Renderable {
     private final Tower tower;
 
-    public TowerRenderComponent(Tower tower) {
+    TowerRenderComponent(Tower tower) {
         this.tower = tower;
     }
 
     @Override
     public void render() {
-        Image bodyImage = SpriteLoader.loadSprite(new TowerSpriteKey(tower.getProjectileInfo().type(), tower.getEnchantmentInfo().type())).getImage();
+        Image bodyImage = SpriteLoader.loadSprite(new TowerSpriteKey(tower.getProjectileInfo().type(), tower.getEnchantmentInfo().type())).image();
         AnimatedSprite crystalSprite = (AnimatedSprite) SpriteLoader.loadSprite(new _CrystalSpriteKey());
 
         Renderer renderer = GameLoop.getInstance().getRenderer();
@@ -34,8 +34,8 @@ public class TowerRenderComponent implements Renderable {
         double screenWidth = cs.getScale() * tower.getWorldWidth();
         double screenHeight = cs.getScale() * tower.getWorldHeight();
 
-        renderer.addRenderTask(new RenderTask(RenderPriority.ENEMIES, () -> {
+        renderer.addRenderTask(new RenderTask(RenderPriority.BUILDINGS, () -> {
             gc.drawImage(bodyImage, topLeftScreenX, topLeftScreenY, screenWidth, screenHeight);
-        }));
+        }).enableZOrder(tower.getWorldBottomRight().getY()));
     }
 }

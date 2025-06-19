@@ -121,7 +121,7 @@ public class Renderer {
         // Use image smoothing if the area is too small
         if (height * cs.getScale() < MIN_TEXT_HEIGHT_PX_SMOOTH) gc.setImageSmoothing(true);
         // Fit image or stretch vertically
-        Image image = SpriteLoader.loadSprite(new StringSpriteKey(text)).getImage();
+        Image image = SpriteLoader.loadSprite(new StringSpriteKey(text)).image();
         if (width / image.getWidth() < height / image.getHeight()) {
             drawImage(image, gc, cs, x, y + height * CENTER_TEXT_H_MARGIN, width, height * (1 - 2 * CENTER_TEXT_H_MARGIN));
         } else {
