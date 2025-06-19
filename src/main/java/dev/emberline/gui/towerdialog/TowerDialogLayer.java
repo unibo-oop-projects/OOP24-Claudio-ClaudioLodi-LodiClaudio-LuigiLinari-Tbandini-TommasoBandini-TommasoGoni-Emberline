@@ -17,6 +17,7 @@ import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.ResetTowerInfoEvent;
 import dev.emberline.gui.event.SetTowerInfoEvent;
 import dev.emberline.gui.event.UpgradeTowerInfoEvent;
+import dev.emberline.gui.towerdialog.TextGuiButton.TextLayoutType;
 import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
 import dev.emberline.gui.towerdialog.stats.TowerStatsViewsBuilder;
 import dev.emberline.gui.towerdialog.stats.TowerStatsViewsBuilder.TowerStatView;
@@ -75,10 +76,10 @@ public class TowerDialogLayer extends GuiLayer {
         private static final double TITLE_Y = BG_Y + 2;
         // Selectors
         private static class Selector {
-            private static final double TOP_MARGIN = 0.5;
+            private static final double TOP_MARGIN = 0.3;
             private static final double INNER_MARGIN = 0.1;
             private static final double WIDTH = 7.3;
-            private static final double HEIGHT = 1.5;
+            private static final double HEIGHT = 2;
             private static final double NAME_HEIGHT = 0.5;
             private static final double NAME_Y = Stats.Y + Stats.HEIGHT + TOP_MARGIN;
             private static final double X = Stats.X + (Stats.WIDTH - WIDTH) / 2;
@@ -88,11 +89,11 @@ public class TowerDialogLayer extends GuiLayer {
             private static final double NAME_ICON_Y = NAME_Y + (NAME_HEIGHT - NAME_ICON_SIDE) / 2;
             private static final double NAME_WIDTH = WIDTH - NAME_ICON_SIDE - INNER_MARGIN;
             private static final double TOTAL_HEIGHT = NAME_HEIGHT + HEIGHT + INNER_MARGIN + TOP_MARGIN;
-            private static final double UPGRADE_BTN_MARGIN = 0.4;
+            private static final double UPGRADE_BTN_MARGIN = 0.1;
             private static final double UPGRADE_BTN_SIDE = HEIGHT - 2 * INNER_MARGIN;
             private static final double UPGRADE_BTN_X = X;
             private static final double UPGRADE_BTN_Y = Y + (HEIGHT - UPGRADE_BTN_SIDE) / 2;
-            private static final double RESET_BTN_MARGIN = 0.8;
+            private static final double RESET_BTN_MARGIN = 0.1;
             private static final double RESET_BTN_WIDTH = UPGRADE_BTN_SIDE;
             private static final double RESET_BTN_HEIGHT = UPGRADE_BTN_SIDE;
             private static final double RESET_BTN_X = X + WIDTH - RESET_BTN_WIDTH;
@@ -101,7 +102,7 @@ public class TowerDialogLayer extends GuiLayer {
             private static final double UPGRADE_HEIGHT = HEIGHT - 2 * INNER_MARGIN;
             private static final double UPGRADE_X = UPGRADE_BTN_X + UPGRADE_BTN_SIDE + UPGRADE_BTN_MARGIN;
             private static final double UPGRADE_Y = Y + (HEIGHT - UPGRADE_HEIGHT) / 2;
-            private static final double LEVEL_MARKER_WIDTH = UPGRADE_WIDTH / 5;
+            private static final double LEVEL_MARKER_WIDTH = UPGRADE_WIDTH / 4.3;
             private static final double TYPE_BTN_HEIGHT = HEIGHT - 2 * INNER_MARGIN;
             private static final double TYPE_BTN_WIDTH = WIDTH / 2 - INNER_MARGIN;
             private static final double TYPE_BTN_X = X + INNER_MARGIN;
@@ -178,7 +179,7 @@ public class TowerDialogLayer extends GuiLayer {
                 T typeValue = typeValues[t];
                 GuiButton button = new PricingGuiButton(
                         x[t], y, Layout.Selector.TYPE_BTN_WIDTH, Layout.Selector.TYPE_BTN_HEIGHT,
-                        typeImages[t], -element.getUpgradeCost()
+                        typeImages[t], -element.getUpgradeCost(), TextLayoutType.LEFT
                 );
                 button.setOnClick(() -> throwEvent(new SetTowerInfoEvent(this, null, element, typeValue)));
                 hoverData.put(button, (TowerStatsProvider) element.getChangeType(typeValue));
@@ -189,20 +190,23 @@ public class TowerDialogLayer extends GuiLayer {
                     Layout.Selector.UPGRADE_BTN_X, Layout.Selector.UPGRADE_BTN_Y + yOffset,
                     Layout.Selector.UPGRADE_BTN_SIDE, Layout.Selector.UPGRADE_BTN_SIDE,
                     SpriteLoader.loadSprite(UISpriteKey.UPGRADE_BUTTON).getImage(),
-                    -element.getUpgradeCost()
+                    -element.getUpgradeCost(), TextLayoutType.BOTTOM
             );
             // On the last level, disable the upgrade button
             if (!element.canUpgrade()) {
-                upgradeButton = new GuiButton(
+                upgradeButton = new TextGuiButton(
                         Layout.Selector.UPGRADE_BTN_X, Layout.Selector.UPGRADE_BTN_Y + yOffset,
                         Layout.Selector.UPGRADE_BTN_SIDE, Layout.Selector.UPGRADE_BTN_SIDE,
-                        SpriteLoader.loadSprite(UISpriteKey.DISABLED_UPGRADE_BUTTON).getImage()
+                        SpriteLoader.loadSprite(UISpriteKey.DISABLED_UPGRADE_BUTTON).getImage(),
+                        SpriteLoader.loadSprite(UISpriteKey.DISABLED_UPGRADE_BUTTON).getImage(),
+                        "MAX", TextLayoutType.CENTER
                 );
             }
-            GuiButton resetButton = new GuiButton(
+            GuiButton resetButton = new PricingGuiButton(
                     Layout.Selector.RESET_BTN_X, Layout.Selector.RESET_BTN_Y + yOffset,
                     Layout.Selector.RESET_BTN_WIDTH, Layout.Selector.RESET_BTN_HEIGHT,
-                    SpriteLoader.loadSprite(UISpriteKey.CANCEL_BUTTON).getImage()
+                    SpriteLoader.loadSprite(UISpriteKey.CANCEL_BUTTON).getImage(),
+                    element.getRefundValue(), TextLayoutType.BOTTOM
             );
             upgradeButton.setOnClick(() -> throwEvent(new UpgradeTowerInfoEvent(this, null, element)));
             resetButton.setOnClick(() -> throwEvent(new ResetTowerInfoEvent(this, null, element)));
