@@ -5,6 +5,7 @@ import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
+import dev.emberline.game.world.entities.projectiles.FlightPathNotFound;
 import dev.emberline.utility.Vector2D;
 
 public class Projectile implements IProjectile {
@@ -14,7 +15,7 @@ public class Projectile implements IProjectile {
     private final ProjectileUpdateComponent updateComponent;
     private final ProjectileRenderComponent renderComponent;
 
-    public Projectile(Vector2D start, IEnemy target, ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world) {
+    public Projectile(Vector2D start, IEnemy target, ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world) throws FlightPathNotFound {
         this.updateComponent = new ProjectileUpdateComponent(start, target, projInfo, enchInfo, world, this);
         this.renderComponent = new ProjectileRenderComponent(projInfo, enchInfo, this);
     }

@@ -17,14 +17,23 @@ import dev.emberline.utility.Vector2D;
 public class ProjectilesManager implements Updatable, Renderable {
     
     private final List<IProjectile> projectiles;
+    private final World world;
 
-    public ProjectilesManager() {
+    public ProjectilesManager(World world) {
         this.projectiles = new LinkedList<>();
+        this.world = world;
     }
 
-    public void addProjectile(Vector2D start, IEnemy target,
-    ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world) {
-        projectiles.add(new Projectile(start, target, projInfo, enchInfo, world));
+    public boolean addProjectile(Vector2D start, IEnemy target,
+    ProjectileInfo projInfo, EnchantmentInfo enchInfo) {
+        try {
+            Projectile projectile = new Projectile(start, target, projInfo, enchInfo, world);
+            projectiles.add(projectile);
+        } catch (FlightPathNotFound e) {
+            return false;
+        }
+
+        return true;
     }
 
     public void update(long elapsed) {

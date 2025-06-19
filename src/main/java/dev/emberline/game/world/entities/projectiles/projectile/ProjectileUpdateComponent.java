@@ -9,6 +9,9 @@ import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
+import dev.emberline.game.world.entities.projectiles.FlightPathNotFound;
+import dev.emberline.game.world.entities.projectiles.events.ProjectileHitEvent;
+import dev.emberline.game.world.entities.projectiles.events.ProjectileHitListener;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
@@ -43,7 +46,7 @@ public class ProjectileUpdateComponent implements Updatable {
     private final Projectile owner;
 
     public ProjectileUpdateComponent(Vector2D start, IEnemy target, 
-    ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world, Projectile owner) {        
+    ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world, Projectile owner) throws FlightPathNotFound {
         this.VELOCITY_MAG = projInfo.getProjectileSpeed() / 1e9; // Converted to tile/ns
 
         Vector2D prediction = enemyPrediction(start, target);
@@ -109,7 +112,7 @@ public class ProjectileUpdateComponent implements Updatable {
      * to the time it takes the enemy to reach that position
      * @throws IllegalStateException if that position doesn't exist or the flight time to reach it exceeds {@code MAX_FLIGHT_TIME}
      */
-    private Vector2D enemyPrediction(Vector2D start, IEnemy target) {
+    private Vector2D enemyPrediction(Vector2D start, IEnemy target) throws FlightPathNotFound {
         List<IEnemy.UniformMotion> targetMotion = target.getMotionUntil(MAX_FLIGHT_TIME);
         var motionsIt = targetMotion.iterator();
         IEnemy.UniformMotion currMotion = null;
@@ -159,7 +162,7 @@ public class ProjectileUpdateComponent implements Updatable {
         if (found) {
             return currMotion.origin().add(currMotion.velocity().multiply(bestDeltaT));
         } else {
-            throw new IllegalStateException("t not found");
+            throw new FlightPathNotFound("Location to hit the target doesn't exist or the flight time to reach it exceeds the MAX_FLIGHT_TIME");
         }
     }
 

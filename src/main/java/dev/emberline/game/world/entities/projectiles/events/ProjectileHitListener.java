@@ -1,9 +1,8 @@
-package dev.emberline.game.world.entities.projectiles.projectile;
+package dev.emberline.game.world.entities.projectiles.events;
 
 import java.util.Optional;
 
 import dev.emberline.game.model.effects.EnchantmentEffect;
-import dev.emberline.game.world.entities.enemies.EnemiesManager;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
@@ -23,9 +22,7 @@ public class ProjectileHitListener {
         Optional<EnchantmentEffect> effect = e.getEffect();
 
         for (final IEnemy enemy : enemiesManager.getNear(landingLocation, damageArea)) {
-            if (effect.isPresent()) {
-                enemy.applyEffect(effect.get());
-            }
+            effect.ifPresent(enemy::applyEffect);
             enemy.dealDamage(damage);
 
             if (e.getDamageArea().isEmpty()) {
