@@ -24,5 +24,6 @@
   "TOWER_RANGE":            { "filename": "/sprites/ui/statsIcons.png",      "x": 0,  "y": 16, "width": 16, "height": 16 },
   "EFFECT_DURATION":        { "filename": "/sprites/ui/statsIcons.png",      "x": 16, "y": 16, "width": 16, "height": 16 },
   "BURN_EFFECT":            { "filename": "/sprites/ui/statsIcons.png",      "x": 32, "y": 16, "width": 16, "height": 16 },
-  "SLOW_EFFECT":            { "filename": "/sprites/ui/statsIcons.png",      "x": 48, "y": 16, "width": 16, "height": 16 }
+  "SLOW_EFFECT":            { "filename": "/sprites/ui/statsIcons.png",      "x": 48, "y": 16, "width": 16, "height": 16 },
+  "TOWER_PRE_BUILD":    { "filename":  "/sprites/towerAssets/towerPreBuild.png", "x": 0, "y":  0, "width": 32, "height": 32}
 }
