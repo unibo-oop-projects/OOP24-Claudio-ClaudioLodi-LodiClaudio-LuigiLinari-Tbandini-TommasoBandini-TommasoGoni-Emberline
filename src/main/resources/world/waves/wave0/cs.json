@@ -8,9 +8,9 @@
   },
   "second" :
   {
-    "fromX": 0,
-    "fromY": 0,
-    "toX": 5,
-    "toY": 3
+    "fromX": 20,
+    "fromY": 12,
+    "toX": 15,
+    "toY": 12
   }
 }
