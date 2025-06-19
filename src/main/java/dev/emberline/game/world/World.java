@@ -1,21 +1,25 @@
 package dev.emberline.game.world;
 
+import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.entities.enemies.EnemiesManager;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
-import dev.emberline.game.world.statistics.Statistics;
 import dev.emberline.game.world.entities.projectiles.ProjectilesManager;
 import dev.emberline.game.world.entities.projectiles.projectile.ProjectileHitListener;
+import dev.emberline.game.world.statistics.Statistics;
+import dev.emberline.game.world.towers.TowersManager;
 import dev.emberline.game.world.waves.WaveManager;
+import javafx.scene.input.InputEvent;
 
 import java.io.Serializable;
 
-public class World implements Updatable, Renderable, Serializable {
+public class World implements Updatable, Renderable, Inputable, Serializable {
 
     // Enemies
     private final IEnemiesManager enemiesManager;
     // Towers
+    private final TowersManager towersManager;
     // Projectiles
     private final ProjectilesManager projectilesManager;
     // Waves
@@ -26,6 +30,7 @@ public class World implements Updatable, Renderable, Serializable {
     private final ProjectileHitListener projectileHitListener;
 
     public World() {
+        this.towersManager = new TowersManager(this);
         this.enemiesManager = new EnemiesManager(this);
         this.waveManager = new WaveManager(this);
         this.statistics = new Statistics(this);
@@ -52,6 +57,7 @@ public class World implements Updatable, Renderable, Serializable {
     @Override
     public void update(long elapsed) {
         projectilesManager.update(elapsed);
+        towersManager.update(elapsed);
         waveManager.update(elapsed);
         statistics.update(elapsed);
         enemiesManager.update(elapsed);
@@ -59,8 +65,14 @@ public class World implements Updatable, Renderable, Serializable {
 
     @Override
     public void render() {
+        towersManager.render();
         enemiesManager.render();
         projectilesManager.render();
-        waveManager.render(); // TODO
+        waveManager.render();
+    }
+
+    @Override
+    public void processInput(InputEvent inputEvent) {
+        towersManager.processInput(inputEvent);
     }
 }
