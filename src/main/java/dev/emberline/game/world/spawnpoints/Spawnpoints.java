@@ -59,7 +59,7 @@ public class Spawnpoints {
      * @param waveDirectoryPath the path of the directory containing the wave files
      */
     public Spawnpoints(String wavePath) {
-        spawnpoints = ConfigLoader.loadConfig("/waves/wave0/spawnpoints.json", Spawnpoint[].class);
+        spawnpoints = ConfigLoader.loadConfig("/world/waves/wave0/spawnpoints.json", Spawnpoint[].class);
         populateSpawnQueue();
     }
 
