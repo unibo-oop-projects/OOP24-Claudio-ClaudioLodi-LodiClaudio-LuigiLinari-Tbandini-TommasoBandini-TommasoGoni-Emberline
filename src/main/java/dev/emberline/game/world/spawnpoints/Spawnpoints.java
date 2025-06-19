@@ -24,9 +24,9 @@ public class Spawnpoints {
     }
     private static class Spawnpoint {
         @JsonProperty("x")
-        private int x;
+        private double x;
         @JsonProperty("y")
-        private int y;
+        private double y;
         @JsonProperty("spawnSequences")
         private SpawnSequence[] spawnSequences;
     }
@@ -53,12 +53,10 @@ public class Spawnpoints {
     private final Queue<EnemyToSpawn> spawnQueue = new PriorityQueue<>();
 
     /**
-     * Creates a new instance of {@code Wave}
-     *
      * @param wavePath the path of the directory containing the wave files
      */
     public Spawnpoints(String wavePath) {
-        spawnpoints = ConfigLoader.loadConfig(wavePath + "spawnpoints.json", Spawnpoint[].class);
+        spawnpoints = ConfigLoader.loadConfig(wavePath + spawnpointConfigFilename, Spawnpoint[].class);
         populateSpawnQueue();
     }
 

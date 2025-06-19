@@ -43,8 +43,8 @@ class RoadsModelComponent {
      * @param wavePath represents the path of the files regarding the current wave
      */
     RoadsModelComponent(String wavePath) {
-        arches = ConfigLoader.loadConfig(wavePath + "roads.json", Arch[].class);
-        //loadGraph(wavePath + "roads.txt");
+        arches = ConfigLoader.loadConfig(wavePath + roadsConfigFilename, Arch[].class);
+        parseGraph();
     }
 
     /**

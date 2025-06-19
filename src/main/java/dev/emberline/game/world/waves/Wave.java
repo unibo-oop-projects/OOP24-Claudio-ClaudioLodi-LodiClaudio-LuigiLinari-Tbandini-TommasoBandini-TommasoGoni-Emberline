@@ -16,6 +16,7 @@ import dev.emberline.utility.Vector2D;
  * The Wave class contains all the elements that characterize a single wave
  */
 public class Wave implements Updatable, Renderable {
+
     private final World world;
     private final Roads roads;
     private final Spawnpoints spawnpoints;
@@ -24,8 +25,6 @@ public class Wave implements Updatable, Renderable {
     private long accumulatorNs = 0;
 
     /**
-     * Creates a new instance of {@code Wave}
-     *
      * @param world the world in which the wave is being played
      * @param waveDirectoryPath the path of the directory containing the wave files
      */

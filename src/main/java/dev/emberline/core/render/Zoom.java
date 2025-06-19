@@ -28,7 +28,9 @@ public class Zoom implements Updatable, Serializable {
         private double toY;
     }
     private static class Translations {
+        @JsonProperty("first")
         private Translation first;
+        @JsonProperty("second")
         private Translation second;
     }
     private final Translations translations;
@@ -36,7 +38,7 @@ public class Zoom implements Updatable, Serializable {
     private Pair<Vector2D, Vector2D> curr;
     private Pair<Vector2D, Vector2D> to;
     private Pair<Vector2D, Vector2D> step = new Pair<>(Coordinate2D.ZERO, Coordinate2D.ZERO);
-    //make sure this number is small enough to let the "zoom" end before the wave ends
+    //make sure to let the "zoom" end before the wave ends by changing this numbers
     private final Double stepUpperBound = 0.02 ;
     private final Double timePerStep = 50_000_000d;
 
@@ -76,15 +78,17 @@ public class Zoom implements Updatable, Serializable {
 
     private void loadCS(String file) {
         Vector2D currFirst = new Coordinate2D(translations.first.fromX, translations.first.fromY);
-        Vector2D currSecond = new Coordinate2D(translations.first.toX, translations.first.toY);
-        Vector2D toFirst = new Coordinate2D(translations.second.fromX, translations.second.fromY);
+        Vector2D toFirst = new Coordinate2D(translations.first.toX, translations.first.toY);
+        Vector2D currSecond = new Coordinate2D(translations.second.fromX, translations.second.fromY);
         Vector2D toSecond = new Coordinate2D(translations.second.toX, translations.second.toY);
 
         to = new Pair<>(toFirst, toSecond);
         curr = new Pair<>(currFirst, currSecond);
     }
 
-    //checks if the points are no more than 1 step away from the desired coordinates
+    /**
+     * checks if the points are no more than 1 step away from the desired coordinates
+     */
     private boolean isOver() {
         return to.getX().distance(curr.getX()) <= step.getX().distance(0, 0)
                 && to.getY().distance(curr.getY()) <= step.getY().distance(0, 0);
