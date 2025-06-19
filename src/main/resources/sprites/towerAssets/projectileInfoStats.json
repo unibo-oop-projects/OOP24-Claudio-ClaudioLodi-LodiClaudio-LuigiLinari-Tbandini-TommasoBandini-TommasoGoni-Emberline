@@ -1,0 +1,16 @@
+{
+  "baseUpgradeCost": 50,
+  "upgradeCosts": [100, 150, 200, 250, 0],
+  "resetRefunds": [25, 75, 150, 250, 375],
+  "baseFireRate": 0.8,
+  "fireRateSmall": [1.0, 1.2, 1.4, 1.6, 1.8],
+  "fireRateBig": [0.5, 0.6, 0.7, 0.8, 0.9],
+  "baseDamage": 25,
+  "damageSmall": [21, 22, 23, 24, 25],
+  "damageBig": [27, 29, 31, 33, 35],
+  "bigDamageArea": [0.5, 0.6875, 0.875, 1.0625, 1.25],
+  "towerRange": [3, 3.2, 3.4, 4.0, 5.0],
+  "baseProjectileSpeed": 0.9,
+  "projectileSpeedSmall": [1.0, 1.2, 1.4, 1.6, 1.8],
+  "projectileSpeedBig": [0.7, 0.8, 0.9, 1.0, 1.1]
+}

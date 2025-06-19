@@ -67,6 +67,17 @@ public interface UpgradableInfo<T extends UpgradableInfo.InfoType, SELF extends 
      */
     int getUpgradeCost();
 
+
+    /**
+     * Calculates and retrieves the refund value for the current object.
+     * <p>
+     * The refund value half of the upgrade cost,
+     * and it is returned when the Enchant/Projectile size get resetted.
+     *
+     * @return The refund value associated with the current object.
+     */
+    int getRefundValue();
+
     /**
      * Retrieves the default instance of the implementing object.
      *
