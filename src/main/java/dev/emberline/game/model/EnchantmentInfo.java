@@ -1,5 +1,6 @@
 package dev.emberline.game.model;
 
+import dev.emberline.core.ConfigLoader;
 import dev.emberline.game.model.effects.BurnEffect;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.model.effects.SlowEffect;
@@ -9,6 +10,8 @@ import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents the information of an enchantment, including its type and level.
@@ -101,22 +104,33 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
         return new EnchantmentInfo(Type.BASE, 0);
     }
 
-    // STATS //
-    private static class Stats {
-        // Upgrade costs
-        private static final int BASE_UPGRADE_COST = 50;
-        private static final int[] UPGRADE_COSTS = {100, 100, 100, 100, 0};
-        // Effect duration
-        private static final double[] EFFECT_DURATION = {3, 3.2, 3.4, 3.6, 3.8};
-        // Effects
-        private static final double[] FIRE_DAMAGE_PER_SECOND = {20,25,30,35,40};
-        private static final double[] ICE_SLOWING_FACTOR = {0.9,0.8,0.7,0.6,0.5};
+    private static class Metadata {
+        @JsonProperty("baseUpgradeCost")
+        private int BASE_UPGRADE_COST;
+        @JsonProperty("upgradeCosts")
+        private int[] UPGRADE_COSTS;
+        @JsonProperty("resetRefunds")
+        private int[] RESET_REFUNDS;
+        @JsonProperty("effectDuration")
+        private double[] EFFECT_DURATION;
+        @JsonProperty("fireDamagePerSecond")
+        private double[] FIRE_DAMAGE_PER_SECOND;
+        @JsonProperty("iceSlowingFactor")
+        private double[] ICE_SLOWING_FACTOR;
     }
+
+    private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/enchantmentInfoStats.json", Metadata.class);
 
     @Override
     public int getUpgradeCost() {
-        if (type == Type.BASE) return Stats.BASE_UPGRADE_COST;
-        return Stats.UPGRADE_COSTS[level];
+        if (type == Type.BASE) return metadata.BASE_UPGRADE_COST;
+        return metadata.UPGRADE_COSTS[level];
+    }
+
+    @Override
+    public int getRefundValue() {
+        if (type == Type.BASE) return 0;
+        return metadata.RESET_REFUNDS[level];
     }
 
     /**
@@ -129,10 +143,10 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
      *         or an empty {@code Optional} if no effect is associated with the enchantment.
      */
     public Optional<EnchantmentEffect> getEffect() {
-        double duration = Stats.EFFECT_DURATION[level];
+        double duration = metadata.EFFECT_DURATION[level];
         return Optional.ofNullable(switch (type) {
-            case Type.ICE -> new SlowEffect(Stats.ICE_SLOWING_FACTOR[level], duration);
-            case Type.FIRE -> new BurnEffect(Stats.FIRE_DAMAGE_PER_SECOND[level], duration);
+            case Type.ICE -> new SlowEffect(metadata.ICE_SLOWING_FACTOR[level], duration);
+            case Type.FIRE -> new BurnEffect(metadata.FIRE_DAMAGE_PER_SECOND[level], duration);
             case Type.BASE -> null;
         });
     }
