@@ -24,7 +24,7 @@ public class UISpriteFactory implements SpriteFactory<UISpriteKey> {
         @JsonProperty("height")
         private int height;
     }
-    private static final JsonNode configsRoot = ConfigLoader.loadConfig("/sprites/ui/ui.json");
+    private static final JsonNode configsRoot = ConfigLoader.loadNode("/sprites/ui/ui.json");
 
     @Override
     public Sprite loadSprite(UISpriteKey uiSpriteKey) {

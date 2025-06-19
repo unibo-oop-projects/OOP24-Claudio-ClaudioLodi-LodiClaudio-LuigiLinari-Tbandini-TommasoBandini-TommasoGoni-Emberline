@@ -23,7 +23,6 @@ class RoadsViewComponent implements Renderable, Updatable {
     private OneShotAnimation mapAnimation;
 
     /**
-     * Creates a new instance of {@code RoadsRenderComponent}
      * @param wavePath represents the path of the files regarding the current wave
      */
     RoadsViewComponent(String wavePath) {

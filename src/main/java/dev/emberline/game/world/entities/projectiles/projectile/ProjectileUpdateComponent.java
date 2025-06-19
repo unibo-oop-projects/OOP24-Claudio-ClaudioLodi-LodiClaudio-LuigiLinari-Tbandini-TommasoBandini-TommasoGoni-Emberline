@@ -37,6 +37,9 @@ public class ProjectileUpdateComponent implements Updatable {
     private final ProjectileHitEvent projectileHitEvent;
     private boolean hasHit = false;
 
+    private final ProjectileInfo projectileInfo;
+    private final EnchantmentInfo enchantmentInfo;
+
     private final Projectile owner;
 
     public ProjectileUpdateComponent(Vector2D start, IEnemy target, 
@@ -57,6 +60,9 @@ public class ProjectileUpdateComponent implements Updatable {
         this.projectileHitEvent = new ProjectileHitEvent(prediction, projInfo, enchInfo);
         this.projectileHitListener = world.getProjectileHitListener();
 
+        this.projectileInfo = projInfo;
+        this.enchantmentInfo = enchInfo;
+
         this.owner = owner;
     }
 
@@ -73,7 +79,7 @@ public class ProjectileUpdateComponent implements Updatable {
             hasHit = true;
         }
 
-        owner.getAnimation().update(elapsed);
+        owner.getAnimationUpdatable().update(elapsed);
     }
 
     public boolean hasHit() {
@@ -82,6 +88,14 @@ public class ProjectileUpdateComponent implements Updatable {
 
     Projectile.PositionAndRotation getPositionAndRotation() {
         return new Projectile.PositionAndRotation(position, rotation);
+    }
+
+    ProjectileInfo.Type getSizeType() {
+        return projectileInfo.type();
+    }
+
+    EnchantmentInfo.Type getEnchantmentType() {
+        return enchantmentInfo.type();
     }
 
     /**

@@ -13,6 +13,8 @@ public interface IEnemy extends Updatable, Renderable {
 
     double getWidth();
 
+    double getHealth();
+
     void dealDamage(double damage);
     
     void applyEffect(EnchantmentEffect effect);

@@ -1,6 +1,6 @@
 package dev.emberline.game.world.entities.projectiles.projectile;
 
-import dev.emberline.core.animations.Animation;
+import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.world.World;
@@ -38,7 +38,15 @@ public class Projectile implements IProjectile {
         return updateComponent.getPositionAndRotation();
     }
 
-    Animation getAnimation() {
-        return renderComponent.getAnimation();
+    ProjectileInfo.Type getSizeType() {
+        return updateComponent.getSizeType();
+    }
+
+    EnchantmentInfo.Type getEnchantmentType() {
+        return updateComponent.getEnchantmentType();
+    }
+
+    Updatable getAnimationUpdatable() {
+        return renderComponent.getAnimationUpdatable();
     }
 }

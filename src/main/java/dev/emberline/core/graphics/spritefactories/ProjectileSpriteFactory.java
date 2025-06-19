@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
@@ -25,8 +24,8 @@ public class ProjectileSpriteFactory implements SpriteFactory<ProjectileSpriteKe
         private int height;
         @JsonProperty("frames")
         private int frames;
-        @JsonProperty("frameTime")
-        private int frameTime;
+        @JsonProperty("frameTimeNs")
+        private int frameTimeNs;
         @JsonProperty("size")
         private Map<ProjectileInfo.Type, Integer> size;
         @JsonProperty("enchant")
@@ -53,7 +52,7 @@ public class ProjectileSpriteFactory implements SpriteFactory<ProjectileSpriteKe
             frames[i] = new WritableImage(projectileAtals.getPixelReader(), x, y, metadata.width, metadata.height);
         }
 
-        return new AnimatedSprite(frames, metadata.frameTime);
+        return new AnimatedSprite(frames, metadata.frameTimeNs);
     }
 
     private static Image getProjectileAtlas() {

@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.emberline.core.ConfigLoader;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
@@ -16,18 +18,33 @@ import dev.emberline.utility.Vector2D;
  * A class that represents the Road's class logic.
  */
 class RoadsModelComponent {
+    //single arch configuration
+    private static final String roadsConfigFilename = "roads.json";
+    private static class Arch {
+        @JsonProperty("fromX")
+        private double fromX;
+        @JsonProperty("fromY")
+        private double fromY;
+        @JsonProperty("toX")
+        private double toX;
+        @JsonProperty("toY")
+        private double toY;
+        @JsonProperty("weight")
+        private int weight;
+    }
 
+    private final Arch[] arches;
     /**
      * graph data structure, represents the walkable roads on the map
      */
     private final Map<Vector2D, Node> posToNode = new HashMap<>();
 
     /**
-     * Creates a new instance of {@code RoadsUpdateComponent}
      * @param wavePath represents the path of the files regarding the current wave
      */
     RoadsModelComponent(String wavePath) {
-        loadGraph(wavePath + "roads.txt");
+        arches = ConfigLoader.loadConfig(wavePath + roadsConfigFilename, Arch[].class);
+        parseGraph();
     }
 
     /**
@@ -38,29 +55,18 @@ class RoadsModelComponent {
         return posToNode.get(pos).getNext();
     }
 
-    private void loadGraph(String file) {
-        try {
-            URL fileURL = Objects.requireNonNull(getClass().getResource(file));
-            final BufferedReader r = new BufferedReader(new FileReader(fileURL.getPath()));
-            String line = null;
-            while ((line = r.readLine()) != null) {
+    private void parseGraph() {
+        for (var arch : arches) {
+            Node fromNode = new Node(
+                    new Coordinate2D(arch.fromX, arch.fromY).add(0.5, 0.5));
+            Node toNode = new Node(
+                    new Coordinate2D(arch.toX, arch.toY).add(0.5, 0.5));
+            Integer weight = arch.weight;
 
-                String[] numbers = line.split(" ");
-                //summing (0.5, 0.5) to center
-                Node fromNode = new Node(
-                        new Coordinate2D(Double.parseDouble(numbers[0]) + 0.5, Double.parseDouble(numbers[1]) + 0.5));
-                Node toNode = new Node(
-                        new Coordinate2D(Double.parseDouble(numbers[2]) + 0.5, Double.parseDouble(numbers[3]) + 0.5));
-                Integer weight = Integer.parseInt(numbers[4]);
+            posToNode.putIfAbsent(fromNode.getPosition(), fromNode);
+            posToNode.get(fromNode.getPosition()).addNeighbour(toNode, weight);
 
-                posToNode.putIfAbsent(fromNode.getPosition(), fromNode);
-                posToNode.get(fromNode.getPosition()).addNeighbour(toNode, weight);
-
-                posToNode.putIfAbsent(toNode.getPosition(), toNode);
-            }
-            r.close();
-        } catch (IOException e) {
-            System.out.println("error loading file: " + file);
+            posToNode.putIfAbsent(toNode.getPosition(), toNode);
         }
     }
 }

@@ -1,8 +1,8 @@
 package dev.emberline.game.world.entities.projectiles.projectile;
 
 import dev.emberline.core.GameLoop;
-import dev.emberline.core.animations.Animation;
 import dev.emberline.core.components.Renderable;
+import dev.emberline.core.components.Updatable;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
@@ -16,16 +16,15 @@ import javafx.scene.image.Image;
 
 public class ProjectileRenderComponent implements Renderable {
 
-    private static final double width = 1.5;
-    private static final double height = 1.25;
+    private static final double width = 1;
+    private static final double height = 1;
 
     private final Projectile owner;
-    
-    private final Animation projectileAnimation;
+    private final ProjectileAnimation projectileAnimation;
 
     public ProjectileRenderComponent(ProjectileInfo projInfo, EnchantmentInfo enchInfo, Projectile owner) {
         this.owner = owner;
-        this.projectileAnimation = null;
+        this.projectileAnimation = new ProjectileAnimation(owner);
     }
 
     @Override
@@ -44,7 +43,7 @@ public class ProjectileRenderComponent implements Renderable {
         double positionScreenX = cs.toScreenX(position.getX());
         double positionScreenY = cs.toScreenY(position.getY());
 
-        Image currAnimationState = projectileAnimation.getAnimationState();
+        Image currentFrame = projectileAnimation.getImage();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             gc.save();
@@ -53,13 +52,13 @@ public class ProjectileRenderComponent implements Renderable {
             gc.rotate(rotation);
 
             // make so that the tip of the projectile hits
-            gc.drawImage(currAnimationState, -_width/2, -_height/2, _width, _height);
+            gc.drawImage(currentFrame, -_width/2, -_height/2, _width, _height);
 
             gc.restore();
         }));
     }
 
-    Animation getAnimation() {
+    Updatable getAnimationUpdatable() {
         return projectileAnimation;
     }
 }

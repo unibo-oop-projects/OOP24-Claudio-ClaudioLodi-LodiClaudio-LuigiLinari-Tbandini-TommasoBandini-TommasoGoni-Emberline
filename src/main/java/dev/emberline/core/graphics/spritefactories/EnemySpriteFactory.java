@@ -1,12 +1,9 @@
 package dev.emberline.core.graphics.spritefactories;
 
-import java.io.Console;
 import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
@@ -26,8 +23,8 @@ public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
         private int height;
         @JsonProperty("frames")
         private int frames;
-        @JsonProperty("frameTime")
-        private int frameTime;
+        @JsonProperty("frameTimeNs")
+        private int frameTimeNs;
         @JsonProperty("direction")
         private Map<FacingDirection, Integer> direction;
         @JsonProperty("state")
@@ -57,7 +54,7 @@ public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
             frames[i] = new WritableImage(enemyAtals.getPixelReader(), x, y, metadata.width, metadata.height);
         }
 
-        return new AnimatedSprite(frames, metadata.frameTime);
+        return new AnimatedSprite(frames, metadata.frameTimeNs);
     }
 
     private static Image getEnemyAtlas(String enemyAtlasPath) {

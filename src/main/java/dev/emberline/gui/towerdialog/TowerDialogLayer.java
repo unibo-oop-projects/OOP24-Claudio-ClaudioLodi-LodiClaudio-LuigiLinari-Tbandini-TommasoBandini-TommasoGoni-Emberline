@@ -12,6 +12,7 @@ import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.model.UpgradableInfo;
+import dev.emberline.game.world.towers.tower.Tower;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.ResetTowerInfoEvent;
@@ -127,8 +128,8 @@ public class TowerDialogLayer extends GuiLayer {
         private static final ColorAdjust SELECTOR_TITLE = new ColorAdjust(0.15, 0.9, -0.6, 0);
     }
 
-    // The TowerInfoProvider linked to this dialog layer
-    private final TowerInfoProvider towerInfoProvider;
+    // The Tower linked to this dialog layer
+    private final Tower tower;
     // The current state of what is displayed in the dialog
     private EnchantmentInfo displayedEnchantment = null;
     private ProjectileInfo displayedProjectile = null;
@@ -137,17 +138,21 @@ public class TowerDialogLayer extends GuiLayer {
     // Data to display on button hover
     private final Map<GuiButton, TowerStatsProvider> hoverData = new HashMap<>();
 
-    public TowerDialogLayer(TowerInfoProvider towerInfoProvider) {
-        this.towerInfoProvider = towerInfoProvider;
+    public TowerDialogLayer(Tower tower) {
+        this.tower = tower;
         updateLayout();
+    }
+
+    public Tower getTower() {
+        return tower;
     }
 
     private void updateLayout() {
         // Clearing previous layout //
         super.buttons.clear();
         hoverData.clear();
-        displayedEnchantment = Objects.requireNonNull(towerInfoProvider.getEnchantmentInfo(), "EnchantmentInfo cannot be null");
-        displayedProjectile = Objects.requireNonNull(towerInfoProvider.getProjectileInfo(), "ProjectileInfo cannot be null");
+        displayedEnchantment = Objects.requireNonNull(tower.getEnchantmentInfo(), "EnchantmentInfo cannot be null");
+        displayedProjectile = Objects.requireNonNull(tower.getProjectileInfo(), "ProjectileInfo cannot be null");
 
         // Building stats
         rebuildStats();
@@ -229,8 +234,8 @@ public class TowerDialogLayer extends GuiLayer {
 
     @Override
     public void render() {
-        if (displayedEnchantment != towerInfoProvider.getEnchantmentInfo()) updateLayout();
-        if (displayedProjectile != towerInfoProvider.getProjectileInfo()) updateLayout();
+        if (displayedEnchantment != tower.getEnchantmentInfo()) updateLayout();
+        if (displayedProjectile != tower.getProjectileInfo()) updateLayout();
 
         Renderer renderer = GameLoop.getInstance().getRenderer();
         GraphicsContext gc = renderer.getGraphicsContext();

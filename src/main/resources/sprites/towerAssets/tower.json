@@ -1,15 +1,27 @@
 {
   "filename": "/sprites/towerAssets/towersAtlas.png",
   "width": 32,
-  "height": 48,
+  "height": {
+    "SMALL": 36,
+    "BASE": 42,
+    "BIG": 48
+  },
   "size": {
     "SMALL": 0,
     "BASE": 32,
     "BIG": 64
   },
   "enchant": {
-    "BASE": 0,
-    "FIRE": 48,
-    "ICE": 96
+    "BASE": 48,
+    "FIRE": 96,
+    "ICE": 144
+  },
+  "worldDimensions": {
+    "width": 2,
+    "height": {
+      "SMALL": 2.25,
+      "BASE": 2.625,
+      "BIG": 3
+    }
   }
 }

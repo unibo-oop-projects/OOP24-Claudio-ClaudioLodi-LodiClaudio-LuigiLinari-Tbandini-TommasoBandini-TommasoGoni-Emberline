@@ -1,11 +1,6 @@
 package dev.emberline.core.graphics.spritefactories;
 
-import java.util.Map;
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.SingleSprite;
 import dev.emberline.core.graphics.Sprite;
@@ -15,6 +10,9 @@ import dev.emberline.game.model.ProjectileInfo;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
+import java.util.Map;
+import java.util.Objects;
+
 public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
     private static class Metadata {
         @JsonProperty("filename")
@@ -22,7 +20,7 @@ public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
         @JsonProperty("width")
         private int width;
         @JsonProperty("height")
-        private int height;
+        private Map<ProjectileInfo.Type, Integer> height;
         @JsonProperty("size")
         private Map<ProjectileInfo.Type, Integer> size;
         @JsonProperty("enchant")
@@ -36,12 +34,14 @@ public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
         ProjectileInfo.Type size = key.size();
         EnchantmentInfo.Type enchant = key.enchant();
 
+        int width = metadata.width;
+        int height = metadata.height.get(size);
         int x = metadata.size.get(size);
-        int y = metadata.enchant.get(enchant);
+        int y = metadata.enchant.get(enchant) - height;
 
         Image towerAtlas = getTowerAtlas();
 
-        return new SingleSprite(new WritableImage(towerAtlas.getPixelReader(), x, y, metadata.width, metadata.height));
+        return new SingleSprite(new WritableImage(towerAtlas.getPixelReader(), x, y, width, height));
     }
 
     private static Image getTowerAtlas() {

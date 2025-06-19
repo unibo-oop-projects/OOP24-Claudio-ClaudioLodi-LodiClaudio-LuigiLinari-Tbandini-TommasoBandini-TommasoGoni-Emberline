@@ -1,0 +1,16 @@
+{
+  "first":
+  {
+    "fromX": 5,
+    "fromY": 3,
+    "toX": 0,
+    "toY": 0
+  },
+  "second" :
+  {
+    "fromX": 15,
+    "fromY": 12,
+    "toX": 30,
+    "toY": 18
+  }
+}

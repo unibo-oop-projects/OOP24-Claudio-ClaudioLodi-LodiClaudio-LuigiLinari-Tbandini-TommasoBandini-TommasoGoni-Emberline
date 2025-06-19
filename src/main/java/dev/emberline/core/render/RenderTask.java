@@ -4,6 +4,8 @@ import java.lang.Comparable;
 
 public class RenderTask implements Comparable<RenderTask>, Runnable {
     private final RenderPriority renderPriority;
+    private boolean zOrderEnabled = false;
+    private double zOrder = 0;
     private long secondaryPriority = 0; //lower values get rendered first
     private final Runnable runnable;
 
@@ -20,12 +22,18 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
     /**
      * Sets the secondary priority value for this render task.
      * This value is used as a criterion to sort equal priority tasks
-     * where the task with the lower secondary priority value will be rendered first.
+     * where the task with the lower secondary priority value will be rendered first (under).
      *
      * @param secondaryPriority the secondary priority value to set
      */
     public void setSecondaryPriority(long secondaryPriority) {
         this.secondaryPriority = secondaryPriority;
+    }
+
+    public RenderTask enableZOrder(double lowestUnder) {
+        this.zOrderEnabled = true;
+        this.zOrder = lowestUnder;
+        return this;
     }
 
     /**
@@ -35,7 +43,21 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
     @Override
     public int compareTo(RenderTask t1) {
         int comparison = this.renderPriority.getPriority() - t1.renderPriority.getPriority();
-        if (comparison == 0) return (int) (this.secondaryPriority - t1.secondaryPriority);
-        else return comparison;
+        if (comparison != 0) {
+            return comparison;
+        }
+        int secondaryComparison = comparisonToInt(this.secondaryPriority - t1.secondaryPriority);
+        int zOrderComparison = comparisonToInt(this.zOrder - t1.zOrder);
+        if (zOrderEnabled && zOrderComparison != 0) {
+            return zOrderComparison;
+        }
+        return secondaryComparison;
+    }
+
+    private int comparisonToInt(double comparison) {
+        return comparison < 0 ? -1 : comparison > 0 ? 1 : 0;
+    }
+    private int comparisonToInt(long comparison) {
+        return comparison < 0 ? -1 : comparison > 0 ? 1 : 0;
     }
 }

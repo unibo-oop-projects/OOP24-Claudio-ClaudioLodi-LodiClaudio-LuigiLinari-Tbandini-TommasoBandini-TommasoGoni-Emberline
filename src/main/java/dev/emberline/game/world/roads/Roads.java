@@ -15,7 +15,6 @@ public class Roads implements Renderable, Updatable {
     private final RoadsViewComponent roadsViewComponent;
 
     /**
-     * Creates a new instance of {@code Roads}
      * @param wavePath represents the path of the files regarding the current wave
      */
     public Roads(String wavePath) {

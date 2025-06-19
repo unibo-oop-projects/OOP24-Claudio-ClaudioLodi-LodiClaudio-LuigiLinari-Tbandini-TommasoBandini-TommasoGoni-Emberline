@@ -1,0 +1,191 @@
+[
+  {
+    "fromX": 8,
+    "fromY": 7,
+    "toX": 5,
+    "toY": 7,
+    "weight": 1
+  },
+  {
+    "fromX": 25,
+    "fromY": 9,
+    "toX": 17,
+    "toY": 9,
+    "weight": 1
+  },
+  {
+    "fromX": 5,
+    "fromY": 13,
+    "toX": 5,
+    "toY": 7,
+    "weight": 1
+  },
+  {
+    "fromX": 11,
+    "fromY": 8,
+    "toX": 8,
+    "toY": 8,
+    "weight": 1
+  },
+  {
+    "fromX": 12,
+    "fromY": 11,
+    "toX": 12,
+    "toY": 10,
+    "weight": 1
+  },
+  {
+    "fromX": 23,
+    "fromY": 11,
+    "toX": 23,
+    "toY": 13,
+    "weight": 1
+  },
+  {
+    "fromX": 12,
+    "fromY": 10,
+    "toX": 8,
+    "toY": 10,
+    "weight": 1
+  },
+  {
+    "fromX": 25,
+    "fromY": 11,
+    "toX": 23,
+    "toY": 11,
+    "weight": 2
+  },
+  {
+    "fromX": 8,
+    "fromY": 13,
+    "toX": 12,
+    "toY": 13,
+    "weight": 1
+  },
+  {
+    "fromX": 3,
+    "fromY": 7,
+    "toX": 3,
+    "toY": 4,
+    "weight": 1
+  },
+  {
+    "fromX": 14,
+    "fromY": 5,
+    "toX": 11,
+    "toY": 5,
+    "weight": 1
+  },
+  {
+    "fromX": 8,
+    "fromY": 13,
+    "toX": 5,
+    "toY": 13,
+    "weight": 3
+  },
+  {
+    "fromX": 25,
+    "fromY": 11,
+    "toX": 25,
+    "toY": 9,
+    "weight": 1
+  },
+  {
+    "fromX": 5,
+    "fromY": 7,
+    "toX": 3,
+    "toY": 7,
+    "weight": 1
+  },
+  {
+    "fromX": 23,
+    "fromY": 13,
+    "toX": 17,
+    "toY": 13,
+    "weight": 1
+  },
+  {
+    "fromX": 12,
+    "fromY": 13,
+    "toX": 12,
+    "toY": 11,
+    "weight": 1
+  },
+  {
+    "fromX": 8,
+    "fromY": 10,
+    "toX": 8,
+    "toY": 8,
+    "weight": 1
+  },
+  {
+    "fromX": 17,
+    "fromY": 11,
+    "toX": 12,
+    "toY": 11,
+    "weight": 2
+  },
+  {
+    "fromX": 17,
+    "fromY": 8,
+    "toX": 11,
+    "toY": 8,
+    "weight": 1
+  },
+  {
+    "fromX": 8,
+    "fromY": 15,
+    "toX": 8,
+    "toY": 13,
+    "weight": 1
+  },
+  {
+    "fromX": 29,
+    "fromY": 11,
+    "toX": 25,
+    "toY": 11,
+    "weight": 1
+  },
+  {
+    "fromX": 17,
+    "fromY": 13,
+    "toX": 17,
+    "toY": 11,
+    "weight": 1
+  },
+  {
+    "fromX": 8,
+    "fromY": 8,
+    "toX": 8,
+    "toY": 7,
+    "weight": 1
+  },
+  {
+    "fromX": 17,
+    "fromY": 11,
+    "toX": 17,
+    "toY": 9,
+    "weight": 1
+  },
+  {
+    "fromX": 17,
+    "fromY": 9,
+    "toX": 17,
+    "toY": 8,
+    "weight": 1
+  },
+  {
+    "fromX": 11,
+    "fromY": 5,
+    "toX": 11,
+    "toY": 8,
+    "weight": 1
+  },
+  {
+    "fromX": 14,
+    "fromY": 2,
+    "toX": 14,
+    "toY": 5,
+    "weight": 1
+  }
+]

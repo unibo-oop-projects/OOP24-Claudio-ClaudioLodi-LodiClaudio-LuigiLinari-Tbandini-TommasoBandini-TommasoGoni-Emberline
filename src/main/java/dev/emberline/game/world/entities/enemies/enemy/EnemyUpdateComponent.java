@@ -50,6 +50,10 @@ class EnemyUpdateComponent implements Updatable {
         }
     }
 
+    public double getHealth() {
+        return this.health;
+    }
+
     @Override
     public void update(long elapsed) {
         switch (enemyState) {

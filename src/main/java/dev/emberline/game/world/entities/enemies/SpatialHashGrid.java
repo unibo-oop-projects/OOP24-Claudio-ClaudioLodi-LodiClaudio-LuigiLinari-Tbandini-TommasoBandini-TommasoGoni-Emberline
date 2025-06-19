@@ -1,16 +1,9 @@
 package dev.emberline.game.world.entities.enemies;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
+
+import java.util.*;
 
 public class SpatialHashGrid implements Iterable<IEnemy> {
 
@@ -19,35 +12,35 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     private static final int CELL_SIZE = 1;
 
     private final int x_min, y_min;
-    private final int x_max, y_max;
+    private final int cols;
+    private final int rows;
 
-    private final Set<IEnemy>[][] spatialHashGrid;
-    private final Map<IEnemy, CellIdx> enemyCell;
+    private final List<List<Set<IEnemy>>> spatialHashGrid;
+    private final Map<IEnemy, CellIdx> enemyCell = new HashMap<>();
 
-    @SuppressWarnings("unchecked")
     public SpatialHashGrid(int x_min, int y_min, int x_max, int y_max) {
-        int cols = (int) Math.ceil((double)(x_max - x_min) / CELL_SIZE);
-        int rows = (int) Math.ceil((double)(y_max - y_min) / CELL_SIZE);
+        this.cols = (int) Math.ceil((double)(x_max - x_min) / CELL_SIZE);
+        this.rows = (int) Math.ceil((double)(y_max - y_min) / CELL_SIZE);
 
         this.x_min = x_min;
         this.y_min = y_min;
-        this.x_max = x_max + CELL_SIZE * cols;
-        this.y_max = y_max + CELL_SIZE * rows;
 
-        this.spatialHashGrid = (HashSet<IEnemy>[][])new HashSet[cols][rows];
-        for (int i = 0; i < cols; i++) {
-            for (int j = 0; j < rows; j++) {
-                spatialHashGrid[i][j] = new HashSet<>();
+        this.spatialHashGrid = new ArrayList<>();
+        for (int x = 0; x < cols; x++) {
+            this.spatialHashGrid.add(new ArrayList<>());
+            for (int y = 0; y < rows; y++) {
+                spatialHashGrid.get(x).add(new HashSet<>());
             }
         }
-
-        this.enemyCell = new HashMap<>();
     }
 
     public void add(IEnemy enemy) {
         CellIdx cellIdx = getCellIdx(enemy.getPosition());
+        if (!isInside(cellIdx)) {
+            throw new IllegalStateException("Enemy is outside the bounds of the spatial hash grid");
+        }
 
-        spatialHashGrid[cellIdx.x()][cellIdx.y()].add(enemy);
+        spatialHashGrid.get(cellIdx.x()).get(cellIdx.y()).add(enemy);
         enemyCell.put(enemy, cellIdx);
     }
     
@@ -57,7 +50,7 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
             throw new IllegalArgumentException("Enemy isn't present in the spatial hash grid");
         }
 
-        spatialHashGrid[cellIdx.x()][cellIdx.y()].remove(enemy);
+        spatialHashGrid.get(cellIdx.x()).get(cellIdx.y()).remove(enemy);
         enemyCell.remove(enemy);
     }
 
@@ -88,27 +81,28 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
             update(enemy);
         }
     }
-    
+
     /**
      * @return An iterator of the elements present in the {@code SpatialHashGrid}
      */
     public Iterator<IEnemy> iterator() {
         return enemyCell.keySet().iterator();
     }
-    
+
     public List<IEnemy> getNear(Vector2D location, double radius) {
         CellIdx min = getCellIdx(location.subtract(radius, radius));
         CellIdx max = getCellIdx(location.add(radius, radius));
 
         List<IEnemy> inside = new LinkedList<>();
-        for (int i = min.x(); i <= max.x(); i++) {
-            for (int j = min.y(); j <= max.y(); j++) {
-                for (final IEnemy enemy : spatialHashGrid[i][j]) {
+        for (int x = min.x(); x <= max.x(); x++) {
+            for (int y = min.y(); y <= max.y(); y++) {
+                if (!isInside(new CellIdx(x,y))) continue;
+                for (final IEnemy enemy : spatialHashGrid.get(x).get(y)) {
                     Vector2D pos = enemy.getPosition();
                     double dstX = pos.getX() - location.getX();
                     double dstY = pos.getY() - location.getY();
                     double sqDst = dstX * dstX + dstY * dstY;
-                    
+
                     if (sqDst <= radius * radius) {
                         inside.add(enemy);
                     }
@@ -118,15 +112,15 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
 
         return inside;
     }
-    
-    private CellIdx getCellIdx(Vector2D location) {
-        if (location.getX() < x_min || location.getY() < y_min ||
-            location.getX() > x_max || location.getY() > y_max) {
-            throw new IllegalArgumentException("Location out of bounds of the spatial hash grid");
-        }
 
-        int x = (int) Math.floor((double)(location.getX() - x_min) / CELL_SIZE);
-        int y = (int) Math.floor((double)(location.getY() - y_min) / CELL_SIZE);
+    private boolean isInside(CellIdx cellIdx) {
+        return  (cellIdx.x() >= 0 && cellIdx.x() < cols &&
+                cellIdx.y() >= 0 && cellIdx.y() < rows);
+    }
+
+    private CellIdx getCellIdx(Vector2D location) {
+        int x = (int) Math.floor((location.getX() - x_min) / CELL_SIZE);
+        int y = (int) Math.floor((location.getY() - y_min) / CELL_SIZE);
 
         return new CellIdx(x, y);
     }
