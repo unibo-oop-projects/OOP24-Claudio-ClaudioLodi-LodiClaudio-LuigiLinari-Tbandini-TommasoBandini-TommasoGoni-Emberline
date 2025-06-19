@@ -36,7 +36,7 @@ public class TextGuiButton extends GuiButton {
     }
 
     public static TextLayout loadLayout(TextLayoutType type) {
-        JsonNode root = ConfigLoader.loadConfig("/sprites/ui/buttonTextLayout.json");
+        JsonNode root = ConfigLoader.loadNode("/sprites/ui/buttonTextLayout.json");
         JsonNode sublayout = root.get(type.name().toLowerCase());
         return ConfigLoader.loadConfig(sublayout, TextLayout.class);
     }
@@ -63,7 +63,7 @@ public class TextGuiButton extends GuiButton {
     private void drawText(Renderer renderer) {
         if (labelText == null || labelText.isEmpty()) return;
 
-        Image textImage = SpriteLoader.loadSprite(new StringSpriteKey(labelText)).getImage();
+        Image textImage = SpriteLoader.loadSprite(new StringSpriteKey(labelText)).image();
 
         double textWidth = this.width * textLayout.textWidthRatio;
         double textHeight = this.height * textLayout.textHeightRatio;
