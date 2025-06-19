@@ -2,7 +2,7 @@
   "width": 16,
   "height": 16,
   "frames": 8,
-  "frameTime": 250000000,
+  "frameTimeNs": 250000000,
   "direction": {
     "down": 0,
     "up": 16,

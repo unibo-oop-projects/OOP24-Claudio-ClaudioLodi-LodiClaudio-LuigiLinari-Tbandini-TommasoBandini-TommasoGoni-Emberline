@@ -25,7 +25,7 @@ public class EnemyAnimation implements Updatable {
     private AbstractEnemy.FacingDirection facingDirection = AbstractEnemy.FacingDirection.RIGHT;
 
     private int frameIndex = 0;
-    private long accumulatedTime = 0; // In nanoseconds
+    private long accumulatedTimeNs = 0;
 
     private boolean dyingAnimationFinished = false; // To track if the dying animation has finished
     private boolean isDying = false; // To track if the enemy is currently in a dying state
@@ -82,14 +82,14 @@ public class EnemyAnimation implements Updatable {
         // Initialize death animation when the enemy starts dying.
         if (enemyAppearance == EnemyAppearance.DYING && !isDying) {
             frameIndex = 0;
-            accumulatedTime = 0;
+            accumulatedTimeNs = 0;
             isDying = true;
         }
 
-        long frameTime = (long) (animatedSprite.getFrameTimeNs() / enemy.getSlowFactor());
-        accumulatedTime += elapsed;
-        while(accumulatedTime >= frameTime) {
-            accumulatedTime -= frameTime;
+        long frameTimeNs = (long) (animatedSprite.getFrameTimeNs() / enemy.getSlowFactor());
+        accumulatedTimeNs += elapsed;
+        while(accumulatedTimeNs >= frameTimeNs) {
+            accumulatedTimeNs -= frameTimeNs;
             frameIndex = (frameIndex+1) % animatedSprite.getFrameCount();
 
             // If the enemy is dying, we need to check if the animation has finished, do not loopback.

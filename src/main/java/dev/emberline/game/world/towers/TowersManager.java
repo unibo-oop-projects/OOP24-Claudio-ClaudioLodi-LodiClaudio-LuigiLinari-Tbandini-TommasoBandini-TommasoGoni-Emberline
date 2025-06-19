@@ -8,6 +8,7 @@ import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.towers.tower.Tower;
 import dev.emberline.gui.towerdialog.TowerDialogLayer;
+import dev.emberline.utility.Coordinate2D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 
@@ -27,8 +28,8 @@ public class TowersManager implements Updatable, Renderable, Inputable {
         this.world = world;
         this.enemiesManager = world.getEnemiesManager();
 
-//        buildings.add(new Tower(this, new Coordinate2D(10,10)));
-//        buildings.add(new Tower(this, new Coordinate2D(5,5)));
+       buildings.add(new Tower(this, new Coordinate2D(10,10)));
+       buildings.add(new Tower(this, new Coordinate2D(5,5)));
     }
 
     public void openTowerDialog(Tower tower) {

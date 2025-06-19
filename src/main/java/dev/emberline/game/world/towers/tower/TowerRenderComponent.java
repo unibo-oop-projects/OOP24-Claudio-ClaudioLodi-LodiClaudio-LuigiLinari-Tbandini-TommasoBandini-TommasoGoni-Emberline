@@ -15,7 +15,6 @@ import javafx.scene.image.Image;
 
 public class TowerRenderComponent implements Renderable {
     private final Tower tower;
-    private final long creationTimeNs = System.nanoTime();
 
     public TowerRenderComponent(Tower tower) {
         this.tower = tower;
@@ -38,6 +37,5 @@ public class TowerRenderComponent implements Renderable {
         renderer.addRenderTask(new RenderTask(RenderPriority.ENEMIES, () -> {
             gc.drawImage(bodyImage, topLeftScreenX, topLeftScreenY, screenWidth, screenHeight);
         }));
-
     }
 }

@@ -8,32 +8,30 @@ import javafx.scene.image.Image;
 
 public class ProjectileAnimation implements Updatable {
 
-    private final AnimatedSprite projectileSprites;
+    private final AnimatedSprite projectileSprite;
 
-    private final long frameTimeNs;
     private int frameIndex = 0;
     private long accumulatedTimeNs = 0;
 
     public ProjectileAnimation(Projectile owner) {
-        this.projectileSprites = (AnimatedSprite) SpriteLoader.loadSprite(
+        this.projectileSprite = (AnimatedSprite) SpriteLoader.loadSprite(
             new ProjectileSpriteKey(owner.getSizeType(), owner.getEnchantmentType()));
-        this.projectileSprites.setFrame(frameIndex);
-        this.frameTimeNs = (long) (projectileSprites.getFrameTimeNs() * 1e6);
+        this.projectileSprite.setFrame(frameIndex);
     }
 
     @Override
     public void update(long elapsed) {
         accumulatedTimeNs += elapsed;
 
-        while (accumulatedTimeNs >= frameTimeNs) {
-            accumulatedTimeNs -= frameTimeNs;
-            frameIndex = (frameIndex + 1) % projectileSprites.getFrameCount();
+        while (accumulatedTimeNs >= projectileSprite.getFrameTimeNs()) {
+            accumulatedTimeNs -= projectileSprite.getFrameTimeNs();
+            frameIndex = (frameIndex + 1) % projectileSprite.getFrameCount();
         }
 
-        projectileSprites.setFrame(frameIndex);
+        projectileSprite.setFrame(frameIndex);
     }
 
     public Image getImage() {
-        return projectileSprites.getImage();
+        return projectileSprite.getImage();
     }
 }
