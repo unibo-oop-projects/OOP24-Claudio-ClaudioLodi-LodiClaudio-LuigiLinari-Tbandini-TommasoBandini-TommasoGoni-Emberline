@@ -16,6 +16,8 @@ import dev.emberline.game.world.buildings.tower.Tower;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.ResetTowerInfoEvent;
+import dev.emberline.gui.event.SetTowerAimTypeEvent;
+import dev.emberline.gui.event.SetTowerAimTypeEvent.AimType;
 import dev.emberline.gui.event.SetTowerInfoEvent;
 import dev.emberline.gui.event.UpgradeTowerInfoEvent;
 import dev.emberline.gui.towerdialog.TextGuiButton.TextLayoutType;
@@ -141,6 +143,9 @@ public class TowerDialogLayer extends GuiLayer {
     // The current state of what is displayed in the dialog
     private EnchantmentInfo displayedEnchantment = null;
     private ProjectileInfo displayedProjectile = null;
+    // Initial aim type is set to FIRST
+    private AimType displayedAimType = AimType.FIRST;
+    private AimType currentAimType = displayedAimType;
     // Tower Stats Views
     private List<TowerStatView> statsViews = null;
     // Data to display on button hover
@@ -161,6 +166,7 @@ public class TowerDialogLayer extends GuiLayer {
         hoverData.clear();
         displayedEnchantment = Objects.requireNonNull(tower.getEnchantmentInfo(), "EnchantmentInfo cannot be null");
         displayedProjectile = Objects.requireNonNull(tower.getProjectileInfo(), "ProjectileInfo cannot be null");
+        displayedAimType = currentAimType;
 
         // Building stats
         rebuildStats();
@@ -189,10 +195,14 @@ public class TowerDialogLayer extends GuiLayer {
                 Layout.AimButton.BTN_X, Layout.AimButton.BTN_Y,
                 Layout.AimButton.BTN_WIDTH, Layout.AimButton.BTN_HEIGHT,
                 SpriteLoader.loadSprite(SingleSpriteKey.AIM_BUTTON).image(),
-                "AIM", TextLayoutType.CENTER
+                currentAimType.displayName(), TextLayoutType.CENTER
         );
-        // aimButton.setOnClick(() -> throwEvent(new SetTowerAimTypeEvent(this, null, tower)));
-        /* TODO type of aim possible: first, last, weak, strong, close */
+        aimButton.setOnClick(() -> {
+            currentAimType = currentAimType.next();
+            System.out.println("Current aim type: " + currentAimType.displayName());
+
+            throwEvent(new SetTowerAimTypeEvent(aimButton, currentAimType));
+        });
         buttons.add(aimButton);
     }
 
@@ -255,8 +265,15 @@ public class TowerDialogLayer extends GuiLayer {
 
     @Override
     public void render() {
-        if (displayedEnchantment != tower.getEnchantmentInfo()) updateLayout();
-        if (displayedProjectile != tower.getProjectileInfo()) updateLayout();
+        if (displayedEnchantment != tower.getEnchantmentInfo()) { 
+            updateLayout();
+        }
+        if (displayedProjectile != tower.getProjectileInfo()) {
+            updateLayout();
+        }
+        if (displayedAimType != currentAimType) { 
+            updateLayout();
+        }
 
         Renderer renderer = GameLoop.getInstance().getRenderer();
         GraphicsContext gc = renderer.getGraphicsContext();
