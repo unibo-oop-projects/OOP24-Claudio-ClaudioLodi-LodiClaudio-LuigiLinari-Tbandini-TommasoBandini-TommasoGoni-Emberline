@@ -36,7 +36,7 @@ public class TextGuiButton extends GuiButton {
     }
 
     public static TextLayout loadLayout(TextLayoutType type) {
-        JsonNode root = ConfigLoader.loadConfig("/sprites/ui/buttonTextLayout.json");
+        JsonNode root = ConfigLoader.loadNode("/sprites/ui/buttonTextLayout.json");
         JsonNode sublayout = root.get(type.name().toLowerCase());
         return ConfigLoader.loadConfig(sublayout, TextLayout.class);
     }

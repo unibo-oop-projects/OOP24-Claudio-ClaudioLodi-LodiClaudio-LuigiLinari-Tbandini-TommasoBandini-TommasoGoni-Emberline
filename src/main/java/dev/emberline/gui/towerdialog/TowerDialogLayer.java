@@ -3,7 +3,7 @@ package dev.emberline.gui.towerdialog;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
-import dev.emberline.core.graphics.spritekeys.UISpriteKey;
+import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
@@ -47,7 +47,7 @@ public class TowerDialogLayer extends GuiLayer {
             private static final double WIDTH = 79. / 10.4;
             private static final double HEIGHT = 51. / 9.5;
             private static final double X = Layout.BG_X + (BG_WIDTH - WIDTH) / 2;
-            private static final double Y = TITLE_Y + TITLE_HEIGHT + BG_HEIGHT * 0.03;
+            private static final double Y = TITLE_Y + TITLE_HEIGHT + BG_HEIGHT * 0.008;
             // stats effective overlay area
             private static final double OVR_WIDTH = WIDTH * 0.9;
             private static final double OVR_HEIGHT = HEIGHT * 0.75;
@@ -72,17 +72,17 @@ public class TowerDialogLayer extends GuiLayer {
         private static final double BG_Y = 0;
         // Title
         private static final double TITLE_WIDTH = 8 * 0.77;
-        private static final double TITLE_HEIGHT = 2 * 0.67;
+        private static final double TITLE_HEIGHT = 2 * 0.52;
         private static final double TITLE_X = BG_X + (BG_WIDTH - TITLE_WIDTH) / 2;
         private static final double TITLE_Y = BG_Y + 2;
         // Selectors
         private static class Selector {
-            private static final double TOP_MARGIN = 0.3;
+            private static final double TOP_MARGIN = 0.2;
             private static final double INNER_MARGIN = 0.1;
             private static final double WIDTH = 7.3;
             private static final double HEIGHT = 2;
             private static final double NAME_HEIGHT = 0.5;
-            private static final double NAME_Y = Stats.Y + Stats.HEIGHT + TOP_MARGIN;
+            private static final double NAME_Y = Stats.Y + Stats.HEIGHT + AimButton.BTN_HEIGHT + TOP_MARGIN + AimButton.TOP_MARGIN;
             private static final double X = Stats.X + (Stats.WIDTH - WIDTH) / 2;
             private static final double Y = NAME_Y + NAME_HEIGHT + INNER_MARGIN;
             private static final double NAME_ICON_SIDE = NAME_HEIGHT * 1.7;
@@ -109,6 +109,14 @@ public class TowerDialogLayer extends GuiLayer {
             private static final double TYPE_BTN_X = X + INNER_MARGIN;
             private static final double TYPE_BTN_Y = Y + (HEIGHT - TYPE_BTN_HEIGHT) / 2;
             private static final double TYPE_BTN_2_X = TYPE_BTN_X + TYPE_BTN_WIDTH + INNER_MARGIN;
+        }
+
+        private static class AimButton {
+            private static final double TOP_MARGIN = -0.2;
+            private static final double BTN_WIDTH = 4;
+            private static final double BTN_HEIGHT = 1;
+            private static final double BTN_X = Stats.X + (Stats.WIDTH - BTN_WIDTH) / 2;
+            private static final double BTN_Y = Stats.Y + Stats.HEIGHT + TOP_MARGIN;
         }
     }
 
@@ -157,15 +165,16 @@ public class TowerDialogLayer extends GuiLayer {
         // Building stats
         rebuildStats();
         // Building buttons
+        addAimButton();
         addSelectorButtons(
                 displayedEnchantment,
-                new Image[]{SpriteLoader.loadSprite(UISpriteKey.ICE_BUTTON).getImage(), SpriteLoader.loadSprite(UISpriteKey.FIRE_BUTTON).getImage()},
+                new Image[]{SpriteLoader.loadSprite(SingleSpriteKey.ICE_BUTTON).getImage(), SpriteLoader.loadSprite(SingleSpriteKey.FIRE_BUTTON).getImage()},
                 new EnchantmentInfo.Type[]{EnchantmentInfo.Type.ICE, EnchantmentInfo.Type.FIRE},
                 0
         );
         addSelectorButtons(
                 displayedProjectile,
-                new Image[]{SpriteLoader.loadSprite(UISpriteKey.SMALL_BUTTON).getImage(), SpriteLoader.loadSprite(UISpriteKey.BIG_BUTTON).getImage()},
+                new Image[]{SpriteLoader.loadSprite(SingleSpriteKey.SMALL_BUTTON).getImage(), SpriteLoader.loadSprite(SingleSpriteKey.BIG_BUTTON).getImage()},
                 new ProjectileInfo.Type[]{ProjectileInfo.Type.SMALL, ProjectileInfo.Type.BIG},
                 Layout.Selector.TOTAL_HEIGHT
         );
@@ -173,6 +182,18 @@ public class TowerDialogLayer extends GuiLayer {
             button.setOnMouseEnter(this::refreshHoverData);
             button.setOnMouseLeave(this::refreshHoverData);
         }
+    }
+
+    private void addAimButton() {
+        GuiButton aimButton = new TextGuiButton(
+                Layout.AimButton.BTN_X, Layout.AimButton.BTN_Y,
+                Layout.AimButton.BTN_WIDTH, Layout.AimButton.BTN_HEIGHT,
+                SpriteLoader.loadSprite(SingleSpriteKey.AIM_BUTTON).getImage(),
+                "AIM", TextLayoutType.CENTER
+        );
+        //aimButton.setOnClick(() -> throwEvent(new SetTowerAimTypeEvent(this, null, tower)));
+        /* TODO type of aim possible: first, last, weak, strong, close */
+        buttons.add(aimButton);
     }
 
     private <T extends UpgradableInfo.InfoType, S extends UpgradableInfo<T, S>> void addSelectorButtons(UpgradableInfo<T,S> element, Image[] typeImages, T[] typeValues, double yOffset) {
@@ -194,7 +215,7 @@ public class TowerDialogLayer extends GuiLayer {
             GuiButton upgradeButton = new PricingGuiButton(
                     Layout.Selector.UPGRADE_BTN_X, Layout.Selector.UPGRADE_BTN_Y + yOffset,
                     Layout.Selector.UPGRADE_BTN_SIDE, Layout.Selector.UPGRADE_BTN_SIDE,
-                    SpriteLoader.loadSprite(UISpriteKey.UPGRADE_BUTTON).getImage(),
+                    SpriteLoader.loadSprite(SingleSpriteKey.UPGRADE_BUTTON).getImage(),
                     -element.getUpgradeCost(), TextLayoutType.BOTTOM
             );
             // On the last level, disable the upgrade button
@@ -202,15 +223,15 @@ public class TowerDialogLayer extends GuiLayer {
                 upgradeButton = new TextGuiButton(
                         Layout.Selector.UPGRADE_BTN_X, Layout.Selector.UPGRADE_BTN_Y + yOffset,
                         Layout.Selector.UPGRADE_BTN_SIDE, Layout.Selector.UPGRADE_BTN_SIDE,
-                        SpriteLoader.loadSprite(UISpriteKey.DISABLED_UPGRADE_BUTTON).getImage(),
-                        SpriteLoader.loadSprite(UISpriteKey.DISABLED_UPGRADE_BUTTON).getImage(),
+                        SpriteLoader.loadSprite(SingleSpriteKey.DISABLED_UPGRADE_BUTTON).getImage(),
+                        SpriteLoader.loadSprite(SingleSpriteKey.DISABLED_UPGRADE_BUTTON).getImage(),
                         "MAX", TextLayoutType.CENTER
                 );
             }
             GuiButton resetButton = new PricingGuiButton(
                     Layout.Selector.RESET_BTN_X, Layout.Selector.RESET_BTN_Y + yOffset,
                     Layout.Selector.RESET_BTN_WIDTH, Layout.Selector.RESET_BTN_HEIGHT,
-                    SpriteLoader.loadSprite(UISpriteKey.CANCEL_BUTTON).getImage(),
+                    SpriteLoader.loadSprite(SingleSpriteKey.CANCEL_BUTTON).getImage(),
                     element.getRefundValue(), TextLayoutType.BOTTOM
             );
             upgradeButton.setOnClick(() -> throwEvent(new UpgradeTowerInfoEvent(this, null, element)));
@@ -243,13 +264,9 @@ public class TowerDialogLayer extends GuiLayer {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             // Background
-            Renderer.drawImage(SpriteLoader.loadSprite(UISpriteKey.TDL_BACKGROUND).getImage(), gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
-            // Title
-            gc.setEffect(Colors.STAT_TITLE);
-            Renderer.drawText("Tower:", gc, guics, Layout.TITLE_X, Layout.TITLE_Y, Layout.TITLE_WIDTH, Layout.TITLE_HEIGHT);
-            gc.setEffect(null);
+            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.TDL_BACKGROUND).getImage(), gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
             // Stats Background
-            Renderer.drawImage(SpriteLoader.loadSprite(UISpriteKey.STATS_BACKGROUND).getImage(), gc, guics, Layout.Stats.X, Layout.Stats.Y, Layout.Stats.WIDTH, Layout.Stats.HEIGHT);
+            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.STATS_BACKGROUND).getImage(), gc, guics, Layout.Stats.X, Layout.Stats.Y, Layout.Stats.WIDTH, Layout.Stats.HEIGHT);
             // Stats Overlay
             drawStatsOverlay(statsViews, gc, guics);
 
@@ -347,7 +364,7 @@ public class TowerDialogLayer extends GuiLayer {
             double y = Layout.Selector.UPGRADE_Y + verticalOffset;
             double width = Layout.Selector.LEVEL_MARKER_WIDTH;
             double height = Layout.Selector.UPGRADE_HEIGHT;
-            Image sprite = (i < info.level()) ? SpriteLoader.loadSprite(UISpriteKey.FULL_UPGRADE_LEVEL).getImage() : SpriteLoader.loadSprite(UISpriteKey.EMPTY_UPGRADE_LEVEL).getImage();
+            Image sprite = (i < info.level()) ? SpriteLoader.loadSprite(SingleSpriteKey.FULL_UPGRADE_LEVEL).getImage() : SpriteLoader.loadSprite(SingleSpriteKey.EMPTY_UPGRADE_LEVEL).getImage();
             Renderer.drawImage(sprite, gc, cs, x, y, width, height);
         }
     }
@@ -358,13 +375,13 @@ public class TowerDialogLayer extends GuiLayer {
         Image empty = SpriteLoader.loadSprite(new StringSpriteKey(" ")).getImage();
         return switch (info) {
             case EnchantmentInfo e -> {
-                if (e.type() == EnchantmentInfo.Type.FIRE) yield SpriteLoader.loadSprite(UISpriteKey.FIRE_ICON).getImage();
-                if (e.type() == EnchantmentInfo.Type.ICE) yield SpriteLoader.loadSprite(UISpriteKey.ICE_ICON).getImage();
+                if (e.type() == EnchantmentInfo.Type.FIRE) yield SpriteLoader.loadSprite(SingleSpriteKey.FIRE_ICON).getImage();
+                if (e.type() == EnchantmentInfo.Type.ICE) yield SpriteLoader.loadSprite(SingleSpriteKey.ICE_ICON).getImage();
                 yield empty;
             }
             case ProjectileInfo p -> {
-                if (p.type() == ProjectileInfo.Type.SMALL) yield SpriteLoader.loadSprite(UISpriteKey.SMALL_ICON).getImage();
-                if (p.type() == ProjectileInfo.Type.BIG) yield SpriteLoader.loadSprite(UISpriteKey.BIG_ICON).getImage();
+                if (p.type() == ProjectileInfo.Type.SMALL) yield SpriteLoader.loadSprite(SingleSpriteKey.SMALL_ICON).getImage();
+                if (p.type() == ProjectileInfo.Type.BIG) yield SpriteLoader.loadSprite(SingleSpriteKey.BIG_ICON).getImage();
                 yield empty;
             }
             default -> empty;
