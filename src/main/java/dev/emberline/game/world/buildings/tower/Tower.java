@@ -7,9 +7,8 @@ import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.world.Building;
 import dev.emberline.game.world.World;
-import dev.emberline.game.world.buildings.TowersManager;
-import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.gui.event.*;
+import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
 import java.util.Map;
@@ -62,8 +61,7 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
     }
 
     public Vector2D firingWorldCenterLocation() {
-        // TODO
-        return null;
+        return new Coordinate2D(getWorldTopLeft().getX() + getWorldWidth() / 2, getWorldTopLeft().getY());
     }
 
     @Override

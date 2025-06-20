@@ -13,7 +13,6 @@ import dev.emberline.gui.event.GuiEventListener;
 import dev.emberline.gui.event.ResetTowerInfoEvent;
 import dev.emberline.gui.event.SetTowerInfoEvent;
 import dev.emberline.gui.event.UpgradeTowerInfoEvent;
-import dev.emberline.utility.Vector2D;
 
 import java.util.Collections;
 import java.util.List;
@@ -45,11 +44,11 @@ class TowerUpdateComponent implements Updatable, GuiEventListener, TowerInfoProv
         // Shooting
         IEnemiesManager enemiesManager = world.getEnemiesManager();
 
-        List<IEnemy> toShoot = enemiesManager.getNear(tower.getWorldTopLeft(), projectileInfo.getTowerRange());
+        List<IEnemy> toShoot = enemiesManager.getNear(tower.firingWorldCenterLocation(), projectileInfo.getTowerRange());
         //Collections.shuffle(toShoot);
         for (final IEnemy enemy : toShoot) {
             boolean creationSucceeded = world.getProjectilesManager().addProjectile(
-                    tower.getWorldTopLeft(), enemy, projectileInfo, enchantmentInfo
+                    tower.firingWorldCenterLocation(), enemy, projectileInfo, enchantmentInfo
             );
 
             if (creationSucceeded) {
