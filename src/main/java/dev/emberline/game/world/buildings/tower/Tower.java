@@ -61,11 +61,6 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
         return locationBottomLeft.add(getWorldWidth(), 0);
     }
 
-    public Vector2D firingWorldCenterLocation() {
-        // TODO
-        return null;
-    }
-
     @Override
     protected void clicked() {
         world.getTowersManager().openTowerDialog(this);
@@ -79,6 +74,10 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
     @Override
     public void render() {
         towerRenderComponent.render();
+    }
+
+    Vector2D firingWorldCenterLocation() {
+        return getWorldTopLeft().add(getWorldWidth() / 2, 0);
     }
 
     double getWorldWidth() {

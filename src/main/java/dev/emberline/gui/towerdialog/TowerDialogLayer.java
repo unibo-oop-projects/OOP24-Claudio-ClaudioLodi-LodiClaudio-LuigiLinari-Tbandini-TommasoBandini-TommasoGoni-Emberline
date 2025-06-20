@@ -199,7 +199,6 @@ public class TowerDialogLayer extends GuiLayer {
         );
         aimButton.setOnClick(() -> {
             currentAimType = currentAimType.next();
-            System.out.println("Current aim type: " + currentAimType.displayName());
 
             throwEvent(new SetTowerAimTypeEvent(aimButton, currentAimType));
         });
