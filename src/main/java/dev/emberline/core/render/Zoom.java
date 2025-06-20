@@ -42,11 +42,11 @@ public class Zoom implements Updatable, Serializable {
     private final Double stepUpperBound = 0.02 ;
     private final Double timePerStep = 50_000_000d;
 
-    private long acc = 0;
+    private long accNs = 0;
 
     public Zoom(String wavePath) {
         translations = ConfigLoader.loadConfig(wavePath + "cs.json", Translations.class);
-        loadCS(wavePath + "cs.txt");
+        loadCS();
         computeSteps();
     }
 
@@ -76,7 +76,7 @@ public class Zoom implements Updatable, Serializable {
         }
     }
 
-    private void loadCS(String file) {
+    private void loadCS() {
         Vector2D currFirst = new Coordinate2D(translations.first.fromX, translations.first.fromY);
         Vector2D toFirst = new Coordinate2D(translations.first.toX, translations.first.toY);
         Vector2D currSecond = new Coordinate2D(translations.second.fromX, translations.second.fromY);
@@ -94,11 +94,15 @@ public class Zoom implements Updatable, Serializable {
                 && to.getY().distance(curr.getY()) <= step.getY().distance(0, 0);
     }
 
+    /**
+     * Updates the coordinate system by a tiny step at a time
+     * @param elapsed does not affect its speed.
+     */
     @Override
     public void update(long elapsed) {
-        acc += elapsed;
-        while (acc >= timePerStep) {
-            acc -= timePerStep;
+        accNs += elapsed;
+        while (accNs >= timePerStep) {
+            accNs -= timePerStep;
             if (!isOver()) {
                 curr.setX(curr.getX().add(step.getX()));
                 curr.setY(curr.getY().add(step.getY()));

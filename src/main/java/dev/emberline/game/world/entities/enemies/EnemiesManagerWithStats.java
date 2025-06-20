@@ -53,7 +53,7 @@ public class EnemiesManagerWithStats implements IEnemiesManager {
         enemiesManager.update(elapsed);
 
         int alivePostUpdate = enemiesManager.getAliveEnemiesNumber();
-        deadEnemies += alivePreUpdate - alivePostUpdate;
+        deadEnemies = alivePreUpdate - alivePostUpdate;
         statistics.updateEnemiesKilled(deadEnemies);
     }
 }
