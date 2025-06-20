@@ -63,7 +63,7 @@ public class TextGuiButton extends GuiButton {
     private void drawText(Renderer renderer) {
         if (labelText == null || labelText.isEmpty()) return;
 
-        Image textImage = SpriteLoader.loadSprite(new StringSpriteKey(labelText)).getImage();
+        Image textImage = SpriteLoader.loadSprite(new StringSpriteKey(labelText)).image();
 
         double textWidth = this.width * textLayout.textWidthRatio;
         double textHeight = this.height * textLayout.textHeightRatio;
