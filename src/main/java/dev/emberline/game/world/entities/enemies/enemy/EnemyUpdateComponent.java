@@ -16,7 +16,7 @@ import dev.emberline.utility.Vector2D;
 import javax.swing.plaf.synth.SynthTextAreaUI;
 
 class EnemyUpdateComponent implements Updatable {
-    private enum EnemyState      { WALKING, ATTACKING, DYING, DEAD }
+    private enum EnemyState      { WALKING, DYING, DEAD }
 
     private final AbstractEnemy enemy;
     private EnemyState enemyState;
@@ -41,15 +41,16 @@ class EnemyUpdateComponent implements Updatable {
             destinations.add(next.get());
             next = world.getWaveManager().getWave().getNext(destinations.getLast());
         }
+        if (destinations.isEmpty()) {
+            throw new IllegalStateException("The enemy must have at least one destination.");
+        }
 
         this.position = spawnPoint.subtract(0, enemy.getHeight()/2);
         destinations.replaceAll(coordinate2D -> coordinate2D.subtract(0, enemy.getHeight()/2));
 
-        this.enemyState = !destinations.isEmpty() ? EnemyState.WALKING : EnemyState.ATTACKING;
-        if (enemyState == EnemyState.WALKING) {
-            this.velocity = destinations.get(destinationsIdx).subtract(position)
-                            .normalize().multiply(enemy.getSpeed());
-        }
+        this.enemyState = EnemyState.WALKING;
+        this.velocity = destinations.get(destinationsIdx).subtract(position)
+                .normalize().multiply(enemy.getSpeed());
     }
 
     private void clearEffect() {
@@ -65,7 +66,6 @@ class EnemyUpdateComponent implements Updatable {
     public void update(long elapsed) {
         switch (enemyState) {
             case WALKING -> walk(elapsed);
-            case ATTACKING -> attack();
             case DYING -> dying();
             case DEAD -> {}
         }
@@ -79,10 +79,6 @@ class EnemyUpdateComponent implements Updatable {
             activeEffect.updateEffect(enemy, elapsed);
         }
         move(elapsed);
-    }
-
-    private void attack() {
-        setDead();
     }
 
     private void dying() {
@@ -187,8 +183,7 @@ class EnemyUpdateComponent implements Updatable {
 
             position = currDestination;
             if (currDestination == destinations.getLast()) {
-                setAttacking();
-                destinationsIdx++;
+                attack();
                 return;
             }
             currDestination = destinations.get(++destinationsIdx);
@@ -204,8 +199,10 @@ class EnemyUpdateComponent implements Updatable {
         }
     }
 
-    private void setAttacking() {
-        enemyState = EnemyState.ATTACKING;
+    //TODO
+    private void attack() {
+        // attackCastle()
+        setDead();
     }
 
     private void setDying() {

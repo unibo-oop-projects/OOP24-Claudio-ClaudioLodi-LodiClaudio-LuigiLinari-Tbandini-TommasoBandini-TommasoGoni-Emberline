@@ -8,7 +8,6 @@ import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.world.Building;
 import dev.emberline.game.world.World;
 import dev.emberline.gui.event.*;
-import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
 import java.util.Map;
@@ -60,10 +59,6 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
         return locationBottomLeft.add(getWorldWidth(), 0);
     }
 
-    public Vector2D firingWorldCenterLocation() {
-        return new Coordinate2D(getWorldTopLeft().getX() + getWorldWidth() / 2, getWorldTopLeft().getY());
-    }
-
     @Override
     protected void clicked() {
         world.getTowersManager().openTowerDialog(this);
@@ -77,6 +72,10 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
     @Override
     public void render() {
         towerRenderComponent.render();
+    }
+
+    Vector2D firingWorldCenterLocation() {
+        return getWorldTopLeft().add(getWorldWidth() / 2, 0);
     }
 
     double getWorldWidth() {

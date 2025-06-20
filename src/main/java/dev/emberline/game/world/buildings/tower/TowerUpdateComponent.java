@@ -45,7 +45,8 @@ class TowerUpdateComponent implements Updatable, GuiEventListener, TowerInfoProv
         IEnemiesManager enemiesManager = world.getEnemiesManager();
 
         List<IEnemy> toShoot = enemiesManager.getNear(tower.firingWorldCenterLocation(), projectileInfo.getTowerRange());
-        //Collections.shuffle(toShoot);
+        // Sort by aim preference (TODO)
+
         for (final IEnemy enemy : toShoot) {
             boolean creationSucceeded = world.getProjectilesManager().addProjectile(
                     tower.firingWorldCenterLocation(), enemy, projectileInfo, enchantmentInfo
