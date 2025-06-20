@@ -24,12 +24,16 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
     }
     private static Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
 
+    private final World world;
     private final TowerUpdateComponent towerUpdateComponent;
     private final TowerRenderComponent towerRenderComponent;
+    private final Vector2D locationBottomLeft;
 
     public Tower(Vector2D locationBottomLeft, World world) {
-        this.towerUpdateComponent = new TowerUpdateComponent(locationBottomLeft, world, this);
+        this.world = world;
+        this.towerUpdateComponent = new TowerUpdateComponent(world, this);
         this.towerRenderComponent = new TowerRenderComponent(this);
+        this.locationBottomLeft = locationBottomLeft;
     }
 
     @Override
@@ -49,17 +53,22 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
 
     @Override
     public Vector2D getWorldTopLeft() {
-        return towerUpdateComponent.getLocationBottomLeft().subtract(0, getWorldHeight());
+        return locationBottomLeft.subtract(0, getWorldHeight());
     }
 
     @Override
     public Vector2D getWorldBottomRight() {
-        return towerUpdateComponent.getLocationBottomLeft().add(getWorldWidth(), 0);
+        return locationBottomLeft.add(getWorldWidth(), 0);
+    }
+
+    public Vector2D firingWorldCenterLocation() {
+        // TODO
+        return null;
     }
 
     @Override
     protected void clicked() {
-        towerUpdateComponent.clicked();
+        world.getTowersManager().openTowerDialog(this);
     }
 
     @Override

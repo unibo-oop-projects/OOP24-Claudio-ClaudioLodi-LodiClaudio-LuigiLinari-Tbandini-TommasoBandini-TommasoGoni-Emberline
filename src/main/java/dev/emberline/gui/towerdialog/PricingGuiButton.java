@@ -1,6 +1,8 @@
 package dev.emberline.gui.towerdialog;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import javafx.scene.image.Image;
 
@@ -15,6 +17,6 @@ public class PricingGuiButton extends TextGuiButton {
     }
 
     private static String formatPrice(double price) {
-        return new DecimalFormat("+0.##;0.##").format(price) + "$"; // Negative prices won't show a sign, positive prices will show a plus sign
+        return new DecimalFormat("+0.##;0.##", DecimalFormatSymbols.getInstance()).format(price) + "$"; // Negative prices won't show a sign, positive prices will show a plus sign
     }
 }

@@ -25,12 +25,11 @@ import dev.emberline.gui.towerdialog.stats.TowerStatsViewsBuilder.TowerStatView;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
 
 public class TowerDialogLayer extends GuiLayer {
     /**
@@ -241,6 +240,15 @@ public class TowerDialogLayer extends GuiLayer {
         GraphicsContext gc = renderer.getGraphicsContext();
         CoordinateSystem guics = renderer.getGuiCoordinateSystem();
 
+        double screenRadius = guics.getScale() * tower.getProjectileInfo().getTowerRange();
+        double ovalScreenX = guics.toScreenX(tower.getWorldTopLeft().getX()) - screenRadius;
+        double ovalScreenY = guics.toScreenY(tower.getWorldTopLeft().getY()) - screenRadius;
+
+        renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
+            gc.setStroke(Color.BLACK);
+            gc.strokeOval(ovalScreenX, ovalScreenY, screenRadius*2, screenRadius*2);
+        }));
+
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             // Background
             Renderer.drawImage(SpriteLoader.loadSprite(UISpriteKey.TDL_BACKGROUND).image(), gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
@@ -305,7 +313,7 @@ public class TowerDialogLayer extends GuiLayer {
         // Comparison
         if (statView.getType() == TowerStatView.Type.COMPARED) {
             double comparedValue = statView.getComparedStat().value();
-            String comparisonStr = new DecimalFormat("+0.##;-0.##").format(comparedValue - statValue);
+            String comparisonStr = new DecimalFormat("+0.##;-0.##", DecimalFormatSymbols.getInstance()).format(comparedValue - statValue);
             gc.setEffect(Colors.STAT_COMPARISON);
             Renderer.drawText(comparisonStr, gc, cs, titleX + valueWidth, valueY, titleWidth - valueWidth, valueHeight);
         }
