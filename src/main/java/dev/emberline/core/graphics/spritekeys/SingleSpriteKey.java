@@ -30,5 +30,7 @@ public enum SingleSpriteKey implements SpriteKey {
     BURN_EFFECT,
     SLOW_EFFECT,
     // Menu background
-    MENU_BACKGROUND;
+    MENU_BACKGROUND,
+    // TowerPreBuild
+    TOWER_PRE_BUILD;
 }

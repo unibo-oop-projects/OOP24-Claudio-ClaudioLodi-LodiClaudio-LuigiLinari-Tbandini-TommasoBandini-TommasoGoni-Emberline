@@ -8,6 +8,9 @@ import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
 import javafx.scene.image.Image;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class EnemyAnimation implements Updatable {
 
      public enum EnemyAppearance {
@@ -67,7 +70,7 @@ public class EnemyAnimation implements Updatable {
     }
 
     public Image getImage() {
-        return animatedSprite.getImage();
+        return animatedSprite.image(frameIndex);
     }
 
     public boolean isDyingAnimationFinished() {
@@ -98,7 +101,5 @@ public class EnemyAnimation implements Updatable {
                 break;
             }
         }
-
-        animatedSprite.setFrame(frameIndex);
     }
 }

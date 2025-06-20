@@ -4,9 +4,7 @@ import javafx.scene.image.Image;
 
 public class AnimatedSprite implements Sprite {
     private final Image[] images;
-    private int frameIndex = 0;
-
-    private int frameTimeNs;
+    private final int frameTimeNs;
 
     public AnimatedSprite(Image[] images, int frameTimeNs) {
         if (images == null || images.length == 0) {
@@ -17,7 +15,11 @@ public class AnimatedSprite implements Sprite {
     }
 
     @Override
-    public Image getImage() {
+    public Image image() {
+        return images[0];
+    }
+
+    public Image image(int frameIndex) {
         return images[frameIndex];
     }
 
@@ -37,20 +39,5 @@ public class AnimatedSprite implements Sprite {
      */
     public int getFrameTimeNs() {
         return frameTimeNs;
-    }
-
-    /**
-     * Sets the frame index for the animated sprite. The specified index determines
-     * which frame in the animation sequence is currently active. If the index exceeds
-     * the total number of frames, it will wrap around using a modulo operation.
-     *
-     * @param frameIndex the index of the frame to set; must be non-negative
-     * @throws IllegalArgumentException if the frame index is negative
-     */
-    public void setFrame(int frameIndex) {
-        if (frameIndex < 0) {
-            throw new IllegalArgumentException("Frame index cannot be negative");
-        }
-        this.frameIndex = frameIndex % images.length;
     }
 }

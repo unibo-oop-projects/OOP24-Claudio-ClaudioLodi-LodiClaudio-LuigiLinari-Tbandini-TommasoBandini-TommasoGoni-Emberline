@@ -54,7 +54,7 @@ public class EnemyRenderComponent implements Renderable {
             gc.fillRect(hbScreenX, hbScreenY, hbScreenWidth, hbScreenHeight);
             gc.setFill(Paint.valueOf("#00CC00"));
             gc.fillRect(hbScreenX, hbScreenY, (enemy.getHealthPercentage()) * hbScreenWidth, hbScreenHeight);
-        }));
+        }).enableZOrder(position.getY() + enemy.getHeight()/2));
     }
 
     boolean isDyingAnimationFinished() {

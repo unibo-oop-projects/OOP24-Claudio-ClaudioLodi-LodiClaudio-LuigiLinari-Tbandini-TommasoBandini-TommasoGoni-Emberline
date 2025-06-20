@@ -1,49 +1,63 @@
-package dev.emberline.game.world.towers.tower;
+package dev.emberline.game.world.buildings.tower;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.model.UpgradableInfo;
-import dev.emberline.game.world.Building;
-import dev.emberline.game.world.towers.TowersManager;
-import dev.emberline.gui.event.*;
+import dev.emberline.game.world.World;
+import dev.emberline.game.world.buildings.TowersManager;
+import dev.emberline.game.world.entities.enemies.IEnemiesManager;
+import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
+import dev.emberline.gui.event.GuiEvent;
+import dev.emberline.gui.event.GuiEventListener;
+import dev.emberline.gui.event.ResetTowerInfoEvent;
+import dev.emberline.gui.event.SetTowerInfoEvent;
+import dev.emberline.gui.event.UpgradeTowerInfoEvent;
 import dev.emberline.utility.Vector2D;
 
-import java.util.Map;
+import java.util.List;
 
-public class Tower extends Building implements TowerInfoProvider, GuiEventListener {
-    private static String configsPath = "/sprites/towerAssets/tower.json";
-    private static class Metadata {
-        @JsonProperty("width")
-        private double worldWidth;
-        @JsonProperty("height")
-        private Map<ProjectileInfo.Type, Double> worldHeight;
-    }
-    private static Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
+class TowerUpdateComponent implements Updatable, GuiEventListener, TowerInfoProvider {
 
     private ProjectileInfo projectileInfo = new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
     private EnchantmentInfo enchantmentInfo = new EnchantmentInfo(EnchantmentInfo.Type.BASE, 0);
-
-    private final TowersManager towersManager;
     private final Vector2D locationBottomLeft;
 
-    private final TowerRenderComponent towerRenderComponent = new TowerRenderComponent(this);
+    private long accumulatedTimeNs = 0;
 
-    public Tower(TowersManager towersManager, Vector2D locationBottomLeft) {
-        this.towersManager = towersManager;
+    private final World world;
+    private final Tower tower;
+
+    TowerUpdateComponent(Vector2D locationBottomLeft, World world, Tower tower) {
         this.locationBottomLeft = locationBottomLeft;
+        this.world = world;
+        this.tower = tower;
     }
 
     @Override
-    public ProjectileInfo getProjectileInfo() {
-        return projectileInfo;
-    }
+    public void update(long elapsed) {
+        long shootingInterval = (long) (1e9 / projectileInfo.getFireRate());
 
-    @Override
-    public EnchantmentInfo getEnchantmentInfo() {
-        return enchantmentInfo;
+        accumulatedTimeNs += elapsed;
+        if (accumulatedTimeNs < shootingInterval) {
+            return;
+        }
+
+        // Shooting
+        IEnemiesManager enemiesManager = world.getEnemiesManager();
+
+        List<IEnemy> toShoot = enemiesManager.getNear(locationBottomLeft, projectileInfo.getTowerRange());
+        for (final IEnemy enemy : toShoot) {
+            boolean creationSucceeded = world.getProjectilesManager().addProjectile(
+                    getLocationBottomLeft(), enemy, projectileInfo, enchantmentInfo
+            );
+
+            if (creationSucceeded) {
+                accumulatedTimeNs = 0;
+                break;
+            }
+        }
     }
 
     @Override
@@ -85,38 +99,22 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
             enchantmentInfo = new EnchantmentInfo((EnchantmentInfo.Type) event.getType(), 0);
         }
     }
-
-    double getWorldWidth() {
-        return metadata.worldWidth;
-    }
-
-    double getWorldHeight() {
-        return metadata.worldHeight.get(projectileInfo.type());
+    
+    @Override
+    public ProjectileInfo getProjectileInfo() {
+        return projectileInfo;
     }
 
     @Override
-    protected Vector2D getWorldTopLeft() {
-        return locationBottomLeft.subtract(0, getWorldHeight());
+    public EnchantmentInfo getEnchantmentInfo() {
+        return enchantmentInfo;
     }
 
-    @Override
-    protected Vector2D getWorldBottomRight() {
-        return locationBottomLeft.add(getWorldWidth(), 0);
+    void clicked() {
+        world.getTowersManager().openTowerDialog(tower);
     }
 
-    @Override
-    protected void clicked() {
-        towersManager.openTowerDialog(this);
-        //TODO
-    }
-
-    @Override
-    public void render() {
-        towerRenderComponent.render();
-    }
-
-    @Override
-    public void update(long elapsed) {
-        //TODO
+    Vector2D getLocationBottomLeft() {
+        return locationBottomLeft;
     }
 }

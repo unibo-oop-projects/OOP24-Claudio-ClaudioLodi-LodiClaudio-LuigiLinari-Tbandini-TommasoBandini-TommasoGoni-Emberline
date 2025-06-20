@@ -11,8 +11,8 @@ import javafx.scene.input.MouseEvent;
 
 public abstract class Building implements Renderable, Updatable, Inputable {
 
-    protected abstract Vector2D getWorldTopLeft();
-    protected abstract Vector2D getWorldBottomRight();
+    public abstract Vector2D getWorldTopLeft();
+    public abstract Vector2D getWorldBottomRight();
     protected abstract void clicked();
 
     @Override

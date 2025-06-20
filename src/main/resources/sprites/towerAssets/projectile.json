@@ -3,7 +3,7 @@
   "width": 16,
   "height": 16,
   "frames": 8,
-  "frameTimeNs": 100,
+  "frameTimeNs": 100000000,
   "size": {
     "SMALL": 0,
     "BASE": 16,

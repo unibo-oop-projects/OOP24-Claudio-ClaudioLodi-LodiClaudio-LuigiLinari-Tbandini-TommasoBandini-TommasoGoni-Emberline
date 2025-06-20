@@ -1,7 +1,7 @@
 package dev.emberline.gui.event;
 
 import dev.emberline.game.model.UpgradableInfo;
-import dev.emberline.game.world.towers.tower.Tower;
+import dev.emberline.game.world.buildings.tower.Tower;
 
 public class ResetTowerInfoEvent extends GuiEvent {
 

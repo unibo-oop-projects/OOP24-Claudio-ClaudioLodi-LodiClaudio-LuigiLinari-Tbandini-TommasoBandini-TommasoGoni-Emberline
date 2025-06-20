@@ -13,5 +13,5 @@ public interface Sprite {
      *
      * @return the current image of the sprite
      */
-    Image getImage();
+    Image image();
 }

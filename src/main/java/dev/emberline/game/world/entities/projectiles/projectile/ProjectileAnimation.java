@@ -16,7 +16,6 @@ public class ProjectileAnimation implements Updatable {
     public ProjectileAnimation(Projectile owner) {
         this.projectileSprite = (AnimatedSprite) SpriteLoader.loadSprite(
             new ProjectileSpriteKey(owner.getSizeType(), owner.getEnchantmentType()));
-        this.projectileSprite.setFrame(frameIndex);
     }
 
     @Override
@@ -28,10 +27,10 @@ public class ProjectileAnimation implements Updatable {
             frameIndex = (frameIndex + 1) % projectileSprite.getFrameCount();
         }
 
-        projectileSprite.setFrame(frameIndex);
+        System.out.println("Frame index: " + frameIndex);
     }
 
     public Image getImage() {
-        return projectileSprite.getImage();
+        return projectileSprite.image(frameIndex);
     }
 }

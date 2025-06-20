@@ -6,9 +6,9 @@ import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.entities.enemies.EnemiesManagerWithStats;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.entities.projectiles.ProjectilesManager;
-import dev.emberline.game.world.entities.projectiles.projectile.ProjectileHitListener;
+import dev.emberline.game.world.entities.projectiles.events.ProjectileHitListener;
 import dev.emberline.game.world.statistics.Statistics;
-import dev.emberline.game.world.towers.TowersManager;
+import dev.emberline.game.world.buildings.TowersManager;
 import dev.emberline.game.world.waves.IWaveManager;
 import dev.emberline.game.world.waves.WaveManagerWithStats;
 import javafx.scene.input.InputEvent;
@@ -35,8 +35,16 @@ public class World implements Updatable, Renderable, Inputable, Serializable {
         this.towersManager = new TowersManager(this);
         this.enemiesManager = new EnemiesManagerWithStats(this);
         this.waveManager = new WaveManagerWithStats(this);
-        this.projectilesManager = new ProjectilesManager();
+        this.projectilesManager = new ProjectilesManager(this);
         this.projectileHitListener = new ProjectileHitListener(enemiesManager);
+    }
+
+    public ProjectilesManager getProjectilesManager() {
+        return projectilesManager;
+    }
+
+    public TowersManager getTowersManager() {
+        return towersManager;
     }
 
     public IEnemiesManager getEnemiesManager() {
