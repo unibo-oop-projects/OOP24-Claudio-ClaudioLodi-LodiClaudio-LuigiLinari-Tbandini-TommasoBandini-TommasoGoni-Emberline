@@ -12,7 +12,7 @@ import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.model.UpgradableInfo;
-import dev.emberline.game.world.towers.tower.Tower;
+import dev.emberline.game.world.buildings.tower.Tower;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.ResetTowerInfoEvent;
@@ -168,13 +168,13 @@ public class TowerDialogLayer extends GuiLayer {
         addAimButton();
         addSelectorButtons(
                 displayedEnchantment,
-                new Image[]{SpriteLoader.loadSprite(SingleSpriteKey.ICE_BUTTON).getImage(), SpriteLoader.loadSprite(SingleSpriteKey.FIRE_BUTTON).getImage()},
+                new Image[]{SpriteLoader.loadSprite(SingleSpriteKey.ICE_BUTTON).image(), SpriteLoader.loadSprite(SingleSpriteKey.FIRE_BUTTON).image()},
                 new EnchantmentInfo.Type[]{EnchantmentInfo.Type.ICE, EnchantmentInfo.Type.FIRE},
                 0
         );
         addSelectorButtons(
                 displayedProjectile,
-                new Image[]{SpriteLoader.loadSprite(SingleSpriteKey.SMALL_BUTTON).getImage(), SpriteLoader.loadSprite(SingleSpriteKey.BIG_BUTTON).getImage()},
+                new Image[]{SpriteLoader.loadSprite(SingleSpriteKey.SMALL_BUTTON).image(), SpriteLoader.loadSprite(SingleSpriteKey.BIG_BUTTON).image()},
                 new ProjectileInfo.Type[]{ProjectileInfo.Type.SMALL, ProjectileInfo.Type.BIG},
                 Layout.Selector.TOTAL_HEIGHT
         );
@@ -188,10 +188,10 @@ public class TowerDialogLayer extends GuiLayer {
         GuiButton aimButton = new TextGuiButton(
                 Layout.AimButton.BTN_X, Layout.AimButton.BTN_Y,
                 Layout.AimButton.BTN_WIDTH, Layout.AimButton.BTN_HEIGHT,
-                SpriteLoader.loadSprite(SingleSpriteKey.AIM_BUTTON).getImage(),
+                SpriteLoader.loadSprite(SingleSpriteKey.AIM_BUTTON).image(),
                 "AIM", TextLayoutType.CENTER
         );
-        //aimButton.setOnClick(() -> throwEvent(new SetTowerAimTypeEvent(this, null, tower)));
+        // aimButton.setOnClick(() -> throwEvent(new SetTowerAimTypeEvent(this, null, tower)));
         /* TODO type of aim possible: first, last, weak, strong, close */
         buttons.add(aimButton);
     }
@@ -215,7 +215,7 @@ public class TowerDialogLayer extends GuiLayer {
             GuiButton upgradeButton = new PricingGuiButton(
                     Layout.Selector.UPGRADE_BTN_X, Layout.Selector.UPGRADE_BTN_Y + yOffset,
                     Layout.Selector.UPGRADE_BTN_SIDE, Layout.Selector.UPGRADE_BTN_SIDE,
-                    SpriteLoader.loadSprite(SingleSpriteKey.UPGRADE_BUTTON).getImage(),
+                    SpriteLoader.loadSprite(SingleSpriteKey.UPGRADE_BUTTON).image(),
                     -element.getUpgradeCost(), TextLayoutType.BOTTOM
             );
             // On the last level, disable the upgrade button
@@ -223,15 +223,15 @@ public class TowerDialogLayer extends GuiLayer {
                 upgradeButton = new TextGuiButton(
                         Layout.Selector.UPGRADE_BTN_X, Layout.Selector.UPGRADE_BTN_Y + yOffset,
                         Layout.Selector.UPGRADE_BTN_SIDE, Layout.Selector.UPGRADE_BTN_SIDE,
-                        SpriteLoader.loadSprite(SingleSpriteKey.DISABLED_UPGRADE_BUTTON).getImage(),
-                        SpriteLoader.loadSprite(SingleSpriteKey.DISABLED_UPGRADE_BUTTON).getImage(),
+                        SpriteLoader.loadSprite(SingleSpriteKey.DISABLED_UPGRADE_BUTTON).image(),
+                        SpriteLoader.loadSprite(SingleSpriteKey.DISABLED_UPGRADE_BUTTON).image(),
                         "MAX", TextLayoutType.CENTER
                 );
             }
             GuiButton resetButton = new PricingGuiButton(
                     Layout.Selector.RESET_BTN_X, Layout.Selector.RESET_BTN_Y + yOffset,
                     Layout.Selector.RESET_BTN_WIDTH, Layout.Selector.RESET_BTN_HEIGHT,
-                    SpriteLoader.loadSprite(SingleSpriteKey.CANCEL_BUTTON).getImage(),
+                    SpriteLoader.loadSprite(SingleSpriteKey.CANCEL_BUTTON).image(),
                     element.getRefundValue(), TextLayoutType.BOTTOM
             );
             upgradeButton.setOnClick(() -> throwEvent(new UpgradeTowerInfoEvent(this, null, element)));
@@ -264,9 +264,9 @@ public class TowerDialogLayer extends GuiLayer {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             // Background
-            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.TDL_BACKGROUND).getImage(), gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
+            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.TDL_BACKGROUND).image(), gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
             // Stats Background
-            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.STATS_BACKGROUND).getImage(), gc, guics, Layout.Stats.X, Layout.Stats.Y, Layout.Stats.WIDTH, Layout.Stats.HEIGHT);
+            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.STATS_BACKGROUND).image(), gc, guics, Layout.Stats.X, Layout.Stats.Y, Layout.Stats.WIDTH, Layout.Stats.HEIGHT);
             // Stats Overlay
             drawStatsOverlay(statsViews, gc, guics);
 
@@ -364,7 +364,7 @@ public class TowerDialogLayer extends GuiLayer {
             double y = Layout.Selector.UPGRADE_Y + verticalOffset;
             double width = Layout.Selector.LEVEL_MARKER_WIDTH;
             double height = Layout.Selector.UPGRADE_HEIGHT;
-            Image sprite = (i < info.level()) ? SpriteLoader.loadSprite(SingleSpriteKey.FULL_UPGRADE_LEVEL).getImage() : SpriteLoader.loadSprite(SingleSpriteKey.EMPTY_UPGRADE_LEVEL).getImage();
+            Image sprite = (i < info.level()) ? SpriteLoader.loadSprite(SingleSpriteKey.FULL_UPGRADE_LEVEL).image() : SpriteLoader.loadSprite(SingleSpriteKey.EMPTY_UPGRADE_LEVEL).image();
             Renderer.drawImage(sprite, gc, cs, x, y, width, height);
         }
     }
@@ -372,16 +372,16 @@ public class TowerDialogLayer extends GuiLayer {
     // Utility method to get the icon for the given UpgradableInfo, does not cover the BASE types.
     // If an icon cannot be found, an empty image is returned (the space character).
     private static Image getIcon(UpgradableInfo<?, ?> info) {
-        Image empty = SpriteLoader.loadSprite(new StringSpriteKey(" ")).getImage();
+        Image empty = SpriteLoader.loadSprite(new StringSpriteKey(" ")).image();
         return switch (info) {
             case EnchantmentInfo e -> {
-                if (e.type() == EnchantmentInfo.Type.FIRE) yield SpriteLoader.loadSprite(SingleSpriteKey.FIRE_ICON).getImage();
-                if (e.type() == EnchantmentInfo.Type.ICE) yield SpriteLoader.loadSprite(SingleSpriteKey.ICE_ICON).getImage();
+                if (e.type() == EnchantmentInfo.Type.FIRE) yield SpriteLoader.loadSprite(SingleSpriteKey.FIRE_ICON).image();
+                if (e.type() == EnchantmentInfo.Type.ICE) yield SpriteLoader.loadSprite(SingleSpriteKey.ICE_ICON).image();
                 yield empty;
             }
             case ProjectileInfo p -> {
-                if (p.type() == ProjectileInfo.Type.SMALL) yield SpriteLoader.loadSprite(SingleSpriteKey.SMALL_ICON).getImage();
-                if (p.type() == ProjectileInfo.Type.BIG) yield SpriteLoader.loadSprite(SingleSpriteKey.BIG_ICON).getImage();
+                if (p.type() == ProjectileInfo.Type.SMALL) yield SpriteLoader.loadSprite(SingleSpriteKey.SMALL_ICON).image();
+                if (p.type() == ProjectileInfo.Type.BIG) yield SpriteLoader.loadSprite(SingleSpriteKey.BIG_ICON).image();
                 yield empty;
             }
             default -> empty;
