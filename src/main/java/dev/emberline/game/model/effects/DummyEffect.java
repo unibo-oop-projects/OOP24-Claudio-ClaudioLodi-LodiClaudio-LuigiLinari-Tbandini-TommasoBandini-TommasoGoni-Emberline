@@ -18,9 +18,10 @@ import java.util.List;
  */
 public class DummyEffect implements EnchantmentEffect {
     @Override
-    public void updateEffect(IEnemy enemy, long elapsed) {
-        // TODO
-    }
+    public void updateEffect(IEnemy enemy, long elapsed) {}
+
+    @Override
+    public void endEffect(IEnemy enemy) {}
 
     @Override
     public boolean isExpired() {

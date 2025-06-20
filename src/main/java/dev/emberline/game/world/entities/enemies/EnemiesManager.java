@@ -12,13 +12,6 @@ public class EnemiesManager implements IEnemiesManager {
 
     private final EnemiesFactory enemiesFactory = new EnemiesFactory();
 
-    // Enemies are sorted by their Y position (top to bottom)
-    private final Collection<IEnemy> enemies = new TreeSet<>(
-            (e1, e2) -> {
-                return Double.compare(e1.getPosition().getY() + e1.getHeight()/2, e2.getPosition().getY() + e2.getHeight()/2);
-            }
-    );
-
     private final SpatialHashGrid spatialHashGrid;
 
     private final World world;
@@ -36,42 +29,33 @@ public class EnemiesManager implements IEnemiesManager {
     public void addEnemy(Vector2D spawnPoint, EnemyType type) {
         IEnemy newEnemy = enemiesFactory.createEnemy(spawnPoint, type, world);
         IEnemy newEnemyWrapper = new EnemyWithStats(newEnemy, world.getStatistics());
-        enemies.add(newEnemyWrapper);
         spatialHashGrid.add(newEnemyWrapper);
     }
     
     public List<IEnemy> getNear(Vector2D location, double radius) {
-        return spatialHashGrid.getNear(location, radius);
+        List<IEnemy> near = spatialHashGrid.getNear(location, radius);
+        near.removeIf(iEnemy -> !iEnemy.isHittable());
+        return near;
     }
 
     public boolean areAllDead() {
-        return enemies.isEmpty();
+        return spatialHashGrid.size() == 0;
     }
 
     int getAliveEnemiesNumber() {
-        return enemies.size();
+        return spatialHashGrid.size();
     }
 
     @Override
     public void update(long elapsed) {
-        Iterator<IEnemy> enemiesIt = enemies.iterator();
-        IEnemy currEnemy;
-        while (enemiesIt.hasNext()) {
-            currEnemy = enemiesIt.next();
-            
-            currEnemy.update(elapsed);
-            if (currEnemy.isDead()) {
-                enemiesIt.remove();
-            }
-        }
-
         List<IEnemy> toUpdate = new LinkedList<>();
         List<IEnemy> toRemove = new LinkedList<>();
         for (final IEnemy enemy : spatialHashGrid) {
-            if (enemy.isHittable()) {
-                toUpdate.add(enemy);
-            } else {
+            if (enemy.isDead()) {
                 toRemove.add(enemy);
+            } else {
+                enemy.update(elapsed);
+                toUpdate.add(enemy);
             }
         }
         spatialHashGrid.updateAll(toUpdate);
@@ -80,7 +64,7 @@ public class EnemiesManager implements IEnemiesManager {
 
     @Override
     public void render() {
-        for (final IEnemy enemy : enemies) {
+        for (final IEnemy enemy : spatialHashGrid) {
             enemy.render();
         }
     }
