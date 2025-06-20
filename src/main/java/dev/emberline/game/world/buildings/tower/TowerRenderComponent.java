@@ -5,7 +5,7 @@ import dev.emberline.core.components.Renderable;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.TowerSpriteKey;
-import dev.emberline.core.graphics.spritekeys._CrystalSpriteKey;
+import dev.emberline.core.graphics.spritekeys.CrystalSpriteKey;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
@@ -23,7 +23,7 @@ class TowerRenderComponent implements Renderable {
     @Override
     public void render() {
         Image bodyImage = SpriteLoader.loadSprite(new TowerSpriteKey(tower.getProjectileInfo().type(), tower.getEnchantmentInfo().type())).image();
-        AnimatedSprite crystalSprite = (AnimatedSprite) SpriteLoader.loadSprite(new _CrystalSpriteKey());
+        // TODO AnimatedSprite crystalSprite = (AnimatedSprite) SpriteLoader.loadSprite(new CrystalSpriteKey());
 
         Renderer renderer = GameLoop.getInstance().getRenderer();
         GraphicsContext gc = renderer.getGraphicsContext();

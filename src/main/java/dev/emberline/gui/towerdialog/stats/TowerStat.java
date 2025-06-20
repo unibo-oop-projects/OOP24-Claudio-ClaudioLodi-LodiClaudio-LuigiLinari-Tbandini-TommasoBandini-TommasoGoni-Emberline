@@ -1,7 +1,7 @@
 package dev.emberline.gui.towerdialog.stats;
 
 import dev.emberline.core.graphics.SpriteLoader;
-import dev.emberline.core.graphics.spritekeys.UISpriteKey;
+import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import javafx.scene.image.Image;
 import dev.emberline.gui.towerdialog.stats.TowerStatsViewsBuilder.TowerStatView;
 
@@ -18,15 +18,15 @@ import dev.emberline.gui.towerdialog.stats.TowerStatsViewsBuilder.TowerStatView;
 public record TowerStat(TowerStatType type, double value) {
     public enum TowerStatType {
         // Projectile stats
-        FIRE_RATE("Fire Rate", SpriteLoader.loadSprite(UISpriteKey.FIRE_RATE).image()),
-        DAMAGE("Damage", SpriteLoader.loadSprite(UISpriteKey.DAMAGE).image()),
-        PROJECTILE_SPEED("Projectile Speed", SpriteLoader.loadSprite(UISpriteKey.PROJECTILE_SPEED).image()),
-        TOWER_RANGE("Tower Range", SpriteLoader.loadSprite(UISpriteKey.TOWER_RANGE).image()),
-        DAMAGE_AREA("Damage Radius", SpriteLoader.loadSprite(UISpriteKey.DAMAGE_AREA).image()),
+        FIRE_RATE("Fire Rate", SpriteLoader.loadSprite(SingleSpriteKey.FIRE_RATE).image()),
+        DAMAGE("Damage", SpriteLoader.loadSprite(SingleSpriteKey.DAMAGE).image()),
+        PROJECTILE_SPEED("Projectile Speed", SpriteLoader.loadSprite(SingleSpriteKey.PROJECTILE_SPEED).image()),
+        TOWER_RANGE("Tower Range", SpriteLoader.loadSprite(SingleSpriteKey.TOWER_RANGE).image()),
+        DAMAGE_AREA("Damage Radius", SpriteLoader.loadSprite(SingleSpriteKey.DAMAGE_AREA).image()),
         // Enchantment stats
-        EFFECT_DURATION("Effect Duration", SpriteLoader.loadSprite(UISpriteKey.EFFECT_DURATION).image()),
-        BURN_EFFECT("Dmg per sec", SpriteLoader.loadSprite(UISpriteKey.BURN_EFFECT).image()),
-        SLOW_EFFECT("Slowing Factor", SpriteLoader.loadSprite(UISpriteKey.SLOW_EFFECT).image());
+        EFFECT_DURATION("Effect Duration", SpriteLoader.loadSprite(SingleSpriteKey.EFFECT_DURATION).image()),
+        BURN_EFFECT("Dmg per sec", SpriteLoader.loadSprite(SingleSpriteKey.BURN_EFFECT).image()),
+        SLOW_EFFECT("Slowing Factor", SpriteLoader.loadSprite(SingleSpriteKey.SLOW_EFFECT).image());
 
         private final String displayName;
         private final Image icon;

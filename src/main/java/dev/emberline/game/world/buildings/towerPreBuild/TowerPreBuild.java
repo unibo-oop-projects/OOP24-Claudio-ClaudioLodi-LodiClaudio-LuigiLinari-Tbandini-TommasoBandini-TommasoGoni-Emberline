@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.graphics.SpriteLoader;
-import dev.emberline.core.graphics.spritekeys.UISpriteKey;
+import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
@@ -51,7 +51,7 @@ public class TowerPreBuild extends Building {
 
     @Override
     public void render() {
-        Image image = SpriteLoader.loadSprite(UISpriteKey.TOWER_PRE_BUILD).image();
+        Image image = SpriteLoader.loadSprite(SingleSpriteKey.TOWER_PRE_BUILD).image();
 
         Renderer renderer = GameLoop.getInstance().getRenderer();
         GraphicsContext gc = renderer.getGraphicsContext();
