@@ -5,13 +5,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.SingleSprite;
 import dev.emberline.core.graphics.Sprite;
-import dev.emberline.core.graphics.spritekeys.UISpriteKey;
+import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
 import java.util.Objects;
 
-public class UISpriteFactory implements SpriteFactory<UISpriteKey> {
+public class SingleSpriteFactory implements SpriteFactory<SingleSpriteKey> {
     private static class SpriteMetadata {
         @JsonProperty("filename")
         private String filename;
@@ -24,18 +24,18 @@ public class UISpriteFactory implements SpriteFactory<UISpriteKey> {
         @JsonProperty("height")
         private int height;
     }
-    private static final JsonNode configsRoot = ConfigLoader.loadNode("/sprites/ui/ui.json");
+    private static final JsonNode configsRoot = ConfigLoader.loadNode("/sprites/singleSprites.json");
 
     @Override
-    public Sprite loadSprite(UISpriteKey uiSpriteKey) {
+    public Sprite loadSprite(SingleSpriteKey uiSpriteKey) {
         JsonNode currentNode = configsRoot.get(uiSpriteKey.name());
         SpriteMetadata spriteMetadata = ConfigLoader.loadConfig(currentNode, SpriteMetadata.class);
-        Image spriteAtlas = new Image(Objects.requireNonNull(UISpriteFactory.class.getResourceAsStream(spriteMetadata.filename)));
+        Image spriteAtlas = new Image(Objects.requireNonNull(SingleSpriteFactory.class.getResourceAsStream(spriteMetadata.filename)));
         return new SingleSprite(new WritableImage(spriteAtlas.getPixelReader(), spriteMetadata.x, spriteMetadata.y, spriteMetadata.width, spriteMetadata.height));
     }
 
     @Override
-    public Class<UISpriteKey> getKeyType() {
-        return UISpriteKey.class;
+    public Class<SingleSpriteKey> getKeyType() {
+        return SingleSpriteKey.class;
     }
 }

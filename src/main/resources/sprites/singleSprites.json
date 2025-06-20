@@ -1,6 +1,7 @@
 {
   "STATS_BACKGROUND":       { "filename": "/sprites/ui/towerDialog.png",     "x": 0,  "y": 3, "width": 79, "height": 51 },
-  "TDL_BACKGROUND":         { "filename": "/sprites/ui/towerDialog.png",     "x": 80, "y": 0, "width": 96, "height": 160 },
+  "TDL_BACKGROUND":         { "filename": "/sprites/ui/towerDialog.png",     "x": 80, "y": 0, "width": 96, "height": 176 },
+  "TPB_BACKGROUND":         { "filename": "/sprites/ui/towerDialog.png",     "x": 176,  "y": 60, "width": 96, "height": 61 },
   "CANCEL_BUTTON":          { "filename": "/sprites/ui/towerButtons.png",    "x": 54, "y": 103, "width": 19, "height": 19 },
   "GENERIC_BUTTON":         { "filename": "/sprites/ui/towerDialog.png",     "x": 7,  "y": 55, "width": 35, "height": 19 },
   "EMPTY_UPGRADE_LEVEL":    { "filename": "/sprites/ui/towerDialog.png",     "x": 20, "y": 70, "width": 8, "height": 19 },
@@ -13,6 +14,7 @@
   "BIG_BUTTON":             { "filename": "/sprites/ui/towerButtons.png",    "x": 6, "y": 102, "width": 35, "height": 19 },
   "UPGRADE_BUTTON":         { "filename": "/sprites/ui/towerButtons.png",    "x": 54,  "y": 38, "width": 19, "height": 19 },
   "DISABLED_UPGRADE_BUTTON":{ "filename": "/sprites/ui/towerButtons.png",    "x": 54, "y": 70, "width": 19, "height": 19 },
+  "AIM_BUTTON":             { "filename": "/sprites/ui/towerButtons.png",    "x": 3, "y": 170, "width": 42, "height": 12 },
   "SMALL_ICON":             { "filename": "/sprites/ui/towerIcons.png",      "x": 0,  "y": 0, "width": 16, "height": 16 },
   "BIG_ICON":               { "filename": "/sprites/ui/towerIcons.png",      "x": 16, "y": 0, "width": 16, "height": 16 },
   "FIRE_ICON":              { "filename": "/sprites/ui/towerIcons.png",      "x": 32, "y": 0, "width": 16, "height": 16 },

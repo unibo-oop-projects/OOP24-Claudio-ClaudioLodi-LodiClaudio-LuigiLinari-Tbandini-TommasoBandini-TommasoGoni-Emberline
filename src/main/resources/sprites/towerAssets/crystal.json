@@ -3,5 +3,10 @@
   "width": 32,
   "height": 32,
   "frames": 45,
-  "frameTimeNs": 33333333
+  "frameTimeNs": 33333333,
+  "enchant": {
+    "BASE": 0,
+    "FIRE": 32,
+    "ICE": 64
+  }
 }

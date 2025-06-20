@@ -31,10 +31,10 @@ class SpriteFactoryRegistry {
 
     static {
         registerFactory(new StringSpriteFactory());
-        registerFactory(new UISpriteFactory());
+        registerFactory(new SingleSpriteFactory());
         registerFactory(new EnemySpriteFactory());
         registerFactory(new ProjectileSpriteFactory());
         registerFactory(new TowerSpriteFactory());
-        registerFactory(new _CrystalSpriteFactory());
+        registerFactory(new CrystalSpriteFactory());
     }
 }

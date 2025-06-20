@@ -1,6 +1,6 @@
 package dev.emberline.core.graphics.spritekeys;
 
-public enum UISpriteKey implements SpriteKey {
+public enum SingleSpriteKey implements SpriteKey {
     STATS_BACKGROUND,
     TDL_BACKGROUND,
     CANCEL_BUTTON,
@@ -14,6 +14,7 @@ public enum UISpriteKey implements SpriteKey {
     SMALL_BUTTON,
     BIG_BUTTON,
     UPGRADE_BUTTON,
+    AIM_BUTTON,
     DISABLED_UPGRADE_BUTTON,
     SMALL_ICON,
     BIG_ICON,
