@@ -13,6 +13,8 @@ import dev.emberline.game.world.entities.enemies.enemy.IEnemy.UniformMotion;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
+
 class EnemyUpdateComponent implements Updatable {
     private enum EnemyState      { WALKING, ATTACKING, DYING, DEAD }
 
@@ -50,6 +52,11 @@ class EnemyUpdateComponent implements Updatable {
         }
     }
 
+    private void clearEffect() {
+        activeEffect.endEffect(enemy);
+        activeEffect = new DummyEffect();
+    }
+
     public double getHealth() {
         return this.health;
     }
@@ -67,7 +74,7 @@ class EnemyUpdateComponent implements Updatable {
 
     private void walk(long elapsed) {
         if (activeEffect.isExpired()) {
-            activeEffect = new DummyEffect(); // Reset to default effect
+            clearEffect();
         } else {
             activeEffect.updateEffect(enemy, elapsed);
         }
@@ -75,12 +82,12 @@ class EnemyUpdateComponent implements Updatable {
     }
 
     private void attack() {
-        enemyState = EnemyState.DEAD;
+        setDead();
     }
 
     private void dying() {
         if (enemy.isDyingAnimationFinished()) {
-            enemyState = EnemyState.DEAD;
+            setDead();
         }
     }
 
@@ -102,7 +109,7 @@ class EnemyUpdateComponent implements Updatable {
             durationAcc += duration;
 
             enemyMotion.add(new UniformMotion(curr, velocity, duration));
-            curr = nextDestination;
+            curr = new Coordinate2D(nextDestination.getX(), nextDestination.getY());
         }
         // leftover time
         if (durationAcc < time) {
@@ -114,7 +121,7 @@ class EnemyUpdateComponent implements Updatable {
     void dealDamage(double damage) {
         health -= damage;
         if (health <= 0) {
-            enemyState = EnemyState.DYING;
+            setDying();
         }
     }
 
@@ -180,7 +187,8 @@ class EnemyUpdateComponent implements Updatable {
 
             position = currDestination;
             if (currDestination == destinations.getLast()) {
-                enemyState = EnemyState.ATTACKING;
+                setAttacking();
+                destinationsIdx++;
                 return;
             }
             currDestination = destinations.get(++destinationsIdx);
@@ -194,5 +202,19 @@ class EnemyUpdateComponent implements Updatable {
             posToDest = currDestination.subtract(position);
             dot = posToDest.dotProduct(velocity);
         }
+    }
+
+    private void setAttacking() {
+        enemyState = EnemyState.ATTACKING;
+    }
+
+    private void setDying() {
+        enemyState = EnemyState.DYING;
+        clearEffect();
+    }
+
+    private void setDead() {
+        enemyState = EnemyState.DEAD;
+        clearEffect();
     }
 }

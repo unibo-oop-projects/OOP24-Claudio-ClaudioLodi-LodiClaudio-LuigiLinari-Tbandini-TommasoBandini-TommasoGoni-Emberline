@@ -29,7 +29,6 @@ public class SlowEffect implements EnchantmentEffect {
 
     public SlowEffect(double slowingFactor, double duration) {
         this.slowingFactor = slowingFactor;
-        
         this.duration = duration;
         this.durationNs = (long) (duration * 1_000_000_000);
     }
@@ -37,15 +36,17 @@ public class SlowEffect implements EnchantmentEffect {
     @Override
     public void updateEffect(IEnemy enemy, long elapsed) {
         totalElapsed += elapsed;
-
         if (totalElapsed >= durationNs) {
-            enemy.setSlowFactor(1.0);
-            
+            endEffect(enemy);
             isExpired = true;
             return;
         }
-
         enemy.setSlowFactor(slowingFactor);
+    }
+
+    @Override
+    public void endEffect(IEnemy enemy) {
+        enemy.setSlowFactor(1.0);
     }
 
     @Override
@@ -60,8 +61,8 @@ public class SlowEffect implements EnchantmentEffect {
 
     @Override
     public List<TowerStat> getTowerStats() {
-        return List.of(new TowerStat(TowerStatType.SLOW_EFFECT, slowingFactor),
-                new TowerStat(TowerStatType.EFFECT_DURATION, duration)
+        return List.of(new TowerStat(TowerStatType.SLOW_EFFECT,     slowingFactor),
+                       new TowerStat(TowerStatType.EFFECT_DURATION, duration)
         );
     }
 

@@ -18,6 +18,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     private final List<List<Set<IEnemy>>> spatialHashGrid;
     private final Map<IEnemy, CellIdx> enemyCell = new HashMap<>();
 
+    private int size = 0;
+
     public SpatialHashGrid(int x_min, int y_min, int x_max, int y_max) {
         this.cols = (int) Math.ceil((double)(x_max - x_min) / CELL_SIZE);
         this.rows = (int) Math.ceil((double)(y_max - y_min) / CELL_SIZE);
@@ -42,6 +44,7 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
 
         spatialHashGrid.get(cellIdx.x()).get(cellIdx.y()).add(enemy);
         enemyCell.put(enemy, cellIdx);
+        size++;
     }
     
     public void remove(IEnemy enemy) {
@@ -52,6 +55,7 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
 
         spatialHashGrid.get(cellIdx.x()).get(cellIdx.y()).remove(enemy);
         enemyCell.remove(enemy);
+        size--;
     }
 
     public void removeAll(Collection<IEnemy> enemies) {
@@ -87,6 +91,10 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
      */
     public Iterator<IEnemy> iterator() {
         return enemyCell.keySet().iterator();
+    }
+
+    public int size() {
+        return size;
     }
 
     public List<IEnemy> getNear(Vector2D location, double radius) {

@@ -52,17 +52,34 @@ public class TowersManager implements Updatable, Renderable, Inputable {
         toBuild.add(preBuild);
     }
 
+    /* TODO */
     @Override
     public void processInput(InputEvent inputEvent) {
+        if (inputEvent.isConsumed()) {
+            return;
+        }
+
         if (towerDialogLayer != null) {
             towerDialogLayer.processInput(inputEvent);
         }
+
+        // DEVE RIMANERE SE:
+        // 1. Click all'interno del towerdialoglayer (ha consumato lui l'input)
+        // 2. Click sulla sua stessa torre (già gestito, chiamata a openTowerDialog ignora la riapertura)
+        // DEVE CHIUDERSI SE:
+        // 1. Click fuori: towerdialoglayer non ha consumato l'input e non è stata cliccata la stessa torre
 
         for (final Building building : buildings) {
             if (inputEvent.isConsumed()) {
                 return;
             }
+            if (towerDialogLayer != null && towerDialogLayer.getTower() == building) {
+                continue;
+            }
             building.processInput(inputEvent);
+            if (inputEvent.isConsumed() && towerDialogLayer != null && towerDialogLayer.getTower() != building) {
+                closeTowerDialog();
+            }
         }
 
         // Clicking elsewhere closes the active tower dialog

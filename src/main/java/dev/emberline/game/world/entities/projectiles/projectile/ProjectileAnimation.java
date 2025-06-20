@@ -26,8 +26,6 @@ public class ProjectileAnimation implements Updatable {
             accumulatedTimeNs -= projectileSprite.getFrameTimeNs();
             frameIndex = (frameIndex + 1) % projectileSprite.getFrameCount();
         }
-
-        System.out.println("Frame index: " + frameIndex);
     }
 
     public Image getImage() {

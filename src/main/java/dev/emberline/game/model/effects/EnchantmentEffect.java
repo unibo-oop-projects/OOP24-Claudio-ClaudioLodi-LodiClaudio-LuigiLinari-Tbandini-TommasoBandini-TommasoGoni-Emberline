@@ -22,6 +22,8 @@ public interface EnchantmentEffect extends TowerStatsProvider {
      */
     void updateEffect(IEnemy enemy, long elapsed);
 
+    void endEffect(IEnemy enemy);
+
     /**
      * Checks if the effect is expired.
      *

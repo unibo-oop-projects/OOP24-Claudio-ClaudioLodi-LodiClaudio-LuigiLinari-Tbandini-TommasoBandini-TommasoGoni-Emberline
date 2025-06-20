@@ -51,6 +51,10 @@ public class BurnEffect implements EnchantmentEffect {
         enemy.dealDamage(damagePerNs * elapsed);
     }
 
+    public void endEffect(IEnemy enemy) {
+
+    }
+
     @Override
     public boolean isExpired() {
         return isExpired;

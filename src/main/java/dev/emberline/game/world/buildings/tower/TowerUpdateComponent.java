@@ -6,7 +6,6 @@ import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.World;
-import dev.emberline.game.world.buildings.TowersManager;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.gui.event.GuiEvent;
@@ -16,21 +15,20 @@ import dev.emberline.gui.event.SetTowerInfoEvent;
 import dev.emberline.gui.event.UpgradeTowerInfoEvent;
 import dev.emberline.utility.Vector2D;
 
+import java.util.Collections;
 import java.util.List;
 
 class TowerUpdateComponent implements Updatable, GuiEventListener, TowerInfoProvider {
 
     private ProjectileInfo projectileInfo = new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
     private EnchantmentInfo enchantmentInfo = new EnchantmentInfo(EnchantmentInfo.Type.BASE, 0);
-    private final Vector2D locationBottomLeft;
 
     private long accumulatedTimeNs = 0;
 
     private final World world;
     private final Tower tower;
 
-    TowerUpdateComponent(Vector2D locationBottomLeft, World world, Tower tower) {
-        this.locationBottomLeft = locationBottomLeft;
+    TowerUpdateComponent(World world, Tower tower) {
         this.world = world;
         this.tower = tower;
     }
@@ -47,10 +45,11 @@ class TowerUpdateComponent implements Updatable, GuiEventListener, TowerInfoProv
         // Shooting
         IEnemiesManager enemiesManager = world.getEnemiesManager();
 
-        List<IEnemy> toShoot = enemiesManager.getNear(locationBottomLeft, projectileInfo.getTowerRange());
+        List<IEnemy> toShoot = enemiesManager.getNear(tower.getWorldTopLeft(), projectileInfo.getTowerRange());
+        //Collections.shuffle(toShoot);
         for (final IEnemy enemy : toShoot) {
             boolean creationSucceeded = world.getProjectilesManager().addProjectile(
-                    getLocationBottomLeft(), enemy, projectileInfo, enchantmentInfo
+                    tower.getWorldTopLeft(), enemy, projectileInfo, enchantmentInfo
             );
 
             if (creationSucceeded) {
@@ -108,13 +107,5 @@ class TowerUpdateComponent implements Updatable, GuiEventListener, TowerInfoProv
     @Override
     public EnchantmentInfo getEnchantmentInfo() {
         return enchantmentInfo;
-    }
-
-    void clicked() {
-        world.getTowersManager().openTowerDialog(tower);
-    }
-
-    Vector2D getLocationBottomLeft() {
-        return locationBottomLeft;
     }
 }
