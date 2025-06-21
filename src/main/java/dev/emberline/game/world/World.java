@@ -17,6 +17,7 @@ import java.io.Serializable;
 
 public class World implements Updatable, Renderable, Inputable, Serializable {
 
+    private final WorldRenderComponent worldRenderComponent;
     // Enemies
     private final IEnemiesManager enemiesManager;
     // Towers
@@ -37,6 +38,7 @@ public class World implements Updatable, Renderable, Inputable, Serializable {
         this.waveManager = new WaveManagerWithStats(this);
         this.projectilesManager = new ProjectilesManager(this);
         this.projectileHitListener = new ProjectileHitListener(enemiesManager);
+        this.worldRenderComponent = new WorldRenderComponent(waveManager);
     }
 
     public ProjectilesManager getProjectilesManager() {
@@ -77,7 +79,7 @@ public class World implements Updatable, Renderable, Inputable, Serializable {
         towersManager.render();
         enemiesManager.render();
         projectilesManager.render();
-        waveManager.render();
+        worldRenderComponent.render();
     }
 
     @Override
