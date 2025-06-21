@@ -27,11 +27,6 @@ public class WaveManagerWithStats implements IWaveManager {
         return waveManager.getCurrentWaveIndex();
     }
 
-    @Override
-    public void render() {
-        waveManager.render();
-    }
-
     /**
      * Updates the Wavemanager.
      * Keeps record of the last wave reached.
@@ -44,5 +39,10 @@ public class WaveManagerWithStats implements IWaveManager {
         int nWavePostUpdate = getCurrentWaveIndex();
 
         if (nWavePostUpdate - nWavePreUpdate > 0)statistics.updateWavesSurvived();
+    }
+
+    @Override
+    public void render() {
+        waveManager.render();
     }
 }
