@@ -80,4 +80,8 @@ public class Wave implements Updatable, Renderable {
             zoom.render();
         }
     }
+
+    public void startWave() {
+        zoom.startAnimation();
+    }
 }

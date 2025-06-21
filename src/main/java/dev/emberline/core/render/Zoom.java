@@ -30,7 +30,7 @@ public class Zoom implements Renderable {
 
     public Zoom(String wavePath) {
         translations = ConfigLoader.loadConfig(wavePath + "cs.json", Translations.class);
-        accumulatorNs = -(long) (translations.animationDelaySeconds * 1e9);
+        startAnimation();
     }
 
     private void updateCS(double regionX1, double regionY1, double regionX2, double regionY2) {
@@ -39,6 +39,11 @@ public class Zoom implements Renderable {
 
     public boolean isOver() {
         return accumulatorNs >= translations.animationDurationSeconds * 1e9;
+    }
+
+    public void startAnimation() {
+        previousTimeNs = System.nanoTime();
+        accumulatorNs = -(long) (translations.animationDelaySeconds * 1e9);
     }
 
     @Override
