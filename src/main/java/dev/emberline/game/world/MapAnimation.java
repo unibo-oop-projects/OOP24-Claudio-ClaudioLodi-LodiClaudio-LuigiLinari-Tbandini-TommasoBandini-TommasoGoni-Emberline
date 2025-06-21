@@ -16,8 +16,8 @@ public class MapAnimation implements Updatable {
     private long accumulatedTimeNs = 0;
     private int currentWaveIndex = -1;
 
-    public MapAnimation(World world) {
-        this.waveManager = world.getWaveManager();
+    public MapAnimation(IWaveManager waveManager) {
+        this.waveManager = waveManager;
         updateAnimatedSprite();
     }
 
