@@ -16,7 +16,8 @@ dependencies {
     implementation("org.apache.commons:commons-geometry-euclidean:1.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.0.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
+    implementation("com.fasterxml.jackson.module:jackson-module-parameter-names:2.19.0")
 }
 
 javafx {
