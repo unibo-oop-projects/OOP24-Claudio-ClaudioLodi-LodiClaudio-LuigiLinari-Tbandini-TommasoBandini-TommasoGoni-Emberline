@@ -5,14 +5,14 @@ import dev.emberline.core.ConfigLoader;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.TowerInfoProvider;
+import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.Building;
 import dev.emberline.game.world.World;
-import dev.emberline.gui.event.*;
 import dev.emberline.utility.Vector2D;
 
 import java.util.Map;
 
-public class Tower extends Building implements TowerInfoProvider, GuiEventListener {
+public class Tower extends Building implements TowerInfoProvider {
     private static String configsPath = "/sprites/towerAssets/tower.json";
     private static class Metadata {
         @JsonProperty("width")
@@ -29,6 +29,9 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
     private final TowerRenderComponent towerRenderComponent;
     private final Vector2D locationBottomLeft;
 
+    private ProjectileInfo projectileInfo = new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
+    private EnchantmentInfo enchantmentInfo = new EnchantmentInfo(EnchantmentInfo.Type.BASE, 0);
+
     public Tower(Vector2D locationBottomLeft, World world) {
         this.world = world;
         this.towerUpdateComponent = new TowerUpdateComponent(world, this);
@@ -37,18 +40,13 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
     }
 
     @Override
-    public void onGuiEvent(GuiEvent event) {
-        towerUpdateComponent.onGuiEvent(event);
-    }
-
-    @Override
     public ProjectileInfo getProjectileInfo() {
-        return towerUpdateComponent.getProjectileInfo();
+        return projectileInfo;
     }
 
     @Override
     public EnchantmentInfo getEnchantmentInfo() {
-        return towerUpdateComponent.getEnchantmentInfo();
+        return enchantmentInfo;
     }
 
     @Override
@@ -86,5 +84,21 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
 
     double getWorldHeight() {
         return metadata.worldHeight.get(getProjectileInfo().type());
+    }
+
+    public void setUpgradableInfo(UpgradableInfo<?,?> info) {
+        if (info instanceof ProjectileInfo infoCast) {
+           projectileInfo = infoCast;
+        } else if (info instanceof EnchantmentInfo infoCast) {
+            enchantmentInfo = infoCast;
+        }
+    }
+
+    public static void setConfigsPath(String configsPath) {
+        Tower.configsPath = configsPath;
+    }
+    
+    public static void setMetadata(Metadata metadata) {
+        Tower.metadata = metadata;
     }
 }

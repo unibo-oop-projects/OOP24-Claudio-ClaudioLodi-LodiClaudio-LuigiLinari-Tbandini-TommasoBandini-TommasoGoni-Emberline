@@ -13,7 +13,6 @@ import dev.emberline.game.world.entities.enemies.enemy.IEnemy.UniformMotion;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
 
 class EnemyUpdateComponent implements Updatable {
     private enum EnemyState      { WALKING, DYING, DEAD }
@@ -21,6 +20,7 @@ class EnemyUpdateComponent implements Updatable {
     private final AbstractEnemy enemy;
     private EnemyState enemyState;
     private EnchantmentEffect activeEffect = new DummyEffect();
+    private World world;
 
     private double health;
     private double slowFactor = 1;
@@ -34,6 +34,7 @@ class EnemyUpdateComponent implements Updatable {
     EnemyUpdateComponent(Vector2D spawnPoint, World world, AbstractEnemy enemy) {
         this.enemy = enemy;
         this.health = enemy.getFullHealth();
+        this.world = world;
 
         // Init destinations
         Optional<Vector2D> next = world.getWaveManager().getWave().getNext(spawnPoint);
@@ -199,9 +200,8 @@ class EnemyUpdateComponent implements Updatable {
         }
     }
 
-    //TODO
     private void attack() {
-        // attackCastle()
+        world.getPlayer().takeDamage();
         setDead();
     }
 

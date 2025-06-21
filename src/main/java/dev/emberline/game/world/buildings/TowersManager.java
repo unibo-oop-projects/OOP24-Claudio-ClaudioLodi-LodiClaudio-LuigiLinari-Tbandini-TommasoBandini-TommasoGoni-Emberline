@@ -41,7 +41,7 @@ public class TowersManager implements Updatable, Renderable, Inputable {
     public void openTowerDialog(Tower tower) {
         if (towerDialogLayer == null || towerDialogLayer.getTower() != tower) {
             towerDialogLayer = new TowerDialogLayer(tower);
-            towerDialogLayer.setListener(tower);
+            towerDialogLayer.setListener(world.getPlayer());
         }
     }
 

@@ -5,6 +5,7 @@ import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.entities.enemies.EnemiesManagerWithStats;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
+import dev.emberline.game.world.entities.player.Player;
 import dev.emberline.game.world.entities.projectiles.ProjectilesManager;
 import dev.emberline.game.world.entities.projectiles.events.ProjectileHitListener;
 import dev.emberline.game.world.statistics.Statistics;
@@ -29,6 +30,9 @@ public class World implements Updatable, Renderable, Inputable, Serializable {
     private final Statistics statistics;
     // HitListener
     private final ProjectileHitListener projectileHitListener;
+    
+    // Player
+    private final Player player;
 
     public World() {
         this.statistics = new Statistics(this);
@@ -37,8 +41,13 @@ public class World implements Updatable, Renderable, Inputable, Serializable {
         this.waveManager = new WaveManagerWithStats(this);
         this.projectilesManager = new ProjectilesManager(this);
         this.projectileHitListener = new ProjectileHitListener(enemiesManager);
+        this.player = new Player(this);
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+    
     public ProjectilesManager getProjectilesManager() {
         return projectilesManager;
     }

@@ -216,7 +216,7 @@ public class TowerDialogLayer extends GuiLayer {
                         x[t], y, Layout.Selector.TYPE_BTN_WIDTH, Layout.Selector.TYPE_BTN_HEIGHT,
                         typeImages[t], -element.getUpgradeCost(), TextLayoutType.LEFT
                 );
-                button.setOnClick(() -> throwEvent(new SetTowerInfoEvent(this, null, element, typeValue)));
+                button.setOnClick(() -> throwEvent(new SetTowerInfoEvent(this, tower, element, typeValue)));
                 hoverData.put(button, (TowerStatsProvider) element.getChangeType(typeValue));
                 buttons.add(button);
             }
@@ -243,8 +243,8 @@ public class TowerDialogLayer extends GuiLayer {
                     SpriteLoader.loadSprite(SingleSpriteKey.CANCEL_BUTTON).image(),
                     element.getRefundValue(), TextLayoutType.BOTTOM
             );
-            upgradeButton.setOnClick(() -> throwEvent(new UpgradeTowerInfoEvent(this, null, element)));
-            resetButton.setOnClick(() -> throwEvent(new ResetTowerInfoEvent(this, null, element)));
+            upgradeButton.setOnClick(() -> throwEvent(new UpgradeTowerInfoEvent(this, tower, element)));
+            resetButton.setOnClick(() -> throwEvent(new ResetTowerInfoEvent(this, tower, element)));
             if (element.canUpgrade()) hoverData.put(upgradeButton, (TowerStatsProvider) element.getUpgrade());
             buttons.add(upgradeButton);
             buttons.add(resetButton);
