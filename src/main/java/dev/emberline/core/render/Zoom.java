@@ -3,107 +3,91 @@ package dev.emberline.core.render;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
-import dev.emberline.core.components.Updatable;
-import dev.emberline.utility.Coordinate2D;
-import dev.emberline.utility.Pair;
-import dev.emberline.utility.Vector2D;
-
-import java.io.*;
+import dev.emberline.core.components.Renderable;
 
 /**
  * This class is used to Zoom in and out areas of the map.
  * It requires a file with the proper indications to be used.
  */
-public class Zoom implements Updatable, Serializable {
+public class Zoom implements Renderable {
     //zoom configuration
-    private static final String roadsConfigFilename = "roads.json";
-    private static class Translation {
-        @JsonProperty("fromX")
-        private double fromX;
-        @JsonProperty("fromY")
-        private double fromY;
-        @JsonProperty("toX")
-        private double toX;
-        @JsonProperty("toY")
-        private double toY;
-    }
-    private static class Translations {
-        @JsonProperty("first")
-        private Translation first;
-        @JsonProperty("second")
-        private Translation second;
-    }
+    private record Translation(
+        @JsonProperty double fromX,
+        @JsonProperty double fromY,
+        @JsonProperty double toX,
+        @JsonProperty double toY
+    ) {}
+    private record Translations(
+        @JsonProperty Translation topLeft,
+        @JsonProperty Translation bottomRight,
+        @JsonProperty double animationDurationSeconds,
+        @JsonProperty double animationDelaySeconds
+    ) {}
     private final Translations translations;
 
-    private Pair<Vector2D, Vector2D> curr;
-    private Pair<Vector2D, Vector2D> to;
-    private Pair<Vector2D, Vector2D> step = new Pair<>(Coordinate2D.ZERO, Coordinate2D.ZERO);
-    //make sure to let the "zoom" end before the wave ends by changing this numbers
-    private final Double stepUpperBound = 0.02 ;
-    private final Double timePerStep = 50_000_000d;
-
-    private long acc = 0;
+    private long accumulatorNs = 0;
+    private long previousTimeNs = System.nanoTime();
 
     public Zoom(String wavePath) {
         translations = ConfigLoader.loadConfig(wavePath + "cs.json", Translations.class);
-        loadCS(wavePath + "cs.txt");
-        computeSteps();
+        accumulatorNs = -(long) (translations.animationDelaySeconds * 1e9);
     }
 
-    private void updateCS() {
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        CoordinateSystem cs = renderer.getWorldCoordinateSystem();
-
-        cs.setRegion(curr.getX().getX(), curr.getX().getY(), curr.getY().getX(), curr.getY().getY());
+    private void updateCS(double regionX1, double regionY1, double regionX2, double regionY2) {
+        GameLoop.getInstance().getRenderer().getWorldCoordinateSystem().setRegion(regionX1, regionY1, regionX2, regionY2);
     }
 
-    private void computeSteps() {
-        double d1 = curr.getX().distance(to.getX());
-        double d2 = curr.getY().distance(to.getY());
-        double maxd = Math.max(d1, d2);
-        double mind = Math.min(d1, d2);
-
-        if (maxd != 0d) {
-            double speedLowerBound = (mind / maxd) * stepUpperBound;
-            //unit directional vectors to scale propely in pair costructor
-            Vector2D directionX = curr.getX().directionTo(to.getX());
-            Vector2D directionY = curr.getY().directionTo(to.getY());
-            if (d1 > d2) {
-                step = new Pair<>(directionX.multiply(stepUpperBound), directionY.multiply(speedLowerBound));
-            } else {
-                step = new Pair<>(directionX.multiply(speedLowerBound), directionY.multiply(stepUpperBound));
-            }
-        }
-    }
-
-    private void loadCS(String file) {
-        Vector2D currFirst = new Coordinate2D(translations.first.fromX, translations.first.fromY);
-        Vector2D toFirst = new Coordinate2D(translations.first.toX, translations.first.toY);
-        Vector2D currSecond = new Coordinate2D(translations.second.fromX, translations.second.fromY);
-        Vector2D toSecond = new Coordinate2D(translations.second.toX, translations.second.toY);
-
-        to = new Pair<>(toFirst, toSecond);
-        curr = new Pair<>(currFirst, currSecond);
-    }
-
-    /**
-     * checks if the points are no more than 1 step away from the desired coordinates
-     */
-    private boolean isOver() {
-        return to.getX().distance(curr.getX()) <= step.getX().distance(0, 0)
-                && to.getY().distance(curr.getY()) <= step.getY().distance(0, 0);
+    public boolean isOver() {
+        return accumulatorNs >= translations.animationDurationSeconds * 1e9;
     }
 
     @Override
-    public void update(long elapsed) {
-        acc += elapsed;
-        while (acc >= timePerStep) {
-            acc -= timePerStep;
-            if (!isOver()) {
-                curr.setX(curr.getX().add(step.getX()));
-                curr.setY(curr.getY().add(step.getY()));
-            }
+    public void render() {
+        long currentTimeNs = System.nanoTime();
+        accumulatorNs += currentTimeNs - previousTimeNs; // Convert nanoseconds to seconds
+        previousTimeNs = currentTimeNs;
+        double t = Math.min((accumulatorNs/1e9) / translations.animationDurationSeconds, 1.0);
+        if (accumulatorNs < 0) { // Animation isn't started yet
+            updateCS(translations.topLeft.fromX, translations.topLeft.fromY, translations.bottomRight.fromX, translations.bottomRight.fromY);
+            return;
         }
-        updateCS();
+        if (t >= 1) { // Animation is over
+            return;
+        }
+        double easedT = easeInOutExpo(t);
+        updateCS(
+                lerp(translations.topLeft.fromX, translations.topLeft.toX, easedT),
+                lerp(translations.topLeft.fromY, translations.topLeft.toY, easedT),
+                lerp(translations.bottomRight.fromX, translations.bottomRight.toX, easedT),
+                lerp(translations.bottomRight.fromY, translations.bottomRight.toY, easedT)
+        );
     }
+
+    private static double lerp(double a, double b, double t) {
+        return a + (b - a) * t;
+    }
+
+    private static double easeInOutExpo(double x) {
+        if (x <= 0 || x >= 1) {
+            return Math.clamp(x, 0, 1);
+        }
+        return x < 0.5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
+    }
+
+    private static double easeOutElastic(double x) {
+        double c4 = (2 * Math.PI) / 3;
+        if (x == 0) return 0;
+        if (x == 1) return 1;
+        return Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1;
+    }
+
+    private static double easeInCirc(double x) {
+        return 1 - Math.sqrt(1 - x * x);
+    }
+
+    private static double easeOutCirc(double x) {
+        return Math.sqrt(1 - Math.pow(x - 1, 2));
+    }
+
+
 }
