@@ -30,8 +30,12 @@ public class TowersManager implements Updatable, Renderable, Inputable {
         this.world = world;
         this.enemiesManager = world.getEnemiesManager();
 
-       buildings.add(new TowerPreBuild(new Coordinate2D(10,10), this));
-       buildings.add(new TowerPreBuild(new Coordinate2D(5,5), this));
+        // TODO
+        buildings.add(new TowerPreBuild(new Coordinate2D(10,10), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(5,5), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(18,10), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(20,7), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(5,15), this));
     }
 
     public void openTowerDialog(Tower tower) {
@@ -63,23 +67,11 @@ public class TowersManager implements Updatable, Renderable, Inputable {
             towerDialogLayer.processInput(inputEvent);
         }
 
-        // DEVE RIMANERE SE:
-        // 1. Click all'interno del towerdialoglayer (ha consumato lui l'input)
-        // 2. Click sulla sua stessa torre (già gestito, chiamata a openTowerDialog ignora la riapertura)
-        // DEVE CHIUDERSI SE:
-        // 1. Click fuori: towerdialoglayer non ha consumato l'input e non è stata cliccata la stessa torre
-
         for (final Building building : buildings) {
             if (inputEvent.isConsumed()) {
                 return;
             }
-            if (towerDialogLayer != null && towerDialogLayer.getTower() == building) {
-                continue;
-            }
             building.processInput(inputEvent);
-            if (inputEvent.isConsumed() && towerDialogLayer != null && towerDialogLayer.getTower() != building) {
-                closeTowerDialog();
-            }
         }
 
         // Clicking elsewhere closes the active tower dialog

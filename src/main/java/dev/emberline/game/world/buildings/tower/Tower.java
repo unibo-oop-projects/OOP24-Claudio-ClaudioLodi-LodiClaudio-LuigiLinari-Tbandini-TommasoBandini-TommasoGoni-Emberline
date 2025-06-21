@@ -7,8 +7,6 @@ import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.world.Building;
 import dev.emberline.game.world.World;
-import dev.emberline.game.world.buildings.TowersManager;
-import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.gui.event.*;
 import dev.emberline.utility.Vector2D;
 
@@ -21,6 +19,8 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
         private double worldWidth;
         @JsonProperty("height")
         private Map<ProjectileInfo.Type, Double> worldHeight;
+        @JsonProperty("firingYOffsetTiles")
+        private double firingYOffsetTiles;
     }
     private static Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
 
@@ -61,11 +61,6 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
         return locationBottomLeft.add(getWorldWidth(), 0);
     }
 
-    public Vector2D firingWorldCenterLocation() {
-        // TODO
-        return null;
-    }
-
     @Override
     protected void clicked() {
         world.getTowersManager().openTowerDialog(this);
@@ -79,6 +74,10 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
     @Override
     public void render() {
         towerRenderComponent.render();
+    }
+
+    Vector2D firingWorldCenterLocation() {
+        return getWorldTopLeft().add(getWorldWidth() / 2, metadata.firingYOffsetTiles);
     }
 
     double getWorldWidth() {

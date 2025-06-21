@@ -15,7 +15,7 @@ import dev.emberline.utility.Vector2D;
 /**
  * The Wave class contains all the elements that characterize a single wave
  */
-public class Wave implements Updatable {
+public class Wave implements Updatable, Renderable {
 
     private final World world;
     private final Roads roads;
@@ -70,6 +70,12 @@ public class Wave implements Updatable {
     public void update(long elapsed) {
         accumulatorNs += elapsed;
         sendEnemies();
-//        zoom.update(elapsed);
+    }
+
+    @Override
+    public void render() {
+        if (!zoom.isOver()) {
+            zoom.render();
+        }
     }
 }
