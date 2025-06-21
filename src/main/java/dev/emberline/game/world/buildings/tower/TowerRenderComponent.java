@@ -1,5 +1,6 @@
 package dev.emberline.game.world.buildings.tower;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
@@ -12,18 +13,22 @@ import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Bloom;
 import javafx.scene.image.Image;
 
 class TowerRenderComponent implements Renderable {
+    private static final JsonNode configsNode = ConfigLoader.loadNode("/sprites/towerAssets/crystal.json");
+    private static class Metadata {
+        private static final double CRYSTAL_WIDTH = configsNode.get("worldDimensions").get("width").asDouble();
+        private static final double CRYSTAL_HEIGHT = configsNode.get("worldDimensions").get("width").asDouble();
+        private static final double CRYSTAL_SWING_PERIOD_NS = configsNode.get("swingPeriodNs").asDouble();
+        private static final double CRYSTAL_SWING_AMPLITUDE = configsNode.get("swingAmplitude").asDouble();
+        private static final double CRYSTAL_TRANSPARENCY = configsNode.get("transparency").asDouble();
+        private static final double CRYSTAL_BLOOM_THRESHOLD = configsNode.get("bloomThreshold").asDouble();
+    }
+
     private final Tower tower;
-
-    private static final double CRYSTAL_WIDTH = ConfigLoader.loadNode("/sprites/towerAssets/crystal.json").get("worldDimensions").get("width").asDouble();
-    private static final double CRYSTAL_HEIGHT = ConfigLoader.loadNode("/sprites/towerAssets/crystal.json").get("worldDimensions").get("width").asDouble();
-    private static final double CRYSTAL_SWING_PERIOD_NS = ConfigLoader.loadNode("/sprites/towerAssets/crystal.json").get("swingPeriodNs").asDouble();
-    private static final double CRYSTAL_SWING_AMPLITUDE = ConfigLoader.loadNode("/sprites/towerAssets/crystal.json").get("swingAmplitude").asDouble();
-
-
-    private long creationTimeNs = System.nanoTime();
+    private final long creationTimeNs = System.nanoTime();
 
     TowerRenderComponent(Tower tower) {
         this.tower = tower;
@@ -41,7 +46,7 @@ class TowerRenderComponent implements Renderable {
         int currentFrame = (int) ((System.nanoTime() - creationTimeNs) / crystalSprite.getFrameTimeNs()) % crystalSprite.getFrameCount();
         Image crystalImage = crystalSprite.image(currentFrame);
 
-        double crystalSwingOffset = Math.sin((System.nanoTime() - creationTimeNs) * 2 * Math.PI * 1./CRYSTAL_SWING_PERIOD_NS) * CRYSTAL_SWING_AMPLITUDE * cs.getScale();
+        double crystalSwingOffset = Math.sin((System.nanoTime() - creationTimeNs) * 2*Math.PI * 1./Metadata.CRYSTAL_SWING_PERIOD_NS) * Metadata.CRYSTAL_SWING_AMPLITUDE * cs.getScale();
 
         double topLeftScreenX = cs.toScreenX(tower.getWorldTopLeft().getX());
         double topLeftScreenY = cs.toScreenY(tower.getWorldTopLeft().getY());
@@ -51,12 +56,16 @@ class TowerRenderComponent implements Renderable {
         double firingWorldCenterX = tower.firingWorldCenterLocation().getX();
         double firingWorldCenterY = tower.firingWorldCenterLocation().getY();
 
-        double crystalScreenX = cs.toScreenX(firingWorldCenterX - CRYSTAL_WIDTH / 2);
-        double crystalScreenY = cs.toScreenY(firingWorldCenterY - CRYSTAL_HEIGHT / 2) + crystalSwingOffset;
+        double crystalScreenX = cs.toScreenX(firingWorldCenterX - Metadata.CRYSTAL_WIDTH / 2);
+        double crystalScreenY = cs.toScreenY(firingWorldCenterY - Metadata.CRYSTAL_HEIGHT / 2) + crystalSwingOffset;
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BUILDINGS, () -> {
+            gc.save();
+            gc.setEffect(new Bloom(Metadata.CRYSTAL_BLOOM_THRESHOLD));
+            gc.setGlobalAlpha(Metadata.CRYSTAL_TRANSPARENCY);
+            gc.drawImage(crystalImage, crystalScreenX, crystalScreenY, Metadata.CRYSTAL_WIDTH * cs.getScale(), Metadata.CRYSTAL_HEIGHT * cs.getScale());
+            gc.restore();
             gc.drawImage(bodyImage, topLeftScreenX, topLeftScreenY, screenWidth, screenHeight);
-            gc.drawImage(crystalImage, crystalScreenX, crystalScreenY, CRYSTAL_WIDTH * cs.getScale(), CRYSTAL_HEIGHT * cs.getScale());
         }).enableZOrder(tower.getWorldBottomRight().getY()));
     }
 }

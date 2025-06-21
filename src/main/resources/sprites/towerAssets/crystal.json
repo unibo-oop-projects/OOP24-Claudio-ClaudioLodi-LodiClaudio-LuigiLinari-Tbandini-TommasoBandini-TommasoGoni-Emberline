@@ -14,5 +14,7 @@
     "height": 1.55
   },
   "swingPeriodNs": 1496666666,
-  "swingAmplitude": 0.05
+  "swingAmplitude": 0.05,
+  "transparency": 0.7,
+  "bloomThreshold": 0.2
 }

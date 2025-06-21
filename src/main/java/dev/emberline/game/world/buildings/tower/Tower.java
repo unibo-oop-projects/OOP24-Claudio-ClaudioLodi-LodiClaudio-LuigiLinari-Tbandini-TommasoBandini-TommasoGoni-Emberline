@@ -19,6 +19,8 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
         private double worldWidth;
         @JsonProperty("height")
         private Map<ProjectileInfo.Type, Double> worldHeight;
+        @JsonProperty("firingYOffsetTiles")
+        private double firingYOffsetTiles;
     }
     private static Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
 
@@ -75,7 +77,7 @@ public class Tower extends Building implements TowerInfoProvider, GuiEventListen
     }
 
     Vector2D firingWorldCenterLocation() {
-        return getWorldTopLeft().add(getWorldWidth() / 2, 0);
+        return getWorldTopLeft().add(getWorldWidth() / 2, metadata.firingYOffsetTiles);
     }
 
     double getWorldWidth() {
