@@ -64,9 +64,4 @@ public class WaveManager implements IWaveManager {
             currentWaveIndex++;
         }
     }
-
-    @Override
-    public void render() {
-        getWave().render();
-    }
 }
