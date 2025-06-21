@@ -81,6 +81,7 @@ public class World implements Updatable, Renderable, Inputable, Serializable {
         enemiesManager.render();
         projectilesManager.render();
         worldRenderComponent.render();
+        waveManager.render();
     }
 
     @Override

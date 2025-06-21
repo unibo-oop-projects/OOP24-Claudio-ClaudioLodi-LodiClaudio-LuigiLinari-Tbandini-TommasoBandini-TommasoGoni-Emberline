@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Interface that represents the manager of the waves.
  */
-public interface IWaveManager extends Updatable, Serializable {
+public interface IWaveManager extends Updatable, Renderable, Serializable {
 
     /**
      * @return the current {@code Wave}

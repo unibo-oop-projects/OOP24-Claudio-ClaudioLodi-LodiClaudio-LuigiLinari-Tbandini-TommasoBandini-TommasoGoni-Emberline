@@ -40,4 +40,9 @@ public class WaveManagerWithStats implements IWaveManager {
 
         if (nWavePostUpdate - nWavePreUpdate > 0)statistics.updateWavesSurvived();
     }
+
+    @Override
+    public void render() {
+        waveManager.render();
+    }
 }
