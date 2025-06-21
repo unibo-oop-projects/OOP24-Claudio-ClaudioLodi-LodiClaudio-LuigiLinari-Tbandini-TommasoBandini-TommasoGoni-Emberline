@@ -73,21 +73,4 @@ public class Zoom implements Renderable {
         }
         return x < 0.5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
     }
-
-    private static double easeOutElastic(double x) {
-        double c4 = (2 * Math.PI) / 3;
-        if (x == 0) return 0;
-        if (x == 1) return 1;
-        return Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1;
-    }
-
-    private static double easeInCirc(double x) {
-        return 1 - Math.sqrt(1 - x * x);
-    }
-
-    private static double easeOutCirc(double x) {
-        return Math.sqrt(1 - Math.pow(x - 1, 2));
-    }
-
-
 }
