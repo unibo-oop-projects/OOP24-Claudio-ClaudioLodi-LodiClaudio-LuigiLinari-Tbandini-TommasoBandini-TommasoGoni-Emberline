@@ -5,13 +5,13 @@
     "spawnSequences": [
       {
         "firstSpawnTimeNs": 0,
-        "spawnIntervalNs": 1000000000,
-        "enemies": ["ogre", "ogre", "ogre"]
+        "spawnIntervalNs": 3000000000,
+        "enemies": ["pig"]
       },
       {
         "firstSpawnTimeNs": 3000000000,
         "spawnIntervalNs": 500000000,
-        "enemies": ["ogre", "ogre", "ogre"]
+        "enemies": ["pig"]
       }
     ]
   },
@@ -21,8 +21,8 @@
     "spawnSequences": [
       {
         "firstSpawnTimeNs": 0,
-        "spawnIntervalNs": 1000000000,
-        "enemies": ["ogre", "ogre"]
+        "spawnIntervalNs": 3000000000,
+        "enemies": ["ogre"]
       }
     ]
   }

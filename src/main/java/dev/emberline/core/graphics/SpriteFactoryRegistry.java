@@ -36,5 +36,6 @@ class SpriteFactoryRegistry {
         registerFactory(new ProjectileSpriteFactory());
         registerFactory(new TowerSpriteFactory());
         registerFactory(new CrystalSpriteFactory());
+        registerFactory(new MapSpriteFactory());
     }
 }

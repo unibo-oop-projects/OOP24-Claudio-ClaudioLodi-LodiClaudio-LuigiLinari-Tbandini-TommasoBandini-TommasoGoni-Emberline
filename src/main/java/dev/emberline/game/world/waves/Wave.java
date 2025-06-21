@@ -70,12 +70,16 @@ public class Wave implements Updatable, Renderable {
     public void update(long elapsed) {
         accumulatorNs += elapsed;
         sendEnemies();
-        roads.update(elapsed);
-//        zoom.update(elapsed);
     }
 
     @Override
     public void render() {
-        roads.render();
+        if (!zoom.isOver()) {
+            zoom.render();
+        }
+    }
+
+    public void startWave() {
+        zoom.startAnimation();
     }
 }

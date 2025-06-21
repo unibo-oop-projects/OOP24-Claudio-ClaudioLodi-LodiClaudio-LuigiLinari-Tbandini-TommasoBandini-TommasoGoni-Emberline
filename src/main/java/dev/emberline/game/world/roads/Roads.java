@@ -1,46 +1,67 @@
 package dev.emberline.game.world.roads;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.emberline.core.ConfigLoader;
+import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
 /**
  * A class that represents the roads of the map, as weighted arches.
  */
-public class Roads implements Renderable, Updatable {
-    
-    private final RoadsModelComponent roadsModelComponent;
-    private final RoadsViewComponent roadsViewComponent;
+public class Roads {
+    //single arch configuration
+    private static final String roadsConfigFilename = "roads.json";
+    private static class Arch {
+        @JsonProperty("fromX")
+        private double fromX;
+        @JsonProperty("fromY")
+        private double fromY;
+        @JsonProperty("toX")
+        private double toX;
+        @JsonProperty("toY")
+        private double toY;
+        @JsonProperty("weight")
+        private int weight;
+    }
+
+    private final Arch[] arches;
+    /**
+     * graph data structure, represents the walkable roads on the map
+     */
+    private final Map<Vector2D, Node> posToNode = new HashMap<>();
 
     /**
      * @param wavePath represents the path of the files regarding the current wave
      */
     public Roads(String wavePath) {
-        roadsViewComponent = new RoadsViewComponent(wavePath);
-        roadsModelComponent = new RoadsModelComponent(wavePath);
+        arches = ConfigLoader.loadConfig(wavePath + roadsConfigFilename, Arch[].class);
+        parseGraph();
     }
 
     /**
-     * @param pos is the current position
+     * @param pos is the current position.
      * @return the next node of the graph based on the current state.
      */
     public Optional<Vector2D> getNextNode(Vector2D pos) {
-        return roadsModelComponent.getNextNode(pos);
+        return posToNode.get(pos).getNext();
     }
 
-    @Override
-    public void render() {
-        roadsViewComponent.render();
-    }
+    private void parseGraph() {
+        for (var arch : arches) {
+            Node fromNode = new Node(
+                    new Coordinate2D(arch.fromX, arch.fromY).add(0.5, 0.5));
+            Node toNode = new Node(
+                    new Coordinate2D(arch.toX, arch.toY).add(0.5, 0.5));
+            Integer weight = arch.weight;
 
-    /**
-     * Updates any animation in the map.
-     * @param elapsed
-     */
-    @Override
-    public void update(long elapsed) {
-        roadsViewComponent.update(elapsed);
+            posToNode.putIfAbsent(fromNode.getPosition(), fromNode);
+            posToNode.get(fromNode.getPosition()).addNeighbour(toNode, weight);
+
+            posToNode.putIfAbsent(toNode.getPosition(), toNode);
+        }
     }
 }

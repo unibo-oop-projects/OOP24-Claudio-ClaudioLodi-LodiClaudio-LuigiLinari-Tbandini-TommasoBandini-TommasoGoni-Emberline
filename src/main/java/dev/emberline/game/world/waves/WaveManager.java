@@ -62,6 +62,7 @@ public class WaveManager implements IWaveManager {
 
         if (getWave().isOver() && currentWaveIndex+1 < waves.size()) {
             currentWaveIndex++;
+            getWave().startWave();
         }
     }
 

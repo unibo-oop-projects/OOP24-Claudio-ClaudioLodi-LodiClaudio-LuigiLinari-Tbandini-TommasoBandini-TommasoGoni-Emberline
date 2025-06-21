@@ -95,10 +95,19 @@ public class Statistics implements Updatable, Serializable {
         return this.playerHealth;
     }
 
+    void printToTerminal() {
+        System.out.println(enemiesKilled);
+        System.out.println(wavesSurvived);
+        System.out.println(dps);
+        System.out.println(timeInGame);
+        //System.out.println(enemiesKilled);
+    }
+
     @Override
     public void update(long elapsed) {
         updateTimeInGame(elapsed);
         //updatePlayerHealth();
         updateDPS();
+        printToTerminal();
     }
 }
