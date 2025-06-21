@@ -34,6 +34,7 @@ public class MapAnimation implements Updatable {
         }
     }
 
+
     public Image getImage() {
         return animatedSprite.image(frameIndex);
     }
