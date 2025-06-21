@@ -14,7 +14,7 @@ public class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
     private static class Waves {
         @JsonProperty("wave")
         private String wave;
-        @JsonProperty("frame")
+        @JsonProperty("frames")
         private int frames;
     }
     private static class Metadata {
