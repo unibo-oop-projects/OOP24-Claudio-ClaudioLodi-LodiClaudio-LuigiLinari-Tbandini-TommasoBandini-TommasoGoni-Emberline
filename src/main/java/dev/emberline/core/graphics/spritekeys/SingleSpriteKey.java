@@ -32,5 +32,15 @@ public enum SingleSpriteKey implements SpriteKey {
     // Menu background
     MENU_BACKGROUND,
     // TowerPreBuild
-    TOWER_PRE_BUILD;
+    TOWER_PRE_BUILD,
+    // Fog
+    FOG,
+    FOG_LEFT,
+    FOG_RIGHT,
+    FOG_TOP,
+    FOG_BOTTOM,
+    FOG_TOP_LEFT,
+    FOG_TOP_RIGHT,
+    FOG_BOTTOM_LEFT,
+    FOG_BOTTOM_RIGHT;
 }
