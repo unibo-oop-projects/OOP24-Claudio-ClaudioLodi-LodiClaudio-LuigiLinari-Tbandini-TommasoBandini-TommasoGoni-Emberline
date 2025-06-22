@@ -1,4 +1,4 @@
-package dev.emberline.game.nodes;
+package dev.emberline.game;
 
 import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
