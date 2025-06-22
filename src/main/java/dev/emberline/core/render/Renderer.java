@@ -19,6 +19,9 @@ public class Renderer {
 
     // JavaFX Canvas, only JavaFX thread can modify the scene graph, do not modify the scene graph from another thread
     private final Canvas canvas;
+    // Last used canvas dimensions
+    private double lastUsedCanvasWidth = 0;
+    private double lastUsedCanvasHeight = 0;
 
     private final GraphicsContext gc;
     private final AtomicBoolean isRunningLater = new AtomicBoolean(false);
@@ -36,22 +39,27 @@ public class Renderer {
         this.root = root;
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
+        this.lastUsedCanvasWidth = canvas.getWidth();
+        this.lastUsedCanvasHeight = canvas.getHeight();
     }
 
     public void render() {
         if (isRunningLater.get()) return; // Busy waiting
         isRunningLater.set(true);
 
+        lastUsedCanvasWidth = canvas.getWidth();
+        lastUsedCanvasHeight = canvas.getHeight();
+
         // Updates of the coordinate systems
-        worldCoordinateSystem.update(canvas.getWidth(), canvas.getHeight());
-        guiCoordinateSystem.update(canvas.getWidth(), canvas.getHeight());
+        worldCoordinateSystem.update(lastUsedCanvasWidth, lastUsedCanvasHeight);
+        guiCoordinateSystem.update(lastUsedCanvasWidth, lastUsedCanvasHeight);
 
         // Fills up the renderQueue
         root.render();
 
         Platform.runLater(() -> {
             gc.setImageSmoothing(false);
-            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            gc.clearRect(0, 0, lastUsedCanvasWidth, lastUsedCanvasHeight);
 
             while (!renderQueue.isEmpty()) {
                 RenderTask rt = renderQueue.poll();
@@ -60,6 +68,14 @@ public class Renderer {
 
             isRunningLater.set(false);
         });
+    }
+
+    public double getScreenWidth() {
+        return lastUsedCanvasWidth;
+    }
+
+    public double getScreenHeight() {
+        return lastUsedCanvasHeight;
     }
 
     /**
