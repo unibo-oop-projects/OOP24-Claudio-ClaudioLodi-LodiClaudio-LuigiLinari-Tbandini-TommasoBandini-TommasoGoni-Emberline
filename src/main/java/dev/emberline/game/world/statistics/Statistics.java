@@ -40,7 +40,8 @@ public class Statistics implements Updatable, Serializable {
     }
 
     /**
-     * Whenever the current wave finishes this method increments by one the counter.
+     * Whenever the current wave finishes,
+     * this method must increment by one the number of survived waves.
      */
     public void updateWavesSurvived() {
         this.wavesSurvived++;
@@ -60,40 +61,55 @@ public class Statistics implements Updatable, Serializable {
         totalDamage += damage;
     }
 
+    /**
+     * Updates the dps by dividing total damage dealt by total time passed (in seconds).
+     */
     private void updateDPS() {
         if (timeInGame > 0) {
             dps = totalDamage / (double) (timeInGame / unitOfTime);
         }
     }
 
+    /**
+     * @return the number of enemies killed
+     */
     public int getEnemiesKilled() {
         return this.enemiesKilled;
     }
 
+    /**
+     * @return number of waves survived
+     */
     public int getWavesSurvived() {
         return this.wavesSurvived;
     }
 
+    /**
+     * @return the time spent playing this series of waves.
+     */
     public long getTimeInGame() {
         return this.timeInGame;
     }
 
-    public double getTotalDamage() {
-        return totalDamage;
-    }
-
+    /**
+     * @return average damage per second,
+     * dealt by the towers to the enemies.
+     */
     public double getDPS() {
         return this.dps;
     }
 
-    void printToTerminal() {
+    private void printToTerminal() {
         System.out.println(enemiesKilled);
         System.out.println(wavesSurvived);
         System.out.println(dps);
         System.out.println(timeInGame);
-        System.out.println(enemiesKilled);
     }
 
+    /**
+     * Should be used to update the time-dependent stats of the game
+     * @param elapsed the time elapsed since the last update in nanoseconds
+     */
     @Override
     public void update(long elapsed) {
         updateTimeInGame(elapsed);
