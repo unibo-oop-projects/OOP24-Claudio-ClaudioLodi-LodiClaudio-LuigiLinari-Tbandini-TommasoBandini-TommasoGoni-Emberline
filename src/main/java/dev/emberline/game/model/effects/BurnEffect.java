@@ -1,6 +1,5 @@
 package dev.emberline.game.model.effects;
 
-import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
@@ -12,10 +11,8 @@ import java.util.List;
  * Represents a burn effect that deals damage over time.
  * The effect is associated with fire enchantments in the game.
  *
- * @param duration The total duration in seconds over which the burn effect persists.
- * @param damagePerSecond The amount of damage in hp dealt to the affected entity each second.
- *
  * @see dev.emberline.game.model.EnchantmentInfo.Type#FIRE
+ * @see dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation.EnemyAppearance#BURNING
  */
 public class BurnEffect implements EnchantmentEffect {
     
@@ -28,6 +25,12 @@ public class BurnEffect implements EnchantmentEffect {
 
     private boolean isExpired = false;
 
+    /**
+     * Constructs a {@code BurnEffect} that applies burn damage to an enemy over a specified duration.
+     *
+     * @param damagePerSecond The amount of damage dealt every second, measured in hit points (hp).
+     * @param duration The total duration of the burn effect in seconds.
+     */
     public BurnEffect(double damagePerSecond, double duration) {
         this.damagePerSecond = damagePerSecond;
         this.damagePerNs = (damagePerSecond / 1_000_000_000);
@@ -36,33 +39,37 @@ public class BurnEffect implements EnchantmentEffect {
         this.durationNs = (long) (duration * 1_000_000_000);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void updateEffect(IEnemy enemy, long elapsed) {
-        if (totalElapsed + elapsed >= durationNs) {
-            long spareTime = durationNs - totalElapsed;
-            enemy.dealDamage(damagePerNs * spareTime);
-
-            totalElapsed = durationNs;
-            isExpired = true;
+    public void updateEffect(IEnemy enemy, long elapsedNs) {
+        if (isExpired) {
             return;
         }
-
-        totalElapsed += elapsed;
-        enemy.dealDamage(damagePerNs * elapsed);
+        totalElapsed += elapsedNs;
+        if (totalElapsed >= durationNs) {
+            enemy.dealDamage(damagePerNs * (durationNs - (totalElapsed - elapsedNs))); // Deal remaining damage before ending effect
+            endEffect(enemy);
+            return;
+        }
+        enemy.dealDamage(damagePerNs * elapsedNs);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void endEffect(IEnemy enemy) {
-
+        // No specific end effect for burn; it naturally expires after the duration.
+        isExpired = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isExpired() {
         return isExpired;
-    }
-
-    @Override
-    public EnchantmentInfo.Type getEnchantmentType() {
-        return EnchantmentInfo.Type.FIRE;
     }
 
     @Override
@@ -72,6 +79,9 @@ public class BurnEffect implements EnchantmentEffect {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnemyAnimation.EnemyAppearance getEnemyAppearance() {
         return EnemyAnimation.EnemyAppearance.BURNING;
