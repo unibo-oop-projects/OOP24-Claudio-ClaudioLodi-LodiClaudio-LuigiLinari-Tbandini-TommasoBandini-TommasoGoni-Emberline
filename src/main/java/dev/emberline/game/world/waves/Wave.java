@@ -75,6 +75,9 @@ public class Wave implements Updatable, Renderable {
         sendEnemies();
     }
 
+    /**
+     * Renders the fog and zoom
+     */
     @Override
     public void render() {
         fog.render();
@@ -83,6 +86,9 @@ public class Wave implements Updatable, Renderable {
         }
     }
 
+    /**
+     * Starts the animations of the new wave
+     */
     public void startWave() {
         zoom.startAnimation();
         fog.startAnimation();
