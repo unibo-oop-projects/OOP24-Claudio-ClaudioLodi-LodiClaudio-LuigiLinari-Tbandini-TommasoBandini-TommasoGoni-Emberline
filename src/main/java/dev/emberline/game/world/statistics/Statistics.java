@@ -92,7 +92,7 @@ public class Statistics implements Updatable, Serializable {
     }
 
     public double getDPS() {
-        return this.playerHealth;
+        return this.dps;
     }
 
     void printToTerminal() {
@@ -100,7 +100,7 @@ public class Statistics implements Updatable, Serializable {
         System.out.println(wavesSurvived);
         System.out.println(dps);
         System.out.println(timeInGame);
-        //System.out.println(enemiesKilled);
+        System.out.println(enemiesKilled);
     }
 
     @Override
