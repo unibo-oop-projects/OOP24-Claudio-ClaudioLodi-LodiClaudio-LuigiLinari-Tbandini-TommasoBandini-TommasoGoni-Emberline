@@ -5,7 +5,8 @@ import java.util.Optional;
 
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
-import dev.emberline.core.render.Zoom;
+import dev.emberline.game.world.graphics.Fog;
+import dev.emberline.game.world.graphics.Zoom;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.roads.Roads;
 import dev.emberline.game.world.spawnpoints.Spawnpoints;
@@ -21,6 +22,7 @@ public class Wave implements Updatable, Renderable {
     private final Roads roads;
     private final Spawnpoints spawnpoints;
     private final Zoom zoom;
+    private final Fog fog;
     // In nanoseconds, keeps track of the total time elapsed from the start of the wave
     private long accumulatorNs = 0;
 
@@ -33,6 +35,7 @@ public class Wave implements Updatable, Renderable {
         this.roads = new Roads(waveDirectoryPath);
         this.spawnpoints = new Spawnpoints(waveDirectoryPath);
         this.zoom = new Zoom(waveDirectoryPath);
+        this.fog = new Fog(waveDirectoryPath);
     }
 
     /**
@@ -74,6 +77,7 @@ public class Wave implements Updatable, Renderable {
 
     @Override
     public void render() {
+        fog.render();
         if (!zoom.isOver()) {
             zoom.render();
         }
@@ -81,5 +85,6 @@ public class Wave implements Updatable, Renderable {
 
     public void startWave() {
         zoom.startAnimation();
+        fog.startAnimation();
     }
 }

@@ -1,6 +1,5 @@
 package dev.emberline.game.model.effects;
 
-import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
@@ -12,10 +11,8 @@ import java.util.List;
  * Represents a slow effect that slows down an enemy by a certain factor over a specified duration.
  * The effect is associated with ice enchantments in the game.
  *
- * @param duration The total duration in seconds over which the slow effect persists.
- * @param slowingFactor The multiplicative factor by which the speed of the affected entity is reduced.
- *
  * @see dev.emberline.game.model.EnchantmentInfo.Type#ICE
+ * @see dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation.EnemyAppearance#FREEZING
  */
 public class SlowEffect implements EnchantmentEffect {
 
@@ -27,38 +24,51 @@ public class SlowEffect implements EnchantmentEffect {
 
     private boolean isExpired = false;
 
+    /**
+     * Constructs a {@code SlowEffect} that applies a slowing effect to an enemy.
+     *
+     * @param slowingFactor The factor by which the enemy's speed is reduced (e.g., 0.5 for half the speed).
+     * @param duration The total duration of the burn effect in seconds.
+     */
     public SlowEffect(double slowingFactor, double duration) {
         this.slowingFactor = slowingFactor;
         this.duration = duration;
         this.durationNs = (long) (duration * 1_000_000_000);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void updateEffect(IEnemy enemy, long elapsed) {
-        totalElapsed += elapsed;
+    public void updateEffect(IEnemy enemy, long elapsedNs) {
+        totalElapsed += elapsedNs;
         if (totalElapsed >= durationNs) {
             endEffect(enemy);
-            isExpired = true;
             return;
         }
         enemy.setSlowFactor(slowingFactor);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void endEffect(IEnemy enemy) {
         enemy.setSlowFactor(1.0);
+        isExpired = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isExpired() {
         return isExpired;
     }
 
-    @Override
-    public EnchantmentInfo.Type getEnchantmentType() {
-        return EnchantmentInfo.Type.ICE;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TowerStat> getTowerStats() {
         return List.of(new TowerStat(TowerStatType.SLOW_EFFECT,     slowingFactor),
@@ -66,6 +76,9 @@ public class SlowEffect implements EnchantmentEffect {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnemyAnimation.EnemyAppearance getEnemyAppearance() {
         return EnemyAnimation.EnemyAppearance.FREEZING;

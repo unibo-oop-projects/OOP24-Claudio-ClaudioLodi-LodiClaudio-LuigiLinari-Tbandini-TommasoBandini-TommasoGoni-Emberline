@@ -17,14 +17,10 @@ public class TextGuiButton extends GuiButton {
     private final TextLayout textLayout;
 
     private static class TextLayout {
-        @JsonProperty("textWidthRatio")
-        private double textWidthRatio;
-        @JsonProperty("textHeightRatio")
-        private double textHeightRatio;
-        @JsonProperty("textXOffset")
-        private double textXOffset;
-        @JsonProperty("textYPosition")
-        private double textYPosition;
+        @JsonProperty double textWidthRatio;
+        @JsonProperty double textHeightRatio;
+        @JsonProperty double textXOffset;
+        @JsonProperty double textYPosition;
     }
 
     public enum TextLayoutType {

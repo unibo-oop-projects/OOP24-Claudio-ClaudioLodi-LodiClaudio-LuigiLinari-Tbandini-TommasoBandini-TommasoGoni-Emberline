@@ -17,18 +17,12 @@ import java.util.Objects;
 
 public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
     private static class Metadata {
-        @JsonProperty("filename")
-        private String filename;
-        @JsonProperty("atlasHeight")
-        private int atlasHeight;
-        @JsonProperty("atlasWidth")
-        private int atlasWidth;
-        @JsonProperty("rows")
-        private int rows;
-        @JsonProperty("columns")
-        private int columns;
-        @JsonProperty("charOrder")
-        private String charOrder;
+        @JsonProperty String filename;
+        @JsonProperty int atlasHeight;
+        @JsonProperty int atlasWidth;
+        @JsonProperty int rows;
+        @JsonProperty int columns;
+        @JsonProperty String charOrder;
     }
     private final static Metadata metadata = ConfigLoader.loadConfig("/font/font.json", Metadata.class);
 

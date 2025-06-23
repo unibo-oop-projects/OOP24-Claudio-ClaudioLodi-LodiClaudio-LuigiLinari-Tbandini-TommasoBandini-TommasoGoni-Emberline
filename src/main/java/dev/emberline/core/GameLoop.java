@@ -1,8 +1,8 @@
 package dev.emberline.core;
 
 import dev.emberline.core.input.InputDispatcher;
-import dev.emberline.core.update.Updater;
 import dev.emberline.core.render.Renderer;
+import dev.emberline.core.update.Updater;
 import dev.emberline.game.GameRoot;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
@@ -35,7 +35,6 @@ public class GameLoop extends Thread {
     private GameLoop(Stage stage, Canvas canvas) {
         super("Game Thread");
         this.stage = stage;
-
         gameRoot = new GameRoot();
         renderer = new Renderer(gameRoot, canvas);
         updater = new Updater(gameRoot);
@@ -79,20 +78,12 @@ public class GameLoop extends Thread {
                 updater.update(NS_PER_UPDATE);
             }
 
-            // Render (maybe add a syncronization concept to avoid the busy waiting)
+            // Render (maybe add a synchronization concept to avoid the busy waiting)
             renderer.render();
 
             // sleep (for fixed FPS, although I'm not sure if we actually have control over
             // the rate at which JavaFX sends screen update requests)
         }
-    }
-
-    public Updater getUpdater() {
-        return updater;
-    }
-
-    public InputDispatcher getInputDispatcher() {
-        return inputDispatcher;
     }
 
     public Renderer getRenderer() {

@@ -16,12 +16,12 @@ import javafx.scene.image.Image;
 public class WorldRenderComponent implements Renderable, Updatable {
     //world bounds
     private record Coordinate(
-            @JsonProperty("x") int x,
-            @JsonProperty("y") int y
+            @JsonProperty int x,
+            @JsonProperty int y
     ) {}
     private record WorldBounds(
-            @JsonProperty("topLeftBound") Coordinate topLeftBound,
-            @JsonProperty("bottomRightBound") Coordinate bottomRightBound
+            @JsonProperty Coordinate topLeftBound,
+            @JsonProperty Coordinate bottomRightBound
     ) {}
 
     private final WorldBounds worldBounds;

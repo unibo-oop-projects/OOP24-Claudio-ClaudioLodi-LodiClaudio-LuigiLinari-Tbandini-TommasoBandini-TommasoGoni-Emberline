@@ -1,5 +1,6 @@
 package dev.emberline.game.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.game.model.effects.BurnEffect;
 import dev.emberline.game.model.effects.EnchantmentEffect;
@@ -10,8 +11,6 @@ import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents the information of an enchantment, including its type and level.
@@ -68,21 +67,33 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canUpgrade() {
         return type != Type.BASE && level < MAX_LEVEL;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getMaxLevel() {
         return MAX_LEVEL;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canChangeType() {
         return type == Type.BASE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnchantmentInfo getUpgrade() {
         if (canUpgrade()) {
@@ -91,6 +102,9 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
         throw new IllegalStateException("Cannot upgrade enchantment of type " + type + " at level " + level);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnchantmentInfo getChangeType(Type newType) {
         if (canChangeType()) {
@@ -99,6 +113,9 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
         throw new IllegalStateException("Cannot change type of enchantment of type " + type + " at level " + level);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnchantmentInfo getDefault() {
         return new EnchantmentInfo(Type.BASE, 0);
@@ -121,12 +138,18 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
 
     private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/enchantmentInfoStats.json", Metadata.class);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getUpgradeCost() {
         if (type == Type.BASE) return metadata.BASE_UPGRADE_COST;
         return metadata.UPGRADE_COSTS[level];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getRefundValue() {
         if (type == Type.BASE) return 0;
@@ -151,6 +174,9 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TowerStat> getTowerStats() {
         List<TowerStat> towerStats = new ArrayList<>();
