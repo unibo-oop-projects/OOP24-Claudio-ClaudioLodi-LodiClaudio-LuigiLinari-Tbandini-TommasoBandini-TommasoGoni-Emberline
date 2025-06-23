@@ -16,7 +16,6 @@ public class Statistics implements Updatable, Serializable {
     private int enemiesKilled = 0;
     private int wavesSurvived = 0;
     private long timeInGame = 0;
-    private int playerHealth = 0;
     private double totalDamage = 0;
     private double dps = 0;
 
@@ -54,10 +53,6 @@ public class Statistics implements Updatable, Serializable {
         this.timeInGame += elapsed;
     }
 
-    public void updatePlayerHealth(int playerHealth) {
-        this.playerHealth = playerHealth;
-    }
-
     /**
      * Sums @param damage to the total damage already dealt by the towers to the enemies.
      */
@@ -83,10 +78,6 @@ public class Statistics implements Updatable, Serializable {
         return this.timeInGame;
     }
 
-    public int getPlayerHealth() {
-        return this.playerHealth;
-    }
-
     public double getTotalDamage() {
         return totalDamage;
     }
@@ -108,6 +99,6 @@ public class Statistics implements Updatable, Serializable {
         updateTimeInGame(elapsed);
         //updatePlayerHealth();
         updateDPS();
-        printToTerminal();
+        //printToTerminal();
     }
 }
