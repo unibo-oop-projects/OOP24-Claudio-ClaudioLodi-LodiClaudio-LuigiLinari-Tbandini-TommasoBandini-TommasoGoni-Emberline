@@ -1,6 +1,20 @@
 package dev.emberline.game.model;
 
+/**
+ * An {@code UpgradableInfo} represents a family of attributes that can be altered through upgrades or type changes.
+ * Implementations of this interface must be {@code immutable}: type changes and upgrades must return a new instance of the object.
+ * <p>
+ * Every implementing class of this interface must be linked to one and only one implementation of {@link InfoType}.
+ *
+ * @param <T>    the class of the type of the specific {@code UpgradableInfo} implementation, which must implement the {@link InfoType} interface.
+ *           This is used to link the object to its specific type information enforcing type safety.
+ * @param <SELF> the class type of the implementing class, used for referencing itself in method signatures, for type safety.
+ */
 public interface UpgradableInfo<T extends UpgradableInfo.InfoType, SELF extends UpgradableInfo<T, SELF>> {
+    /**
+     * This is a tag interface, every implementing class must be linked to one and only one implementation of {@link UpgradableInfo}.
+     * Implementations of this interface must be used to define and identify every possible type of the relative {@code UpgradableInfo} object.
+     */
     interface InfoType {}
 
     /**
@@ -79,9 +93,9 @@ public interface UpgradableInfo<T extends UpgradableInfo.InfoType, SELF extends 
     int getRefundValue();
 
     /**
-     * Retrieves the default instance of the implementing object.
+     * Retrieves an instance representing the default state.
      *
-     * @return the default instance of the object.
+     * @return a new instance of the object in its default state.
      */
     SELF getDefault();
 }
