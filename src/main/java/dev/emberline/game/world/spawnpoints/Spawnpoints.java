@@ -15,12 +15,9 @@ public class Spawnpoints {
     // Single spawnpoint configuration
     private static final String spawnpointConfigFilename = "spawnpoints.json";
     private static class SpawnSequence {
-        @JsonProperty("firstSpawnTimeNs")
-        private long firstSpawnTimeNs;
-        @JsonProperty("spawnIntervalNs")
-        private long spawnIntervalNs;
-        @JsonProperty("enemies")
-        private EnemyType[] enemies;
+        @JsonProperty long firstSpawnTimeNs;
+        @JsonProperty long spawnIntervalNs;
+        @JsonProperty EnemyType[] enemies;
     }
     private static class Spawnpoint {
         @JsonProperty("x")

@@ -17,18 +17,12 @@ import javafx.scene.image.WritableImage;
 
 public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
     private static class Metadata {
-        @JsonProperty("width")
-        private int width;
-        @JsonProperty("height")
-        private int height;
-        @JsonProperty("frames")
-        private int frames;
-        @JsonProperty("frameTimeNs")
-        private int frameTimeNs;
-        @JsonProperty("direction")
-        private Map<FacingDirection, Integer> direction;
-        @JsonProperty("state")
-        private Map<EnemyAppearance, Integer> state;
+        @JsonProperty int width;
+        @JsonProperty int height;
+        @JsonProperty int frames;
+        @JsonProperty int frameTimeNs;
+        @JsonProperty Map<FacingDirection, Integer> direction;
+        @JsonProperty Map<EnemyAppearance, Integer> state;
     }
 
     @Override

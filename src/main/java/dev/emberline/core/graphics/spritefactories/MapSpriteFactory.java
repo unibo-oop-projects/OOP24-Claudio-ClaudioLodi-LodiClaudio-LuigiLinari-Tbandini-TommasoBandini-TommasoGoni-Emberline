@@ -12,22 +12,15 @@ import java.util.Objects;
 public class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
 
     private static class Waves {
-        @JsonProperty("wave")
-        private String wave;
-        @JsonProperty("frames")
-        private int frames;
+        @JsonProperty String wave;
+        @JsonProperty int frames;
     }
     private static class Metadata {
-        @JsonProperty("wavesFolder")
-        private String wavesFolder;
-        @JsonProperty("mapFolder")
-        private String mapFolder;
-        @JsonProperty("mapFile")
-        private String mapFile;
-        @JsonProperty("frameTimeNs")
-        private int frameTimeNs;
-        @JsonProperty("waves")
-        private Waves[] waves;
+        @JsonProperty String wavesFolder;
+        @JsonProperty String mapFolder;
+        @JsonProperty String mapFile;
+        @JsonProperty int frameTimeNs;
+        @JsonProperty Waves[] waves;
     }
 
     private final static Metadata metadata = ConfigLoader.loadConfig("/world/waves/map.json", Metadata.class);

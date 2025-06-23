@@ -6,8 +6,6 @@ import dev.emberline.utility.Vector2D;
 
 import java.util.List;
 
-import static java.lang.Math.min;
-
 public class EnemyWithStats implements IEnemy {
 
     private final IEnemy enemy;

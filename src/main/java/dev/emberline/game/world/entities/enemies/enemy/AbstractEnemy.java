@@ -13,14 +13,10 @@ import dev.emberline.utility.Vector2D;
 public abstract class AbstractEnemy implements IEnemy {
 
     protected static class Metadata {
-        @JsonProperty("tileWidth")
-        public double width;
-        @JsonProperty("tileHeight")
-        public double height;
-        @JsonProperty("fullHealth")
-        public double fullHealth;
-        @JsonProperty("speed")
-        public double speed;
+        @JsonProperty public double tileWidth;
+        @JsonProperty public double tileHeight;
+        @JsonProperty public double fullHealth;
+        @JsonProperty public double speed;
     }
 
     public enum FacingDirection {
@@ -44,7 +40,7 @@ public abstract class AbstractEnemy implements IEnemy {
     abstract protected EnemyType getEnemyType();
 
     public double getWidth() {
-        return getMetadata().width;
+        return getMetadata().tileWidth;
     }
 
     @Override
@@ -53,7 +49,7 @@ public abstract class AbstractEnemy implements IEnemy {
     }
 
     public double getHeight() {
-        return getMetadata().height;
+        return getMetadata().tileHeight;
     }
 
     protected double getFullHealth() {
