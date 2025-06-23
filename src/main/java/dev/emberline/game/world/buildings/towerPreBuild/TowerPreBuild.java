@@ -44,9 +44,8 @@ public class TowerPreBuild extends Building {
 
     @Override
     protected void clicked() {
-        towersManager.buildTower(this);
-
         towersManager.closeTowerDialog();
+        towersManager.openNewBuildDialog(this);
     }
 
     @Override

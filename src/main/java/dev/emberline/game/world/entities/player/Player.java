@@ -11,6 +11,7 @@ import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.World;
 import dev.emberline.gui.event.GuiEvent;
 import dev.emberline.gui.event.GuiEventListener;
+import dev.emberline.gui.event.NewBuildEvent;
 import dev.emberline.gui.event.ResetTowerInfoEvent;
 import dev.emberline.gui.event.SetTowerInfoEvent;
 import dev.emberline.gui.event.UpgradeTowerInfoEvent;
@@ -71,14 +72,14 @@ public class Player implements GuiEventListener {
             handleResetEvent((ResetTowerInfoEvent) event);
         } else if (event instanceof SetTowerInfoEvent) {
             handleSetEvent((SetTowerInfoEvent) event);
-        } /* else if (event instanceof NewBuildEvent) {
+        } else if (event instanceof NewBuildEvent) {
             handleNewBuildEvent((NewBuildEvent) event);
-        } */
+        }
     }
 
-    /* private void handleNewBuildEvent(NewBuildEvent event) {
-        // TODO: add tower to the world
-    } */
+    private void handleNewBuildEvent(NewBuildEvent event) {
+        world.getTowersManager().buildTower(event.getTowerPreBuild());
+    }
 
     private void handleUpgradeEvent(UpgradeTowerInfoEvent event) {
         UpgradableInfo<?,?> info = event.getUpgradableInfo();
