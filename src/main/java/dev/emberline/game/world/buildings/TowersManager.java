@@ -8,6 +8,7 @@ import dev.emberline.game.world.World;
 import dev.emberline.game.world.buildings.towerPreBuild.TowerPreBuild;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.buildings.tower.Tower;
+import dev.emberline.gui.towerdialog.NewBuildDialogLayer;
 import dev.emberline.gui.towerdialog.TowerDialogLayer;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
@@ -19,6 +20,7 @@ import java.util.*;
 public class TowersManager implements Updatable, Renderable, Inputable {
 
     private TowerDialogLayer towerDialogLayer;
+    private NewBuildDialogLayer newBuildDialogLayer;
 
     private Set<Building> buildings = new HashSet<>();
     private final Collection<TowerPreBuild> toBuild = new LinkedList<>();
@@ -38,11 +40,22 @@ public class TowersManager implements Updatable, Renderable, Inputable {
         buildings.add(new TowerPreBuild(new Coordinate2D(5,15), this));
     }
 
+    public void openNewBuildDialog(TowerPreBuild tower) {
+        if (newBuildDialogLayer == null || newBuildDialogLayer.getTowerPreBuild() != tower) {
+            newBuildDialogLayer = new NewBuildDialogLayer(tower);
+            newBuildDialogLayer.setListener(world.getPlayer());
+        }
+    }
+
     public void openTowerDialog(Tower tower) {
         if (towerDialogLayer == null || towerDialogLayer.getTower() != tower) {
             towerDialogLayer = new TowerDialogLayer(tower);
             towerDialogLayer.setListener(world.getPlayer());
         }
+    }
+
+    public void closeNewBuildDialog() {
+        newBuildDialogLayer = null;
     }
 
     public void closeTowerDialog() {
@@ -56,11 +69,14 @@ public class TowersManager implements Updatable, Renderable, Inputable {
         toBuild.add(preBuild);
     }
 
-    /* TODO */
     @Override
     public void processInput(InputEvent inputEvent) {
         if (inputEvent.isConsumed()) {
             return;
+        }
+
+        if (newBuildDialogLayer != null) {
+            newBuildDialogLayer.processInput(inputEvent);
         }
 
         if (towerDialogLayer != null) {
@@ -76,12 +92,17 @@ public class TowersManager implements Updatable, Renderable, Inputable {
 
         // Clicking elsewhere closes the active tower dialog
         if (!inputEvent.isConsumed() && inputEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
+            closeNewBuildDialog();
             closeTowerDialog();
         }
     }
 
     @Override
     public void render() {
+        if (newBuildDialogLayer != null) {
+            newBuildDialogLayer.render();
+        }
+
         if (towerDialogLayer != null) {
             towerDialogLayer.render();
         }
@@ -102,6 +123,7 @@ public class TowersManager implements Updatable, Renderable, Inputable {
             Vector2D towerLocationBottomLeft = new Coordinate2D(
                     preBuild.getWorldTopLeft().getX(), preBuild.getWorldBottomRight().getY()
             );
+            closeNewBuildDialog();
             buildings.add(new Tower(towerLocationBottomLeft, world));
         }
         toBuild.clear();

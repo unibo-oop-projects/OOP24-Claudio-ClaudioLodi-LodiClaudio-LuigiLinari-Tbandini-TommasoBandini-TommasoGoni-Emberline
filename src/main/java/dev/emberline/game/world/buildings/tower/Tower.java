@@ -58,6 +58,7 @@ public class Tower extends Building implements TowerInfoProvider {
 
     @Override
     protected void clicked() {
+        world.getTowersManager().closeNewBuildDialog();
         world.getTowersManager().openTowerDialog(this);
     }
 
