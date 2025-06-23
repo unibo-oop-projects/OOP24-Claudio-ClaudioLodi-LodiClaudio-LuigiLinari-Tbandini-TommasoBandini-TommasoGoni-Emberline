@@ -27,6 +27,13 @@ public class Spawnpoints {
         @JsonProperty("spawnSequences")
         private SpawnSequence[] spawnSequences;
     }
+
+    /**
+     * Single enemy identified by these 3 parameters:
+     * @param spawnTimeNs
+     * @param spawnLocation
+     * @param enemyType
+     */
     public record EnemyToSpawn(long spawnTimeNs, Vector2D spawnLocation, EnemyType enemyType) implements Comparable<EnemyToSpawn> {
         @Override
         public int compareTo(EnemyToSpawn enemyToSpawn) {
@@ -71,10 +78,18 @@ public class Spawnpoints {
         }
     }
 
+    /**
+     * @return false only if there are no more enemies to spawn in the current wave.
+     */
     public boolean hasMoreEnemiesToSpawn() {
         return !spawnQueue.isEmpty();
     }
 
+    /**
+     * Returns the list of enemies to spawn at and before the current time.
+     * @param timeNs time in nanoseconds
+     * @return list of enemies
+     */
     public List<EnemyToSpawn> retrieveEnemiesToSpawnNanoseconds(long timeNs) {
         List<EnemyToSpawn> result = new ArrayList<>();
         while (!spawnQueue.isEmpty() && spawnQueue.peek().spawnTimeNs <= timeNs) {
