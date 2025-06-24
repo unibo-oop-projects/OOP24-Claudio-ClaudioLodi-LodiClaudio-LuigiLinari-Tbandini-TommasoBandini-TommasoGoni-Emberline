@@ -26,7 +26,7 @@ public class ProjectileUpdateComponent implements Updatable {
 
     /// Parameters defining the parabolic motion (arc of a circle) with a scaling factor of 1 
     private static final double START_THETA =        3.0/4 * Math.PI;
-    private static final double END_THETA =          START_THETA - (1.0/2 * Math.PI);
+    private static final double END_THETA =          START_THETA - 1.0/2 * Math.PI;
     private static final double UNIT_RADIUS =        1.0/(2*Math.cos(END_THETA));
     private static final double UNIT_ARC_LENGTH =     UNIT_RADIUS * (START_THETA - END_THETA);
     ///
@@ -131,7 +131,7 @@ public class ProjectileUpdateComponent implements Updatable {
 
             /// Solve quadratic
             // (l / v_proj) ^ 2
-            double lv_projSq = (UNIT_ARC_LENGTH / VELOCITY_MAG) * (UNIT_ARC_LENGTH / VELOCITY_MAG);
+            double lv_projSq = UNIT_ARC_LENGTH / VELOCITY_MAG * (UNIT_ARC_LENGTH / VELOCITY_MAG);
 
             double A1 = lv_projSq * (v_E.magnitude() * v_E.magnitude());
             double A = 1.0 - A1;
@@ -153,7 +153,7 @@ public class ProjectileUpdateComponent implements Updatable {
 
             // The t is valid only if it's > 0 and inside that specific uniform motion
             bestDeltaT = Stream.of(deltaT1, deltaT2)
-                    .filter((t) -> (t.compareTo(0.0) >= 0) && (t.compareTo((double) duration) <= 0))
+                    .filter(t -> t.compareTo(0.0) >= 0 && t.compareTo((double) duration) <= 0)
                     .min(Double::compare)
                     .orElse(-1.0);
             found = Double.compare(bestDeltaT, -1.0) != 0;
@@ -189,9 +189,9 @@ public class ProjectileUpdateComponent implements Updatable {
         // It rotates space so that the "x-axis" is aligned with the direction from the starting point to the ending point
         // The "y-axis" sits 90° from the trasformed x-axis, if the ending point is on the right of the starting point the direction is upwards otherwise is downwards
         Vector2D B1 = cEnd.subtract(cStart).normalize();
-        double signY = (B1.getX() >= 0) ? +1 : -1;
-        Vector2D B2 = (new Coordinate2D(-B1.getY(), B1.getX())).multiply(signY);
-        Function<Vector2D, Vector2D> rotation = (p) -> new Coordinate2D(
+        double signY = B1.getX() >= 0 ? +1 : -1;
+        Vector2D B2 = new Coordinate2D(-B1.getY(), B1.getX()).multiply(signY);
+        Function<Vector2D, Vector2D> rotation = p -> new Coordinate2D(
                 B1.getX() * p.getX() + B2.getX() * p.getY(),
                 B1.getY() * p.getX() + B2.getY() * p.getY()
         );
@@ -201,8 +201,8 @@ public class ProjectileUpdateComponent implements Updatable {
         double radius = scalingFactor * UNIT_RADIUS;
         double angularVelocity = -(VELOCITY_MAG / radius);
 
-        long timeInAir = (long) ((scalingFactor * UNIT_ARC_LENGTH) / VELOCITY_MAG);
-        return new Trajectory((t) -> {
+        long timeInAir = (long) (scalingFactor * UNIT_ARC_LENGTH / VELOCITY_MAG);
+        return new Trajectory(t -> {
             if (t > flightTime) {
                 t = flightTime;
             }

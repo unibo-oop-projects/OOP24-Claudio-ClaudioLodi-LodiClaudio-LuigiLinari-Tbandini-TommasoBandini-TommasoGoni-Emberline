@@ -48,5 +48,5 @@ public enum SingleSpriteKey implements SpriteKey {
     FOG_TOP_LEFT,
     FOG_TOP_RIGHT,
     FOG_BOTTOM_LEFT,
-    FOG_BOTTOM_RIGHT;
+    FOG_BOTTOM_RIGHT
 }

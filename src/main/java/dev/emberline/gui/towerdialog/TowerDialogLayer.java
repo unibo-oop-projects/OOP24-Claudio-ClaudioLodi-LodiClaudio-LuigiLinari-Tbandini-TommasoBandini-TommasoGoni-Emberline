@@ -325,7 +325,7 @@ public class TowerDialogLayer extends GuiLayer {
         double statValue = statView.getStat().value();
         String statValueStr = new DecimalFormat("0.##").format(statValue);
         // Value color effect
-        ColorAdjust valueColor = (statView.getType() == TowerStatView.Type.NEW) ? Colors.STAT_NEW_VALUE : Colors.STAT_VALUE;
+        ColorAdjust valueColor = statView.getType() == TowerStatView.Type.NEW ? Colors.STAT_NEW_VALUE : Colors.STAT_VALUE;
         // Layout
         double iconVMargin = width * Layout.Stats.SV_ICON_V_MARGIN_FACTOR;
         double iconHMargin = iconVMargin * Layout.Stats.SV_ICON_H_MARGIN_FACTOR;
@@ -391,7 +391,7 @@ public class TowerDialogLayer extends GuiLayer {
             double y = Layout.Selector.UPGRADE_Y + verticalOffset;
             double width = Layout.Selector.LEVEL_MARKER_WIDTH;
             double height = Layout.Selector.UPGRADE_HEIGHT;
-            Image sprite = (i < info.level()) ? SpriteLoader.loadSprite(SingleSpriteKey.FULL_UPGRADE_LEVEL).image() : SpriteLoader.loadSprite(SingleSpriteKey.EMPTY_UPGRADE_LEVEL).image();
+            Image sprite = i < info.level() ? SpriteLoader.loadSprite(SingleSpriteKey.FULL_UPGRADE_LEVEL).image() : SpriteLoader.loadSprite(SingleSpriteKey.EMPTY_UPGRADE_LEVEL).image();
             Renderer.drawImage(sprite, gc, cs, x, y, width, height);
         }
     }

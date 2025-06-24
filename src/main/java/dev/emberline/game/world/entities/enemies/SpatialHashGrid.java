@@ -131,8 +131,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     }
 
     private boolean isInside(CellIdx cellIdx) {
-        return (cellIdx.x() >= 0 && cellIdx.x() < cols &&
-                cellIdx.y() >= 0 && cellIdx.y() < rows);
+        return cellIdx.x() >= 0 && cellIdx.x() < cols &&
+                cellIdx.y() >= 0 && cellIdx.y() < rows;
     }
 
     private CellIdx getCellIdx(Vector2D location) {

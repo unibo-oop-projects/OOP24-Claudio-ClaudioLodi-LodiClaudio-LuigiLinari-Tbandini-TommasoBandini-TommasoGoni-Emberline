@@ -113,7 +113,7 @@ public class Fog implements Renderable {
         double cycleDurationNs = metadata.blinkPeriodSeconds * 1e9;
         boolean blinkState = accumulatorNs % cycleDurationNs < cycleDurationNs * metadata.dutyCycle;
         // Determine if the fog is currently blinking
-        boolean isBlinking = (accumulatorNs >= 0 && accumulatorNs < metadata.animationDurationSeconds * 1e9) && metadata.blinkEnabled;
+        boolean isBlinking = accumulatorNs >= 0 && accumulatorNs < metadata.animationDurationSeconds * 1e9 && metadata.blinkEnabled;
         // Draw inner or outer fog
         if (accumulatorNs < 0 || isBlinking && blinkState) {
             renderFog(metadata.topLeft.fromX, metadata.topLeft.fromY, metadata.bottomRight.fromX, metadata.bottomRight.fromY);
@@ -127,8 +127,8 @@ public class Fog implements Renderable {
         GraphicsContext gc = renderer.getGraphicsContext();
         CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
-        double viewWorldWidth = (bottomRightX - topLeftX);
-        double viewWorldHeight = (bottomRightY - topLeftY);
+        double viewWorldWidth = bottomRightX - topLeftX;
+        double viewWorldHeight = bottomRightY - topLeftY;
         double screenWidth = renderer.getScreenWidth();
         double screenHeight = renderer.getScreenHeight();
 

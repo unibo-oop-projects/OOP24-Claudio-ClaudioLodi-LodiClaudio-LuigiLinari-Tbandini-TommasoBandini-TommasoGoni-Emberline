@@ -89,8 +89,6 @@ public abstract class AbstractEnemy implements IEnemy {
         updateComponent.setSlowFactor(slowFactor);
     }
 
-    ;
-
     @Override
     public boolean isDead() {
         return updateComponent.isDead();

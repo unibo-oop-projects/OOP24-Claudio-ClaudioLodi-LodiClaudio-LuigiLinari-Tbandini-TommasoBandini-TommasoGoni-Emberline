@@ -31,8 +31,6 @@ public interface IEnemy extends Updatable, Renderable {
     record UniformMotion(Vector2D origin, Vector2D velocity, long duration) {
     }
 
-    ;
-
     /**
      * @param time time of truncation
      * @return All the uniform motions starting from the current position of the enemy.

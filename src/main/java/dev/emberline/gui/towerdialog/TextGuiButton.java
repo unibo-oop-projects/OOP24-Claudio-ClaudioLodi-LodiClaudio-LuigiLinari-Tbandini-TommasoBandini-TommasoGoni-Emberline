@@ -32,7 +32,7 @@ public class TextGuiButton extends GuiButton {
         RIGHT,
         TOP,
         BOTTOM,
-        CENTER;
+        CENTER
     }
 
     public static TextLayout loadLayout(TextLayoutType type) {

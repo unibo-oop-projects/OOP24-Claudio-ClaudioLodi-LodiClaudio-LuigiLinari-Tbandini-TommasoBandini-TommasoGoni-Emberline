@@ -33,7 +33,7 @@ public class BurnEffect implements EnchantmentEffect {
      */
     public BurnEffect(double damagePerSecond, double duration) {
         this.damagePerSecond = damagePerSecond;
-        this.damagePerNs = (damagePerSecond / 1_000_000_000);
+        this.damagePerNs = damagePerSecond / 1_000_000_000;
 
         this.duration = duration;
         this.durationNs = (long) (duration * 1_000_000_000);
