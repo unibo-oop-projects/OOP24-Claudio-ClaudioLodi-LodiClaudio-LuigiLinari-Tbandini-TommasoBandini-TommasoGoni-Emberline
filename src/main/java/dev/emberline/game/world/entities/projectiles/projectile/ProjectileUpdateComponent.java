@@ -158,7 +158,7 @@ public class ProjectileUpdateComponent implements Updatable {
             found = Double.compare(bestDeltaT, -1.0) != 0;
 
             if (!found) {
-                t_0 += (double) duration;
+                t_0 += duration;
             }
         }
 

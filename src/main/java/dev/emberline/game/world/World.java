@@ -37,7 +37,7 @@ public class World implements GameState, Serializable {
     private final Player player;
 
     public World() {
-        this.statistics = new Statistics(this);
+        this.statistics = new Statistics();
         this.towersManager = new TowersManager(this);
         this.enemiesManager = new EnemiesManagerWithStats(this);
         this.waveManager = new WaveManagerWithStats(this);

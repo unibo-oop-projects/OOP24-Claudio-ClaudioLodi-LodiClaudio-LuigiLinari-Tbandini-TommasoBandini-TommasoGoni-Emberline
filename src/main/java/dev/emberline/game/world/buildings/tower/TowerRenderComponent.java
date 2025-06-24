@@ -18,6 +18,10 @@ import javafx.scene.image.Image;
 import javafx.scene.transform.Rotate;
 
 class TowerRenderComponent implements Renderable {
+
+    private final Tower tower;
+    private final long creationTimeNs = System.nanoTime();
+
     private static final JsonNode configsNode = ConfigLoader.loadNode("/sprites/towerAssets/crystal.json");
 
     private static class Metadata {
@@ -28,9 +32,6 @@ class TowerRenderComponent implements Renderable {
         private static final double CRYSTAL_TRANSPARENCY = configsNode.get("transparency").asDouble();
         private static final double CRYSTAL_BLOOM_THRESHOLD = configsNode.get("bloomThreshold").asDouble();
     }
-
-    private final Tower tower;
-    private final long creationTimeNs = System.nanoTime();
 
     TowerRenderComponent(final Tower tower) {
         this.tower = tower;

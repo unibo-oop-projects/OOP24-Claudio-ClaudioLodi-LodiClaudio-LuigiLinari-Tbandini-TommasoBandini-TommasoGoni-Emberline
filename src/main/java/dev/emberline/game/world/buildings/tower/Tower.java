@@ -15,15 +15,6 @@ import java.util.Map;
 public class Tower extends Building implements TowerInfoProvider {
     private static String configsPath = "/sprites/towerAssets/tower.json";
 
-    private static class Metadata {
-        @JsonProperty
-        double width;
-        @JsonProperty
-        Map<ProjectileInfo.Type, Double> height;
-        @JsonProperty
-        double firingYOffsetTiles;
-    }
-
     private static Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
 
     private final World world;
@@ -33,6 +24,15 @@ public class Tower extends Building implements TowerInfoProvider {
 
     private ProjectileInfo projectileInfo = new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
     private EnchantmentInfo enchantmentInfo = new EnchantmentInfo(EnchantmentInfo.Type.BASE, 0);
+
+    private static class Metadata {
+        @JsonProperty
+        double width;
+        @JsonProperty
+        Map<ProjectileInfo.Type, Double> height;
+        @JsonProperty
+        double firingYOffsetTiles;
+    }
 
     public Tower(final Vector2D locationBottomLeft, final World world) {
         this.world = world;

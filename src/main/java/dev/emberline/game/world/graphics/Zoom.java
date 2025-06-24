@@ -10,6 +10,12 @@ import dev.emberline.core.components.Renderable;
  * It requires a file with the proper indications to be used.
  */
 public class Zoom implements Renderable {
+
+    private final Metadata metadata;
+
+    private long accumulatorNs = 0;
+    private long previousTimeNs = System.nanoTime();
+
     //zoom configuration
     private record Translation(
             @JsonProperty double fromX,
@@ -26,11 +32,6 @@ public class Zoom implements Renderable {
             @JsonProperty double animationDelaySeconds
     ) {
     }
-
-    private final Metadata metadata;
-
-    private long accumulatorNs = 0;
-    private long previousTimeNs = System.nanoTime();
 
     public Zoom(final String wavePath) {
         metadata = ConfigLoader.loadConfig(wavePath + "cs.json", Metadata.class);

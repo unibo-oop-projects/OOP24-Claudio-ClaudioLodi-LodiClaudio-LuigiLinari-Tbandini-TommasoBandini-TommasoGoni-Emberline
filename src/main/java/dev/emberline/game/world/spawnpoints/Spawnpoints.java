@@ -16,7 +16,7 @@ import java.util.Queue;
  */
 public class Spawnpoints {
 
-    private final Spawnpoint[] spawnpoints;
+    private final Spawnpoint[] rawSpawnpoints;
     private final Queue<EnemyToSpawn> spawnQueue = new PriorityQueue<>();
 
     private static final String SPAWNPOINT_CONFIG_FILENAME = "spawnpoints.json";
@@ -74,12 +74,12 @@ public class Spawnpoints {
      * @param wavePath the path of the directory containing the wave files
      */
     public Spawnpoints(final String wavePath) {
-        spawnpoints = ConfigLoader.loadConfig(wavePath + SPAWNPOINT_CONFIG_FILENAME, Spawnpoint[].class);
+        rawSpawnpoints = ConfigLoader.loadConfig(wavePath + SPAWNPOINT_CONFIG_FILENAME, Spawnpoint[].class);
         populateSpawnQueue();
     }
 
     private void populateSpawnQueue() {
-        for (final Spawnpoint spawnpoint : spawnpoints) {
+        for (final Spawnpoint spawnpoint : rawSpawnpoints) {
             //adding (0.5, 0.5) to use the center of the tile's coordinates.
             final Vector2D spawnLocation = new Coordinate2D(spawnpoint.x, spawnpoint.y).add(0.5, 0.5);
             for (final SpawnSequence sequence : spawnpoint.spawnSequences) {

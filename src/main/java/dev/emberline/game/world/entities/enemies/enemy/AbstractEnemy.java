@@ -11,6 +11,9 @@ import java.util.List;
 
 public abstract class AbstractEnemy implements IEnemy {
 
+    private final EnemyUpdateComponent updateComponent;
+    private final EnemyRenderComponent renderComponent;
+
     protected static class Metadata {
         @JsonProperty
         public double tileWidth;
@@ -30,9 +33,6 @@ public abstract class AbstractEnemy implements IEnemy {
             return FacingDirection.valueOf(direction.toUpperCase());
         }
     }
-
-    private final EnemyUpdateComponent updateComponent;
-    private final EnemyRenderComponent renderComponent;
 
     public AbstractEnemy(final Vector2D spawnPoint, final World world) {
         this.updateComponent = new EnemyUpdateComponent(spawnPoint, world, this);

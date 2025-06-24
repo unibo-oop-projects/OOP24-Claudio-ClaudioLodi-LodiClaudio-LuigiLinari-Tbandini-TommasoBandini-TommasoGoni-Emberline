@@ -1,7 +1,6 @@
 package dev.emberline.game.world.statistics;
 
 import dev.emberline.core.components.Updatable;
-import dev.emberline.game.world.World;
 
 import java.io.Serializable;
 
@@ -12,30 +11,20 @@ import java.io.Serializable;
  */
 public class Statistics implements Updatable, Serializable {
 
-    private final World world;
     private int enemiesKilled = 0;
     private int wavesSurvived = 0;
     private long timeInGame = 0;
     private double totalDamage = 0;
     private double dps = 0;
 
-    private final long unitOfTime = 1_000_000_000;
+    private static final long UNIT_OF_TIME = 1_000_000_000;
     private final long acc = 0;
-
-    /**
-     * this class is relative to
-     *
-     * @param world
-     */
-    public Statistics(final World world) {
-        this.world = world;
-    }
 
     /**
      * Sums the enemies that died in the current update
      * to all the other enemies already dead.
      *
-     * @param enemiesKilled
+     * @param enemiesKilled number of enemies killed
      */
     public void updateEnemiesKilled(final int enemiesKilled) {
         this.enemiesKilled += enemiesKilled;
@@ -68,7 +57,7 @@ public class Statistics implements Updatable, Serializable {
      */
     private void updateDPS() {
         if (timeInGame > 0) {
-            dps = totalDamage / (double) (timeInGame / unitOfTime);
+            dps = totalDamage / ((double) timeInGame / UNIT_OF_TIME);
         }
     }
 

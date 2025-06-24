@@ -9,15 +9,6 @@ import javafx.scene.image.Image;
 
 public class EnemyAnimation implements Updatable {
 
-    public enum EnemyAppearance {
-        NORMAL, BURNING, FREEZING, DYING;
-
-        @JsonCreator
-        public static EnemyAppearance fromString(final String appearance) {
-            return EnemyAppearance.valueOf(appearance.toUpperCase());
-        }
-    }
-
     private final AbstractEnemy enemy;
     private AnimatedSprite animatedSprite;
     private EnemyAppearance enemyAppearance = EnemyAppearance.NORMAL;
@@ -28,6 +19,15 @@ public class EnemyAnimation implements Updatable {
 
     private boolean dyingAnimationFinished = false; // To track if the dying animation has finished
     private boolean isDying = false; // To track if the enemy is currently in a dying state
+
+    public enum EnemyAppearance {
+        NORMAL, BURNING, FREEZING, DYING;
+
+        @JsonCreator
+        public static EnemyAppearance fromString(final String appearance) {
+            return EnemyAppearance.valueOf(appearance.toUpperCase());
+        }
+    }
 
     public EnemyAnimation(final AbstractEnemy enemy) {
         this.enemy = enemy;
