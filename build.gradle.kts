@@ -23,7 +23,7 @@ dependencies {
 
 javafx {
     version = "23.0.2"
-    modules = listOf("javafx.controls")
+    modules = listOf("javafx.controls", "javafx.media")
 }
 
 tasks.named<Test>("test") {
