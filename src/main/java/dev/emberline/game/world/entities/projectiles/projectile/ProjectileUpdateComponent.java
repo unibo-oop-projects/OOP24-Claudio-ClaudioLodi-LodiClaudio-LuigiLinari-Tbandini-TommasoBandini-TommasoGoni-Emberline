@@ -17,10 +17,6 @@ import java.util.stream.Stream;
 
 public class ProjectileUpdateComponent implements Updatable {
 
-    private record Trajectory(Function<Long, Projectile.PositionAndRotation> getPositionAndRotationAt,
-                              Long flightTime) {
-    }
-
     private static final long MAX_FLIGHT_TIME = 10_000_000_000L; // 10s
     private final double VELOCITY_MAG;
 
@@ -46,6 +42,10 @@ public class ProjectileUpdateComponent implements Updatable {
     private final EnchantmentInfo enchantmentInfo;
 
     private final Projectile owner;
+
+    private record Trajectory(Function<Long, Projectile.PositionAndRotation> getPositionAndRotationAt,
+                              Long flightTime) {
+    }
 
     public ProjectileUpdateComponent(final Vector2D start, final IEnemy target,
                                      final ProjectileInfo projInfo, final EnchantmentInfo enchInfo, final World world, final Projectile owner) throws FlightPathNotFound {

@@ -10,11 +10,11 @@ import dev.emberline.utility.Vector2D;
 
 public class Projectile implements IProjectile {
 
-    record PositionAndRotation(Vector2D position, Double rotation) {
-    }
-
     private final ProjectileUpdateComponent updateComponent;
     private final ProjectileRenderComponent renderComponent;
+
+    record PositionAndRotation(Vector2D position, Double rotation) {
+    }
 
     public Projectile(final Vector2D start, final IEnemy target, final ProjectileInfo projInfo, final EnchantmentInfo enchInfo, final World world) throws FlightPathNotFound {
         this.updateComponent = new ProjectileUpdateComponent(start, target, projInfo, enchInfo, world, this);
