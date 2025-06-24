@@ -23,18 +23,18 @@ public class Roads {
     private static final String ROADS_CONFIG_FILENAME = "roads.json";
 
     //single arch configuration
-    private static final class Arch {
-        @JsonProperty("fromX")
-        private double fromX;
-        @JsonProperty("fromY")
-        private double fromY;
-        @JsonProperty("toX")
-        private double toX;
-        @JsonProperty("toY")
-        private double toY;
-        @JsonProperty("weight")
-        private int weight;
-    }
+    private record Arch (
+        @JsonProperty
+        double fromX,
+        @JsonProperty
+        double fromY,
+        @JsonProperty
+        double toX,
+        @JsonProperty
+        double toY,
+        @JsonProperty
+        int weight
+    ) {}
 
     /**
      * @param wavePath represents the path of the files regarding the current wave

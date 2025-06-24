@@ -22,23 +22,23 @@ public class Spawnpoints {
     private static final String SPAWNPOINT_CONFIG_FILENAME = "spawnpoints.json";
 
     // Single spawnpoint configuration
-    private static final class SpawnSequence {
+    private record SpawnSequence (
         @JsonProperty
-        long firstSpawnTimeNs;
+        long firstSpawnTimeNs,
         @JsonProperty
-        long spawnIntervalNs;
+        long spawnIntervalNs,
         @JsonProperty
-        EnemyType[] enemies;
-    }
+        EnemyType[] enemies
+    ) {}
 
-    private static final class Spawnpoint {
-        @JsonProperty("x")
-        private double x;
-        @JsonProperty("y")
-        private double y;
-        @JsonProperty("spawnSequences")
-        private SpawnSequence[] spawnSequences;
-    }
+    private record Spawnpoint (
+        @JsonProperty
+        double x,
+        @JsonProperty
+        double y,
+        @JsonProperty
+        SpawnSequence[] spawnSequences
+    ) {}
 
     /**
      * Single enemy identified by these 3 parameters:

@@ -126,20 +126,20 @@ public record EnchantmentInfo(Type type,
         return new EnchantmentInfo(Type.BASE, 0);
     }
 
-    private static class Metadata {
-        @JsonProperty("baseUpgradeCost")
-        private int BASE_UPGRADE_COST;
-        @JsonProperty("upgradeCosts")
-        private int[] UPGRADE_COSTS;
-        @JsonProperty("resetRefunds")
-        private int[] RESET_REFUNDS;
-        @JsonProperty("effectDuration")
-        private double[] EFFECT_DURATION;
-        @JsonProperty("fireDamagePerSecond")
-        private double[] FIRE_DAMAGE_PER_SECOND;
-        @JsonProperty("iceSlowingFactor")
-        private double[] ICE_SLOWING_FACTOR;
-    }
+    private record Metadata (
+        @JsonProperty
+        int baseUpgradeCost,
+        @JsonProperty
+        int[] upgradeCosts,
+        @JsonProperty
+        int[] resetRefunds,
+        @JsonProperty
+        double[] effectDuration,
+        @JsonProperty
+        double[] fireDamagePerSecond,
+        @JsonProperty
+        double[] iceSlowingFactor
+    ) {}
 
     private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/enchantmentInfoStats.json", Metadata.class);
 
@@ -149,9 +149,9 @@ public record EnchantmentInfo(Type type,
     @Override
     public int getUpgradeCost() {
         if (type == Type.BASE) {
-            return metadata.BASE_UPGRADE_COST;
+            return metadata.baseUpgradeCost;
         }
-        return metadata.UPGRADE_COSTS[level];
+        return metadata.upgradeCosts[level];
     }
 
     /**
@@ -162,7 +162,7 @@ public record EnchantmentInfo(Type type,
         if (type == Type.BASE) {
             return 0;
         }
-        return metadata.RESET_REFUNDS[level];
+        return metadata.resetRefunds[level];
     }
 
     /**
@@ -175,10 +175,10 @@ public record EnchantmentInfo(Type type,
      * or an empty {@code Optional} if no effect is associated with the enchantment.
      */
     public Optional<EnchantmentEffect> getEffect() {
-        final double duration = metadata.EFFECT_DURATION[level];
+        final double duration = metadata.effectDuration[level];
         return Optional.ofNullable(switch (type) {
-            case Type.ICE -> new SlowEffect(metadata.ICE_SLOWING_FACTOR[level], duration);
-            case Type.FIRE -> new BurnEffect(metadata.FIRE_DAMAGE_PER_SECOND[level], duration);
+            case Type.ICE -> new SlowEffect(metadata.iceSlowingFactor[level], duration);
+            case Type.FIRE -> new BurnEffect(metadata.fireDamagePerSecond[level], duration);
             case Type.BASE -> null;
         });
     }
