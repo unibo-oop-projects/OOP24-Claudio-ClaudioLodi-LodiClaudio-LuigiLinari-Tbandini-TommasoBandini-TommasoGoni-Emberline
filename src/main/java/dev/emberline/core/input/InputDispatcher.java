@@ -6,12 +6,13 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class InputDispatcher {
 
     // This queue will be filled by JavaFX and polled by the Game Loop
-    private static final ConcurrentLinkedQueue<InputEvent> inputs = new ConcurrentLinkedQueue<>();
+    private static final Queue<InputEvent> inputs = new ConcurrentLinkedQueue<>();
     private final Inputable root;
 
     public InputDispatcher(final Inputable root) {

@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -32,7 +33,7 @@ public class Renderer {
     private final CoordinateSystem guiCoordinateSystem = new CoordinateSystem(0, 0, GUICS_WIDTH, GUICS_HEIGHT);
 
     // Rendering queue
-    private final PriorityBlockingQueue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
+    private final Queue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
     private long taskOrderingCounter = 0;
 
     public Renderer(final Renderable root, final Canvas canvas) {

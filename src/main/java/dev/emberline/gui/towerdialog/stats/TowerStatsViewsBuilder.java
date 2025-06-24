@@ -122,7 +122,7 @@ public final class TowerStatsViewsBuilder {
      * @return an unmodifiable sorted List of tower stat views
      */
     public List<TowerStatView> build() {
-        final ArrayList<TowerStatView> views = new ArrayList<>();
+        final List<TowerStatView> views = new ArrayList<>();
 
         // Add NORMAL stat views (stats that are in the stat map but not in the compared stats map or are in both but have the same value)
         final Stream<TowerStatView> normalStatViews = statsMap.values().stream()
