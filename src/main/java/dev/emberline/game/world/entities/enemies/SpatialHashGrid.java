@@ -12,6 +12,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     private static final int CELL_SIZE = 1;
 
     private final int x_min, y_min;
+    private final int x_max, y_max;
+
     private final int cols;
     private final int rows;
 
@@ -21,11 +23,13 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     private int size = 0;
 
     public SpatialHashGrid(int x_min, int y_min, int x_max, int y_max) {
-        this.cols = (int) Math.ceil((double)(x_max - x_min) / CELL_SIZE);
-        this.rows = (int) Math.ceil((double)(y_max - y_min) / CELL_SIZE);
+        this.cols = (int) Math.ceil((double)(x_max - x_min) / CELL_SIZE) + 1;
+        this.rows = (int) Math.ceil((double)(y_max - y_min) / CELL_SIZE) + 1;
 
         this.x_min = x_min;
         this.y_min = y_min;
+        this.x_max = x_max;
+        this.y_max = y_max;
 
         this.spatialHashGrid = new ArrayList<>();
         for (int x = 0; x < cols; x++) {
@@ -37,11 +41,13 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     }
 
     public void add(IEnemy enemy) {
-        CellIdx cellIdx = getCellIdx(enemy.getPosition());
-        if (!isInside(cellIdx)) {
+        Vector2D enemyLocation = enemy.getPosition();
+        if (    enemyLocation.getX() < x_min || enemyLocation.getX() > x_max ||
+                enemyLocation.getY() < y_min || enemyLocation.getY() > y_max) {
             throw new IllegalStateException("Enemy is outside the bounds of the spatial hash grid");
         }
 
+        CellIdx cellIdx = getCellIdx(enemyLocation);
         spatialHashGrid.get(cellIdx.x()).get(cellIdx.y()).add(enemy);
         enemyCell.put(enemy, cellIdx);
         size++;
@@ -104,8 +110,10 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
         List<IEnemy> inside = new LinkedList<>();
         for (int x = min.x(); x <= max.x(); x++) {
             for (int y = min.y(); y <= max.y(); y++) {
-                if (!isInside(new CellIdx(x,y))) continue;
-                for (final IEnemy enemy : spatialHashGrid.get(x).get(y)) {
+                CellIdx cellIdx = new CellIdx(x, y);
+
+                if (!isInside(cellIdx)) continue;
+                for (final IEnemy enemy : spatialHashGrid.get(cellIdx.x()).get(cellIdx.y())) {
                     Vector2D pos = enemy.getPosition();
                     double dstX = pos.getX() - location.getX();
                     double dstY = pos.getY() - location.getY();
