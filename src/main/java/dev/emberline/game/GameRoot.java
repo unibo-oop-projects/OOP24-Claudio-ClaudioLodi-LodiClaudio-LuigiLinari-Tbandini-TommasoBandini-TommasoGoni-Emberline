@@ -48,17 +48,13 @@ public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListe
     public void onGuiEvent(final GuiEvent event) {
         if (event instanceof final SetStartEvent startEvent) {
             handleStartEvent(startEvent);
-        }
-        else if (event instanceof final SetMainMenuEvent menuEvent) {
+        } else if (event instanceof final SetMainMenuEvent menuEvent) {
             handleSetMainMenuEvent(menuEvent);
-        }
-        else if (event instanceof final OpenOptionsEvent openOptionsEvent) {
+        } else if (event instanceof final OpenOptionsEvent openOptionsEvent) {
             handleOpenOptionsEvent(openOptionsEvent);
-        }
-        else if (event instanceof final CloseOptionsEvent closeOptionsEvent) {
+        } else if (event instanceof final CloseOptionsEvent closeOptionsEvent) {
             handleCloseOptionsEvent(closeOptionsEvent);
-        }
-        else if (event instanceof final ExitGameEvent exitGameEvent) {
+        } else if (event instanceof final ExitGameEvent exitGameEvent) {
             handleExitGameEvent(exitGameEvent);
         }
     }

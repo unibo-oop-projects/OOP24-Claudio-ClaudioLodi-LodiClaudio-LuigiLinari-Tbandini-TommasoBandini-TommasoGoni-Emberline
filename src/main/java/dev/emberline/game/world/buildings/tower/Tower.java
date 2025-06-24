@@ -92,8 +92,7 @@ public class Tower extends Building implements TowerInfoProvider {
     public void setUpgradableInfo(final UpgradableInfo<?, ?> info) {
         if (info instanceof final ProjectileInfo infoCast) {
             projectileInfo = infoCast;
-        }
-        else if (info instanceof final EnchantmentInfo infoCast) {
+        } else if (info instanceof final EnchantmentInfo infoCast) {
             enchantmentInfo = infoCast;
         }
     }

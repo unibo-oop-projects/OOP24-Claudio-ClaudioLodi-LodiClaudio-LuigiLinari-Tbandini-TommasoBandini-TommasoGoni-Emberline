@@ -21,6 +21,7 @@ public class Roads {
     private final Arch[] arches;
 
     private static final String ROADS_CONFIG_FILENAME = "roads.json";
+
     //single arch configuration
     private static final class Arch {
         @JsonProperty("fromX")

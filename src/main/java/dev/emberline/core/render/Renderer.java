@@ -145,8 +145,7 @@ public class Renderer {
         final Image image = SpriteLoader.loadSprite(new StringSpriteKey(text)).image();
         if (width / image.getWidth() < height / image.getHeight()) {
             drawImage(image, gc, cs, x, y + height * CENTER_TEXT_H_MARGIN, width, height * (1 - 2 * CENTER_TEXT_H_MARGIN));
-        }
-        else {
+        } else {
             drawImageFit(image, gc, cs, x, y, width, height);
         }
         gc.setImageSmoothing(gcImageSmoothing);

@@ -110,6 +110,7 @@ public class Statistics implements Updatable, Serializable {
 
     /**
      * Should be used to update the time-dependent stats of the game
+     *
      * @param elapsed the time elapsed since the last update in nanoseconds
      */
     @Override

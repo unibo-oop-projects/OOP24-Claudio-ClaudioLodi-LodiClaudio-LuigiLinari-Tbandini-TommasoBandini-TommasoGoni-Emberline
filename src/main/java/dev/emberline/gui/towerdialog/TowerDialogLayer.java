@@ -222,8 +222,7 @@ public class TowerDialogLayer extends GuiLayer {
                 hoverData.put(button, (TowerStatsProvider) element.getChangeType(typeValue));
                 buttons.add(button);
             }
-        }
-        else { // otherwise, we add the upgrade and reset button
+        } else { // otherwise, we add the upgrade and reset button
             GuiButton upgradeButton = new PricingGuiButton(
                     Layout.Selector.UPGRADE_BTN_X, Layout.Selector.UPGRADE_BTN_Y + yOffset,
                     Layout.Selector.UPGRADE_BTN_SIDE, Layout.Selector.UPGRADE_BTN_SIDE,

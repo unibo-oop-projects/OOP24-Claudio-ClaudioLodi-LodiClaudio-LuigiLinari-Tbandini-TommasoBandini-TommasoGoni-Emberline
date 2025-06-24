@@ -17,11 +17,13 @@ public class WaveManager implements IWaveManager {
 
     private static final String WAVES_CONFIG_PATH = "/world/waves/waves.json";
     private final static WavesConfig wavesConfig = ConfigLoader.loadConfig(WAVES_CONFIG_PATH, WavesConfig.class);
+
     // Loading waves from resources
     private static class WavesConfig {
         @JsonProperty
         String[] wavePaths;
     }
+
     /**
      * Creates a new instance of {@code WaveManager}
      *

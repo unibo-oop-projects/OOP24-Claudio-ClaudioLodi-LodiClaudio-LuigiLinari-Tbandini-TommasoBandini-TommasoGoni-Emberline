@@ -20,6 +20,7 @@ public class Spawnpoints {
     private final Queue<EnemyToSpawn> spawnQueue = new PriorityQueue<>();
 
     private static final String SPAWNPOINT_CONFIG_FILENAME = "spawnpoints.json";
+
     // Single spawnpoint configuration
     private static final class SpawnSequence {
         @JsonProperty
@@ -41,6 +42,7 @@ public class Spawnpoints {
 
     /**
      * Single enemy identified by these 3 parameters:
+     *
      * @param spawnTimeNs
      * @param spawnLocation
      * @param enemyType
@@ -99,6 +101,7 @@ public class Spawnpoints {
 
     /**
      * Returns the list of enemies to spawn at and before the current time.
+     *
      * @param timeNs time in nanoseconds
      * @return list of enemies
      */

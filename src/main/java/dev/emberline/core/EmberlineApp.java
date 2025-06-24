@@ -1,7 +1,6 @@
 package dev.emberline.core;
 
 import dev.emberline.core.input.InputDispatcher;
-
 import dev.emberline.core.sounds.BackGroundMusic;
 import javafx.application.Application;
 import javafx.event.EventHandler;

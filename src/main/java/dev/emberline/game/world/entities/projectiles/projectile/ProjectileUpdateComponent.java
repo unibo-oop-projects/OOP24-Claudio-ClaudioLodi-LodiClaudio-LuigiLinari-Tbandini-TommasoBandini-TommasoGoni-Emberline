@@ -24,11 +24,11 @@ public class ProjectileUpdateComponent implements Updatable {
     private static final long MAX_FLIGHT_TIME = 10_000_000_000L; // 10s
     private final double VELOCITY_MAG;
 
-    /// Parameters defining the parabolic motion (arc of a circle) with a scaling factor of 1 
-    private static final double START_THETA =        3.0/4 * Math.PI;
-    private static final double END_THETA =          START_THETA - 1.0/2 * Math.PI;
-    private static final double UNIT_RADIUS =        1.0/(2*Math.cos(END_THETA));
-    private static final double UNIT_ARC_LENGTH =     UNIT_RADIUS * (START_THETA - END_THETA);
+    /// Parameters defining the parabolic motion (arc of a circle) with a scaling factor of 1
+    private static final double START_THETA = 3.0 / 4 * Math.PI;
+    private static final double END_THETA = START_THETA - 1.0 / 2 * Math.PI;
+    private static final double UNIT_RADIUS = 1.0 / (2 * Math.cos(END_THETA));
+    private static final double UNIT_ARC_LENGTH = UNIT_RADIUS * (START_THETA - END_THETA);
     ///
 
     private final long flightTime;
@@ -56,7 +56,7 @@ public class ProjectileUpdateComponent implements Updatable {
         final Trajectory _trajectory = calculateTrajectory(start, prediction);
         this.getPositionAndRotationAt = _trajectory.getPositionAndRotationAt();
         this.flightTime = _trajectory.flightTime();
- 
+
         this.currFlightTime = 0;
         final Projectile.PositionAndRotation positionAndRotation = getPositionAndRotationAt.apply(currFlightTime);
         this.position = positionAndRotation.position();
@@ -75,12 +75,11 @@ public class ProjectileUpdateComponent implements Updatable {
     public void update(final long elapsed) {
         if (currFlightTime < flightTime) {
             currFlightTime += elapsed;
-    
+
             final Projectile.PositionAndRotation positionAndRotation = getPositionAndRotationAt.apply(currFlightTime);
             position = positionAndRotation.position();
             rotation = positionAndRotation.rotation();
-        }
-        else {
+        } else {
             projectileHitListener.onProjectileHit(projectileHitEvent);
             hasHit = true;
         }
@@ -135,7 +134,7 @@ public class ProjectileUpdateComponent implements Updatable {
 
             final double A1 = lv_projSq * (v_E.magnitude() * v_E.magnitude());
             final double A = 1.0 - A1;
-            
+
             final double B1 = 2 * t_0;
             final double B2 = 2 * lv_projSq * E_0.subtract(start).dotProduct(v_E);
             final double B = B1 - B2;
@@ -165,8 +164,7 @@ public class ProjectileUpdateComponent implements Updatable {
 
         if (found) {
             return currMotion.origin().add(currMotion.velocity().multiply(bestDeltaT));
-        }
-        else {
+        } else {
             throw new FlightPathNotFound("Location to hit the target doesn't exist or the flight time to reach it exceeds the MAX_FLIGHT_TIME");
         }
     }
@@ -206,9 +204,9 @@ public class ProjectileUpdateComponent implements Updatable {
             if (t > flightTime) {
                 t = flightTime;
             }
-            
+
             final double theta = theta(t, START_THETA, angularVelocity);
-            
+
             // Compute the position on the scaled trajectory, rotate it and translate so that the starting point is cStart
             Vector2D pos = rotation.apply(r(theta, radius, START_THETA)).add(cStart);
 
@@ -218,8 +216,7 @@ public class ProjectileUpdateComponent implements Updatable {
             // abs > 90 => II and III quadrant, the angle needs to be reflected
             if (Math.abs(tranformationAngle) > 90) {
                 angle = tranformationAngle - tangentTrajAngle;
-            }
-            else {
+            } else {
                 angle = tangentTrajAngle + tranformationAngle;
             }
 

@@ -1,6 +1,7 @@
 package dev.emberline.core.sounds;
 
-import javafx.scene.media.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -12,7 +13,6 @@ import java.util.Objects;
 public class BackGroundMusic {
 
     private static final String MUSIC_FILE = "/audio/emberlineSoundtrack.wav";
-            //"/sounds/test.mp3";
     private Media media;
     private final MediaPlayer mediaPlayer;
 
