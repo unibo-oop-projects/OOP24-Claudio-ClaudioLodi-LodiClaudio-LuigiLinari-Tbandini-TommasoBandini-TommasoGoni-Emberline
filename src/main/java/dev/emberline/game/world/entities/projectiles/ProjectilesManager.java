@@ -1,9 +1,5 @@
 package dev.emberline.game.world.entities.projectiles;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.EnchantmentInfo;
@@ -14,8 +10,12 @@ import dev.emberline.game.world.entities.projectiles.projectile.IProjectile;
 import dev.emberline.game.world.entities.projectiles.projectile.Projectile;
 import dev.emberline.utility.Vector2D;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 public class ProjectilesManager implements Updatable, Renderable {
-    
+
     private final List<IProjectile> projectiles;
     private final World world;
 
@@ -25,7 +25,7 @@ public class ProjectilesManager implements Updatable, Renderable {
     }
 
     public boolean addProjectile(Vector2D start, IEnemy target,
-    ProjectileInfo projInfo, EnchantmentInfo enchInfo) {
+                                 ProjectileInfo projInfo, EnchantmentInfo enchInfo) {
         try {
             Projectile projectile = new Projectile(start, target, projInfo, enchInfo, world);
             projectiles.add(projectile);

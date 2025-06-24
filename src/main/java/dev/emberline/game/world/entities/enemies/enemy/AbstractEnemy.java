@@ -1,22 +1,25 @@
 package dev.emberline.game.world.entities.enemies.enemy;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
 import dev.emberline.utility.Vector2D;
 
+import java.util.List;
+
 public abstract class AbstractEnemy implements IEnemy {
 
     protected static class Metadata {
-        @JsonProperty public double tileWidth;
-        @JsonProperty public double tileHeight;
-        @JsonProperty public double fullHealth;
-        @JsonProperty public double speed;
+        @JsonProperty
+        public double tileWidth;
+        @JsonProperty
+        public double tileHeight;
+        @JsonProperty
+        public double fullHealth;
+        @JsonProperty
+        public double speed;
     }
 
     public enum FacingDirection {
@@ -37,6 +40,7 @@ public abstract class AbstractEnemy implements IEnemy {
     }
 
     abstract protected Metadata getMetadata();
+
     abstract protected EnemyType getEnemyType();
 
     public double getWidth() {
@@ -83,7 +87,9 @@ public abstract class AbstractEnemy implements IEnemy {
     @Override
     public void setSlowFactor(double slowFactor) {
         updateComponent.setSlowFactor(slowFactor);
-    };
+    }
+
+    ;
 
     @Override
     public boolean isDead() {

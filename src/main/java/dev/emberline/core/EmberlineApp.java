@@ -34,7 +34,7 @@ public class EmberlineApp extends Application {
         canvas.widthProperty().bind(root.widthProperty());
         canvas.heightProperty().bind(root.heightProperty());
         root.getChildren().add(canvas);
-        
+
         // Scene
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -65,11 +65,14 @@ public class EmberlineApp extends Application {
         this.backGroundMusic.start();
     }
 
-    /** Calling Platform.exit() is the preferred way to explicitly terminate a JavaFX Application.
-     *  Directly calling System.exit(int) is an acceptable alternative, but doesn't allow the Application stop() method to run.
+    /**
+     * Calling Platform.exit() is the preferred way to explicitly terminate a JavaFX Application.
+     * Directly calling System.exit(int) is an acceptable alternative, but doesn't allow the Application stop() method to run.
      */
     @Override
     public void stop() {
-        if (gameLoop != null) gameLoop.running.set(false);
+        if (gameLoop != null) {
+            gameLoop.running.set(false);
+        }
     }
 }

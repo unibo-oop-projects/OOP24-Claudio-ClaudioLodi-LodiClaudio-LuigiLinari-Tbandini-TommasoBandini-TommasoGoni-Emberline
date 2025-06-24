@@ -9,8 +9,9 @@ import dev.emberline.game.world.entities.projectiles.FlightPathNotFound;
 import dev.emberline.utility.Vector2D;
 
 public class Projectile implements IProjectile {
-    
-    record PositionAndRotation(Vector2D position, Double rotation) {}
+
+    record PositionAndRotation(Vector2D position, Double rotation) {
+    }
 
     private final ProjectileUpdateComponent updateComponent;
     private final ProjectileRenderComponent renderComponent;

@@ -1,9 +1,5 @@
 package dev.emberline.game.world.entities.enemies.enemy;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.effects.DummyEffect;
 import dev.emberline.game.model.effects.EnchantmentEffect;
@@ -13,9 +9,13 @@ import dev.emberline.game.world.entities.enemies.enemy.IEnemy.UniformMotion;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 
 class EnemyUpdateComponent implements Updatable {
-    private enum EnemyState      { WALKING, DYING, DEAD }
+    private enum EnemyState {WALKING, DYING, DEAD}
 
     private final AbstractEnemy enemy;
     private EnemyState enemyState;
@@ -46,8 +46,8 @@ class EnemyUpdateComponent implements Updatable {
             throw new IllegalStateException("The enemy must have at least one destination.");
         }
 
-        this.position = spawnPoint.subtract(0, enemy.getHeight()/2);
-        destinations.replaceAll(coordinate2D -> coordinate2D.subtract(0, enemy.getHeight()/2));
+        this.position = spawnPoint.subtract(0, enemy.getHeight() / 2);
+        destinations.replaceAll(coordinate2D -> coordinate2D.subtract(0, enemy.getHeight() / 2));
 
         this.enemyState = EnemyState.WALKING;
         this.velocity = destinations.get(destinationsIdx).subtract(position)
@@ -68,7 +68,8 @@ class EnemyUpdateComponent implements Updatable {
         switch (enemyState) {
             case WALKING -> walk(elapsed);
             case DYING -> dying();
-            case DEAD -> {}
+            case DEAD -> {
+            }
         }
         enemy.getAnimationUpdatable().update(elapsed);
     }
@@ -76,7 +77,8 @@ class EnemyUpdateComponent implements Updatable {
     private void walk(long elapsed) {
         if (activeEffect.isExpired()) {
             clearEffect();
-        } else {
+        }
+        else {
             activeEffect.updateEffect(enemy, elapsed);
         }
         move(elapsed);
@@ -102,7 +104,7 @@ class EnemyUpdateComponent implements Updatable {
             Vector2D nextDestination = new Coordinate2D(destinations.get(i).getX(), destinations.get(i).getY());
 
             Vector2D velocity = nextDestination.subtract(curr).normalize().multiply(enemy.getSpeed() * slowFactor);
-            long duration = (long)(curr.distance(nextDestination) / (enemy.getSpeed() * slowFactor));
+            long duration = (long) (curr.distance(nextDestination) / (enemy.getSpeed() * slowFactor));
             durationAcc += duration;
 
             enemyMotion.add(new UniformMotion(curr, velocity, duration));
@@ -151,13 +153,14 @@ class EnemyUpdateComponent implements Updatable {
     }
 
     FacingDirection getFacingDirection() {
-        int angle = Math.round((float)Math.toDegrees(Math.atan2(-velocity.getY(), velocity.getX())));
-        return switch(angle) {
+        int angle = Math.round((float) Math.toDegrees(Math.atan2(-velocity.getY(), velocity.getX())));
+        return switch (angle) {
             case -180 -> FacingDirection.LEFT;
             case 90 -> FacingDirection.UP;
             case 0 -> FacingDirection.RIGHT;
             case -90 -> FacingDirection.DOWN;
-            default -> throw new IllegalStateException("The only handled cases of velocity are: LEFT, UP, RIGHT, DOWN. Found angle: " + angle);
+            default ->
+                    throw new IllegalStateException("The only handled cases of velocity are: LEFT, UP, RIGHT, DOWN. Found angle: " + angle);
         };
     }
 

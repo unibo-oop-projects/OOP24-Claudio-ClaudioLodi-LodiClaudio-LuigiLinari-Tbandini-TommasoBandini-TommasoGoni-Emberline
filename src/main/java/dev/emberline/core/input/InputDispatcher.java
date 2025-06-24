@@ -1,12 +1,12 @@
 package dev.emberline.core.input;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import dev.emberline.core.components.Inputable;
 import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
+
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class InputDispatcher {
 

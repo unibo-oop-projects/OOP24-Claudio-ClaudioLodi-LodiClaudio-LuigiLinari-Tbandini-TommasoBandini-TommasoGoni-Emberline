@@ -1,10 +1,6 @@
 package dev.emberline.core.graphics.spritefactories;
 
-import java.util.Map;
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
@@ -14,15 +10,25 @@ import dev.emberline.game.model.ProjectileInfo;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
+import java.util.Map;
+import java.util.Objects;
+
 public class ProjectileSpriteFactory implements SpriteFactory<ProjectileSpriteKey> {
     private static class Metadata {
-        @JsonProperty String filename;
-        @JsonProperty int width;
-        @JsonProperty int height;
-        @JsonProperty int frames;
-        @JsonProperty int frameTimeNs;
-        @JsonProperty Map<ProjectileInfo.Type, Integer> size;
-        @JsonProperty Map<EnchantmentInfo.Type, Integer> enchant;
+        @JsonProperty
+        String filename;
+        @JsonProperty
+        int width;
+        @JsonProperty
+        int height;
+        @JsonProperty
+        int frames;
+        @JsonProperty
+        int frameTimeNs;
+        @JsonProperty
+        Map<ProjectileInfo.Type, Integer> size;
+        @JsonProperty
+        Map<EnchantmentInfo.Type, Integer> enchant;
     }
 
     private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/projectile.json", Metadata.class);

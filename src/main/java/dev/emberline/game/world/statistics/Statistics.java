@@ -24,6 +24,7 @@ public class Statistics implements Updatable, Serializable {
 
     /**
      * this class is relative to
+     *
      * @param world
      */
     public Statistics(World world) {
@@ -33,6 +34,7 @@ public class Statistics implements Updatable, Serializable {
     /**
      * Sums the enemies that died in the current update
      * to all the other enemies already dead.
+     *
      * @param enemiesKilled
      */
     public void updateEnemiesKilled(int enemiesKilled) {

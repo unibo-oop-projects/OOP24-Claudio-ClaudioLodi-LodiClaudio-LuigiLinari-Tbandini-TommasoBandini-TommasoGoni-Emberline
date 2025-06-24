@@ -22,13 +22,15 @@ public class DummyEffect implements EnchantmentEffect {
      * {@inheritDoc}
      */
     @Override
-    public void updateEffect(IEnemy enemy, long elapsedNs) {}
+    public void updateEffect(IEnemy enemy, long elapsedNs) {
+    }
 
     /**
      * In this implementation, the method does nothing and will not expire the effect.
      */
     @Override
-    public void endEffect(IEnemy enemy) {}
+    public void endEffect(IEnemy enemy) {
+    }
 
     /**
      * {@inheritDoc}

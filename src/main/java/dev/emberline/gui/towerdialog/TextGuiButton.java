@@ -17,10 +17,14 @@ public class TextGuiButton extends GuiButton {
     private final TextLayout textLayout;
 
     private static class TextLayout {
-        @JsonProperty double textWidthRatio;
-        @JsonProperty double textHeightRatio;
-        @JsonProperty double textXOffset;
-        @JsonProperty double textYPosition;
+        @JsonProperty
+        double textWidthRatio;
+        @JsonProperty
+        double textHeightRatio;
+        @JsonProperty
+        double textXOffset;
+        @JsonProperty
+        double textYPosition;
     }
 
     public enum TextLayoutType {
@@ -57,7 +61,9 @@ public class TextGuiButton extends GuiButton {
     }
 
     private void drawText(Renderer renderer) {
-        if (labelText == null || labelText.isEmpty()) return;
+        if (labelText == null || labelText.isEmpty()) {
+            return;
+        }
 
         Image textImage = SpriteLoader.loadSprite(new StringSpriteKey(labelText)).image();
 

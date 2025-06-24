@@ -16,7 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 class EnemyTest {
 
@@ -35,7 +35,7 @@ class EnemyTest {
 
     private AbstractEnemy enemy;
 
-    private final Coordinate2D[] nodes = new Coordinate2D[] {
+    private final Coordinate2D[] nodes = new Coordinate2D[]{
             new Coordinate2D(0, 0),
             new Coordinate2D(0, 1),
             new Coordinate2D(2, 1),
@@ -65,7 +65,7 @@ class EnemyTest {
             long expectedTravelTime = (long) Math.ceil(nodes[i].distance(nodes[i + 1]) / (enemy.getSpeed() * enemy.getSlowFactor()));
             enemy.update(expectedTravelTime);
 
-            Assertions.assertEquals(nodes[i + 1], enemy.getPosition().add(0, enemy.getHeight()/2));
+            Assertions.assertEquals(nodes[i + 1], enemy.getPosition().add(0, enemy.getHeight() / 2));
         }
     }
 

@@ -30,6 +30,7 @@ public class WaveManagerWithStats implements IWaveManager {
     /**
      * Updates the Wavemanager.
      * Keeps record of the last wave reached.
+     *
      * @param elapsed
      */
     @Override
@@ -38,7 +39,7 @@ public class WaveManagerWithStats implements IWaveManager {
         waveManager.update(elapsed);
         int nWavePostUpdate = getCurrentWaveIndex();
 
-        if (nWavePostUpdate - nWavePreUpdate > 0)statistics.updateWavesSurvived();
+        if (nWavePostUpdate - nWavePreUpdate > 0) statistics.updateWavesSurvived();
     }
 
     @Override

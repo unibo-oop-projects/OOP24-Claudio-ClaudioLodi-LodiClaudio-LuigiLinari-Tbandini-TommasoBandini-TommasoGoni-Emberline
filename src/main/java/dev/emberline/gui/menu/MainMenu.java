@@ -1,7 +1,6 @@
 package dev.emberline.gui.menu;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.graphics.SpriteLoader;
@@ -13,11 +12,7 @@ import dev.emberline.core.render.Renderer;
 import dev.emberline.game.GameState;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
-import dev.emberline.gui.event.ExitGameEvent;
-import dev.emberline.gui.event.GameEvent;
-import dev.emberline.gui.event.GameEventListener;
-import dev.emberline.gui.event.OpenOptionsEvent;
-import dev.emberline.gui.event.SetStartEvent;
+import dev.emberline.gui.event.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -52,17 +47,20 @@ public class MainMenu extends GuiLayer implements GameState {
 
     // menu bounds
     private record Coordinate(
-        @JsonProperty int x,
-        @JsonProperty int y
-    ) {}
+            @JsonProperty int x,
+            @JsonProperty int y
+    ) {
+    }
+
     private record MenuBounds(
-        @JsonProperty Coordinate topLeftBound,
-        @JsonProperty Coordinate bottomRightBound
-    ) {}
+            @JsonProperty Coordinate topLeftBound,
+            @JsonProperty Coordinate bottomRightBound
+    ) {
+    }
 
     private final MenuBounds menuBounds;
     private GameEventListener gameEventListener;
-    
+
     // TODO refactor this constructors 
     public MainMenu() {
         this(ConfigLoader.loadConfig("/gui/menu/menuBounds.json", MenuBounds.class));
@@ -79,12 +77,14 @@ public class MainMenu extends GuiLayer implements GameState {
         startButton.setOnClick(() -> throwEvent(new SetStartEvent(startButton)));
         super.buttons.add(startButton);
     }
+
     // Options button
     private void addOptionsButton() {
         GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X, Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH, Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON).image());
         optionsButton.setOnClick(() -> throwEvent(new OpenOptionsEvent(optionsButton)));
         super.buttons.add(optionsButton);
     }
+
     // Exit button
     private void addExitButton() {
         GuiButton exitButton = new GuiButton(Layout.BTN_EXIT_X, Layout.BTN_EXIT_Y, Layout.BTN_EXIT_WIDTH, Layout.BTN_EXIT_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON).image());

@@ -15,7 +15,7 @@ import java.util.List;
  * @see dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation.EnemyAppearance#BURNING
  */
 public class BurnEffect implements EnchantmentEffect {
-    
+
     private final double damagePerSecond;
     private final double damagePerNs;
 
@@ -29,7 +29,7 @@ public class BurnEffect implements EnchantmentEffect {
      * Constructs a {@code BurnEffect} that applies burn damage to an enemy over a specified duration.
      *
      * @param damagePerSecond The amount of damage dealt every second, measured in hit points (hp).
-     * @param duration The total duration of the burn effect in seconds.
+     * @param duration        The total duration of the burn effect in seconds.
      */
     public BurnEffect(double damagePerSecond, double duration) {
         this.damagePerSecond = damagePerSecond;

@@ -1,12 +1,13 @@
 package dev.emberline.game.world.entities.enemies;
 
-import java.util.*;
-
-import dev.emberline.game.world.entities.enemies.enemy.EnemyWithStats;
+import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
+import dev.emberline.game.world.entities.enemies.enemy.EnemyWithStats;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
-import dev.emberline.game.world.World;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class EnemiesManager implements IEnemiesManager {
 
@@ -21,8 +22,8 @@ public class EnemiesManager implements IEnemiesManager {
 
         //TODO
         this.spatialHashGrid = new SpatialHashGrid(
-            0, 0,
-            32, 18
+                0, 0,
+                32, 18
         );
     }
 
@@ -31,7 +32,7 @@ public class EnemiesManager implements IEnemiesManager {
         IEnemy newEnemyWrapper = new EnemyWithStats(newEnemy, world.getStatistics());
         spatialHashGrid.add(newEnemyWrapper);
     }
-    
+
     public List<IEnemy> getNear(Vector2D location, double radius) {
         List<IEnemy> near = spatialHashGrid.getNear(location, radius);
         near.removeIf(iEnemy -> !iEnemy.isHittable());
@@ -53,7 +54,8 @@ public class EnemiesManager implements IEnemiesManager {
         for (final IEnemy enemy : spatialHashGrid) {
             if (enemy.isDead()) {
                 toRemove.add(enemy);
-            } else {
+            }
+            else {
                 enemy.update(elapsed);
                 toUpdate.add(enemy);
             }

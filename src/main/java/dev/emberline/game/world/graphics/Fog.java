@@ -63,7 +63,9 @@ public class Fog implements Renderable {
             @JsonProperty double fromY,
             @JsonProperty double toX,
             @JsonProperty double toY
-    ) {}
+    ) {
+    }
+
     private record Metadata(
             @JsonProperty Translation topLeft,
             @JsonProperty Translation bottomRight,
@@ -72,7 +74,9 @@ public class Fog implements Renderable {
             @JsonProperty double dutyCycle,
             @JsonProperty double animationDurationSeconds,
             @JsonProperty double animationDelaySeconds
-    ) {}
+    ) {
+    }
+
     private static final int FOG_SIDE_LENGTH = 2;
     private final Metadata metadata;
 
@@ -143,9 +147,9 @@ public class Fog implements Renderable {
             drawFogTile(gc, cs, SingleSpriteKey.FOG_BOTTOM_LEFT, topLeftX, topLeftY + viewWorldHeight - FOG_SIDE_LENGTH);
             drawFogTile(gc, cs, SingleSpriteKey.FOG_BOTTOM_RIGHT, topLeftX + viewWorldWidth - FOG_SIDE_LENGTH, topLeftY + viewWorldHeight - FOG_SIDE_LENGTH);
             // Convert screen corners to world coordinates and align to tile grid
-            double screenWorldLeft   = Math.floor(cs.toWorldX(0));
-            double screenWorldTop    = Math.floor(cs.toWorldY(0));
-            double screenWorldRight  = Math.ceil(cs.toWorldX(screenWidth));
+            double screenWorldLeft = Math.floor(cs.toWorldX(0));
+            double screenWorldTop = Math.floor(cs.toWorldY(0));
+            double screenWorldRight = Math.ceil(cs.toWorldX(screenWidth));
             double screenWorldBottom = Math.ceil(cs.toWorldY(screenHeight));
             // Compute fog tile offset within the visible region
             double fogOffsetX = (screenWorldLeft - topLeftX) % FOG_SIDE_LENGTH;

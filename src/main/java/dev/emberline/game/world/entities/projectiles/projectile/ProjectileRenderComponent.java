@@ -52,7 +52,7 @@ public class ProjectileRenderComponent implements Renderable {
             gc.rotate(rotation);
 
             // make so that the tip of the projectile hits
-            gc.drawImage(currentFrame, -_width/2, -_height/2, _width, _height);
+            gc.drawImage(currentFrame, -_width / 2, -_height / 2, _width, _height);
 
             gc.restore();
         }));

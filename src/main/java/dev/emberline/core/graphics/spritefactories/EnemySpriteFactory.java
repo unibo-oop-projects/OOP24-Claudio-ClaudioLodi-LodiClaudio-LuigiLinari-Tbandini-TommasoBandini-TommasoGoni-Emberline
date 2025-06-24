@@ -1,28 +1,33 @@
 package dev.emberline.core.graphics.spritefactories;
 
-import java.util.Map;
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
-import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy.FacingDirection;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation.EnemyAppearance;
+import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
+import java.util.Map;
+import java.util.Objects;
+
 public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
     private static class Metadata {
-        @JsonProperty int width;
-        @JsonProperty int height;
-        @JsonProperty int frames;
-        @JsonProperty int frameTimeNs;
-        @JsonProperty Map<FacingDirection, Integer> direction;
-        @JsonProperty Map<EnemyAppearance, Integer> state;
+        @JsonProperty
+        int width;
+        @JsonProperty
+        int height;
+        @JsonProperty
+        int frames;
+        @JsonProperty
+        int frameTimeNs;
+        @JsonProperty
+        Map<FacingDirection, Integer> direction;
+        @JsonProperty
+        Map<EnemyAppearance, Integer> state;
     }
 
     @Override
@@ -33,7 +38,7 @@ public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
 
         String jsonPath = String.format("/sprites/enemyAssets/%s.json", type.name().toLowerCase());
         Metadata metadata = ConfigLoader.loadConfig(jsonPath, Metadata.class);
-        
+
         int xOffset = metadata.direction.get(direction);
         int yOffset = metadata.state.get(state);
 

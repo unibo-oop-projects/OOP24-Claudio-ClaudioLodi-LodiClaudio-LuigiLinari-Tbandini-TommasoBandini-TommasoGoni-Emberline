@@ -1,17 +1,16 @@
 package dev.emberline.core.render;
 
+import dev.emberline.core.components.Renderable;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 import java.util.Objects;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import dev.emberline.core.components.Renderable;
-import javafx.scene.image.Image;
 
 public class Renderer {
     public static final int GUICS_HEIGHT = 18;
@@ -44,7 +43,9 @@ public class Renderer {
     }
 
     public void render() {
-        if (isRunningLater.get()) return; // Busy waiting
+        if (isRunningLater.get()) {
+            return; // Busy waiting
+        }
         isRunningLater.set(true);
 
         lastUsedCanvasWidth = canvas.getWidth();
@@ -133,14 +134,19 @@ public class Renderer {
         boolean gcImageSmoothing = gc.isImageSmoothing();
         double areaInPixels = width * height * cs.getScale() * cs.getScale();
         // Convert to uppercase if the area is too small
-        if (areaInPixels < MIN_TEXT_AREA_PX_UPPERCASE) text = text.toUpperCase();
+        if (areaInPixels < MIN_TEXT_AREA_PX_UPPERCASE) {
+            text = text.toUpperCase();
+        }
         // Use image smoothing if the area is too small
-        if (height * cs.getScale() < MIN_TEXT_HEIGHT_PX_SMOOTH) gc.setImageSmoothing(true);
+        if (height * cs.getScale() < MIN_TEXT_HEIGHT_PX_SMOOTH) {
+            gc.setImageSmoothing(true);
+        }
         // Fit image or stretch vertically
         Image image = SpriteLoader.loadSprite(new StringSpriteKey(text)).image();
         if (width / image.getWidth() < height / image.getHeight()) {
             drawImage(image, gc, cs, x, y + height * CENTER_TEXT_H_MARGIN, width, height * (1 - 2 * CENTER_TEXT_H_MARGIN));
-        } else {
+        }
+        else {
             drawImageFit(image, gc, cs, x, y, width, height);
         }
         gc.setImageSmoothing(gcImageSmoothing);

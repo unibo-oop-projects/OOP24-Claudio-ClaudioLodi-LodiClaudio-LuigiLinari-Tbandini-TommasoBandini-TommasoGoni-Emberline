@@ -19,6 +19,7 @@ import javafx.scene.transform.Rotate;
 
 class TowerRenderComponent implements Renderable {
     private static final JsonNode configsNode = ConfigLoader.loadNode("/sprites/towerAssets/crystal.json");
+
     private static class Metadata {
         private static final double CRYSTAL_WIDTH = configsNode.get("worldDimensions").get("width").asDouble();
         private static final double CRYSTAL_HEIGHT = configsNode.get("worldDimensions").get("width").asDouble();
@@ -47,7 +48,7 @@ class TowerRenderComponent implements Renderable {
         int currentFrame = (int) ((System.nanoTime() - creationTimeNs) / crystalSprite.getFrameTimeNs()) % crystalSprite.getFrameCount();
         Image crystalImage = crystalSprite.image(currentFrame);
 
-        double crystalSwingOffset = Math.sin((System.nanoTime() - creationTimeNs) * 2*Math.PI * 1./Metadata.CRYSTAL_SWING_PERIOD_NS) * Metadata.CRYSTAL_SWING_AMPLITUDE * cs.getScale();
+        double crystalSwingOffset = Math.sin((System.nanoTime() - creationTimeNs) * 2 * Math.PI * 1. / Metadata.CRYSTAL_SWING_PERIOD_NS) * Metadata.CRYSTAL_SWING_AMPLITUDE * cs.getScale();
 
         double topLeftScreenX = cs.toScreenX(tower.getWorldTopLeft().getX());
         double topLeftScreenY = cs.toScreenY(tower.getWorldTopLeft().getY());
@@ -62,7 +63,7 @@ class TowerRenderComponent implements Renderable {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BUILDINGS, () -> {
             gc.save();
-            Rotate r = new Rotate( 2*Math.sin((System.nanoTime() - creationTimeNs) / 3e8), crystalScreenX + cs.getScale() * (Metadata.CRYSTAL_WIDTH / 2), crystalScreenY + cs.getScale() * (Metadata.CRYSTAL_HEIGHT / 2));
+            Rotate r = new Rotate(2 * Math.sin((System.nanoTime() - creationTimeNs) / 3e8), crystalScreenX + cs.getScale() * (Metadata.CRYSTAL_WIDTH / 2), crystalScreenY + cs.getScale() * (Metadata.CRYSTAL_HEIGHT / 2));
             gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
             gc.setEffect(new Bloom(Metadata.CRYSTAL_BLOOM_THRESHOLD));
             gc.setGlobalAlpha(Metadata.CRYSTAL_TRANSPARENCY);

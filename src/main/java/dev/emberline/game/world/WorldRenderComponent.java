@@ -18,11 +18,14 @@ public class WorldRenderComponent implements Renderable, Updatable {
     private record Coordinate(
             @JsonProperty int x,
             @JsonProperty int y
-    ) {}
+    ) {
+    }
+
     private record WorldBounds(
             @JsonProperty Coordinate topLeftBound,
             @JsonProperty Coordinate bottomRightBound
-    ) {}
+    ) {
+    }
 
     private final WorldBounds worldBounds;
 

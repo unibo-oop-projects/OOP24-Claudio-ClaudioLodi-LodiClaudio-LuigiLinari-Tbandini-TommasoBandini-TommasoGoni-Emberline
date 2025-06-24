@@ -13,7 +13,7 @@ public class CoordinateSystem {
     // Screen Dimensions [SCREEN]
     private double screenWidth;
     private double screenHeight;
-    
+
     // Scaling factor
     private double scale;
 
@@ -52,7 +52,7 @@ public class CoordinateSystem {
     public synchronized double getRegionCenterX() {
         return (regionX1 + regionX2) / 2;
     }
-    
+
     public synchronized double getRegionCenterY() {
         return (regionY1 + regionY2) / 2;
     }
@@ -68,7 +68,7 @@ public class CoordinateSystem {
     public synchronized double getPlayableScreenWidth() {
         return (regionX2 - regionX1) * scale;
     }
-    
+
     public synchronized double getPlayableScreenHeight() {
         return (regionY2 - regionY1) * scale;
     }

@@ -1,12 +1,15 @@
 package dev.emberline.game.world.spawnpoints;
 
-import java.util.*;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
  * This class represents spawnpoints as containers of enemies to spawn at a given time
@@ -18,11 +21,16 @@ public class Spawnpoints {
 
     // Single spawnpoint configuration
     private static final String SPAWNPOINT_CONFIG_FILENAME = "spawnpoints.json";
+
     private static final class SpawnSequence {
-        @JsonProperty long firstSpawnTimeNs;
-        @JsonProperty long spawnIntervalNs;
-        @JsonProperty EnemyType[] enemies;
+        @JsonProperty
+        long firstSpawnTimeNs;
+        @JsonProperty
+        long spawnIntervalNs;
+        @JsonProperty
+        EnemyType[] enemies;
     }
+
     private static final class Spawnpoint {
         @JsonProperty("x")
         private double x;
@@ -38,11 +46,13 @@ public class Spawnpoints {
      * @param spawnLocation
      * @param enemyType
      */
-    public record EnemyToSpawn(long spawnTimeNs, Vector2D spawnLocation, EnemyType enemyType) implements Comparable<EnemyToSpawn> {
+    public record EnemyToSpawn(long spawnTimeNs, Vector2D spawnLocation,
+                               EnemyType enemyType) implements Comparable<EnemyToSpawn> {
         @Override
         public int compareTo(EnemyToSpawn enemyToSpawn) {
             return Long.compare(this.spawnTimeNs, enemyToSpawn.spawnTimeNs);
         }
+
         /**
          * Data validation
          */

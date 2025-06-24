@@ -1,13 +1,13 @@
 package dev.emberline.game.world;
 
+import dev.emberline.game.GameState;
+import dev.emberline.game.world.buildings.TowersManager;
 import dev.emberline.game.world.entities.enemies.EnemiesManagerWithStats;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.entities.player.Player;
 import dev.emberline.game.world.entities.projectiles.ProjectilesManager;
 import dev.emberline.game.world.entities.projectiles.events.ProjectileHitListener;
 import dev.emberline.game.world.statistics.Statistics;
-import dev.emberline.game.GameState;
-import dev.emberline.game.world.buildings.TowersManager;
 import dev.emberline.game.world.waves.IWaveManager;
 import dev.emberline.game.world.waves.WaveManagerWithStats;
 import dev.emberline.gui.event.GuiEventListener;
@@ -32,7 +32,7 @@ public class World implements GameState, Serializable {
     private final ProjectileHitListener projectileHitListener;
 
     private GuiEventListener listener;
-    
+
     // Player
     private final Player player;
 
@@ -50,7 +50,7 @@ public class World implements GameState, Serializable {
     public Player getPlayer() {
         return player;
     }
-    
+
     public ProjectilesManager getProjectilesManager() {
         return projectilesManager;
     }

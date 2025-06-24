@@ -47,7 +47,7 @@ public class MapAnimation implements Updatable {
 
         long frameTimeNs = animatedSprite.getFrameTimeNs();
         accumulatedTimeNs += elapsed;
-        while(!isAnimationOver() && accumulatedTimeNs >= frameTimeNs) {
+        while (!isAnimationOver() && accumulatedTimeNs >= frameTimeNs) {
             accumulatedTimeNs -= frameTimeNs;
             frameIndex++;
         }

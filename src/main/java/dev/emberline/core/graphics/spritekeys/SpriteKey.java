@@ -20,4 +20,5 @@ package dev.emberline.core.graphics.spritekeys;
  * </ul>
  * otherwise use a {@code record} class.
  */
-public interface SpriteKey  {}
+public interface SpriteKey {
+}

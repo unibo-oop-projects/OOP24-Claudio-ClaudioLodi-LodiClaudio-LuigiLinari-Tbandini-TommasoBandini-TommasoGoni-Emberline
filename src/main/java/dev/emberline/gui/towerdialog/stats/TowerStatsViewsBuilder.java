@@ -44,6 +44,7 @@ public final class TowerStatsViewsBuilder {
             this.type = Objects.requireNonNull(type, "Type cannot be null");
             this.comparedStat = null;
         }
+
         // Constructor for compared stat view
         private TowerStatView(TowerStat stat, TowerStat comparedStat) {
             this.stat = Objects.requireNonNull(stat, "TowerStat cannot be null");
@@ -95,8 +96,9 @@ public final class TowerStatsViewsBuilder {
      * @return this builder instance
      */
     public TowerStatsViewsBuilder addStats(TowerStatsProvider provider) {
-        for (TowerStat stat : provider.getTowerStats())
+        for (TowerStat stat : provider.getTowerStats()) {
             statsMap.putIfAbsent(stat.type(), stat);
+        }
         return this;
     }
 
@@ -108,8 +110,9 @@ public final class TowerStatsViewsBuilder {
      * @return this builder instance
      */
     public TowerStatsViewsBuilder addComparedStats(TowerStatsProvider provider) {
-        for (TowerStat stat : provider.getTowerStats())
+        for (TowerStat stat : provider.getTowerStats()) {
             comparedStatsMap.putIfAbsent(stat.type(), stat);
+        }
         return this;
     }
 

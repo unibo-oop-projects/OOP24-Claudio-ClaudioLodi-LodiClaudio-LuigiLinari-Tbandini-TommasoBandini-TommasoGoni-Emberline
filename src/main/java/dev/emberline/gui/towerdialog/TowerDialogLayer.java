@@ -2,15 +2,14 @@ package dev.emberline.gui.towerdialog;
 
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.graphics.SpriteLoader;
-import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
+import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
-import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.buildings.tower.Tower;
 import dev.emberline.gui.GuiButton;
@@ -67,6 +66,7 @@ public class TowerDialogLayer extends GuiLayer {
             private static final double SV_TITLE_HEIGHT_FACTOR = 0.475; // title height relative to the height of the stat view
             private static final double SV_VALUE_WIDTH_FACTOR = 0.5; // value width relative to the title width
         }
+
         // Background
         private static final double BG_WIDTH = 9.2;
         private static final double BG_HEIGHT = 15.34;
@@ -77,6 +77,7 @@ public class TowerDialogLayer extends GuiLayer {
         private static final double TITLE_HEIGHT = 2 * 0.52;
         private static final double TITLE_X = BG_X + (BG_WIDTH - TITLE_WIDTH) / 2;
         private static final double TITLE_Y = BG_Y + 2;
+
         // Selectors
         private static class Selector {
             private static final double TOP_MARGIN = 0.2;
@@ -206,7 +207,7 @@ public class TowerDialogLayer extends GuiLayer {
         buttons.add(aimButton);
     }
 
-    private <T extends UpgradableInfo.InfoType, S extends UpgradableInfo<T, S>> void addSelectorButtons(UpgradableInfo<T,S> element, Image[] typeImages, T[] typeValues, double yOffset) {
+    private <T extends UpgradableInfo.InfoType, S extends UpgradableInfo<T, S>> void addSelectorButtons(UpgradableInfo<T, S> element, Image[] typeImages, T[] typeValues, double yOffset) {
         // if the current element can change type, we add the two type buttons
         if (element.canChangeType()) {
             double[] x = {Layout.Selector.TYPE_BTN_X, Layout.Selector.TYPE_BTN_2_X};
@@ -221,7 +222,8 @@ public class TowerDialogLayer extends GuiLayer {
                 hoverData.put(button, (TowerStatsProvider) element.getChangeType(typeValue));
                 buttons.add(button);
             }
-        } else { // otherwise, we add the upgrade and reset button
+        }
+        else { // otherwise, we add the upgrade and reset button
             GuiButton upgradeButton = new PricingGuiButton(
                     Layout.Selector.UPGRADE_BTN_X, Layout.Selector.UPGRADE_BTN_Y + yOffset,
                     Layout.Selector.UPGRADE_BTN_SIDE, Layout.Selector.UPGRADE_BTN_SIDE,
@@ -246,7 +248,9 @@ public class TowerDialogLayer extends GuiLayer {
             );
             upgradeButton.setOnClick(() -> throwEvent(new UpgradeTowerInfoEvent(this, tower, element)));
             resetButton.setOnClick(() -> throwEvent(new ResetTowerInfoEvent(this, tower, element)));
-            if (element.canUpgrade()) hoverData.put(upgradeButton, (TowerStatsProvider) element.getUpgrade());
+            if (element.canUpgrade()) {
+                hoverData.put(upgradeButton, (TowerStatsProvider) element.getUpgrade());
+            }
             buttons.add(upgradeButton);
             buttons.add(resetButton);
         }
@@ -256,7 +260,9 @@ public class TowerDialogLayer extends GuiLayer {
         for (GuiButton button : buttons) {
             TowerStatsProvider hoverStats = hoverData.get(button);
             if (button.isHovered()) {
-                if (hoverStats != null) rebuildStatsWithCompared(hoverStats);
+                if (hoverStats != null) {
+                    rebuildStatsWithCompared(hoverStats);
+                }
                 return;
             }
         }
@@ -265,13 +271,13 @@ public class TowerDialogLayer extends GuiLayer {
 
     @Override
     public void render() {
-        if (displayedEnchantment != tower.getEnchantmentInfo()) { 
+        if (displayedEnchantment != tower.getEnchantmentInfo()) {
             updateLayout();
         }
         if (displayedProjectile != tower.getProjectileInfo()) {
             updateLayout();
         }
-        if (displayedAimType != currentAimType) { 
+        if (displayedAimType != currentAimType) {
             updateLayout();
         }
 
@@ -305,7 +311,9 @@ public class TowerDialogLayer extends GuiLayer {
     private void rebuildStatsWithCompared(TowerStatsProvider... comparedStatsProviders) {
         TowerStatsViewsBuilder builder = new TowerStatsViewsBuilder();
         builder.addStats(displayedEnchantment).addStats(displayedProjectile);
-        for (TowerStatsProvider comparedStats : comparedStatsProviders) builder.addComparedStats(comparedStats);
+        for (TowerStatsProvider comparedStats : comparedStatsProviders) {
+            builder.addComparedStats(comparedStats);
+        }
         statsViews = builder.build();
     }
 
@@ -321,7 +329,7 @@ public class TowerDialogLayer extends GuiLayer {
         // Layout
         double iconVMargin = width * Layout.Stats.SV_ICON_V_MARGIN_FACTOR;
         double iconHMargin = iconVMargin * Layout.Stats.SV_ICON_H_MARGIN_FACTOR;
-        double iconSide = height - 2*iconVMargin;
+        double iconSide = height - 2 * iconVMargin;
         double titleX = x + iconSide + iconHMargin;
         double titleWidth = width - iconSide - iconHMargin;
         double titleHeight = height * Layout.Stats.SV_TITLE_HEIGHT_FACTOR;
@@ -371,7 +379,9 @@ public class TowerDialogLayer extends GuiLayer {
         Renderer.drawText(title, gc, cs, Layout.Selector.X, Layout.Selector.NAME_Y + verticalOffset, Layout.Selector.NAME_WIDTH, Layout.Selector.NAME_HEIGHT);
         gc.restore();
         // Should we draw the selector?
-        if (info.canChangeType()) return;
+        if (info.canChangeType()) {
+            return;
+        }
         // Name icon
         Renderer.drawImage(getIcon(info), gc, cs, Layout.Selector.NAME_ICON_X, Layout.Selector.NAME_ICON_Y + verticalOffset, Layout.Selector.NAME_ICON_SIDE, Layout.Selector.NAME_ICON_SIDE);
         // Upgrade selector
@@ -392,13 +402,21 @@ public class TowerDialogLayer extends GuiLayer {
         Image empty = SpriteLoader.loadSprite(new StringSpriteKey(" ")).image();
         return switch (info) {
             case EnchantmentInfo e -> {
-                if (e.type() == EnchantmentInfo.Type.FIRE) yield SpriteLoader.loadSprite(SingleSpriteKey.FIRE_ICON).image();
-                if (e.type() == EnchantmentInfo.Type.ICE) yield SpriteLoader.loadSprite(SingleSpriteKey.ICE_ICON).image();
+                if (e.type() == EnchantmentInfo.Type.FIRE) {
+                    yield SpriteLoader.loadSprite(SingleSpriteKey.FIRE_ICON).image();
+                }
+                if (e.type() == EnchantmentInfo.Type.ICE) {
+                    yield SpriteLoader.loadSprite(SingleSpriteKey.ICE_ICON).image();
+                }
                 yield empty;
             }
             case ProjectileInfo p -> {
-                if (p.type() == ProjectileInfo.Type.SMALL) yield SpriteLoader.loadSprite(SingleSpriteKey.SMALL_ICON).image();
-                if (p.type() == ProjectileInfo.Type.BIG) yield SpriteLoader.loadSprite(SingleSpriteKey.BIG_ICON).image();
+                if (p.type() == ProjectileInfo.Type.SMALL) {
+                    yield SpriteLoader.loadSprite(SingleSpriteKey.SMALL_ICON).image();
+                }
+                if (p.type() == ProjectileInfo.Type.BIG) {
+                    yield SpriteLoader.loadSprite(SingleSpriteKey.BIG_ICON).image();
+                }
                 yield empty;
             }
             default -> empty;

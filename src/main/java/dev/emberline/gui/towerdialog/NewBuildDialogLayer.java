@@ -11,9 +11,7 @@ import dev.emberline.game.world.buildings.towerPreBuild.TowerPreBuild;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.NewBuildEvent;
-
 import dev.emberline.gui.towerdialog.TextGuiButton.TextLayoutType;
-
 import javafx.scene.canvas.GraphicsContext;
 
 public class NewBuildDialogLayer extends GuiLayer {
@@ -50,10 +48,10 @@ public class NewBuildDialogLayer extends GuiLayer {
 
     private GuiButton addBuildButton() {
         return new PricingGuiButton(
-            Layout.BTN_X, Layout.BTN_Y,
-            Layout.BTN_WIDTH, Layout.BTN_HEIGHT,
-            SpriteLoader.loadSprite(SingleSpriteKey.GENERIC_BUTTON).image(),
-            -newBuildCost, TextLayoutType.CENTER
+                Layout.BTN_X, Layout.BTN_Y,
+                Layout.BTN_WIDTH, Layout.BTN_HEIGHT,
+                SpriteLoader.loadSprite(SingleSpriteKey.GENERIC_BUTTON).image(),
+                -newBuildCost, TextLayoutType.CENTER
         );
     }
 

@@ -1,14 +1,14 @@
 package dev.emberline.game.world.entities.projectiles.events;
 
-import java.util.Optional;
-
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
 
+import java.util.Optional;
+
 public class ProjectileHitListener {
-    
+
     private final IEnemiesManager enemiesManager;
 
     public ProjectileHitListener(IEnemiesManager enemiesManager) {

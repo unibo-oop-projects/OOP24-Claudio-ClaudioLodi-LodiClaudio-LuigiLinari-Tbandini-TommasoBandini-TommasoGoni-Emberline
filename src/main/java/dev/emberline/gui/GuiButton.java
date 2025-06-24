@@ -35,13 +35,12 @@ public class GuiButton implements Inputable, Renderable {
     /**
      * Constructs a new GuiButton with the specified coordinates and sprites.
      *
-     * @param x  The top-left x coordinate of the button in GUI coordinates.
-     * @param y  The top-left y coordinate of the button in GUI coordinates.
-     * @param width  The width of the button in GUI coordinates.
-     * @param height The height of the button in GUI coordinates.
+     * @param x            The top-left x coordinate of the button in GUI coordinates.
+     * @param y            The top-left y coordinate of the button in GUI coordinates.
+     * @param width        The width of the button in GUI coordinates.
+     * @param height       The height of the button in GUI coordinates.
      * @param normalSprite The image to be displayed when the button is in its normal state.
      * @param hoverSprite  The image to be displayed when the button is hovered over.
-     *
      * @see GuiButton#GuiButton(double, double, double, double, Image)
      */
     public GuiButton(double x, double y, double width, double height, Image normalSprite, Image hoverSprite) {
@@ -56,8 +55,9 @@ public class GuiButton implements Inputable, Renderable {
     /**
      * Constructs a new GuiButton with the specified coordinates and sprite, a default hover effect is applied.
      * If you want to use a different hover effect, use {@link #GuiButton(double, double, double, double, Image, Image)}.
-     * @param x  The top-left x coordinate of the button in GUI coordinates.
-     * @param y  The top-left y coordinate of the button in GUI coordinates.
+     *
+     * @param x      The top-left x coordinate of the button in GUI coordinates.
+     * @param y      The top-left y coordinate of the button in GUI coordinates.
      * @param width  The width of the button in GUI coordinates.
      * @param height The height of the button in GUI coordinates.
      * @param sprite The image to be displayed when the button is in its normal state.
@@ -84,9 +84,15 @@ public class GuiButton implements Inputable, Renderable {
 
     @Override
     public void processInput(InputEvent inputEvent) {
-        if (inputEvent.isConsumed()) return;
-        if (!(inputEvent instanceof MouseEvent mouse)) return;
-        if (mouse.getEventType() != MouseEvent.MOUSE_CLICKED) return;
+        if (inputEvent.isConsumed()) {
+            return;
+        }
+        if (!(inputEvent instanceof MouseEvent mouse)) {
+            return;
+        }
+        if (mouse.getEventType() != MouseEvent.MOUSE_CLICKED) {
+            return;
+        }
 
         CoordinateSystem guics = GameLoop.getInstance().getRenderer().getGuiCoordinateSystem();
         double x = guics.toWorldX(mouse.getX());
@@ -117,10 +123,11 @@ public class GuiButton implements Inputable, Renderable {
             if (hovered && hoverSprite == null) {
                 gc.drawImage(normalSprite, screenX, screenY, screenWidth, screenHeight);
                 Paint previousFill = gc.getFill();
-                gc.setFill(Color.rgb(10,10,10,0.2));
+                gc.setFill(Color.rgb(10, 10, 10, 0.2));
                 gc.fillRect(screenX, screenY, screenWidth, screenHeight);
                 gc.setFill(previousFill);
-            } else {
+            }
+            else {
                 gc.drawImage(hovered ? hoverSprite : normalSprite, screenX, screenY, screenWidth, screenHeight);
             }
         }));
@@ -128,15 +135,23 @@ public class GuiButton implements Inputable, Renderable {
 
     // In GUI coordinates
     protected boolean isInside(double x, double y) {
-        if (x < this.x || x > this.x + width) return false;
-        if (y < this.y || y > this.y + height) return false;
+        if (x < this.x || x > this.x + width) {
+            return false;
+        }
+        if (y < this.y || y > this.y + height) {
+            return false;
+        }
         return true;
     }
 
     protected void computeHoverState(double mouseGuiX, double mouseGuiY) {
         hovered = isInside(mouseGuiX, mouseGuiY);
-        if (hovered && !wasHovered && onMouseEnter != null) onMouseEnter.run();
-        if (wasHovered && !hovered && onMouseLeave != null) onMouseLeave.run();
+        if (hovered && !wasHovered && onMouseEnter != null) {
+            onMouseEnter.run();
+        }
+        if (wasHovered && !hovered && onMouseLeave != null) {
+            onMouseLeave.run();
+        }
         wasHovered = hovered;
     }
 }

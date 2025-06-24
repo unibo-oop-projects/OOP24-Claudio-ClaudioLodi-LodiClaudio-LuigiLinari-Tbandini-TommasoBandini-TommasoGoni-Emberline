@@ -15,7 +15,7 @@ public class ProjectileAnimation implements Updatable {
 
     public ProjectileAnimation(Projectile owner) {
         this.projectileSprite = (AnimatedSprite) SpriteLoader.loadSprite(
-            new ProjectileSpriteKey(owner.getSizeType(), owner.getEnchantmentType()));
+                new ProjectileSpriteKey(owner.getSizeType(), owner.getEnchantmentType()));
     }
 
     @Override
