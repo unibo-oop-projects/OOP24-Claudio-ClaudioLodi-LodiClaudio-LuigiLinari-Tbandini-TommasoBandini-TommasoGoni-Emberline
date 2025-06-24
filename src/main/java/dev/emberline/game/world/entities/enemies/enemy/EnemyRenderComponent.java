@@ -12,7 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Paint;
 
-public class EnemyRenderComponent implements Renderable {
+class EnemyRenderComponent implements Renderable {
     private static class HealthbarLayout {
         private static final double FULL_WIDTH = 1;
         private static final double HEIGHT = 0.1;
