@@ -42,6 +42,6 @@ public abstract class Building implements Renderable, Updatable, Inputable {
         if (worldX < getWorldTopLeft().getX() || worldX > getWorldBottomRight().getX()) {
             return false;
         }
-        return !(worldY < getWorldTopLeft().getY()) && !(worldY > getWorldBottomRight().getY());
+        return worldY >= getWorldTopLeft().getY() && worldY <= getWorldBottomRight().getY();
     }
 }

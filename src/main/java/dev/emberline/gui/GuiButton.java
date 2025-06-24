@@ -137,7 +137,7 @@ public class GuiButton implements Inputable, Renderable {
         if (x < this.x || x > this.x + width) {
             return false;
         }
-        return !(y < this.y) && !(y > this.y + height);
+        return y >= this.y && y <= this.y + height;
     }
 
     protected void computeHoverState(final double mouseGuiX, final double mouseGuiY) {

@@ -51,7 +51,6 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
 
         final Image result = CHAR_CACHE.computeIfAbsent(c, key -> {
             final Image atlas = getCharAtlas();
-            final PixelReader atlasReader = atlas.getPixelReader();
 
             // Locating the character in the atlas
             final int charIndex = METADATA.charOrder.indexOf(c);
@@ -60,6 +59,7 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
             }
             int charX = charIndex % METADATA.columns * charWidth; //pixel coordinate of the char inside the atlas
             final int charY = charIndex / METADATA.columns * charHeight;
+            final PixelReader atlasReader = atlas.getPixelReader();
 
             // Truncate left and right columns of only transparent pixels (ignoring the space character)
             if (c == ' ') {
@@ -72,7 +72,7 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
             boolean transparent = true;
             for (int x = charX; x < charX + mutableCharWidth && transparent; x++, transparentColumns++) {
                 for (int y = charY; y < charY + charHeight; y++) {
-                    transparent = !(atlasReader.getColor(x, y).getOpacity() > 0) && transparent;
+                    transparent = atlasReader.getColor(x, y).getOpacity() <= 0d && transparent;
                 }
             }
             if (transparentColumns == mutableCharWidth) {
@@ -85,7 +85,7 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
             transparent = true;
             for (int x = charX + mutableCharWidth - 1; x >= charX && transparent; x--, transparentColumns++) {
                 for (int y = charY; y < charY + charHeight; y++) {
-                    transparent = !(atlasReader.getColor(x, y).getOpacity() > 0) && transparent;
+                    transparent = atlasReader.getColor(x, y).getOpacity() <= 0d && transparent;
                 }
             }
             if (transparentColumns == mutableCharWidth) {
