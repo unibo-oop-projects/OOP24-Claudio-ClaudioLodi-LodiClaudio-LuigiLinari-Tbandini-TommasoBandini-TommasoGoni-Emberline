@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 class Node implements Serializable {
+
     private final Vector2D pos;
     /*
      * List of Nodes this Node is connected to with a given weight each.

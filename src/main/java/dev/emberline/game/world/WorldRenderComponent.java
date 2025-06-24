@@ -14,6 +14,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class WorldRenderComponent implements Renderable, Updatable {
+
+    private final WorldBounds worldBounds;
+    private final MapAnimation mapAnimation;
+
     //world bounds
     private record Coordinate(
             @JsonProperty int x,
@@ -26,10 +30,6 @@ public class WorldRenderComponent implements Renderable, Updatable {
             @JsonProperty Coordinate bottomRightBound
     ) {
     }
-
-    private final WorldBounds worldBounds;
-
-    private final MapAnimation mapAnimation;
 
     WorldRenderComponent(final IWaveManager waveManager) {
         worldBounds = ConfigLoader.loadConfig("/world/worldBounds.json", WorldBounds.class);

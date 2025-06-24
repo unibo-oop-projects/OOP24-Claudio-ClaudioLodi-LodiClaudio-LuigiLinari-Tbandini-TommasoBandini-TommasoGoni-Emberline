@@ -19,9 +19,8 @@ public class Spawnpoints {
     private final Spawnpoint[] spawnpoints;
     private final Queue<EnemyToSpawn> spawnQueue = new PriorityQueue<>();
 
-    // Single spawnpoint configuration
     private static final String SPAWNPOINT_CONFIG_FILENAME = "spawnpoints.json";
-
+    // Single spawnpoint configuration
     private static final class SpawnSequence {
         @JsonProperty
         long firstSpawnTimeNs;

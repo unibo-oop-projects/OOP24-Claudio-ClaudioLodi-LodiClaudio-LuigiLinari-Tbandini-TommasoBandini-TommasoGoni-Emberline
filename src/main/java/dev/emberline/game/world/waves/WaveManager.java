@@ -11,17 +11,17 @@ import java.util.List;
  * A class that keeps track of all the waves, and the current wave.
  */
 public class WaveManager implements IWaveManager {
-    // Loading waves from resources
-    private static final String WAVES_CONFIG_PATH = "/world/waves/waves.json";
-    private static class WavesConfig {
-        @JsonProperty
-        String[] wavePaths;
-    }
-    private final static WavesConfig wavesConfig = ConfigLoader.loadConfig(WAVES_CONFIG_PATH, WavesConfig.class);
 
     private final List<Wave> waves = new ArrayList<>();
     private int currentWaveIndex = 0;
 
+    private static final String WAVES_CONFIG_PATH = "/world/waves/waves.json";
+    private final static WavesConfig wavesConfig = ConfigLoader.loadConfig(WAVES_CONFIG_PATH, WavesConfig.class);
+    // Loading waves from resources
+    private static class WavesConfig {
+        @JsonProperty
+        String[] wavePaths;
+    }
     /**
      * Creates a new instance of {@code WaveManager}
      *
