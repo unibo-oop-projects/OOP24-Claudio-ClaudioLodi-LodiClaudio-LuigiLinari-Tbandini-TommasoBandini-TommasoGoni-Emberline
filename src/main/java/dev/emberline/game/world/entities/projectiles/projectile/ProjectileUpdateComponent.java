@@ -53,9 +53,9 @@ public class ProjectileUpdateComponent implements Updatable {
 
         final Vector2D prediction = enemyPrediction(start, target);
 
-        final Trajectory _trajectory = calculateTrajectory(start, prediction);
-        this.getPositionAndRotationAt = _trajectory.getPositionAndRotationAt();
-        this.flightTime = _trajectory.flightTime();
+        final Trajectory trajectory = calculateTrajectory(start, prediction);
+        this.getPositionAndRotationAt = trajectory.getPositionAndRotationAt();
+        this.flightTime = trajectory.flightTime();
 
         this.currFlightTime = 0;
         final Projectile.PositionAndRotation positionAndRotation = getPositionAndRotationAt.apply(currFlightTime);
@@ -120,34 +120,34 @@ public class ProjectileUpdateComponent implements Updatable {
         final var motionsIt = targetMotion.iterator();
         IEnemy.UniformMotion currMotion = null;
 
-        double bestDeltaT = -1, t_0 = 0;
+        double bestDeltaT = -1, t0 = 0;
         boolean found = false;
         while (motionsIt.hasNext() && !found) {
             currMotion = motionsIt.next();
-            final Vector2D E_0 = currMotion.origin();
-            final Vector2D v_E = currMotion.velocity();
+            final Vector2D e0 = currMotion.origin();
+            final Vector2D vE = currMotion.velocity();
             final long duration = currMotion.duration();
 
             /// Solve quadratic
             // (l / v_proj) ^ 2
-            final double lv_projSq = UNIT_ARC_LENGTH / VELOCITY_MAG * (UNIT_ARC_LENGTH / VELOCITY_MAG);
+            final double lvProjSq = UNIT_ARC_LENGTH / VELOCITY_MAG * (UNIT_ARC_LENGTH / VELOCITY_MAG);
 
-            final double A1 = lv_projSq * (v_E.magnitude() * v_E.magnitude());
-            final double A = 1.0 - A1;
+            final double a1 = lvProjSq * (vE.magnitude() * vE.magnitude());
+            final double a = 1.0 - a1;
 
-            final double B1 = 2 * t_0;
-            final double B2 = 2 * lv_projSq * E_0.subtract(start).dotProduct(v_E);
-            final double B = B1 - B2;
+            final double b1 = 2 * t0;
+            final double b2 = 2 * lvProjSq * e0.subtract(start).dotProduct(vE);
+            final double b = b1 - b2;
 
-            final double C1 = t_0 * t_0;
-            final double C2 = lv_projSq * (E_0.subtract(start).magnitude() * E_0.subtract(start).magnitude());
-            final double C = C1 - C2;
+            final double c1 = t0 * t0;
+            final double c2 = lvProjSq * (e0.subtract(start).magnitude() * e0.subtract(start).magnitude());
+            final double c = c1 - c2;
 
             // sqrt delta
-            final double sqrtD = Math.sqrt(B * B - 4 * A * C);
+            final double sqrtD = Math.sqrt(b * b - 4 * a * c);
 
-            final double deltaT1 = (-B + sqrtD) / (2 * A);
-            final double deltaT2 = (-B - sqrtD) / (2 * A);
+            final double deltaT1 = (-b + sqrtD) / (2 * a);
+            final double deltaT2 = (-b - sqrtD) / (2 * a);
             ///
 
             // The t is valid only if it's > 0 and inside that specific uniform motion
@@ -158,7 +158,7 @@ public class ProjectileUpdateComponent implements Updatable {
             found = Double.compare(bestDeltaT, -1.0) != 0;
 
             if (!found) {
-                t_0 += duration;
+                t0 += duration;
             }
         }
 
@@ -186,15 +186,15 @@ public class ProjectileUpdateComponent implements Updatable {
         // Linear transformation: e1 -> B1, e2 -> B2
         // It rotates space so that the "x-axis" is aligned with the direction from the starting point to the ending point
         // The "y-axis" sits 90° from the trasformed x-axis, if the ending point is on the right of the starting point the direction is upwards otherwise is downwards
-        final Vector2D B1 = cEnd.subtract(cStart).normalize();
-        final double signY = B1.getX() >= 0 ? +1 : -1;
-        final Vector2D B2 = new Coordinate2D(-B1.getY(), B1.getX()).multiply(signY);
+        final Vector2D b1 = cEnd.subtract(cStart).normalize();
+        final double signY = b1.getX() >= 0 ? +1 : -1;
+        final Vector2D b2 = new Coordinate2D(-b1.getY(), b1.getX()).multiply(signY);
         final Function<Vector2D, Vector2D> rotation = p -> new Coordinate2D(
-                B1.getX() * p.getX() + B2.getX() * p.getY(),
-                B1.getY() * p.getX() + B2.getY() * p.getY()
+                b1.getX() * p.getX() + b2.getX() * p.getY(),
+                b1.getY() * p.getX() + b2.getY() * p.getY()
         );
         final double scalingFactor = cStart.distance(cEnd);
-        final double tranformationAngle = Math.toDegrees(Math.atan2(B1.getY(), B1.getX())); // I and II qudrant > 0, III and IV quadrant < 0
+        final double tranformationAngle = Math.toDegrees(Math.atan2(b1.getY(), b1.getX())); // I and II qudrant > 0, III and IV quadrant < 0
 
         final double radius = scalingFactor * UNIT_RADIUS;
         final double angularVelocity = -(VELOCITY_MAG / radius);

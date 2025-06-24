@@ -96,8 +96,8 @@ class SpatialHashGridTest {
 
     @Test
     void testAdd() {
-        final int TEST_SIZE = 1000;
-        for (int i = 0; i < TEST_SIZE; i++) {
+        final int testSize = 1000;
+        for (int i = 0; i < testSize; i++) {
             final EnemyMock newEnemy = generateEnemy();
             hashGrid.add(newEnemy);
             enemies.add(newEnemy);
