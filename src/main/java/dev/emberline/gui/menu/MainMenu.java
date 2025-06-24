@@ -10,10 +10,12 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
-
 import dev.emberline.game.GameState;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
+import dev.emberline.gui.event.ExitGameEvent;
+import dev.emberline.gui.event.GameEvent;
+import dev.emberline.gui.event.GameEventListener;
 import dev.emberline.gui.event.OpenOptionsEvent;
 import dev.emberline.gui.event.SetStartEvent;
 import javafx.scene.canvas.GraphicsContext;
@@ -24,17 +26,28 @@ public class MainMenu extends GuiLayer implements GameState {
         // Background
         private static final double BG_WIDTH = 32;
         private static final double BG_HEIGHT = 18;
+        // Title
+        private static final double TITLE_WIDTH = 17;
+        private static final double TITLE_HEIGHT = 5;
+        private static final double TITLE_X = (BG_WIDTH - TITLE_WIDTH) / 2;
+        private static final double TITLE_Y = (BG_HEIGHT - TITLE_HEIGHT) / 2 - 3.5;
+
         // Start Button
-        private static final double scale_factor = 2.5;
+        private static final double scale_factor = 1.7;
         private static final double BTN_START_HEIGHT = 1.5 * scale_factor;
         private static final double BTN_START_WIDTH = 3.5 * scale_factor;
         private static final double BTN_START_X = (BG_WIDTH - BTN_START_WIDTH) / 2;
-        private static final double BTN_START_Y = (BG_HEIGHT - BTN_START_HEIGHT) / 2;
+        private static final double BTN_START_Y = TITLE_Y + TITLE_HEIGHT - 0.05 * scale_factor;
         // Options Button
         private static final double BTN_OPTIONS_HEIGHT = 1.5 * scale_factor;
         private static final double BTN_OPTIONS_WIDTH = 3.5 * scale_factor;
         private static final double BTN_OPTIONS_X = (BG_WIDTH - BTN_OPTIONS_WIDTH) / 2;
         private static final double BTN_OPTIONS_Y = BTN_START_Y + BTN_START_HEIGHT - 0.25;
+        // Exit Button
+        private static final double BTN_EXIT_HEIGHT = 1.5 * scale_factor;
+        private static final double BTN_EXIT_WIDTH = 3.5 * scale_factor;
+        private static final double BTN_EXIT_X = (BG_WIDTH - BTN_EXIT_WIDTH) / 2;
+        private static final double BTN_EXIT_Y = BTN_OPTIONS_Y + BTN_OPTIONS_HEIGHT - 0.25;
     }
 
     // menu bounds
@@ -48,6 +61,7 @@ public class MainMenu extends GuiLayer implements GameState {
     ) {}
 
     private final MenuBounds menuBounds;
+    private GameEventListener gameEventListener;
     
     // TODO refactor this constructors 
     public MainMenu() {
@@ -68,8 +82,14 @@ public class MainMenu extends GuiLayer implements GameState {
     // Options button
     private void addOptionsButton() {
         GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X, Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH, Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON).image());
-        optionsButton.setOnClick(() -> throwEvent(new OpenOptionsEvent(this)));
+        optionsButton.setOnClick(() -> throwEvent(new OpenOptionsEvent(optionsButton)));
         super.buttons.add(optionsButton);
+    }
+    // Exit button
+    private void addExitButton() {
+        GuiButton exitButton = new GuiButton(Layout.BTN_EXIT_X, Layout.BTN_EXIT_Y, Layout.BTN_EXIT_WIDTH, Layout.BTN_EXIT_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON).image());
+        exitButton.setOnClick(() -> throwEvent(new ExitGameEvent(exitButton)));
+        super.buttons.add(exitButton);
     }
 
     @Override
@@ -81,6 +101,7 @@ public class MainMenu extends GuiLayer implements GameState {
 
         addStartButton();
         addOptionsButton();
+        addExitButton();
 
         double menuScreenWidth = menuBounds.bottomRightBound.x * cs.getScale();
         double menuScreenHeight = menuBounds.bottomRightBound.y * cs.getScale();
@@ -88,9 +109,11 @@ public class MainMenu extends GuiLayer implements GameState {
         double menuScreenY = cs.toScreenY(menuBounds.topLeftBound.y);
 
         Image menuBackground = SpriteLoader.loadSprite(SingleSpriteKey.MENU_BACKGROUND).image();
+        Image emberlineTitle = SpriteLoader.loadSprite(SingleSpriteKey.EMBERLINE_TITLE).image();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
             gc.drawImage(menuBackground, menuScreenX, menuScreenY, menuScreenWidth, menuScreenHeight);
+            gc.drawImage(emberlineTitle, cs.toScreenX(Layout.TITLE_X), cs.toScreenY(Layout.TITLE_Y), Layout.TITLE_WIDTH * cs.getScale(), Layout.TITLE_HEIGHT * cs.getScale());
         }));
 
         super.render();
@@ -98,5 +121,11 @@ public class MainMenu extends GuiLayer implements GameState {
 
     @Override
     public void update(long elapsed) {
+    }
+
+    protected final void throwGameEvent(GameEvent event) {
+        if (gameEventListener != null) {
+            gameEventListener.onGameEvent(event);
+        }
     }
 }

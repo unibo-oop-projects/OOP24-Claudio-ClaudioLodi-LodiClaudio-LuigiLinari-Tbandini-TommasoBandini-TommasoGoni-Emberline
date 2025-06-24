@@ -32,8 +32,10 @@ public enum SingleSpriteKey implements SpriteKey {
     SLOW_EFFECT,
     // Main Menu
     MENU_BACKGROUND,
+    EMBERLINE_TITLE,
     START_SIGN_BUTTON,
     OPTIONS_SIGN_BUTTON,
+    EXIT_SIGN_BUTTON,
     DEFAULT_SIGN_BUTTON,
     // TowerPreBuild
     TOWER_PRE_BUILD,

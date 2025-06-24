@@ -1,10 +1,12 @@
 package dev.emberline.game;
 
+import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 import dev.emberline.gui.event.CloseOptionsEvent;
+import dev.emberline.gui.event.ExitGameEvent;
 import dev.emberline.gui.event.GameEvent;
 import dev.emberline.gui.event.GameEventListener;
 import dev.emberline.gui.event.GameOverEvent;
@@ -16,6 +18,7 @@ import dev.emberline.gui.event.SetStartEvent;
 import dev.emberline.gui.menu.GameOver;
 import dev.emberline.gui.menu.MainMenu;
 import dev.emberline.gui.menu.Options;
+import javafx.application.Platform;
 import javafx.scene.input.InputEvent;
 
 public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListener, GameEventListener {
@@ -61,6 +64,8 @@ public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListe
             handleOpenOptionsEvent(openOptionsEvent);
         } else if (event instanceof CloseOptionsEvent closeOptionsEvent) {
             handleCloseOptionsEvent(closeOptionsEvent);
+        } else if (event instanceof ExitGameEvent exitGameEvent) {
+            handleExitGameEvent(exitGameEvent);
         }
     }
 
@@ -68,7 +73,7 @@ public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListe
     public void onGameEvent(GameEvent event) {
         if (event instanceof GameOverEvent gameOverEvent) {
             handleGameOverEvent(gameOverEvent);
-        }
+        } 
     }
 
     private void handleStartEvent(SetStartEvent event) {
@@ -90,5 +95,9 @@ public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListe
 
     private void handleGameOverEvent(GameOverEvent event) {
         currentState = gameOver;
+    }
+
+    private void handleExitGameEvent(ExitGameEvent event) {
+        Platform.exit();
     }
 }

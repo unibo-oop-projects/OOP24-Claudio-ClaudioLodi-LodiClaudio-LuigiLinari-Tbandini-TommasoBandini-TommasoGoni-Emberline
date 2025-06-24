@@ -44,7 +44,7 @@ public class Player implements GuiEventListener {
         this.gameEventListener = gameEventListener;
     }
 
-    protected final void throwEvent(GameEvent event) {
+    protected final void throwGameEvent(GameEvent event) {
         if (gameEventListener != null) {
             gameEventListener.onGameEvent(event);
         }
@@ -72,7 +72,7 @@ public class Player implements GuiEventListener {
 
     public void takeDamage() {
         if (this.health - 200 <= 0) {
-            throwEvent(new GameOverEvent(this));
+            throwGameEvent(new GameOverEvent(this));
         }
         this.health -= 1;
     }
