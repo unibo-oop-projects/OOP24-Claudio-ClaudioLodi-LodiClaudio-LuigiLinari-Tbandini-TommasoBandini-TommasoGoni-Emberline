@@ -114,7 +114,9 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
             for (int y = min.y(); y <= max.y(); y++) {
                 final CellIdx cellIdx = new CellIdx(x, y);
 
-                if (!isInside(cellIdx)) continue;
+                if (!isInside(cellIdx)) {
+                    continue;
+                }
                 for (final IEnemy enemy : spatialHashGrid.get(cellIdx.x()).get(cellIdx.y())) {
                     final Vector2D pos = enemy.getPosition();
                     final double dstX = pos.getX() - location.getX();

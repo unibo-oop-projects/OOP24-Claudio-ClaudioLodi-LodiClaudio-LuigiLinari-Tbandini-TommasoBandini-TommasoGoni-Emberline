@@ -87,7 +87,9 @@ public class Player implements GuiEventListener {
 
     private void handleUpgradeEvent(final UpgradeTowerInfoEvent event) {
         final UpgradableInfo<?, ?> info = event.getUpgradableInfo();
-        if (!info.canUpgrade()) return;
+        if (!info.canUpgrade()) {
+            return;
+        }
         event.getTower().setUpgradableInfo(info.getUpgrade());
     }
 
@@ -98,7 +100,9 @@ public class Player implements GuiEventListener {
 
     private void handleSetEvent(final SetTowerInfoEvent event) {
         final UpgradableInfo<?, ?> info = event.getUpgradableInfo();
-        if (!info.canChangeType()) return;
+        if (!info.canChangeType()) {
+            return;
+        }
         if (info instanceof final ProjectileInfo infoCast) {
             event.getTower().setUpgradableInfo(infoCast.getChangeType((ProjectileInfo.Type) event.getType()));
         } else if (info instanceof final EnchantmentInfo infoCast) {

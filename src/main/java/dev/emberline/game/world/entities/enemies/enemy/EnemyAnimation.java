@@ -41,7 +41,9 @@ public class EnemyAnimation implements Updatable {
      * @return {@code true} if the appearance was changed, {@code false} otherwise.
      */
     private boolean setEnemyAppearance(final EnemyAppearance enemyAppearance) {
-        if (this.enemyAppearance == enemyAppearance) return false; // No change needed
+        if (this.enemyAppearance == enemyAppearance) {
+            return false; // No change needed
+        }
         this.enemyAppearance = enemyAppearance;
         return true;
     }
@@ -53,7 +55,9 @@ public class EnemyAnimation implements Updatable {
      * @return {@code true} if the direction was changed, {@code false} otherwise.
      */
     private boolean setFacingDirection(final AbstractEnemy.FacingDirection facingDirection) {
-        if (this.facingDirection == facingDirection) return false; // No change needed
+        if (this.facingDirection == facingDirection) {
+            return false; // No change needed
+        }
         this.facingDirection = facingDirection;
         return true;
     }
@@ -61,7 +65,9 @@ public class EnemyAnimation implements Updatable {
     private void updateAnimatedSprite() {
         boolean changed = setFacingDirection(enemy.getFacingDirection());
         changed |= setEnemyAppearance(enemy.getEnemyAppearance());
-        if (!changed) return; // No changes to the sprite, no need to update
+        if (!changed) {
+            return; // No changes to the sprite, no need to update
+        }
         this.animatedSprite = (AnimatedSprite) SpriteLoader.loadSprite(new EnemySpriteKey(enemy.getEnemyType(), facingDirection, enemyAppearance));
     }
 
@@ -75,7 +81,9 @@ public class EnemyAnimation implements Updatable {
 
     @Override
     public void update(final long elapsed) {
-        if (dyingAnimationFinished) return;
+        if (dyingAnimationFinished) {
+            return;
+        }
         updateAnimatedSprite();
 
         // Initialize death animation when the enemy starts dying.

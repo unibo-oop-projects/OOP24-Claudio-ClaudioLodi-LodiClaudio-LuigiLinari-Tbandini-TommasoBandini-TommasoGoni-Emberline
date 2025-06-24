@@ -39,7 +39,9 @@ public class WaveManagerWithStats implements IWaveManager {
         waveManager.update(elapsed);
         final int nWavePostUpdate = getCurrentWaveIndex();
 
-        if (nWavePostUpdate - nWavePreUpdate > 0) statistics.updateWavesSurvived();
+        if (nWavePostUpdate - nWavePreUpdate > 0) {
+            statistics.updateWavesSurvived();
+        }
     }
 
     @Override

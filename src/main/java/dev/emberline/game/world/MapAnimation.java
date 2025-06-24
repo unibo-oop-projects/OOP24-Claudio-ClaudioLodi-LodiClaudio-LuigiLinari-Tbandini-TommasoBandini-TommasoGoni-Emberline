@@ -41,7 +41,9 @@ public class MapAnimation implements Updatable {
 
     @Override
     public void update(final long elapsed) {
-        if (isAnimationOver()) return;
+        if (isAnimationOver()) {
+            return;
+        }
 
         updateAnimatedSprite();
 
