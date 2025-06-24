@@ -7,14 +7,32 @@ import dev.emberline.utility.Vector2D;
 
 import java.util.Optional;
 
+/**
+ * This class listens for projectile hit events and handles what
+ * should happen when a specific hit event is thrown.
+ */
 public class ProjectileHitListener {
 
     private final IEnemiesManager enemiesManager;
 
+    /**
+     * Constructs a new ProjectileHitListener to handle projectile-hit events.
+     *
+     * @param enemiesManager the {@code EnemiesManager} associated with the listener
+     */
     public ProjectileHitListener(final IEnemiesManager enemiesManager) {
         this.enemiesManager = enemiesManager;
     }
 
+    /**
+     * Handles the logic for when a projectile hits a target.
+     * If the {@code ProjectileHitEvent} has a damage area this method deals
+     * damage and applies the effect to all the enemies inside that area.
+     * Otherwise, it just hits whoever is in the proximity of the landing location
+     *
+     * @param e the {@code ProjectileHitEvent} containing information about what
+     *          should happen upon hitting a location
+     */
     public void onProjectileHit(final ProjectileHitEvent e) {
         final Vector2D landingLocation = e.getLandingLocation();
         final double damage = e.getDamage();

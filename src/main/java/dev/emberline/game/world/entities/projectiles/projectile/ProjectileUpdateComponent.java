@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class ProjectileUpdateComponent implements Updatable {
+class ProjectileUpdateComponent implements Updatable {
 
     private record Trajectory(Function<Long, Projectile.PositionAndRotation> getPositionAndRotationAt,
                               Long flightTime) {
@@ -47,7 +47,7 @@ public class ProjectileUpdateComponent implements Updatable {
 
     private final Projectile owner;
 
-    public ProjectileUpdateComponent(final Vector2D start, final IEnemy target,
+    ProjectileUpdateComponent(final Vector2D start, final IEnemy target,
                                      final ProjectileInfo projInfo, final EnchantmentInfo enchInfo, final World world, final Projectile owner) throws FlightPathNotFound {
         this.VELOCITY_MAG = projInfo.getProjectileSpeed() / 1e9; // Converted to tile/ns
 
@@ -71,6 +71,15 @@ public class ProjectileUpdateComponent implements Updatable {
         this.owner = owner;
     }
 
+    /**
+     * Updates the projectile's state based on the elapsed time.
+     * If the projectile is still in its flight phase, its current position and rotation
+     * are updated. Once its flight time is complete, the projectile is marked as having hit
+     * its target, and the hit event is triggered. Additionally, the owning object's animation
+     * is also updated.
+     *
+     * @param elapsed the time elapsed since the last update, in nanoseconds
+     */
     @Override
     public void update(final long elapsed) {
         if (currFlightTime < flightTime) {
@@ -127,7 +136,7 @@ public class ProjectileUpdateComponent implements Updatable {
             currMotion = motionsIt.next();
             final Vector2D E_0 = currMotion.origin();
             final Vector2D v_E = currMotion.velocity();
-            final long duration = currMotion.duration();
+            final long duration = currMotion.durationNs();
 
             /// Solve quadratic
             // (l / v_proj) ^ 2
