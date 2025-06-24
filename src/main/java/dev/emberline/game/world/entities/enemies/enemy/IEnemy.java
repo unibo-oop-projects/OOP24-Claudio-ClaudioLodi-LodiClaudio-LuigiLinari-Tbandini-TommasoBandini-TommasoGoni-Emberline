@@ -65,6 +65,9 @@ public interface IEnemy extends Updatable, Renderable {
 
     /**
      * Uniform motion ({@code origin}+ {@code velocity} * {@code t}) with {@code t} in [{@code 0}, {@code durationNs}] ns
+     * @param origin the position at {@code t=0}
+     * @param velocity the velocity vector of the {@code UniformMotion}
+     * @param durationNs how much does the {@code UniformMotion} lasts`
      */
     record UniformMotion(Vector2D origin, Vector2D velocity, long durationNs) {
     }

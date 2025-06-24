@@ -17,10 +17,10 @@ public class EnemyAnimation implements Updatable {
     /**
      * This enumeration defines different visual states that an enemy can have,
      * which include:
-     * <ul>- NORMAL: The enemy is in its default appearance.</ul>
-     * <ul>- BURNING: The enemy is on fire.</ul>
-     * <ul>- FREEZING: The enemy is frozen.</ul>
-     * <ul>- DYING: The enemy is in the process of dying.</ul>
+     * NORMAL: The enemy is in its default appearance.
+     * BURNING: The enemy is on fire.
+     * FREEZING: The enemy is frozen.
+     * DYING: The enemy is in the process of dying.
      */
     public enum EnemyAppearance {
         NORMAL, BURNING, FREEZING, DYING;
