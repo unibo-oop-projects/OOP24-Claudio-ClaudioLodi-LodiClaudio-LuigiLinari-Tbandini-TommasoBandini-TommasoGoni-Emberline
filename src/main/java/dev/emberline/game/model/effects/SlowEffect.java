@@ -28,7 +28,7 @@ public class SlowEffect implements EnchantmentEffect {
      * Constructs a {@code SlowEffect} that applies a slowing effect to an enemy.
      *
      * @param slowingFactor The factor by which the enemy's speed is reduced (e.g., 0.5 for half the speed).
-     * @param duration The total duration of the burn effect in seconds.
+     * @param duration      The total duration of the burn effect in seconds.
      */
     public SlowEffect(double slowingFactor, double duration) {
         this.slowingFactor = slowingFactor;
@@ -71,8 +71,8 @@ public class SlowEffect implements EnchantmentEffect {
      */
     @Override
     public List<TowerStat> getTowerStats() {
-        return List.of(new TowerStat(TowerStatType.SLOW_EFFECT,     slowingFactor),
-                       new TowerStat(TowerStatType.EFFECT_DURATION, duration)
+        return List.of(new TowerStat(TowerStatType.SLOW_EFFECT, slowingFactor),
+                new TowerStat(TowerStatType.EFFECT_DURATION, duration)
         );
     }
 

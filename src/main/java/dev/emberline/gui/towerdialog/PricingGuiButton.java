@@ -1,10 +1,9 @@
 package dev.emberline.gui.towerdialog;
 
+import javafx.scene.image.Image;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-
-import javafx.scene.image.Image;
 
 public class PricingGuiButton extends TextGuiButton {
 
@@ -12,7 +11,7 @@ public class PricingGuiButton extends TextGuiButton {
         super(x, y, width, height, normalSprite, hoverSprite, formatPrice(price), layoutType);
     }
 
-    public PricingGuiButton(double x, double y, double width, double height,Image normalSprite, double price, TextLayoutType layoutType) {
+    public PricingGuiButton(double x, double y, double width, double height, Image normalSprite, double price, TextLayoutType layoutType) {
         super(x, y, width, height, normalSprite, formatPrice(price), layoutType);
     }
 

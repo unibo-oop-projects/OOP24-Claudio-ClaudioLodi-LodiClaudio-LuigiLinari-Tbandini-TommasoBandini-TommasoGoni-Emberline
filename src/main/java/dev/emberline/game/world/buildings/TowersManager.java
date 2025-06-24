@@ -5,9 +5,9 @@ import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.Building;
 import dev.emberline.game.world.World;
+import dev.emberline.game.world.buildings.tower.Tower;
 import dev.emberline.game.world.buildings.towerPreBuild.TowerPreBuild;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
-import dev.emberline.game.world.buildings.tower.Tower;
 import dev.emberline.gui.towerdialog.NewBuildDialogLayer;
 import dev.emberline.gui.towerdialog.TowerDialogLayer;
 import dev.emberline.utility.Coordinate2D;
@@ -15,7 +15,10 @@ import dev.emberline.utility.Vector2D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
 public class TowersManager implements Updatable, Renderable, Inputable {
 
@@ -33,11 +36,11 @@ public class TowersManager implements Updatable, Renderable, Inputable {
         this.enemiesManager = world.getEnemiesManager();
 
         // TODO
-        buildings.add(new TowerPreBuild(new Coordinate2D(10,10), this));
-        buildings.add(new TowerPreBuild(new Coordinate2D(5,5), this));
-        buildings.add(new TowerPreBuild(new Coordinate2D(18,10), this));
-        buildings.add(new TowerPreBuild(new Coordinate2D(20,7), this));
-        buildings.add(new TowerPreBuild(new Coordinate2D(5,15), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(10, 10), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(5, 5), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(18, 10), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(20, 7), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(5, 15), this));
     }
 
     public void openNewBuildDialog(TowerPreBuild tower) {

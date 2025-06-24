@@ -1,13 +1,13 @@
 package dev.emberline.game.world.roads;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * A class that represents the roads of the map, as weighted arches.
@@ -15,6 +15,7 @@ import dev.emberline.utility.Vector2D;
 public class Roads {
     //single arch configuration
     private static final String roadsConfigFilename = "roads.json";
+
     private static class Arch {
         @JsonProperty("fromX")
         private double fromX;

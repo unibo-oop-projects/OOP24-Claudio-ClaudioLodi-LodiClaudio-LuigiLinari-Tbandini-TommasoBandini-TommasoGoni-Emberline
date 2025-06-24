@@ -17,13 +17,20 @@ import java.util.Objects;
 
 public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
     private static class Metadata {
-        @JsonProperty String filename;
-        @JsonProperty int atlasHeight;
-        @JsonProperty int atlasWidth;
-        @JsonProperty int rows;
-        @JsonProperty int columns;
-        @JsonProperty String charOrder;
+        @JsonProperty
+        String filename;
+        @JsonProperty
+        int atlasHeight;
+        @JsonProperty
+        int atlasWidth;
+        @JsonProperty
+        int rows;
+        @JsonProperty
+        int columns;
+        @JsonProperty
+        String charOrder;
     }
+
     private final static Metadata metadata = ConfigLoader.loadConfig("/font/font.json", Metadata.class);
 
     private final static Map<Character, Image> CHAR_CACHE = Collections.synchronizedMap(new HashMap<>());
@@ -34,7 +41,9 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
     }
 
     public static Image getCharImage(Character c) {
-        if (c == null) return getCharImage(' '); // If the character is null, return a space character
+        if (c == null) {
+            return getCharImage(' '); // If the character is null, return a space character
+        }
 
         final int charWidth = metadata.atlasWidth / metadata.columns; // Width of a character in pixels
         final int charHeight = metadata.atlasHeight / metadata.rows; // Height of a character in pixels
@@ -52,7 +61,9 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
             int charY = charIndex / metadata.columns * charHeight;
 
             // Truncate left and right columns of only transparent pixels (ignoring the space character)
-            if (c == ' ') return new WritableImage(atlasReader, charX, charY, charWidth/2, charHeight);
+            if (c == ' ') {
+                return new WritableImage(atlasReader, charX, charY, charWidth / 2, charHeight);
+            }
             int mutableCharWidth = charWidth;
 
             // Truncate left
@@ -63,7 +74,9 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
                     transparent = !(atlasReader.getColor(x, y).getOpacity() > 0) && transparent;
                 }
             }
-            if (transparentColumns == mutableCharWidth) return null; // If the whole character is transparent
+            if (transparentColumns == mutableCharWidth) {
+                return null; // If the whole character is transparent
+            }
             charX += transparentColumns;
             mutableCharWidth -= transparentColumns;
             // Truncate right
@@ -74,14 +87,18 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
                     transparent = !(atlasReader.getColor(x, y).getOpacity() > 0) && transparent;
                 }
             }
-            if (transparentColumns == mutableCharWidth) return null; // If the whole character is transparent
+            if (transparentColumns == mutableCharWidth) {
+                return null; // If the whole character is transparent
+            }
             mutableCharWidth -= transparentColumns;
 
             return new WritableImage(atlasReader, charX, charY, mutableCharWidth, charHeight);
         });
 
         // If the character is not found or is transparent, memoize it as a space character
-        if (result == null) CHAR_CACHE.put(c, getCharImage(' '));
+        if (result == null) {
+            CHAR_CACHE.put(c, getCharImage(' '));
+        }
         return CHAR_CACHE.get(c);
     }
 
@@ -89,7 +106,9 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
         final int charHeight = metadata.atlasHeight / metadata.rows;
 
         // If the string is null or empty, return a space character
-        if (string == null || string.isEmpty()) return getCharImage(' ');
+        if (string == null || string.isEmpty()) {
+            return getCharImage(' ');
+        }
         // Precalculate the width of the string (in pixels)
         int stringWidth = 0;
         for (Character c : string.toCharArray()) {

@@ -6,7 +6,6 @@ import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.EnemiesManager;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.game.world.entities.projectiles.ProjectilesManager;
-import dev.emberline.game.world.entities.projectiles.projectile.Projectile;
 import dev.emberline.utility.Vector2D;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +14,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Vector;
 
 import static org.mockito.Mockito.*;
 

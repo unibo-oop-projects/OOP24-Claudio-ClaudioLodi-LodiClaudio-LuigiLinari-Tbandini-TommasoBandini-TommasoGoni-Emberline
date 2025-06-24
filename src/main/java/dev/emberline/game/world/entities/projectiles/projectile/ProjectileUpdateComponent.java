@@ -1,9 +1,5 @@
 package dev.emberline.game.world.entities.projectiles.projectile;
 
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Stream;
-
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
@@ -15,18 +11,24 @@ import dev.emberline.game.world.entities.projectiles.events.ProjectileHitListene
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
 public class ProjectileUpdateComponent implements Updatable {
-    
-    private record Trajectory(Function<Long, Projectile.PositionAndRotation> getPositionAndRotationAt, Long flightTime) {}
+
+    private record Trajectory(Function<Long, Projectile.PositionAndRotation> getPositionAndRotationAt,
+                              Long flightTime) {
+    }
 
     private static final long MAX_FLIGHT_TIME = 10_000_000_000L; // 10s
     private final double VELOCITY_MAG;
 
-    /// Parameters defining the parabolic motion (arc of a circle) with a scaling factor of 1 
-    private static final double startTheta =        (3.0/4) * Math.PI;
-    private static final double endTheta =          startTheta - (1.0/2 * Math.PI);
-    private static final double unitRadius =        1.0/(2*Math.cos(endTheta));
-    private static final double unitArcLength =     unitRadius * (startTheta - endTheta);
+    /// Parameters defining the parabolic motion (arc of a circle) with a scaling factor of 1
+    private static final double startTheta = (3.0 / 4) * Math.PI;
+    private static final double endTheta = startTheta - (1.0 / 2 * Math.PI);
+    private static final double unitRadius = 1.0 / (2 * Math.cos(endTheta));
+    private static final double unitArcLength = unitRadius * (startTheta - endTheta);
     ///
 
     private final long flightTime;
@@ -45,8 +47,8 @@ public class ProjectileUpdateComponent implements Updatable {
 
     private final Projectile owner;
 
-    public ProjectileUpdateComponent(Vector2D start, IEnemy target, 
-    ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world, Projectile owner) throws FlightPathNotFound {
+    public ProjectileUpdateComponent(Vector2D start, IEnemy target,
+                                     ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world, Projectile owner) throws FlightPathNotFound {
         this.VELOCITY_MAG = projInfo.getProjectileSpeed() / 1e9; // Converted to tile/ns
 
         Vector2D prediction = enemyPrediction(start, target);
@@ -54,7 +56,7 @@ public class ProjectileUpdateComponent implements Updatable {
         Trajectory _trajectory = calculateTrajectory(start, prediction);
         this.getPositionAndRotationAt = _trajectory.getPositionAndRotationAt();
         this.flightTime = _trajectory.flightTime();
- 
+
         this.currFlightTime = 0;
         Projectile.PositionAndRotation positionAndRotation = getPositionAndRotationAt.apply(currFlightTime);
         this.position = positionAndRotation.position();
@@ -73,11 +75,12 @@ public class ProjectileUpdateComponent implements Updatable {
     public void update(long elapsed) {
         if (currFlightTime < flightTime) {
             currFlightTime += elapsed;
-    
+
             Projectile.PositionAndRotation positionAndRotation = getPositionAndRotationAt.apply(currFlightTime);
             position = positionAndRotation.position();
             rotation = positionAndRotation.rotation();
-        } else {
+        }
+        else {
             projectileHitListener.onProjectileHit(projectileHitEvent);
             hasHit = true;
         }
@@ -106,6 +109,7 @@ public class ProjectileUpdateComponent implements Updatable {
      * with the position of the enemy and solve for time.
      * Due to the changes of direction of the enemy, it's equation of motion is also described with a duration.
      * So to find the right {@code t}, we need to try with each motion and take the first that doesn't exceed the duration.
+     *
      * @param start
      * @param target
      * @return The first position of the enemy such that the flight time of the projectile is equal
@@ -131,7 +135,7 @@ public class ProjectileUpdateComponent implements Updatable {
 
             double A1 = lv_projSq * (v_E.magnitude() * v_E.magnitude());
             double A = 1.0 - A1;
-            
+
             double B1 = 2 * t_0;
             double B2 = 2 * lv_projSq * E_0.subtract(start).dotProduct(v_E);
             double B = B1 - B2;
@@ -141,35 +145,37 @@ public class ProjectileUpdateComponent implements Updatable {
             double C = C1 - C2;
 
             // sqrt delta
-            double sqrtD = Math.sqrt(B*B - 4*A*C);
+            double sqrtD = Math.sqrt(B * B - 4 * A * C);
 
-            double deltaT1 = (-B + sqrtD) / (2*A);
-            double deltaT2 = (-B - sqrtD) / (2*A);
+            double deltaT1 = (-B + sqrtD) / (2 * A);
+            double deltaT2 = (-B - sqrtD) / (2 * A);
             ///
 
             // The t is valid only if it's > 0 and inside that specific uniform motion
             bestDeltaT = Stream.of(deltaT1, deltaT2)
-                                .filter((t) -> (t.compareTo(0.0) >= 0) && (t.compareTo((double)duration) <= 0))
-                                .min(Double::compare)
-                                .orElse(-1.0);
+                    .filter((t) -> (t.compareTo(0.0) >= 0) && (t.compareTo((double) duration) <= 0))
+                    .min(Double::compare)
+                    .orElse(-1.0);
             found = Double.compare(bestDeltaT, -1.0) != 0;
 
             if (!found) {
-                t_0 += (double)duration;
+                t_0 += (double) duration;
             }
         }
 
         if (found) {
             return currMotion.origin().add(currMotion.velocity().multiply(bestDeltaT));
-        } else {
+        }
+        else {
             throw new FlightPathNotFound("Location to hit the target doesn't exist or the flight time to reach it exceeds the MAX_FLIGHT_TIME");
         }
     }
 
     /**
      * The determination of the trajectory is done by scaling the model trajectory by the distance from {@code start} to {@code end}
-     * and rotating it by the angle formed by the vector {@code end - start}. Note that when the {@code end} sits to the left of {@code start}, 
+     * and rotating it by the angle formed by the vector {@code end - start}. Note that when the {@code end} sits to the left of {@code start},
      * the model trajectory also has to be mirrored.
+     *
      * @param start
      * @param end
      * @return The {@code Trajectory} from {@code start} to {@code end}
@@ -186,23 +192,23 @@ public class ProjectileUpdateComponent implements Updatable {
         double signY = (B1.getX() >= 0) ? +1 : -1;
         Vector2D B2 = (new Coordinate2D(-B1.getY(), B1.getX())).multiply(signY);
         Function<Vector2D, Vector2D> rotation = (p) -> new Coordinate2D(
-            B1.getX()*p.getX() + B2.getX()*p.getY(),
-            B1.getY()*p.getX() + B2.getY()*p.getY()
+                B1.getX() * p.getX() + B2.getX() * p.getY(),
+                B1.getY() * p.getX() + B2.getY() * p.getY()
         );
         double scalingFactor = cStart.distance(cEnd);
         double tranformationAngle = Math.toDegrees(Math.atan2(B1.getY(), B1.getX())); // I and II qudrant > 0, III and IV quadrant < 0
 
         double radius = scalingFactor * unitRadius;
         double angularVelocity = -(VELOCITY_MAG / radius);
-        
-        long timeInAir = (long)((scalingFactor * unitArcLength) / VELOCITY_MAG);
+
+        long timeInAir = (long) ((scalingFactor * unitArcLength) / VELOCITY_MAG);
         return new Trajectory((t) -> {
             if (t > flightTime) {
                 t = flightTime;
             }
-            
+
             double theta = theta(t, startTheta, angularVelocity);
-            
+
             // Compute the position on the scaled trajectory, rotate it and translate so that the starting point is cStart
             Vector2D pos = rotation.apply(r(theta, radius, startTheta)).add(cStart);
 
@@ -212,7 +218,8 @@ public class ProjectileUpdateComponent implements Updatable {
             // abs > 90 => II and III quadrant, the angle needs to be reflected
             if (Math.abs(tranformationAngle) > 90) {
                 angle = tranformationAngle - tangentTrajAngle;
-            } else {
+            }
+            else {
                 angle = tangentTrajAngle + tranformationAngle;
             }
 
@@ -226,10 +233,10 @@ public class ProjectileUpdateComponent implements Updatable {
 
     ///// Circular uniform motion
     /**
-     * @param t time
+     * @param t       time
      * @param theta_0 starting angle
-     * @param w angular velocity
-     * @return the angle after {@code t} time with starting angle {@code theta_0} and {@code w} angular velocity 
+     * @param w       angular velocity
+     * @return the angle after {@code t} time with starting angle {@code theta_0} and {@code w} angular velocity
      */
     private double theta(long t, double theta_0, double w) {
         return theta_0 + w * t;
@@ -250,7 +257,7 @@ public class ProjectileUpdateComponent implements Updatable {
     /**
      * @param theta
      * @param radius
-     * @param w angular velocity
+     * @param w      angular velocity
      * @return vector tangent to the trajectory at {@code theta}
      */
     private Vector2D r_derivative(double theta, double radius, double w) {
@@ -258,8 +265,9 @@ public class ProjectileUpdateComponent implements Updatable {
         double y = radius * w * Math.cos(theta);
         return new Coordinate2D(x, y);
     }
-    ///// Circular uniform motion
-    
+
+    /// // Circular uniform motion
+
     private Vector2D worldToCanonical(Vector2D p) {
         return new Coordinate2D(p.getX(), -p.getY());
     }

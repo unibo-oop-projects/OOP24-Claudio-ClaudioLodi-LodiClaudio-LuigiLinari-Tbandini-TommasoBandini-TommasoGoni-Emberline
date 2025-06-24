@@ -21,17 +21,24 @@ import static dev.emberline.gui.towerdialog.stats.TowerStat.TowerStatType;
  * @param type  The type of the projectile.
  * @param level The level of the projectile, which can be between 0 and {@link #MAX_LEVEL}.
  */
-public record ProjectileInfo(Type type, int level) implements TowerStatsProvider, UpgradableInfo<ProjectileInfo.Type, ProjectileInfo> {
+public record ProjectileInfo(Type type,
+                             int level) implements TowerStatsProvider, UpgradableInfo<ProjectileInfo.Type, ProjectileInfo> {
     /**
      * Represents the type of projectile in the game, influencing the projectile's behavior, such as damage, speed,
      * firing rate, and other attributes.
      */
     public enum Type implements UpgradableInfo.InfoType {
-        /** The default projectile type. It has no special properties and cannot be upgraded. */
+        /**
+         * The default projectile type. It has no special properties and cannot be upgraded.
+         */
         BASE,
-        /** Represents a projectile with a higher firing rate but lower damage. */
+        /**
+         * Represents a projectile with a higher firing rate but lower damage.
+         */
         SMALL,
-        /** Represents a projectile with a lower firing rate but higher damage with an area of effect. */
+        /**
+         * Represents a projectile with a lower firing rate but higher damage with an area of effect.
+         */
         BIG
     }
 
@@ -45,11 +52,10 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
     /**
      * Constructs a new {@code ProjectileInfo} object with validation of its parameters.
      *
-     * @param type the type of the projectile. Must not be {@code null}.
+     * @param type  the type of the projectile. Must not be {@code null}.
      * @param level the upgrade level of the projectile.
      *              Must be in the range of 0 to {@code MAX_LEVEL}.
      *              For {@code Type.BASE}, the level must be 0 as it does not allow upgrades.
-     *
      * @throws IllegalArgumentException if parameters do not meet the specified constraints.
      */
     public ProjectileInfo {
@@ -156,7 +162,9 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
      */
     @Override
     public int getUpgradeCost() {
-        if (type == Type.BASE) return metadata.BASE_UPGRADE_COST;
+        if (type == Type.BASE) {
+            return metadata.BASE_UPGRADE_COST;
+        }
         return metadata.UPGRADE_COSTS[level];
     }
 
@@ -165,7 +173,9 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
      */
     @Override
     public int getRefundValue() {
-        if (type == Type.BASE) return 0;
+        if (type == Type.BASE) {
+            return 0;
+        }
         return metadata.RESET_REFUNDS[level];
     }
 
@@ -202,10 +212,12 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
      * The damage area represents the radius within which the effect and the damage are applied.
      *
      * @return an Optional containing the damage area as a double value (radius in tiles) if the projectile type is BIG;
-     *         otherwise, an empty Optional.
+     * otherwise, an empty Optional.
      */
     public Optional<Double> getDamageArea() {
-        if (type == Type.BIG) return Optional.of(metadata.BIG_DAMAGE_AREA[level]);
+        if (type == Type.BIG) {
+            return Optional.of(metadata.BIG_DAMAGE_AREA[level]);
+        }
         return Optional.empty();
     }
 

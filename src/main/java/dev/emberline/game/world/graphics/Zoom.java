@@ -12,17 +12,21 @@ import dev.emberline.core.components.Renderable;
 public class Zoom implements Renderable {
     //zoom configuration
     private record Translation(
-        @JsonProperty double fromX,
-        @JsonProperty double fromY,
-        @JsonProperty double toX,
-        @JsonProperty double toY
-    ) {}
+            @JsonProperty double fromX,
+            @JsonProperty double fromY,
+            @JsonProperty double toX,
+            @JsonProperty double toY
+    ) {
+    }
+
     private record Metadata(
-        @JsonProperty Translation topLeft,
-        @JsonProperty Translation bottomRight,
-        @JsonProperty double animationDurationSeconds,
-        @JsonProperty double animationDelaySeconds
-    ) {}
+            @JsonProperty Translation topLeft,
+            @JsonProperty Translation bottomRight,
+            @JsonProperty double animationDurationSeconds,
+            @JsonProperty double animationDelaySeconds
+    ) {
+    }
+
     private final Metadata metadata;
 
     private long accumulatorNs = 0;
@@ -51,7 +55,7 @@ public class Zoom implements Renderable {
         long currentTimeNs = System.nanoTime();
         accumulatorNs += currentTimeNs - previousTimeNs;
         previousTimeNs = currentTimeNs;
-        double t = Math.min((accumulatorNs/1e9) / metadata.animationDurationSeconds, 1.0);
+        double t = Math.min((accumulatorNs / 1e9) / metadata.animationDurationSeconds, 1.0);
         if (accumulatorNs < 0) { // Animation isn't started yet
             updateCS(metadata.topLeft.fromX, metadata.topLeft.fromY, metadata.bottomRight.fromX, metadata.bottomRight.fromY);
             return;

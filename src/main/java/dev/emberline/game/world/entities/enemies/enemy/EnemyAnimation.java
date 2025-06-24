@@ -1,21 +1,17 @@
 package dev.emberline.game.world.entities.enemies.enemy;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import dev.emberline.core.components.Updatable;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
 import javafx.scene.image.Image;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class EnemyAnimation implements Updatable {
 
-     public enum EnemyAppearance {
+    public enum EnemyAppearance {
         NORMAL, BURNING, FREEZING, DYING;
-    
+
         @JsonCreator
         public static EnemyAppearance fromString(String appearance) {
             return EnemyAppearance.valueOf(appearance.toUpperCase());
@@ -91,9 +87,9 @@ public class EnemyAnimation implements Updatable {
 
         long frameTimeNs = (long) (animatedSprite.getFrameTimeNs() / enemy.getSlowFactor());
         accumulatedTimeNs += elapsed;
-        while(accumulatedTimeNs >= frameTimeNs) {
+        while (accumulatedTimeNs >= frameTimeNs) {
             accumulatedTimeNs -= frameTimeNs;
-            frameIndex = (frameIndex+1) % animatedSprite.getFrameCount();
+            frameIndex = (frameIndex + 1) % animatedSprite.getFrameCount();
 
             // If the enemy is dying, we need to check if the animation has finished, do not loopback.
             if (isDying && frameIndex == animatedSprite.getFrameCount() - 1) {

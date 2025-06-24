@@ -44,6 +44,7 @@ public class EnemiesManagerWithStats implements IEnemiesManager {
 
     /**
      * Updates the basic enemymanager and keeps track of the dead enemy's number.
+     *
      * @param elapsed
      */
     @Override

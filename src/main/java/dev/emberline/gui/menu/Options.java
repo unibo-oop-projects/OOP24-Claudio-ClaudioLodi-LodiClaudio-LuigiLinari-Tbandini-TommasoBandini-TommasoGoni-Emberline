@@ -1,7 +1,6 @@
 package dev.emberline.gui.menu;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.graphics.SpriteLoader;
@@ -19,7 +18,7 @@ import javafx.scene.image.Image;
 
 public class Options extends GuiLayer implements GameState {
 
-     private static class Layout {
+    private static class Layout {
         // Background
         private static final double BG_WIDTH = 32;
         private static final double BG_HEIGHT = 18;
@@ -38,16 +37,19 @@ public class Options extends GuiLayer implements GameState {
 
     // Options bounds
     private record Coordinate(
-        @JsonProperty int x,
-        @JsonProperty int y
-    ) {}
-    private record OptionsBounds(
-        @JsonProperty Coordinate topLeftBound,
-        @JsonProperty Coordinate bottomRightBound
-    ) {}
+            @JsonProperty int x,
+            @JsonProperty int y
+    ) {
+    }
 
-   private final OptionsBounds optionsBounds;
-    
+    private record OptionsBounds(
+            @JsonProperty Coordinate topLeftBound,
+            @JsonProperty Coordinate bottomRightBound
+    ) {
+    }
+
+    private final OptionsBounds optionsBounds;
+
     // TODO refactor these constructors 
     public Options() {
         this(ConfigLoader.loadConfig("/gui/options/optionsBounds.json", OptionsBounds.class));
@@ -56,8 +58,8 @@ public class Options extends GuiLayer implements GameState {
     // Options button
     private void addCloseOptionsButton() {
         GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X,
-            Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH, 
-            Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.DEFAULT_SIGN_BUTTON).image());
+                Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH,
+                Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.DEFAULT_SIGN_BUTTON).image());
         optionsButton.setOnClick(() -> throwEvent(new CloseOptionsEvent(this)));
         super.buttons.add(optionsButton);
     }
@@ -93,5 +95,5 @@ public class Options extends GuiLayer implements GameState {
     @Override
     public void update(long elapsed) {
     }
-    
+
 }

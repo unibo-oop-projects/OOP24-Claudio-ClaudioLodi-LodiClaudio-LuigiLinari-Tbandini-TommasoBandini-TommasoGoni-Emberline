@@ -6,12 +6,16 @@
       {
         "firstSpawnTimeNs": 0,
         "spawnIntervalNs": 3000000000,
-        "enemies": ["pig"]
+        "enemies": [
+          "pig"
+        ]
       },
       {
         "firstSpawnTimeNs": 3000000000,
         "spawnIntervalNs": 500000000,
-        "enemies": ["pig"]
+        "enemies": [
+          "pig"
+        ]
       }
     ]
   },
@@ -22,7 +26,9 @@
       {
         "firstSpawnTimeNs": 0,
         "spawnIntervalNs": 3000000000,
-        "enemies": ["ogre"]
+        "enemies": [
+          "ogre"
+        ]
       }
     ]
   }

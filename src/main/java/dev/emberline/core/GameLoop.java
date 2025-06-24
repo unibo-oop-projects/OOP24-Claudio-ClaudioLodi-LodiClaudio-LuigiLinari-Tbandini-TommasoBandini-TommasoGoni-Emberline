@@ -62,7 +62,7 @@ public class GameLoop extends Thread {
         long lagUpdate = 0;
 
         running.set(true);
-        while(running.get()) {
+        while (running.get()) {
             // Timings
             long now = System.nanoTime();
             long elapsed = now - previous;
@@ -73,7 +73,7 @@ public class GameLoop extends Thread {
             inputDispatcher.dispatchInputs();
 
             // Update with fixed time step
-            while(lagUpdate >= NS_PER_UPDATE) {
+            while (lagUpdate >= NS_PER_UPDATE) {
                 lagUpdate -= NS_PER_UPDATE;
                 updater.update(NS_PER_UPDATE);
             }

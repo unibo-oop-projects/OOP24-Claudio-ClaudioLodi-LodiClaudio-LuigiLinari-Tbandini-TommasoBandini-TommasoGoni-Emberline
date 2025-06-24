@@ -53,6 +53,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
     private Vector2D toPoint2D(double x, double y) {
         return Vector2D.of(x, y);
     }
+
     /**
      * Computes the distance between this point and point {@code (x1, y1)}.
      *
@@ -62,7 +63,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      */
     @Override
     public double distance(double x1, double y1) {
-        return toPoint2D(this.x,this.y).distance(Vector2D.of(x1, y1));
+        return toPoint2D(this.x, this.y).distance(Vector2D.of(x1, y1));
     }
 
     /**
@@ -87,7 +88,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      */
     @Override
     public dev.emberline.utility.Vector2D add(double x, double y) {
-        Vector2D sum = toPoint2D(this.x,this.y).add(Vector2D.of(x, y));
+        Vector2D sum = toPoint2D(this.x, this.y).add(Vector2D.of(x, y));
         return new Coordinate2D(sum.getX(), sum.getY());
     }
 
@@ -114,7 +115,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      */
     @Override
     public dev.emberline.utility.Vector2D subtract(double x, double y) {
-        Vector2D difference = toPoint2D(this.x,this.y).subtract(Vector2D.of(x, y));
+        Vector2D difference = toPoint2D(this.x, this.y).subtract(Vector2D.of(x, y));
         return new Coordinate2D(difference.getX(), difference.getY());
     }
 
@@ -152,7 +153,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      */
     @Override
     public dev.emberline.utility.Vector2D normalize() {
-        Vector2D sum = toPoint2D(this.x,this.y).normalize();
+        Vector2D sum = toPoint2D(this.x, this.y).normalize();
         return new Coordinate2D(sum.getX(), sum.getY());
     }
 
@@ -166,7 +167,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      */
     @Override
     public double angle(double x, double y) {
-        return toPoint2D(this.x,this.y).angle(Vector2D.of(x, y));
+        return toPoint2D(this.x, this.y).angle(Vector2D.of(x, y));
     }
 
     /**
@@ -191,7 +192,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      */
     @Override
     public double magnitude() {
-        return toPoint2D(this.x,this.y).norm();
+        return toPoint2D(this.x, this.y).norm();
     }
 
     /**
@@ -204,7 +205,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      */
     @Override
     public double dotProduct(double x, double y) {
-        return toPoint2D(this.x,this.y).dot(Vector2D.of(x, y));
+        return toPoint2D(this.x, this.y).dot(Vector2D.of(x, y));
     }
 
     /**
@@ -223,6 +224,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
     /**
      * Return the unit vector representing the direction of displacement
      * from this vector to the given vector.
+     *
      * @param x
      * @param y
      * @return
@@ -233,7 +235,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
         if (vector.equals(Vector2D.of(this.x, this.y))) {
             direction = Vector2D.ZERO;
         } else {
-            direction = toPoint2D(this.x,this.y).directionTo(vector);
+            direction = toPoint2D(this.x, this.y).directionTo(vector);
         }
         return new Coordinate2D(direction.getX(), direction.getY());
     }
@@ -241,6 +243,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
     /**
      * Return the unit vector representing the direction of displacement
      * from this vector to the given vector.
+     *
      * @param vector
      * @return
      */
@@ -258,7 +261,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj instanceof Coordinate2D other) {
-            return toPoint2D(this.x,this.y).equals(Vector2D.of(other.getX(), other.getY()));
+            return toPoint2D(this.x, this.y).equals(Vector2D.of(other.getX(), other.getY()));
         } else return false;
     }
 
@@ -269,7 +272,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      */
     @Override
     public int hashCode() {
-        return toPoint2D(this.x,this.y).hashCode();
+        return toPoint2D(this.x, this.y).hashCode();
     }
 
     /**
@@ -281,6 +284,6 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      */
     @Override
     public String toString() {
-        return toPoint2D(this.x,this.y).toString();
+        return toPoint2D(this.x, this.y).toString();
     }
 }

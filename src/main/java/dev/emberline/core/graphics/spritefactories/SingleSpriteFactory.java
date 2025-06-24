@@ -13,12 +13,18 @@ import java.util.Objects;
 
 public class SingleSpriteFactory implements SpriteFactory<SingleSpriteKey> {
     private static class SpriteMetadata {
-        @JsonProperty String filename;
-        @JsonProperty int x;
-        @JsonProperty int y;
-        @JsonProperty int width;
-        @JsonProperty int height;
+        @JsonProperty
+        String filename;
+        @JsonProperty
+        int x;
+        @JsonProperty
+        int y;
+        @JsonProperty
+        int width;
+        @JsonProperty
+        int height;
     }
+
     private static final JsonNode configsRoot = ConfigLoader.loadNode("/sprites/singleSprites.json");
 
     @Override

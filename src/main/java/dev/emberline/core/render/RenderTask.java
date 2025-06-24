@@ -1,7 +1,5 @@
 package dev.emberline.core.render;
 
-import java.lang.Comparable;
-
 public class RenderTask implements Comparable<RenderTask>, Runnable {
     private final RenderPriority renderPriority;
     private boolean zOrderEnabled = false;
@@ -38,6 +36,7 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
 
     /**
      * Compares this object with the specified object for order.
+     *
      * @return Returns a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object.
      */
     @Override
@@ -57,6 +56,7 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
     private int comparisonToInt(double comparison) {
         return comparison < 0 ? -1 : comparison > 0 ? 1 : 0;
     }
+
     private int comparisonToInt(long comparison) {
         return comparison < 0 ? -1 : comparison > 0 ? 1 : 0;
     }

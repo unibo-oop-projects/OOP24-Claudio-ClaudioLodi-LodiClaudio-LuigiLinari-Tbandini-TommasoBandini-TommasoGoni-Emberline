@@ -10,7 +10,7 @@ public class SetTowerInfoEvent extends GuiEvent {
     private final UpgradableInfo<?, ?> upgradableInfo;
     private final InfoType type;
 
-    public <T extends InfoType, S extends UpgradableInfo<T, S>> SetTowerInfoEvent(Object source, Tower tower, UpgradableInfo<T,S> upgradableInfo, T type) {
+    public <T extends InfoType, S extends UpgradableInfo<T, S>> SetTowerInfoEvent(Object source, Tower tower, UpgradableInfo<T, S> upgradableInfo, T type) {
         super(source);
         this.tower = tower;
         this.upgradableInfo = upgradableInfo;

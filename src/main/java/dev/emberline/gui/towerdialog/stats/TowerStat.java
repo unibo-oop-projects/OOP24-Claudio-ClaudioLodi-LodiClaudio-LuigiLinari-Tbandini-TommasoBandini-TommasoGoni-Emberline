@@ -2,17 +2,16 @@ package dev.emberline.gui.towerdialog.stats;
 
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
-import javafx.scene.image.Image;
 import dev.emberline.gui.towerdialog.stats.TowerStatsViewsBuilder.TowerStatView;
+import javafx.scene.image.Image;
 
 /**
  * A tower stat is a measurable property of a tower, such as damage, range, or attack speed.
  * These stats are used to describe the tower's performance and can be displayed in the GUI
  * for comparison or informational purposes using {@link TowerStatView} constructed by {@link TowerStatsViewsBuilder}.
  *
- * @param type The type of the tower stat, for example, damage, range, or attack speed.
+ * @param type  The type of the tower stat, for example, damage, range, or attack speed.
  * @param value The value of the tower stat, for example, 100 for damage, 5 for range, or 1.5 for attack speed.
- *
  * @see TowerStatsProvider
  */
 public record TowerStat(TowerStatType type, double value) {

@@ -6,7 +6,7 @@ import java.util.Objects;
 /*
  * Generic pair class
  */
-public class Pair<A,B> implements Serializable {
+public class Pair<A, B> implements Serializable {
 
     private A x;
     private B y;
@@ -19,11 +19,11 @@ public class Pair<A,B> implements Serializable {
     public A getX() {
         return x;
     }
-    
+
     public B getY() {
         return y;
     }
-    
+
     public void setX(A x) {
         this.x = x;
     }
@@ -31,29 +31,29 @@ public class Pair<A,B> implements Serializable {
     public void setY(B y) {
         this.y = y;
     }
-    
+
     @Override
-	public int hashCode() {
-		return Objects.hash(x, y);
-	}
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Pair other = (Pair) obj;
-		return Objects.equals(x, other.x) && Objects.equals(y, other.y);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Pair other = (Pair) obj;
+        return Objects.equals(x, other.x) && Objects.equals(y, other.y);
+    }
 
-	@Override
-	public String toString() {
-		return "Pair [x=" + x + ", y=" + y + "]";
-	}
+    @Override
+    public String toString() {
+        return "Pair [x=" + x + ", y=" + y + "]";
+    }
 }

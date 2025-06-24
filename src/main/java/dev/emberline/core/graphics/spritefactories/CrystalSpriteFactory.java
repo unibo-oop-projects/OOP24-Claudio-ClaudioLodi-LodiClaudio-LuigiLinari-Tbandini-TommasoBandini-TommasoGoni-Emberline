@@ -14,12 +14,18 @@ import java.util.Objects;
 
 public class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKey> {
     private static class Metadata {
-        @JsonProperty String filename;
-        @JsonProperty int width;
-        @JsonProperty int height;
-        @JsonProperty int frames;
-        @JsonProperty int frameTimeNs;
-        @JsonProperty Map<EnchantmentInfo.Type, Integer> enchant;
+        @JsonProperty
+        String filename;
+        @JsonProperty
+        int width;
+        @JsonProperty
+        int height;
+        @JsonProperty
+        int frames;
+        @JsonProperty
+        int frameTimeNs;
+        @JsonProperty
+        Map<EnchantmentInfo.Type, Integer> enchant;
     }
 
     private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/crystal.json", Metadata.class);

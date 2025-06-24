@@ -3,15 +3,14 @@
   "mapFolder": "/mapAnimation/",
   "mapFile": "map.png",
   "frameTimeNs": 1000000000,
-  "waves":
-  [
+  "waves": [
     {
-    "wave": "0",
-    "frames": 4
+      "wave": "0",
+      "frames": 4
     },
     {
-    "wave": "1",
-    "frames": 1
+      "wave": "1",
+      "frames": 1
     }
   ]
 }

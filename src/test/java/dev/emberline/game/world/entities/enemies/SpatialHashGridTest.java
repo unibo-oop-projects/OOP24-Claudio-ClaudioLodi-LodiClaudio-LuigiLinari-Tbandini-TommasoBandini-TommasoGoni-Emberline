@@ -7,49 +7,62 @@ import dev.emberline.utility.Vector2D;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 class EnemyMock implements IEnemy {
     @Override
     public double getHeight() {
         throw new UnsupportedOperationException();
     }
+
     @Override
     public double getWidth() {
         throw new UnsupportedOperationException();
     }
+
     @Override
     public double getHealth() {
         throw new UnsupportedOperationException();
     }
+
     @Override
     public void dealDamage(double damage) {
         throw new UnsupportedOperationException();
     }
+
     @Override
     public void applyEffect(EnchantmentEffect effect) {
         throw new UnsupportedOperationException();
     }
+
     @Override
     public void setSlowFactor(double slowFactor) {
         throw new UnsupportedOperationException();
     }
+
     @Override
     public boolean isDead() {
         throw new UnsupportedOperationException();
     }
+
     @Override
     public boolean isHittable() {
         throw new UnsupportedOperationException();
     }
+
     @Override
     public List<UniformMotion> getMotionUntil(long time) {
         throw new UnsupportedOperationException();
     }
+
     @Override
     public void render() {
         throw new UnsupportedOperationException();
     }
+
     @Override
     public void update(long elapsed) {
         throw new UnsupportedOperationException();
@@ -159,6 +172,7 @@ class SpatialHashGridTest {
     private double nextX() {
         return generator.nextInt(x_max - x_min - 1) + x_min;
     }
+
     private double nextY() {
         return generator.nextInt(y_max - y_min - 1) + y_min;
     }

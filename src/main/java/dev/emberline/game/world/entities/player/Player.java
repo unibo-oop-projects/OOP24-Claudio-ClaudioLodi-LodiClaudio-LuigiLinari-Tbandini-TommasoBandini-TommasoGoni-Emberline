@@ -1,24 +1,12 @@
 package dev.emberline.game.world.entities.player;
 
-import java.io.ObjectInputFilter.Config;
-import java.util.EventObject;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.World;
-import dev.emberline.gui.event.GameEvent;
-import dev.emberline.gui.event.GameEventListener;
-import dev.emberline.gui.event.GameOverEvent;
-import dev.emberline.gui.event.GuiEvent;
-import dev.emberline.gui.event.GuiEventListener;
-import dev.emberline.gui.event.NewBuildEvent;
-import dev.emberline.gui.event.ResetTowerInfoEvent;
-import dev.emberline.gui.event.SetTowerInfoEvent;
-import dev.emberline.gui.event.UpgradeTowerInfoEvent;
+import dev.emberline.gui.event.*;
 
 
 public class Player implements GuiEventListener {
@@ -27,10 +15,11 @@ public class Player implements GuiEventListener {
     private World world;
     private GameEventListener gameEventListener;
 
-    private record Metadata (
-        @JsonProperty int health,
-        @JsonProperty int gold
-    ) {}
+    private record Metadata(
+            @JsonProperty int health,
+            @JsonProperty int gold
+    ) {
+    }
 
     Metadata metadata = ConfigLoader.loadConfig("/world/player.json", Metadata.class);
 
@@ -51,7 +40,7 @@ public class Player implements GuiEventListener {
     }
 
     private boolean spendGold(int amount) {
-        if(this.gold - amount >= 0) {
+        if (this.gold - amount >= 0) {
             this.gold -= amount;
             return true;
         }
@@ -97,18 +86,18 @@ public class Player implements GuiEventListener {
     }
 
     private void handleUpgradeEvent(UpgradeTowerInfoEvent event) {
-        UpgradableInfo<?,?> info = event.getUpgradableInfo();
+        UpgradableInfo<?, ?> info = event.getUpgradableInfo();
         if (!info.canUpgrade()) return;
         event.getTower().setUpgradableInfo(info.getUpgrade());
     }
 
     private void handleResetEvent(ResetTowerInfoEvent event) {
-        UpgradableInfo<?,?> info = event.getUpgradableInfo();
+        UpgradableInfo<?, ?> info = event.getUpgradableInfo();
         event.getTower().setUpgradableInfo(info.getDefault());
     }
 
     private void handleSetEvent(SetTowerInfoEvent event) {
-        UpgradableInfo<?,?> info = event.getUpgradableInfo();
+        UpgradableInfo<?, ?> info = event.getUpgradableInfo();
         if (!info.canChangeType()) return;
         if (info instanceof ProjectileInfo infoCast) {
             event.getTower().setUpgradableInfo(infoCast.getChangeType((ProjectileInfo.Type) event.getType()));

@@ -37,8 +37,8 @@ public class EnemyRenderComponent implements Renderable {
         Vector2D position = enemy.getPosition();
         double enemyScreenWidth = enemy.getWidth() * cs.getScale();
         double enemyScreenHeight = enemy.getHeight() * cs.getScale();
-        double enemyScreenX = cs.toScreenX(position.getX()) - enemyScreenWidth/2;
-        double enemyScreenY = cs.toScreenY(position.getY()) - enemyScreenHeight/2;
+        double enemyScreenX = cs.toScreenX(position.getX()) - enemyScreenWidth / 2;
+        double enemyScreenY = cs.toScreenY(position.getY()) - enemyScreenHeight / 2;
         // healthbar
         double hbScreenWidth = HealthbarLayout.FULL_WIDTH * cs.getScale();
         double hbScreenHeight = HealthbarLayout.HEIGHT * cs.getScale();
@@ -54,7 +54,7 @@ public class EnemyRenderComponent implements Renderable {
             gc.fillRect(hbScreenX, hbScreenY, hbScreenWidth, hbScreenHeight);
             gc.setFill(Paint.valueOf("#00CC00"));
             gc.fillRect(hbScreenX, hbScreenY, (enemy.getHealthPercentage()) * hbScreenWidth, hbScreenHeight);
-        }).enableZOrder(position.getY() + enemy.getHeight()/2));
+        }).enableZOrder(position.getY() + enemy.getHeight() / 2));
     }
 
     boolean isDyingAnimationFinished() {

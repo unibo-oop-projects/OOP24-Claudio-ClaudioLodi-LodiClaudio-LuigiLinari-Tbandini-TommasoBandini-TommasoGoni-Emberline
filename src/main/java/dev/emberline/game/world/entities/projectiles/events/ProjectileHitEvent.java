@@ -1,11 +1,11 @@
 package dev.emberline.game.world.entities.projectiles.events;
 
-import java.util.Optional;
-
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.utility.Vector2D;
+
+import java.util.Optional;
 
 public class ProjectileHitEvent {
 
@@ -13,7 +13,7 @@ public class ProjectileHitEvent {
     private final double damage;
     private final Optional<Double> damageArea;
     private final Optional<EnchantmentEffect> effect;
-    
+
     public ProjectileHitEvent(Vector2D landingLocation, ProjectileInfo projInfo, EnchantmentInfo enchInfo) {
         this.landingLocation = landingLocation;
         this.damage = projInfo.getDamage();

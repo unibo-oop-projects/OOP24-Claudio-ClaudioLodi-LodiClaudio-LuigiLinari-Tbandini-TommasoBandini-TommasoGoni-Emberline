@@ -2,11 +2,8 @@ package dev.emberline.game.world.waves;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +13,12 @@ import java.util.List;
 public class WaveManager implements IWaveManager {
     // Loading waves from resources
     private static final String wavesConfigPath = "/world/waves/waves.json";
+
     private static class WavesConfig {
-        @JsonProperty String[] wavePaths;
+        @JsonProperty
+        String[] wavePaths;
     }
+
     private final static WavesConfig wavesConfig = ConfigLoader.loadConfig(wavesConfigPath, WavesConfig.class);
 
     private final List<Wave> waves = new ArrayList<>();
@@ -26,6 +26,7 @@ public class WaveManager implements IWaveManager {
 
     /**
      * Creates a new instance of {@code WaveManager}
+     *
      * @param world is the reference to the World
      */
     public WaveManager(World world) {
@@ -53,13 +54,14 @@ public class WaveManager implements IWaveManager {
 
     /**
      * Updates the current wave and check weather it is over.
+     *
      * @param elapsed
      */
     @Override
     public void update(long elapsed) {
         getWave().update(elapsed);
 
-        if (getWave().isOver() && currentWaveIndex+1 < waves.size()) {
+        if (getWave().isOver() && currentWaveIndex + 1 < waves.size()) {
             currentWaveIndex++;
         }
     }
