@@ -27,18 +27,21 @@ public class EnemiesManager implements IEnemiesManager {
         );
     }
 
+    @Override
     public void addEnemy(final Vector2D spawnPoint, final EnemyType type) {
         final IEnemy newEnemy = enemiesFactory.createEnemy(spawnPoint, type, world);
         final IEnemy newEnemyWrapper = new EnemyWithStats(newEnemy, world.getStatistics());
         spatialHashGrid.add(newEnemyWrapper);
     }
 
+    @Override
     public List<IEnemy> getNear(final Vector2D location, final double radius) {
         final List<IEnemy> near = spatialHashGrid.getNear(location, radius);
         near.removeIf(iEnemy -> !iEnemy.isHittable());
         return near;
     }
 
+    @Override
     public boolean areAllDead() {
         return spatialHashGrid.size() == 0;
     }

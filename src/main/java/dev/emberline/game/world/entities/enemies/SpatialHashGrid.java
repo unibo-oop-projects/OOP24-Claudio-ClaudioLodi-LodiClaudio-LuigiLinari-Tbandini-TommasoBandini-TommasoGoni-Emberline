@@ -96,6 +96,7 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     /**
      * @return An iterator of the elements present in the {@code SpatialHashGrid}
      */
+    @Override
     public Iterator<IEnemy> iterator() {
         return enemyCell.keySet().iterator();
     }

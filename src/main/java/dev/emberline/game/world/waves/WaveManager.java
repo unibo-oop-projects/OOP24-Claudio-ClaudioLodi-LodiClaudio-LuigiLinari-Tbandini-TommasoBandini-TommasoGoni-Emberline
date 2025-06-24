@@ -39,6 +39,7 @@ public class WaveManager implements IWaveManager {
     /**
      * @return the current {@code Wave}
      */
+    @Override
     public Wave getWave() {
         return this.waves.get(currentWaveIndex);
     }
@@ -46,6 +47,7 @@ public class WaveManager implements IWaveManager {
     /**
      * @return the number of the current wave
      */
+    @Override
     public int getCurrentWaveIndex() {
         return currentWaveIndex;
     }

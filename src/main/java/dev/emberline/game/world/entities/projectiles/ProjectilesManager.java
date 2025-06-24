@@ -36,6 +36,7 @@ public class ProjectilesManager implements Updatable, Renderable {
         return true;
     }
 
+    @Override
     public void update(final long elapsed) {
         final Iterator<IProjectile> it = projectiles.iterator();
         IProjectile currProjectile;
@@ -49,6 +50,7 @@ public class ProjectilesManager implements Updatable, Renderable {
         }
     }
 
+    @Override
     public void render() {
         for (final IProjectile projectile : projectiles) {
             projectile.render();

@@ -59,6 +59,7 @@ public class BurnEffect implements EnchantmentEffect {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void endEffect(final IEnemy enemy) {
         // No specific end effect for burn; it naturally expires after the duration.
         isExpired = true;

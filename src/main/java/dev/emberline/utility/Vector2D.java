@@ -171,6 +171,7 @@ public interface Vector2D {
      * @param obj the reference object with which to compare
      * @return true if this point is the same as the obj argument; false otherwise
      */
+    @Override
     boolean equals(Object obj);
 
     /**
@@ -178,6 +179,7 @@ public interface Vector2D {
      *
      * @return a hash code value for the point.
      */
+    @Override
     int hashCode();
 
     /**
@@ -187,6 +189,7 @@ public interface Vector2D {
      * implementations.
      * The returned string might be empty but cannot be {@code null}.
      */
+    @Override
     String toString();
 
 }

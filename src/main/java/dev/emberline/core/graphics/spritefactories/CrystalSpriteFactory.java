@@ -30,6 +30,7 @@ public class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKey> {
 
     private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/crystal.json", Metadata.class);
 
+    @Override
     public Sprite loadSprite(final CrystalSpriteKey key) {
         final EnchantmentInfo.Type enchant = key.type();
 

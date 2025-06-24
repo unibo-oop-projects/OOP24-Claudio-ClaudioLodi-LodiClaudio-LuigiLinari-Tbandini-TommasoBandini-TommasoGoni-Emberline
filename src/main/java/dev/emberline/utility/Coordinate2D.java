@@ -229,6 +229,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      * @param y
      * @return
      */
+    @Override
     public dev.emberline.utility.Vector2D directionTo(final double x, final double y) {
         final Vector2D vector = Vector2D.of(x, y);
         final Vector2D direction;
@@ -247,6 +248,7 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      * @param vector
      * @return
      */
+    @Override
     public dev.emberline.utility.Vector2D directionTo(final dev.emberline.utility.Vector2D vector) {
         return this.directionTo(vector.getX(), vector.getY());
     }

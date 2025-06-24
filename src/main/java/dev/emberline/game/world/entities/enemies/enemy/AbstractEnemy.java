@@ -43,6 +43,7 @@ public abstract class AbstractEnemy implements IEnemy {
 
     abstract protected EnemyType getEnemyType();
 
+    @Override
     public double getWidth() {
         return getMetadata().tileWidth;
     }
@@ -52,6 +53,7 @@ public abstract class AbstractEnemy implements IEnemy {
         return updateComponent.getHealth();
     }
 
+    @Override
     public double getHeight() {
         return getMetadata().tileHeight;
     }
