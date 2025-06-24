@@ -1,0 +1,10 @@
+{
+  "topLeftBound": {
+    "x": 0,
+    "y": 0
+  },
+  "bottomRightBound": {
+    "x": 32,
+    "y": 18
+  }
+}

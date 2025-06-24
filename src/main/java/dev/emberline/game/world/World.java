@@ -1,22 +1,21 @@
 package dev.emberline.game.world;
 
-import dev.emberline.core.components.Inputable;
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.entities.enemies.EnemiesManagerWithStats;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.entities.player.Player;
 import dev.emberline.game.world.entities.projectiles.ProjectilesManager;
 import dev.emberline.game.world.entities.projectiles.events.ProjectileHitListener;
 import dev.emberline.game.world.statistics.Statistics;
+import dev.emberline.game.GameState;
 import dev.emberline.game.world.buildings.TowersManager;
 import dev.emberline.game.world.waves.IWaveManager;
 import dev.emberline.game.world.waves.WaveManagerWithStats;
+import dev.emberline.gui.event.GuiEventListener;
 import javafx.scene.input.InputEvent;
 
 import java.io.Serializable;
 
-public class World implements Updatable, Renderable, Inputable, Serializable {
+public class World implements GameState, Serializable {
 
     private final WorldRenderComponent worldRenderComponent;
     // Enemies
@@ -31,6 +30,8 @@ public class World implements Updatable, Renderable, Inputable, Serializable {
     private final Statistics statistics;
     // HitListener
     private final ProjectileHitListener projectileHitListener;
+
+    private GuiEventListener listener;
     
     // Player
     private final Player player;
@@ -44,7 +45,6 @@ public class World implements Updatable, Renderable, Inputable, Serializable {
         this.projectileHitListener = new ProjectileHitListener(enemiesManager);
         this.player = new Player(this);
         this.worldRenderComponent = new WorldRenderComponent(waveManager);
-
     }
 
     public Player getPlayer() {
@@ -73,6 +73,10 @@ public class World implements Updatable, Renderable, Inputable, Serializable {
 
     public Statistics getStatistics() {
         return statistics;
+    }
+
+    public void setListener(GuiEventListener listener) {
+        this.listener = listener;
     }
 
     @Override

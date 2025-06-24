@@ -23,6 +23,8 @@ public class Wave implements Updatable, Renderable {
     private final Spawnpoints spawnpoints;
     private final Zoom zoom;
     private final Fog fog;
+    private boolean firstRender = false;
+
     // In nanoseconds, keeps track of the total time elapsed from the start of the wave
     private long accumulatorNs = 0;
 
@@ -80,16 +82,17 @@ public class Wave implements Updatable, Renderable {
      */
     @Override
     public void render() {
+        if (!firstRender) {
+            startWaveAnimations();
+            firstRender = true;
+        }
         fog.render();
         if (!zoom.isOver()) {
             zoom.render();
         }
     }
 
-    /**
-     * Starts the animations of the new wave
-     */
-    public void startWave() {
+    private void startWaveAnimations() {
         zoom.startAnimation();
         fog.startAnimation();
     }

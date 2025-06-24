@@ -1,6 +1,7 @@
 package dev.emberline.game.world.entities.player;
 
 import java.io.ObjectInputFilter.Config;
+import java.util.EventObject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,6 +10,9 @@ import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.World;
+import dev.emberline.gui.event.GameEvent;
+import dev.emberline.gui.event.GameEventListener;
+import dev.emberline.gui.event.GameOverEvent;
 import dev.emberline.gui.event.GuiEvent;
 import dev.emberline.gui.event.GuiEventListener;
 import dev.emberline.gui.event.NewBuildEvent;
@@ -21,6 +25,7 @@ public class Player implements GuiEventListener {
     private int health;
     private int gold;
     private World world;
+    private GameEventListener gameEventListener;
 
     private record Metadata (
         @JsonProperty int health,
@@ -33,6 +38,16 @@ public class Player implements GuiEventListener {
         this.health = metadata.health;
         this.gold = metadata.gold;
         this.world = world;
+    }
+
+    public final void setListener(GameEventListener gameEventListener) {
+        this.gameEventListener = gameEventListener;
+    }
+
+    protected final void throwGameEvent(GameEvent event) {
+        if (gameEventListener != null) {
+            gameEventListener.onGameEvent(event);
+        }
     }
 
     private boolean spendGold(int amount) {
@@ -56,8 +71,8 @@ public class Player implements GuiEventListener {
     }
 
     public void takeDamage() {
-        if (this.health - 1 <= 0) {
-            // TODO gui game over
+        if (this.health - 200 <= 0) {
+            throwGameEvent(new GameOverEvent(this));
         }
         this.health -= 1;
     }

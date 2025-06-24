@@ -2,14 +2,14 @@
   "topLeft": {
     "fromX": 2,
     "fromY": 2,
-    "toX": 0,
-    "toY": 0
+    "toX": -1,
+    "toY": -1
   },
   "bottomRight": {
     "fromX": 30,
     "fromY": 16,
-    "toX": 32,
-    "toY": 18
+    "toX": 33,
+    "toY": 19
   },
   "blinkEnabled": true,
   "dutyCycle": 0.7,

@@ -151,8 +151,8 @@ public class Fog implements Renderable {
             double fogOffsetX = (screenWorldLeft - topLeftX) % FOG_SIDE_LENGTH;
             double fogOffsetY = (screenWorldTop - topLeftY) % FOG_SIDE_LENGTH;
             // Iterate through the fog tiles that intersect the screen area
-            for (double fogX = screenWorldLeft + fogOffsetX; fogX < screenWorldRight; fogX += FOG_SIDE_LENGTH) {
-                for (double fogY = screenWorldTop + fogOffsetY; fogY < screenWorldBottom; fogY += FOG_SIDE_LENGTH) {
+            for (double fogX = screenWorldLeft + fogOffsetX - FOG_SIDE_LENGTH; fogX < screenWorldRight; fogX += FOG_SIDE_LENGTH) {
+                for (double fogY = screenWorldTop + fogOffsetY - FOG_SIDE_LENGTH; fogY < screenWorldBottom; fogY += FOG_SIDE_LENGTH) {
                     // Draw fog only outside the current visible world area
                     boolean isOutsideView = fogX < topLeftX || fogX >= topLeftX + viewWorldWidth || fogY < topLeftY || fogY >= topLeftY + viewWorldHeight;
                     if (isOutsideView) {
