@@ -13,13 +13,13 @@ public class ProjectileAnimation implements Updatable {
     private int frameIndex = 0;
     private long accumulatedTimeNs = 0;
 
-    public ProjectileAnimation(Projectile owner) {
+    public ProjectileAnimation(final Projectile owner) {
         this.projectileSprite = (AnimatedSprite) SpriteLoader.loadSprite(
                 new ProjectileSpriteKey(owner.getSizeType(), owner.getEnchantmentType()));
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         accumulatedTimeNs += elapsed;
 
         while (accumulatedTimeNs >= projectileSprite.getFrameTimeNs()) {

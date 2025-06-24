@@ -2,7 +2,7 @@ package dev.emberline.gui.event;
 
 public class SetStartEvent extends GuiEvent {
 
-    public SetStartEvent(Object source) {
+    public SetStartEvent(final Object source) {
         super(source);
     }
 }

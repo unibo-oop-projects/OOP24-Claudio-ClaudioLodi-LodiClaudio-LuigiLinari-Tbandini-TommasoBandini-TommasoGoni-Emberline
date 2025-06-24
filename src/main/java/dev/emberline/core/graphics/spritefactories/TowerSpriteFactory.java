@@ -30,16 +30,16 @@ public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
     private static final Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/tower.json", Metadata.class);
 
     @Override
-    public Sprite loadSprite(TowerSpriteKey key) {
-        ProjectileInfo.Type size = key.size();
-        EnchantmentInfo.Type enchant = key.enchant();
+    public Sprite loadSprite(final TowerSpriteKey key) {
+        final ProjectileInfo.Type size = key.size();
+        final EnchantmentInfo.Type enchant = key.enchant();
 
-        int width = metadata.width;
-        int height = metadata.height.get(size);
-        int x = metadata.size.get(size);
-        int y = metadata.enchant.get(enchant) - height;
+        final int width = metadata.width;
+        final int height = metadata.height.get(size);
+        final int x = metadata.size.get(size);
+        final int y = metadata.enchant.get(enchant) - height;
 
-        Image towerAtlas = getTowerAtlas();
+        final Image towerAtlas = getTowerAtlas();
 
         return new SingleSprite(new WritableImage(towerAtlas.getPixelReader(), x, y, width, height));
     }

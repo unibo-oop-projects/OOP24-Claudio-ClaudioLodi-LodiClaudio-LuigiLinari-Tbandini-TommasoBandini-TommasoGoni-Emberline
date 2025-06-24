@@ -31,7 +31,7 @@ public class TowerPreBuild extends Building {
     private final Vector2D locationBottomLeft;
     private final TowersManager towersManager;
 
-    public TowerPreBuild(Vector2D locationBottomLeft, TowersManager towersManager) {
+    public TowerPreBuild(final Vector2D locationBottomLeft, final TowersManager towersManager) {
         this.locationBottomLeft = locationBottomLeft;
         this.towersManager = towersManager;
     }
@@ -54,16 +54,16 @@ public class TowerPreBuild extends Building {
 
     @Override
     public void render() {
-        Image image = SpriteLoader.loadSprite(SingleSpriteKey.TOWER_PRE_BUILD).image();
+        final Image image = SpriteLoader.loadSprite(SingleSpriteKey.TOWER_PRE_BUILD).image();
 
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem cs = renderer.getWorldCoordinateSystem();
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
-        double topLeftScreenX = cs.toScreenX(getWorldTopLeft().getX());
-        double topLeftScreenY = cs.toScreenY(getWorldTopLeft().getY());
-        double screenWidth = cs.getScale() * metadata.width;
-        double screenHeight = cs.getScale() * metadata.height;
+        final double topLeftScreenX = cs.toScreenX(getWorldTopLeft().getX());
+        final double topLeftScreenY = cs.toScreenY(getWorldTopLeft().getY());
+        final double screenWidth = cs.getScale() * metadata.width;
+        final double screenHeight = cs.getScale() * metadata.height;
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BUILDINGS, () -> {
             gc.drawImage(image, topLeftScreenX, topLeftScreenY, screenWidth, screenHeight);
@@ -71,6 +71,6 @@ public class TowerPreBuild extends Building {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
     }
 }

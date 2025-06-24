@@ -6,7 +6,7 @@ public enum EnemyType {
     PIG, OGRE;
 
     @JsonCreator
-    public static EnemyType fromString(String enemyType) {
+    public static EnemyType fromString(final String enemyType) {
         return EnemyType.valueOf(enemyType.toUpperCase());
     }
 }

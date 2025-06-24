@@ -13,14 +13,14 @@ class TowerUpdateComponent implements Updatable {
     private final World world;
     private final Tower tower;
 
-    TowerUpdateComponent(World world, Tower tower) {
+    TowerUpdateComponent(final World world, final Tower tower) {
         this.world = world;
         this.tower = tower;
     }
 
     @Override
-    public void update(long elapsed) {
-        long shootingInterval = (long) (1e9 / tower.getProjectileInfo().getFireRate());
+    public void update(final long elapsed) {
+        final long shootingInterval = (long) (1e9 / tower.getProjectileInfo().getFireRate());
 
         accumulatedTimeNs += elapsed;
         if (accumulatedTimeNs < shootingInterval) {
@@ -28,13 +28,13 @@ class TowerUpdateComponent implements Updatable {
         }
 
         // Shooting
-        IEnemiesManager enemiesManager = world.getEnemiesManager();
+        final IEnemiesManager enemiesManager = world.getEnemiesManager();
 
-        List<IEnemy> toShoot = enemiesManager.getNear(tower.firingWorldCenterLocation(), tower.getProjectileInfo().getTowerRange());
+        final List<IEnemy> toShoot = enemiesManager.getNear(tower.firingWorldCenterLocation(), tower.getProjectileInfo().getTowerRange());
         // Sort by aim preference (TODO)
 
         for (final IEnemy enemy : toShoot) {
-            boolean creationSucceeded = world.getProjectilesManager().addProjectile(
+            final boolean creationSucceeded = world.getProjectilesManager().addProjectile(
                     tower.firingWorldCenterLocation(), enemy, tower.getProjectileInfo(), tower.getEnchantmentInfo()
             );
 
@@ -45,7 +45,7 @@ class TowerUpdateComponent implements Updatable {
         }
     }
 
-    public void setAccumulatedTimeNs(long accumulatedTimeNs) {
+    public void setAccumulatedTimeNs(final long accumulatedTimeNs) {
         this.accumulatedTimeNs = accumulatedTimeNs;
     }
 }

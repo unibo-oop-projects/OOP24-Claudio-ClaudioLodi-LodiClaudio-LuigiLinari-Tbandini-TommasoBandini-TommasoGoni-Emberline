@@ -111,7 +111,7 @@ public record EnchantmentInfo(Type type,
      * {@inheritDoc}
      */
     @Override
-    public EnchantmentInfo getChangeType(Type newType) {
+    public EnchantmentInfo getChangeType(final Type newType) {
         if (canChangeType()) {
             return new EnchantmentInfo(newType, 0);
         }
@@ -175,7 +175,7 @@ public record EnchantmentInfo(Type type,
      * or an empty {@code Optional} if no effect is associated with the enchantment.
      */
     public Optional<EnchantmentEffect> getEffect() {
-        double duration = metadata.EFFECT_DURATION[level];
+        final double duration = metadata.EFFECT_DURATION[level];
         return Optional.ofNullable(switch (type) {
             case Type.ICE -> new SlowEffect(metadata.ICE_SLOWING_FACTOR[level], duration);
             case Type.FIRE -> new BurnEffect(metadata.FIRE_DAMAGE_PER_SECOND[level], duration);
@@ -188,7 +188,7 @@ public record EnchantmentInfo(Type type,
      */
     @Override
     public List<TowerStat> getTowerStats() {
-        List<TowerStat> towerStats = new ArrayList<>();
+        final List<TowerStat> towerStats = new ArrayList<>();
 
         // Optional effect
         getEffect().ifPresent(effect -> towerStats.addAll(effect.getTowerStats()));

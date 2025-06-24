@@ -11,12 +11,12 @@ public class MouseLocation {
     private static Point2D mouseLocation = new Point2D(0d, 0d);
 
     // Package private method
-    static void setIsMouseInside(boolean mouseInside) {
+    static void setIsMouseInside(final boolean mouseInside) {
         MouseLocation.mouseInside = mouseInside;
     }
 
     // Package private method
-    static void setMouseLocation(Point2D mouseLocation) {
+    static void setMouseLocation(final Point2D mouseLocation) {
         MouseLocation.mouseLocation = mouseLocation;
     }
 

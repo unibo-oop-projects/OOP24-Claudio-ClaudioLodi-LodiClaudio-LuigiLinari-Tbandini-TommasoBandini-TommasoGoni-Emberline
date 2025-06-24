@@ -34,10 +34,10 @@ public class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
     private final static Metadata metadata = ConfigLoader.loadConfig("/world/waves/map.json", Metadata.class);
 
     @Override
-    public Sprite loadSprite(MapSpriteKey key) {
-        String wave = String.valueOf(key.waveNumber());
-        int frameNumber = metadata.waves[key.waveNumber()].frames;
-        Image[] frames = new Image[frameNumber];
+    public Sprite loadSprite(final MapSpriteKey key) {
+        final String wave = String.valueOf(key.waveNumber());
+        final int frameNumber = metadata.waves[key.waveNumber()].frames;
+        final Image[] frames = new Image[frameNumber];
 
         for (int i = 0; i < frameNumber; i++) {
             frames[i] = getMapAtlas(wave, String.valueOf(i));
@@ -45,7 +45,7 @@ public class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
         return new AnimatedSprite(frames, metadata.frameTimeNs);
     }
 
-    private static Image getMapAtlas(String wave, String frame) {
+    private static Image getMapAtlas(final String wave, final String frame) {
         return new Image(Objects.requireNonNull(
                 MapSpriteFactory.class.getResourceAsStream(
                         metadata.wavesFolder + wave + metadata.mapFolder + frame + metadata.mapFile

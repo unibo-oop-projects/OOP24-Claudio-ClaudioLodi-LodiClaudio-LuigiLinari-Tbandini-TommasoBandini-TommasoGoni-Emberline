@@ -11,7 +11,7 @@ public class Pair<A, B> implements Serializable {
     private A x;
     private B y;
 
-    public Pair(A x, B y) {
+    public Pair(final A x, final B y) {
         this.x = x;
         this.y = y;
     }
@@ -24,11 +24,11 @@ public class Pair<A, B> implements Serializable {
         return y;
     }
 
-    public void setX(A x) {
+    public void setX(final A x) {
         this.x = x;
     }
 
-    public void setY(B y) {
+    public void setY(final B y) {
         this.y = y;
     }
 
@@ -38,7 +38,7 @@ public class Pair<A, B> implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -48,7 +48,7 @@ public class Pair<A, B> implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Pair other = (Pair) obj;
+        final Pair other = (Pair) obj;
         return Objects.equals(x, other.x) && Objects.equals(y, other.y);
     }
 

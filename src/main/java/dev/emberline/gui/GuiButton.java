@@ -43,7 +43,7 @@ public class GuiButton implements Inputable, Renderable {
      * @param hoverSprite  The image to be displayed when the button is hovered over.
      * @see GuiButton#GuiButton(double, double, double, double, Image)
      */
-    public GuiButton(double x, double y, double width, double height, Image normalSprite, Image hoverSprite) {
+    public GuiButton(final double x, final double y, final double width, final double height, final Image normalSprite, final Image hoverSprite) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -62,19 +62,19 @@ public class GuiButton implements Inputable, Renderable {
      * @param height The height of the button in GUI coordinates.
      * @param sprite The image to be displayed when the button is in its normal state.
      */
-    public GuiButton(double x, double y, double width, double height, Image sprite) {
+    public GuiButton(final double x, final double y, final double width, final double height, final Image sprite) {
         this(x, y, width, height, sprite, null);
     }
 
-    public void setOnClick(Runnable onClick) {
+    public void setOnClick(final Runnable onClick) {
         this.onClick = onClick;
     }
 
-    public void setOnMouseLeave(Runnable onMouseLeave) {
+    public void setOnMouseLeave(final Runnable onMouseLeave) {
         this.onMouseLeave = onMouseLeave;
     }
 
-    public void setOnMouseEnter(Runnable onMouseEnter) {
+    public void setOnMouseEnter(final Runnable onMouseEnter) {
         this.onMouseEnter = onMouseEnter;
     }
 
@@ -83,20 +83,20 @@ public class GuiButton implements Inputable, Renderable {
     }
 
     @Override
-    public void processInput(InputEvent inputEvent) {
+    public void processInput(final InputEvent inputEvent) {
         if (inputEvent.isConsumed()) {
             return;
         }
-        if (!(inputEvent instanceof MouseEvent mouse)) {
+        if (!(inputEvent instanceof final MouseEvent mouse)) {
             return;
         }
         if (mouse.getEventType() != MouseEvent.MOUSE_CLICKED) {
             return;
         }
 
-        CoordinateSystem guics = GameLoop.getInstance().getRenderer().getGuiCoordinateSystem();
-        double x = guics.toWorldX(mouse.getX());
-        double y = guics.toWorldY(mouse.getY());
+        final CoordinateSystem guics = GameLoop.getInstance().getRenderer().getGuiCoordinateSystem();
+        final double x = guics.toWorldX(mouse.getX());
+        final double y = guics.toWorldY(mouse.getY());
         if (isInside(x, y) && onClick != null) {
             onClick.run();
             inputEvent.consume();
@@ -106,23 +106,23 @@ public class GuiButton implements Inputable, Renderable {
     @Override
     public void render() {
         // Rendering
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem guics = renderer.getGuiCoordinateSystem();
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem guics = renderer.getGuiCoordinateSystem();
         // Mouse hovering
         computeHoverState(guics.toWorldX(MouseLocation.getX()), guics.toWorldY(MouseLocation.getY()));
 
         // Positioning
-        double screenX = guics.toScreenX(this.x);
-        double screenY = guics.toScreenY(this.y);
-        double screenWidth = guics.getScale() * this.width;
-        double screenHeight = guics.getScale() * this.height;
+        final double screenX = guics.toScreenX(this.x);
+        final double screenY = guics.toScreenY(this.y);
+        final double screenWidth = guics.getScale() * this.width;
+        final double screenHeight = guics.getScale() * this.height;
 
         // Render task
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI_HIGH, () -> {
             if (hovered && hoverSprite == null) {
                 gc.drawImage(normalSprite, screenX, screenY, screenWidth, screenHeight);
-                Paint previousFill = gc.getFill();
+                final Paint previousFill = gc.getFill();
                 gc.setFill(Color.rgb(10, 10, 10, 0.2));
                 gc.fillRect(screenX, screenY, screenWidth, screenHeight);
                 gc.setFill(previousFill);
@@ -134,14 +134,14 @@ public class GuiButton implements Inputable, Renderable {
     }
 
     // In GUI coordinates
-    protected boolean isInside(double x, double y) {
+    protected boolean isInside(final double x, final double y) {
         if (x < this.x || x > this.x + width) {
             return false;
         }
         return !(y < this.y) && !(y > this.y + height);
     }
 
-    protected void computeHoverState(double mouseGuiX, double mouseGuiY) {
+    protected void computeHoverState(final double mouseGuiX, final double mouseGuiY) {
         hovered = isInside(mouseGuiX, mouseGuiY);
         if (hovered && !wasHovered && onMouseEnter != null) {
             onMouseEnter.run();

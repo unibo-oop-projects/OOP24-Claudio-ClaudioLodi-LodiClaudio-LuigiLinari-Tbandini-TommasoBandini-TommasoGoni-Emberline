@@ -31,7 +31,7 @@ class EnemyUpdateComponent implements Updatable {
     private final List<Vector2D> destinations = new ArrayList<>();
     private int destinationsIdx = 0;
 
-    EnemyUpdateComponent(Vector2D spawnPoint, World world, AbstractEnemy enemy) {
+    EnemyUpdateComponent(final Vector2D spawnPoint, final World world, final AbstractEnemy enemy) {
         this.enemy = enemy;
         this.health = enemy.getFullHealth();
         this.world = world;
@@ -64,7 +64,7 @@ class EnemyUpdateComponent implements Updatable {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         switch (enemyState) {
             case WALKING -> walk(elapsed);
             case DYING -> dying();
@@ -74,7 +74,7 @@ class EnemyUpdateComponent implements Updatable {
         enemy.getAnimationUpdatable().update(elapsed);
     }
 
-    private void walk(long elapsed) {
+    private void walk(final long elapsed) {
         if (activeEffect.isExpired()) {
             clearEffect();
         }
@@ -95,16 +95,16 @@ class EnemyUpdateComponent implements Updatable {
      * @return All the uniform motions starting from the current position of the enemy
      * that is described by a list of {@code UniformMotion}
      */
-    List<UniformMotion> getMotionUntil(long time) {
+    List<UniformMotion> getMotionUntil(final long time) {
         Vector2D curr = new Coordinate2D(position.getX(), position.getY());
-        List<UniformMotion> enemyMotion = new ArrayList<>();
+        final List<UniformMotion> enemyMotion = new ArrayList<>();
 
         long durationAcc = 0;
         for (int i = destinationsIdx; i < destinations.size() && durationAcc < time; i++) {
-            Vector2D nextDestination = new Coordinate2D(destinations.get(i).getX(), destinations.get(i).getY());
+            final Vector2D nextDestination = new Coordinate2D(destinations.get(i).getX(), destinations.get(i).getY());
 
-            Vector2D velocity = nextDestination.subtract(curr).normalize().multiply(enemy.getSpeed() * slowFactor);
-            long duration = (long) (curr.distance(nextDestination) / (enemy.getSpeed() * slowFactor));
+            final Vector2D velocity = nextDestination.subtract(curr).normalize().multiply(enemy.getSpeed() * slowFactor);
+            final long duration = (long) (curr.distance(nextDestination) / (enemy.getSpeed() * slowFactor));
             durationAcc += duration;
 
             enemyMotion.add(new UniformMotion(curr, velocity, duration));
@@ -117,18 +117,18 @@ class EnemyUpdateComponent implements Updatable {
         return enemyMotion;
     }
 
-    void dealDamage(double damage) {
+    void dealDamage(final double damage) {
         health -= damage;
         if (health <= 0) {
             setDying();
         }
     }
 
-    void applyEffect(EnchantmentEffect effect) {
+    void applyEffect(final EnchantmentEffect effect) {
         this.activeEffect = effect;
     }
 
-    void setSlowFactor(double slowFactor) {
+    void setSlowFactor(final double slowFactor) {
         this.slowFactor = slowFactor;
     }
 
@@ -153,7 +153,7 @@ class EnemyUpdateComponent implements Updatable {
     }
 
     FacingDirection getFacingDirection() {
-        int angle = Math.round((float) Math.toDegrees(Math.atan2(-velocity.getY(), velocity.getX())));
+        final int angle = Math.round((float) Math.toDegrees(Math.atan2(-velocity.getY(), velocity.getX())));
         return switch (angle) {
             case -180 -> FacingDirection.LEFT;
             case 90 -> FacingDirection.UP;
@@ -171,7 +171,7 @@ class EnemyUpdateComponent implements Updatable {
         return activeEffect.getEnemyAppearance();
     }
 
-    private void move(long elapsed) {
+    private void move(final long elapsed) {
         // move along the velocity vector
         position = position.add(velocity.multiply(slowFactor).multiply(elapsed));
 
@@ -183,7 +183,7 @@ class EnemyUpdateComponent implements Updatable {
         // dot <= 0 => either overshot or exactly at currDestination
         while (dot <= 0) {
             // if overshot => go back to destination and do the difference in movement in the next direction
-            double overshootAmount = posToDest.magnitude();
+            final double overshootAmount = posToDest.magnitude();
 
             position = currDestination;
             if (currDestination == destinations.getLast()) {
@@ -191,7 +191,7 @@ class EnemyUpdateComponent implements Updatable {
                 return;
             }
             currDestination = destinations.get(++destinationsIdx);
-            Vector2D nextDirection = currDestination.subtract(position).normalize();
+            final Vector2D nextDirection = currDestination.subtract(position).normalize();
 
             // correction
             position = position.add(nextDirection.multiply(overshootAmount));

@@ -11,7 +11,7 @@ public class EnemyWithStats implements IEnemy {
     private final IEnemy enemy;
     private final Statistics statistics;
 
-    public EnemyWithStats(IEnemy newEnemy, Statistics statistics) {
+    public EnemyWithStats(final IEnemy newEnemy, final Statistics statistics) {
         this.enemy = newEnemy;
         this.statistics = statistics;
     }
@@ -32,19 +32,19 @@ public class EnemyWithStats implements IEnemy {
     }
 
     @Override
-    public void dealDamage(double damage) {
-        double damageDealt = Math.min(getHealth(), damage);
+    public void dealDamage(final double damage) {
+        final double damageDealt = Math.min(getHealth(), damage);
         statistics.updateTotalDamage(damageDealt);
         enemy.dealDamage(damage);
     }
 
     @Override
-    public void applyEffect(EnchantmentEffect effect) {
+    public void applyEffect(final EnchantmentEffect effect) {
         enemy.applyEffect(effect);
     }
 
     @Override
-    public void setSlowFactor(double slowFactor) {
+    public void setSlowFactor(final double slowFactor) {
         enemy.setSlowFactor(slowFactor);
     }
 
@@ -59,7 +59,7 @@ public class EnemyWithStats implements IEnemy {
     }
 
     @Override
-    public List<UniformMotion> getMotionUntil(long time) {
+    public List<UniformMotion> getMotionUntil(final long time) {
         return enemy.getMotionUntil(time);
     }
 
@@ -74,7 +74,7 @@ public class EnemyWithStats implements IEnemy {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         enemy.update(elapsed);
     }
 }

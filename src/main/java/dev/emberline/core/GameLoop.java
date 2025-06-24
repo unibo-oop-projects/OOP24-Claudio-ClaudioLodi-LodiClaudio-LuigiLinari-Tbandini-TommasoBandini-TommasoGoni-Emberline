@@ -32,7 +32,7 @@ public class GameLoop extends Thread {
     // Game
     private final GameRoot gameRoot;
 
-    private GameLoop(Stage stage, Canvas canvas) {
+    private GameLoop(final Stage stage, final Canvas canvas) {
         super("Game Thread");
         this.stage = stage;
         gameRoot = new GameRoot();
@@ -41,7 +41,7 @@ public class GameLoop extends Thread {
         inputDispatcher = new InputDispatcher(gameRoot);
     }
 
-    public static synchronized void init(Stage stage, Canvas canvas) {
+    public static synchronized void init(final Stage stage, final Canvas canvas) {
         if (instance != null) {
             throw new IllegalStateException("GameLoop already initialized");
         }
@@ -64,8 +64,8 @@ public class GameLoop extends Thread {
         running.set(true);
         while (running.get()) {
             // Timings
-            long now = System.nanoTime();
-            long elapsed = now - previous;
+            final long now = System.nanoTime();
+            final long elapsed = now - previous;
             previous = now;
             lagUpdate += elapsed;
 

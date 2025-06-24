@@ -34,7 +34,7 @@ public class NewBuildDialogLayer extends GuiLayer {
     private final GuiButton buildButton;
     private final int newBuildCost = 50; // Example cost, can be replaced with actual logic to get the cost
 
-    public NewBuildDialogLayer(TowerPreBuild tower) {
+    public NewBuildDialogLayer(final TowerPreBuild tower) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         this.tower = tower;
         buildButton = addBuildButton();
@@ -57,9 +57,9 @@ public class NewBuildDialogLayer extends GuiLayer {
 
     @Override
     public void render() {
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem guics = renderer.getGuiCoordinateSystem();
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem guics = renderer.getGuiCoordinateSystem();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI_HIGH, () -> {
             // Background

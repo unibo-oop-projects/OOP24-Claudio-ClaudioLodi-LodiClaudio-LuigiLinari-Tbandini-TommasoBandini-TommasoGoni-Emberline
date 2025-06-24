@@ -10,7 +10,7 @@ public class IntegerPoint2D {
     private final Integer x;
     private final Integer y;
 
-    public IntegerPoint2D(Integer x, Integer y) {
+    public IntegerPoint2D(final Integer x, final Integer y) {
         this.x = x;
         this.y = y;
     }
@@ -29,7 +29,7 @@ public class IntegerPoint2D {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -39,7 +39,7 @@ public class IntegerPoint2D {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		IntegerPoint2D other = (IntegerPoint2D) obj;
+		final IntegerPoint2D other = (IntegerPoint2D) obj;
 		return Objects.equals(x, other.x) && Objects.equals(y, other.y);
 	}
 

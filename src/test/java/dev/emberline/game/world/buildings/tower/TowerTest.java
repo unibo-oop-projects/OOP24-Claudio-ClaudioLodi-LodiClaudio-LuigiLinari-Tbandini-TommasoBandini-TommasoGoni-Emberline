@@ -74,7 +74,7 @@ class TowerTest {
 
     @Test
     void testFiringRateAndAddingOfProjectiles() {
-        long expectedShootingIntervalNs = (long) (1e9 / tower.getProjectileInfo().getFireRate());
+        final long expectedShootingIntervalNs = (long) (1e9 / tower.getProjectileInfo().getFireRate());
 
         for (int i = 0; i < 1000; i++) {
             tower.update(expectedShootingIntervalNs);

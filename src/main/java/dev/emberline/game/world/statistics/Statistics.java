@@ -27,7 +27,7 @@ public class Statistics implements Updatable, Serializable {
      *
      * @param world
      */
-    public Statistics(World world) {
+    public Statistics(final World world) {
         this.world = world;
     }
 
@@ -37,7 +37,7 @@ public class Statistics implements Updatable, Serializable {
      *
      * @param enemiesKilled
      */
-    public void updateEnemiesKilled(int enemiesKilled) {
+    public void updateEnemiesKilled(final int enemiesKilled) {
         this.enemiesKilled += enemiesKilled;
     }
 
@@ -52,14 +52,14 @@ public class Statistics implements Updatable, Serializable {
     /**
      * sums @param elapsed to the current time spent in game.
      */
-    public void updateTimeInGame(long elapsed) {
+    public void updateTimeInGame(final long elapsed) {
         this.timeInGame += elapsed;
     }
 
     /**
      * Sums @param damage to the total damage already dealt by the towers to the enemies.
      */
-    public void updateTotalDamage(double damage) {
+    public void updateTotalDamage(final double damage) {
         totalDamage += damage;
     }
 
@@ -113,7 +113,7 @@ public class Statistics implements Updatable, Serializable {
      * @param elapsed the time elapsed since the last update in nanoseconds
      */
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         updateTimeInGame(elapsed);
         //updatePlayerHealth();
         updateDPS();

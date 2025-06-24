@@ -23,29 +23,29 @@ public class EnemyRenderComponent implements Renderable {
     private final AbstractEnemy enemy;
     private final EnemyAnimation enemyAnimation;
 
-    EnemyRenderComponent(AbstractEnemy enemy) {
+    EnemyRenderComponent(final AbstractEnemy enemy) {
         this.enemy = enemy;
         this.enemyAnimation = new EnemyAnimation(enemy);
     }
 
     @Override
     public void render() {
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem cs = renderer.getWorldCoordinateSystem();
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem cs = renderer.getWorldCoordinateSystem();
         // enemy body
-        Vector2D position = enemy.getPosition();
-        double enemyScreenWidth = enemy.getWidth() * cs.getScale();
-        double enemyScreenHeight = enemy.getHeight() * cs.getScale();
-        double enemyScreenX = cs.toScreenX(position.getX()) - enemyScreenWidth / 2;
-        double enemyScreenY = cs.toScreenY(position.getY()) - enemyScreenHeight / 2;
+        final Vector2D position = enemy.getPosition();
+        final double enemyScreenWidth = enemy.getWidth() * cs.getScale();
+        final double enemyScreenHeight = enemy.getHeight() * cs.getScale();
+        final double enemyScreenX = cs.toScreenX(position.getX()) - enemyScreenWidth / 2;
+        final double enemyScreenY = cs.toScreenY(position.getY()) - enemyScreenHeight / 2;
         // healthbar
-        double hbScreenWidth = HealthbarLayout.FULL_WIDTH * cs.getScale();
-        double hbScreenHeight = HealthbarLayout.HEIGHT * cs.getScale();
-        double hbScreenX = enemyScreenX + HealthbarLayout.X_OFFSET;
-        double hbScreenY = enemyScreenY + HealthbarLayout.Y_OFFSET;
+        final double hbScreenWidth = HealthbarLayout.FULL_WIDTH * cs.getScale();
+        final double hbScreenHeight = HealthbarLayout.HEIGHT * cs.getScale();
+        final double hbScreenX = enemyScreenX + HealthbarLayout.X_OFFSET;
+        final double hbScreenY = enemyScreenY + HealthbarLayout.Y_OFFSET;
 
-        Image currentFrame = enemyAnimation.getImage();
+        final Image currentFrame = enemyAnimation.getImage();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.ENEMIES, () -> {
             gc.drawImage(currentFrame, enemyScreenX, enemyScreenY, enemyScreenWidth, enemyScreenHeight);

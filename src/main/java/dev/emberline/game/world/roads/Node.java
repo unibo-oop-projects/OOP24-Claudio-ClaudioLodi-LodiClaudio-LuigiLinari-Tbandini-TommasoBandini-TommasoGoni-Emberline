@@ -19,7 +19,7 @@ class Node implements Serializable {
     private int cnt;
     private int currIdx;
 
-    public Node(Vector2D pos) {
+    public Node(final Vector2D pos) {
         this.pos = pos;
         this.neighbours = new ArrayList<>();
 
@@ -30,7 +30,7 @@ class Node implements Serializable {
         this.cnt = -1;
     }
 
-    public void addNeighbour(Node neighbour, Integer weight) {
+    public void addNeighbour(final Node neighbour, final Integer weight) {
         neighbours.add(new Pair<>(neighbour, weight));
     }
 

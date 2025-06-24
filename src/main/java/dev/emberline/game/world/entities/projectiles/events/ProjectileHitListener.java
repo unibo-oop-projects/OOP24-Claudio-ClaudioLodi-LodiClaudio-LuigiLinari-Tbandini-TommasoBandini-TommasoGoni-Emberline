@@ -11,15 +11,15 @@ public class ProjectileHitListener {
 
     private final IEnemiesManager enemiesManager;
 
-    public ProjectileHitListener(IEnemiesManager enemiesManager) {
+    public ProjectileHitListener(final IEnemiesManager enemiesManager) {
         this.enemiesManager = enemiesManager;
     }
 
-    public void onProjectileHit(ProjectileHitEvent e) {
-        Vector2D landingLocation = e.getLandingLocation();
-        double damage = e.getDamage();
-        double damageArea = e.getDamageArea().isPresent() ? e.getDamageArea().get() : 0.1;
-        Optional<EnchantmentEffect> effect = e.getEffect();
+    public void onProjectileHit(final ProjectileHitEvent e) {
+        final Vector2D landingLocation = e.getLandingLocation();
+        final double damage = e.getDamage();
+        final double damageArea = e.getDamageArea().isPresent() ? e.getDamageArea().get() : 0.1;
+        final Optional<EnchantmentEffect> effect = e.getEffect();
 
         for (final IEnemy enemy : enemiesManager.getNear(landingLocation, damageArea)) {
             effect.ifPresent(enemy::applyEffect);

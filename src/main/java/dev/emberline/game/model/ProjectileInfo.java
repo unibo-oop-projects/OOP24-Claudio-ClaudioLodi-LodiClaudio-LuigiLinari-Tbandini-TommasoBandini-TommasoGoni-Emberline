@@ -109,7 +109,7 @@ public record ProjectileInfo(Type type,
      * {@inheritDoc}
      */
     @Override
-    public ProjectileInfo getChangeType(Type newType) {
+    public ProjectileInfo getChangeType(final Type newType) {
         if (canChangeType()) {
             return new ProjectileInfo(newType, 0);
         }
@@ -252,7 +252,7 @@ public record ProjectileInfo(Type type,
         // To add the optional damage area a resizable list is needed,
         // Arrays.asList() returns a fixed size list so we need to create
         // a new one with the elements of the fixed size list.
-        List<TowerStat> towerStats = new ArrayList<>(Arrays.asList(
+        final List<TowerStat> towerStats = new ArrayList<>(Arrays.asList(
                 new TowerStat(TowerStatType.FIRE_RATE, getFireRate()),
                 new TowerStat(TowerStatType.DAMAGE, getDamage()),
                 new TowerStat(TowerStatType.TOWER_RANGE, getTowerRange()),

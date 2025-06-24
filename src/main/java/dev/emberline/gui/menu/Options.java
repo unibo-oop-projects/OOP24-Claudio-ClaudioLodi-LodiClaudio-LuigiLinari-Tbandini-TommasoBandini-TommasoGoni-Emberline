@@ -57,14 +57,14 @@ public class Options extends GuiLayer implements GameState {
 
     // Options button
     private void addCloseOptionsButton() {
-        GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X,
+        final GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X,
                 Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH,
                 Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.DEFAULT_SIGN_BUTTON).image());
         optionsButton.setOnClick(() -> throwEvent(new CloseOptionsEvent(this)));
         super.buttons.add(optionsButton);
     }
 
-    private Options(OptionsBounds optionsBounds) {
+    private Options(final OptionsBounds optionsBounds) {
         super(optionsBounds.topLeftBound.x, optionsBounds.topLeftBound.y, optionsBounds.bottomRightBound.x - optionsBounds.topLeftBound.x, optionsBounds.bottomRightBound.y - optionsBounds.topLeftBound.y);
         this.optionsBounds = optionsBounds;
     }
@@ -72,18 +72,18 @@ public class Options extends GuiLayer implements GameState {
     @Override
     public void render() {
         // Render background
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem cs = renderer.getGuiCoordinateSystem();
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem cs = renderer.getGuiCoordinateSystem();
 
         addCloseOptionsButton();
 
-        double menuScreenWidth = optionsBounds.bottomRightBound.x * cs.getScale();
-        double menuScreenHeight = optionsBounds.bottomRightBound.y * cs.getScale();
-        double menuScreenX = cs.toScreenX(optionsBounds.topLeftBound.x);
-        double menuScreenY = cs.toScreenY(optionsBounds.topLeftBound.y);
+        final double menuScreenWidth = optionsBounds.bottomRightBound.x * cs.getScale();
+        final double menuScreenHeight = optionsBounds.bottomRightBound.y * cs.getScale();
+        final double menuScreenX = cs.toScreenX(optionsBounds.topLeftBound.x);
+        final double menuScreenY = cs.toScreenY(optionsBounds.topLeftBound.y);
 
-        Image menuBackground = SpriteLoader.loadSprite(SingleSpriteKey.MENU_BACKGROUND).image();
+        final Image menuBackground = SpriteLoader.loadSprite(SingleSpriteKey.MENU_BACKGROUND).image();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
             gc.drawImage(menuBackground, menuScreenX, menuScreenY, menuScreenWidth, menuScreenHeight);
@@ -93,7 +93,7 @@ public class Options extends GuiLayer implements GameState {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
     }
 
 }

@@ -13,7 +13,7 @@ public class EnemyAnimation implements Updatable {
         NORMAL, BURNING, FREEZING, DYING;
 
         @JsonCreator
-        public static EnemyAppearance fromString(String appearance) {
+        public static EnemyAppearance fromString(final String appearance) {
             return EnemyAppearance.valueOf(appearance.toUpperCase());
         }
     }
@@ -29,7 +29,7 @@ public class EnemyAnimation implements Updatable {
     private boolean dyingAnimationFinished = false; // To track if the dying animation has finished
     private boolean isDying = false; // To track if the enemy is currently in a dying state
 
-    public EnemyAnimation(AbstractEnemy enemy) {
+    public EnemyAnimation(final AbstractEnemy enemy) {
         this.enemy = enemy;
         updateAnimatedSprite();
     }
@@ -40,7 +40,7 @@ public class EnemyAnimation implements Updatable {
      * @param enemyAppearance The new enemy appearance.
      * @return {@code true} if the appearance was changed, {@code false} otherwise.
      */
-    private boolean setEnemyAppearance(EnemyAppearance enemyAppearance) {
+    private boolean setEnemyAppearance(final EnemyAppearance enemyAppearance) {
         if (this.enemyAppearance == enemyAppearance) return false; // No change needed
         this.enemyAppearance = enemyAppearance;
         return true;
@@ -52,7 +52,7 @@ public class EnemyAnimation implements Updatable {
      * @param facingDirection The new facing direction.
      * @return {@code true} if the direction was changed, {@code false} otherwise.
      */
-    private boolean setFacingDirection(AbstractEnemy.FacingDirection facingDirection) {
+    private boolean setFacingDirection(final AbstractEnemy.FacingDirection facingDirection) {
         if (this.facingDirection == facingDirection) return false; // No change needed
         this.facingDirection = facingDirection;
         return true;
@@ -74,7 +74,7 @@ public class EnemyAnimation implements Updatable {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         if (dyingAnimationFinished) return;
         updateAnimatedSprite();
 
@@ -85,7 +85,7 @@ public class EnemyAnimation implements Updatable {
             isDying = true;
         }
 
-        long frameTimeNs = (long) (animatedSprite.getFrameTimeNs() / enemy.getSlowFactor());
+        final long frameTimeNs = (long) (animatedSprite.getFrameTimeNs() / enemy.getSlowFactor());
         accumulatedTimeNs += elapsed;
         while (accumulatedTimeNs >= frameTimeNs) {
             accumulatedTimeNs -= frameTimeNs;

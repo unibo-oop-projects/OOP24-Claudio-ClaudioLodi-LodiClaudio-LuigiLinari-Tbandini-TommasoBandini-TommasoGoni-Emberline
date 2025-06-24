@@ -57,14 +57,14 @@ public class GameOver extends GuiLayer implements GameState {
 
     // GameOver button
     private void addMainMenuButton() {
-        GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X,
+        final GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X,
                 Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH,
                 Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.DEFAULT_SIGN_BUTTON).image());
         optionsButton.setOnClick(() -> throwEvent(new SetMainMenuEvent(this)));
         super.buttons.add(optionsButton);
     }
 
-    private GameOver(GameOverBounds gameOverBounds) {
+    private GameOver(final GameOverBounds gameOverBounds) {
         super(gameOverBounds.topLeftBound.x, gameOverBounds.topLeftBound.y, gameOverBounds.bottomRightBound.x - gameOverBounds.topLeftBound.x, gameOverBounds.bottomRightBound.y - gameOverBounds.topLeftBound.y);
         this.gameOverBounds = gameOverBounds;
     }
@@ -72,18 +72,18 @@ public class GameOver extends GuiLayer implements GameState {
     @Override
     public void render() {
         // Render background
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem cs = renderer.getGuiCoordinateSystem();
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem cs = renderer.getGuiCoordinateSystem();
 
         addMainMenuButton();
 
-        double menuScreenWidth = gameOverBounds.bottomRightBound.x * cs.getScale();
-        double menuScreenHeight = gameOverBounds.bottomRightBound.y * cs.getScale();
-        double menuScreenX = cs.toScreenX(gameOverBounds.topLeftBound.x);
-        double menuScreenY = cs.toScreenY(gameOverBounds.topLeftBound.y);
+        final double menuScreenWidth = gameOverBounds.bottomRightBound.x * cs.getScale();
+        final double menuScreenHeight = gameOverBounds.bottomRightBound.y * cs.getScale();
+        final double menuScreenX = cs.toScreenX(gameOverBounds.topLeftBound.x);
+        final double menuScreenY = cs.toScreenY(gameOverBounds.topLeftBound.y);
 
-        Image menuBackground = SpriteLoader.loadSprite(SingleSpriteKey.MENU_BACKGROUND).image();
+        final Image menuBackground = SpriteLoader.loadSprite(SingleSpriteKey.MENU_BACKGROUND).image();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
             gc.drawImage(menuBackground, menuScreenX, menuScreenY, menuScreenWidth, menuScreenHeight);
@@ -93,7 +93,7 @@ public class GameOver extends GuiLayer implements GameState {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
     }
 
 }

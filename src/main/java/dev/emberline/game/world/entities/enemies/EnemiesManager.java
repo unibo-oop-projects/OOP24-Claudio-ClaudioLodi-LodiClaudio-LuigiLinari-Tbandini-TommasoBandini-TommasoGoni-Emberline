@@ -17,7 +17,7 @@ public class EnemiesManager implements IEnemiesManager {
 
     private final World world;
 
-    public EnemiesManager(World world) {
+    public EnemiesManager(final World world) {
         this.world = world;
 
         //TODO
@@ -27,14 +27,14 @@ public class EnemiesManager implements IEnemiesManager {
         );
     }
 
-    public void addEnemy(Vector2D spawnPoint, EnemyType type) {
-        IEnemy newEnemy = enemiesFactory.createEnemy(spawnPoint, type, world);
-        IEnemy newEnemyWrapper = new EnemyWithStats(newEnemy, world.getStatistics());
+    public void addEnemy(final Vector2D spawnPoint, final EnemyType type) {
+        final IEnemy newEnemy = enemiesFactory.createEnemy(spawnPoint, type, world);
+        final IEnemy newEnemyWrapper = new EnemyWithStats(newEnemy, world.getStatistics());
         spatialHashGrid.add(newEnemyWrapper);
     }
 
-    public List<IEnemy> getNear(Vector2D location, double radius) {
-        List<IEnemy> near = spatialHashGrid.getNear(location, radius);
+    public List<IEnemy> getNear(final Vector2D location, final double radius) {
+        final List<IEnemy> near = spatialHashGrid.getNear(location, radius);
         near.removeIf(iEnemy -> !iEnemy.isHittable());
         return near;
     }
@@ -48,9 +48,9 @@ public class EnemiesManager implements IEnemiesManager {
     }
 
     @Override
-    public void update(long elapsed) {
-        List<IEnemy> toUpdate = new LinkedList<>();
-        List<IEnemy> toRemove = new LinkedList<>();
+    public void update(final long elapsed) {
+        final List<IEnemy> toUpdate = new LinkedList<>();
+        final List<IEnemy> toRemove = new LinkedList<>();
         for (final IEnemy enemy : spatialHashGrid) {
             if (enemy.isDead()) {
                 toRemove.add(enemy);

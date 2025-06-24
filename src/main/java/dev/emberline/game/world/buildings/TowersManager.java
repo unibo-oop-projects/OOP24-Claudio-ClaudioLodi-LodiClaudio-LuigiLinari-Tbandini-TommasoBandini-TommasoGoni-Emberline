@@ -31,7 +31,7 @@ public class TowersManager implements Updatable, Renderable, Inputable {
     private final World world;
     private final IEnemiesManager enemiesManager;
 
-    public TowersManager(World world) {
+    public TowersManager(final World world) {
         this.world = world;
         this.enemiesManager = world.getEnemiesManager();
 
@@ -43,14 +43,14 @@ public class TowersManager implements Updatable, Renderable, Inputable {
         buildings.add(new TowerPreBuild(new Coordinate2D(5, 15), this));
     }
 
-    public void openNewBuildDialog(TowerPreBuild tower) {
+    public void openNewBuildDialog(final TowerPreBuild tower) {
         if (newBuildDialogLayer == null || newBuildDialogLayer.getTowerPreBuild() != tower) {
             newBuildDialogLayer = new NewBuildDialogLayer(tower);
             newBuildDialogLayer.setListener(world.getPlayer());
         }
     }
 
-    public void openTowerDialog(Tower tower) {
+    public void openTowerDialog(final Tower tower) {
         if (towerDialogLayer == null || towerDialogLayer.getTower() != tower) {
             towerDialogLayer = new TowerDialogLayer(tower);
             towerDialogLayer.setListener(world.getPlayer());
@@ -65,7 +65,7 @@ public class TowersManager implements Updatable, Renderable, Inputable {
         towerDialogLayer = null;
     }
 
-    public void buildTower(TowerPreBuild preBuild) {
+    public void buildTower(final TowerPreBuild preBuild) {
         if (!buildings.contains(preBuild)) {
             throw new IllegalArgumentException("preBuild must be already added to the buildings set");
         }
@@ -73,7 +73,7 @@ public class TowersManager implements Updatable, Renderable, Inputable {
     }
 
     @Override
-    public void processInput(InputEvent inputEvent) {
+    public void processInput(final InputEvent inputEvent) {
         if (inputEvent.isConsumed()) {
             return;
         }
@@ -116,14 +116,14 @@ public class TowersManager implements Updatable, Renderable, Inputable {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         for (final Building building : buildings) {
             building.update(elapsed);
         }
 
         for (final TowerPreBuild preBuild : toBuild) {
             buildings.remove(preBuild);
-            Vector2D towerLocationBottomLeft = new Coordinate2D(
+            final Vector2D towerLocationBottomLeft = new Coordinate2D(
                     preBuild.getWorldTopLeft().getX(), preBuild.getWorldBottomRight().getY()
             );
             closeNewBuildDialog();

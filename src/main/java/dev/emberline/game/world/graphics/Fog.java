@@ -89,7 +89,7 @@ public class Fog implements Renderable {
      *
      * @param configDirectory the path to the directory containing the {@code fog.json} configuration file.
      */
-    public Fog(String configDirectory) {
+    public Fog(final String configDirectory) {
         metadata = ConfigLoader.loadConfig(configDirectory + "fog.json", Metadata.class);
         startAnimation();
     }
@@ -105,15 +105,15 @@ public class Fog implements Renderable {
 
     @Override
     public void render() {
-        long currentTimeNs = System.nanoTime();
+        final long currentTimeNs = System.nanoTime();
         accumulatorNs += currentTimeNs - previousTimeNs;
         previousTimeNs = currentTimeNs;
 
         // Duty cycle to make the fog blink between two states
-        double cycleDurationNs = metadata.blinkPeriodSeconds * 1e9;
-        boolean blinkState = accumulatorNs % cycleDurationNs < cycleDurationNs * metadata.dutyCycle;
+        final double cycleDurationNs = metadata.blinkPeriodSeconds * 1e9;
+        final boolean blinkState = accumulatorNs % cycleDurationNs < cycleDurationNs * metadata.dutyCycle;
         // Determine if the fog is currently blinking
-        boolean isBlinking = accumulatorNs >= 0 && accumulatorNs < metadata.animationDurationSeconds * 1e9 && metadata.blinkEnabled;
+        final boolean isBlinking = accumulatorNs >= 0 && accumulatorNs < metadata.animationDurationSeconds * 1e9 && metadata.blinkEnabled;
         // Draw inner or outer fog
         if (accumulatorNs < 0 || isBlinking && blinkState) {
             renderFog(metadata.topLeft.fromX, metadata.topLeft.fromY, metadata.bottomRight.fromX, metadata.bottomRight.fromY);
@@ -122,15 +122,15 @@ public class Fog implements Renderable {
         }
     }
 
-    private static void renderFog(double topLeftX, double topLeftY, double bottomRightX, double bottomRightY) {
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem cs = renderer.getWorldCoordinateSystem();
+    private static void renderFog(final double topLeftX, final double topLeftY, final double bottomRightX, final double bottomRightY) {
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
-        double viewWorldWidth = bottomRightX - topLeftX;
-        double viewWorldHeight = bottomRightY - topLeftY;
-        double screenWidth = renderer.getScreenWidth();
-        double screenHeight = renderer.getScreenHeight();
+        final double viewWorldWidth = bottomRightX - topLeftX;
+        final double viewWorldHeight = bottomRightY - topLeftY;
+        final double screenWidth = renderer.getScreenWidth();
+        final double screenHeight = renderer.getScreenHeight();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.FOG, () -> {
             for (double fogWorldX = topLeftX; fogWorldX < topLeftX + viewWorldWidth; fogWorldX += FOG_SIDE_LENGTH) {
@@ -147,18 +147,18 @@ public class Fog implements Renderable {
             drawFogTile(gc, cs, SingleSpriteKey.FOG_BOTTOM_LEFT, topLeftX, topLeftY + viewWorldHeight - FOG_SIDE_LENGTH);
             drawFogTile(gc, cs, SingleSpriteKey.FOG_BOTTOM_RIGHT, topLeftX + viewWorldWidth - FOG_SIDE_LENGTH, topLeftY + viewWorldHeight - FOG_SIDE_LENGTH);
             // Convert screen corners to world coordinates and align to tile grid
-            double screenWorldLeft = Math.floor(cs.toWorldX(0));
-            double screenWorldTop = Math.floor(cs.toWorldY(0));
-            double screenWorldRight = Math.ceil(cs.toWorldX(screenWidth));
-            double screenWorldBottom = Math.ceil(cs.toWorldY(screenHeight));
+            final double screenWorldLeft = Math.floor(cs.toWorldX(0));
+            final double screenWorldTop = Math.floor(cs.toWorldY(0));
+            final double screenWorldRight = Math.ceil(cs.toWorldX(screenWidth));
+            final double screenWorldBottom = Math.ceil(cs.toWorldY(screenHeight));
             // Compute fog tile offset within the visible region
-            double fogOffsetX = (screenWorldLeft - topLeftX) % FOG_SIDE_LENGTH;
-            double fogOffsetY = (screenWorldTop - topLeftY) % FOG_SIDE_LENGTH;
+            final double fogOffsetX = (screenWorldLeft - topLeftX) % FOG_SIDE_LENGTH;
+            final double fogOffsetY = (screenWorldTop - topLeftY) % FOG_SIDE_LENGTH;
             // Iterate through the fog tiles that intersect the screen area
             for (double fogX = screenWorldLeft + fogOffsetX - FOG_SIDE_LENGTH; fogX < screenWorldRight; fogX += FOG_SIDE_LENGTH) {
                 for (double fogY = screenWorldTop + fogOffsetY - FOG_SIDE_LENGTH; fogY < screenWorldBottom; fogY += FOG_SIDE_LENGTH) {
                     // Draw fog only outside the current visible world area
-                    boolean isOutsideView = fogX < topLeftX || fogX >= topLeftX + viewWorldWidth || fogY < topLeftY || fogY >= topLeftY + viewWorldHeight;
+                    final boolean isOutsideView = fogX < topLeftX || fogX >= topLeftX + viewWorldWidth || fogY < topLeftY || fogY >= topLeftY + viewWorldHeight;
                     if (isOutsideView) {
                         drawFogTile(gc, cs, SingleSpriteKey.FOG, fogX, fogY);
                     }
@@ -167,7 +167,7 @@ public class Fog implements Renderable {
         }));
     }
 
-    private static void drawFogTile(GraphicsContext gc, CoordinateSystem cs, SingleSpriteKey fogKey, double x, double y) {
+    private static void drawFogTile(final GraphicsContext gc, final CoordinateSystem cs, final SingleSpriteKey fogKey, final double x, final double y) {
         Renderer.drawImage(SpriteLoader.loadSprite(fogKey).image(), gc, cs, x, y, FOG_SIDE_LENGTH, FOG_SIDE_LENGTH);
     }
 }

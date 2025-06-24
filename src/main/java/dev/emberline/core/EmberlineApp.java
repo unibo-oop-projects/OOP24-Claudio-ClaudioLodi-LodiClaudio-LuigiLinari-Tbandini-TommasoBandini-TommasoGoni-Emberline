@@ -23,24 +23,24 @@ public class EmberlineApp extends Application {
     private BackGroundMusic backGroundMusic;
 
     @Override
-    public void start(Stage stage) {
+    public void start(final Stage stage) {
         // The root node of the scene graph is a Pane.
         // A pane's parent will resize the pane within the pane's resizable range during layout
-        Pane root = new Pane();
+        final Pane root = new Pane();
         root.setBackground(Background.fill(Color.BLACK));
 
         // Canvas
-        Canvas canvas = new Canvas(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+        final Canvas canvas = new Canvas(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
         canvas.widthProperty().bind(root.widthProperty());
         canvas.heightProperty().bind(root.heightProperty());
         root.getChildren().add(canvas);
 
         // Scene
-        Scene scene = new Scene(root);
+        final Scene scene = new Scene(root);
         stage.setScene(scene);
 
         // Routing of input events
-        EventHandler<InputEvent> eventHandler = InputDispatcher::sendInput;
+        final EventHandler<InputEvent> eventHandler = InputDispatcher::sendInput;
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
         scene.addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
         // MouseLocation events

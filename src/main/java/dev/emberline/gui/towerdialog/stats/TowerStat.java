@@ -30,7 +30,7 @@ public record TowerStat(TowerStatType type, double value) {
         private final String displayName;
         private final Image icon;
 
-        TowerStatType(String displayName, Image icon) {
+        TowerStatType(final String displayName, final Image icon) {
             this.displayName = displayName;
             this.icon = icon;
         }

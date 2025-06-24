@@ -30,16 +30,16 @@ public class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKey> {
 
     private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/crystal.json", Metadata.class);
 
-    public Sprite loadSprite(CrystalSpriteKey key) {
-        EnchantmentInfo.Type enchant = key.type();
+    public Sprite loadSprite(final CrystalSpriteKey key) {
+        final EnchantmentInfo.Type enchant = key.type();
 
-        int yOffset = metadata.enchant.get(enchant);
+        final int yOffset = metadata.enchant.get(enchant);
 
-        Image crystalAtlas = getCrystalAtlas();
-        Image[] frames = new Image[metadata.frames];
+        final Image crystalAtlas = getCrystalAtlas();
+        final Image[] frames = new Image[metadata.frames];
         for (int i = 0; i < metadata.frames; i++) {
-            int y = yOffset;
-            int x = metadata.width * i;
+            final int y = yOffset;
+            final int x = metadata.width * i;
             frames[i] = new WritableImage(crystalAtlas.getPixelReader(), x, y, metadata.width, metadata.height);
         }
         return new AnimatedSprite(frames, metadata.frameTimeNs);

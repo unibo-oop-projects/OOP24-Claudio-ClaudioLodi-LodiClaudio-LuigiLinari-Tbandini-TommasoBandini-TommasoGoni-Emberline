@@ -23,23 +23,23 @@ public class Player implements GuiEventListener {
 
     Metadata metadata = ConfigLoader.loadConfig("/world/player.json", Metadata.class);
 
-    public Player(World world) {
+    public Player(final World world) {
         this.health = metadata.health;
         this.gold = metadata.gold;
         this.world = world;
     }
 
-    public final void setListener(GameEventListener gameEventListener) {
+    public final void setListener(final GameEventListener gameEventListener) {
         this.gameEventListener = gameEventListener;
     }
 
-    protected final void throwGameEvent(GameEvent event) {
+    protected final void throwGameEvent(final GameEvent event) {
         if (gameEventListener != null) {
             gameEventListener.onGameEvent(event);
         }
     }
 
-    private boolean spendGold(int amount) {
+    private boolean spendGold(final int amount) {
         if (this.gold - amount >= 0) {
             this.gold -= amount;
             return true;
@@ -55,7 +55,7 @@ public class Player implements GuiEventListener {
         return this.gold;
     }
 
-    public void earnGold(int amount) {
+    public void earnGold(final int amount) {
         this.gold += amount;
     }
 
@@ -69,7 +69,7 @@ public class Player implements GuiEventListener {
     // TODO add spending gold for all methods below
 
     @Override
-    public void onGuiEvent(GuiEvent event) {
+    public void onGuiEvent(final GuiEvent event) {
         if (event instanceof UpgradeTowerInfoEvent) {
             handleUpgradeEvent((UpgradeTowerInfoEvent) event);
         } else if (event instanceof ResetTowerInfoEvent) {
@@ -81,27 +81,27 @@ public class Player implements GuiEventListener {
         }
     }
 
-    private void handleNewBuildEvent(NewBuildEvent event) {
+    private void handleNewBuildEvent(final NewBuildEvent event) {
         world.getTowersManager().buildTower(event.getTowerPreBuild());
     }
 
-    private void handleUpgradeEvent(UpgradeTowerInfoEvent event) {
-        UpgradableInfo<?, ?> info = event.getUpgradableInfo();
+    private void handleUpgradeEvent(final UpgradeTowerInfoEvent event) {
+        final UpgradableInfo<?, ?> info = event.getUpgradableInfo();
         if (!info.canUpgrade()) return;
         event.getTower().setUpgradableInfo(info.getUpgrade());
     }
 
-    private void handleResetEvent(ResetTowerInfoEvent event) {
-        UpgradableInfo<?, ?> info = event.getUpgradableInfo();
+    private void handleResetEvent(final ResetTowerInfoEvent event) {
+        final UpgradableInfo<?, ?> info = event.getUpgradableInfo();
         event.getTower().setUpgradableInfo(info.getDefault());
     }
 
-    private void handleSetEvent(SetTowerInfoEvent event) {
-        UpgradableInfo<?, ?> info = event.getUpgradableInfo();
+    private void handleSetEvent(final SetTowerInfoEvent event) {
+        final UpgradableInfo<?, ?> info = event.getUpgradableInfo();
         if (!info.canChangeType()) return;
-        if (info instanceof ProjectileInfo infoCast) {
+        if (info instanceof final ProjectileInfo infoCast) {
             event.getTower().setUpgradableInfo(infoCast.getChangeType((ProjectileInfo.Type) event.getType()));
-        } else if (info instanceof EnchantmentInfo infoCast) {
+        } else if (info instanceof final EnchantmentInfo infoCast) {
             event.getTower().setUpgradableInfo(infoCast.getChangeType((EnchantmentInfo.Type) event.getType()));
         }
     }

@@ -29,17 +29,17 @@ class EnemyMock implements IEnemy {
     }
 
     @Override
-    public void dealDamage(double damage) {
+    public void dealDamage(final double damage) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void applyEffect(EnchantmentEffect effect) {
+    public void applyEffect(final EnchantmentEffect effect) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setSlowFactor(double slowFactor) {
+    public void setSlowFactor(final double slowFactor) {
         throw new UnsupportedOperationException();
     }
 
@@ -54,7 +54,7 @@ class EnemyMock implements IEnemy {
     }
 
     @Override
-    public List<UniformMotion> getMotionUntil(long time) {
+    public List<UniformMotion> getMotionUntil(final long time) {
         throw new UnsupportedOperationException();
     }
 
@@ -64,14 +64,14 @@ class EnemyMock implements IEnemy {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         throw new UnsupportedOperationException();
     }
 
 
     private Vector2D position;
 
-    EnemyMock(Vector2D position) {
+    EnemyMock(final Vector2D position) {
         this.position = position;
     }
 
@@ -80,7 +80,7 @@ class EnemyMock implements IEnemy {
         return position;
     }
 
-    public void setPosition(Vector2D position) {
+    public void setPosition(final Vector2D position) {
         this.position = position;
     }
 }
@@ -96,9 +96,9 @@ class SpatialHashGridTest {
 
     @Test
     void testAdd() {
-        int TEST_SIZE = 1000;
+        final int TEST_SIZE = 1000;
         for (int i = 0; i < TEST_SIZE; i++) {
-            EnemyMock newEnemy = generateEnemy();
+            final EnemyMock newEnemy = generateEnemy();
             hashGrid.add(newEnemy);
             enemies.add(newEnemy);
 
@@ -110,9 +110,9 @@ class SpatialHashGridTest {
     void testRemove() {
         testAdd();
 
-        Iterator<EnemyMock> it = enemies.iterator();
+        final Iterator<EnemyMock> it = enemies.iterator();
         while (it.hasNext()) {
-            IEnemy enemy = it.next();
+            final IEnemy enemy = it.next();
             hashGrid.remove(enemy);
             it.remove();
 
@@ -125,7 +125,7 @@ class SpatialHashGridTest {
     void testUpdate() {
         testAdd();
 
-        for (EnemyMock enemy : enemies) {
+        for (final EnemyMock enemy : enemies) {
             moveEnemyRandom(enemy);
             hashGrid.update(enemy);
 
@@ -136,7 +136,7 @@ class SpatialHashGridTest {
 
     @Test
     void testEdges() {
-        EnemyMock enemy = new EnemyMock(new Coordinate2D(x_min, y_min));
+        final EnemyMock enemy = new EnemyMock(new Coordinate2D(x_min, y_min));
         hashGrid.add(enemy);
         enemies.add(enemy);
         integrityCheck();
@@ -155,12 +155,12 @@ class SpatialHashGridTest {
     }
 
     private EnemyMock generateEnemy() {
-        double x = nextX();
-        double y = nextY();
+        final double x = nextX();
+        final double y = nextY();
         return new EnemyMock(new Coordinate2D(x, y));
     }
 
-    private void moveEnemyRandom(EnemyMock enemy) {
+    private void moveEnemyRandom(final EnemyMock enemy) {
         enemy.setPosition(
                 new Coordinate2D(
                         nextX(),
@@ -180,8 +180,8 @@ class SpatialHashGridTest {
     private void integrityCheck() {
         Assertions.assertEquals(enemies.size(), hashGrid.size());
         for (final EnemyMock enemy : enemies) {
-            Vector2D position = enemy.getPosition();
-            List<IEnemy> near = hashGrid.getNear(position, 0.1);
+            final Vector2D position = enemy.getPosition();
+            final List<IEnemy> near = hashGrid.getNear(position, 0.1);
             Assertions.assertTrue(near.contains(enemy));
         }
     }

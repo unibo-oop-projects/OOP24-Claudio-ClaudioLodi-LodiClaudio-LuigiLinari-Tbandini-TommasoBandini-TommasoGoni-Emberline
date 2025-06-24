@@ -16,13 +16,13 @@ public class Projectile implements IProjectile {
     private final ProjectileUpdateComponent updateComponent;
     private final ProjectileRenderComponent renderComponent;
 
-    public Projectile(Vector2D start, IEnemy target, ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world) throws FlightPathNotFound {
+    public Projectile(final Vector2D start, final IEnemy target, final ProjectileInfo projInfo, final EnchantmentInfo enchInfo, final World world) throws FlightPathNotFound {
         this.updateComponent = new ProjectileUpdateComponent(start, target, projInfo, enchInfo, world, this);
         this.renderComponent = new ProjectileRenderComponent(projInfo, enchInfo, this);
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         updateComponent.update(elapsed);
     }
 

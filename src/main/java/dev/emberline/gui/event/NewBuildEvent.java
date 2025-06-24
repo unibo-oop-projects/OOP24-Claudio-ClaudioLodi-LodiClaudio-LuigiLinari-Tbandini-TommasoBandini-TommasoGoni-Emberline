@@ -6,7 +6,7 @@ public class NewBuildEvent extends GuiEvent {
 
     private final TowerPreBuild tower;
 
-    public NewBuildEvent(Object source, TowerPreBuild tower) {
+    public NewBuildEvent(final Object source, final TowerPreBuild tower) {
         super(source);
         this.tower = tower;
     }

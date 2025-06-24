@@ -2,7 +2,7 @@ package dev.emberline.game.world.entities.projectiles;
 
 public class FlightPathNotFound extends Exception {
 
-    public FlightPathNotFound(String message) {
+    public FlightPathNotFound(final String message) {
         super(message);
     }
 }

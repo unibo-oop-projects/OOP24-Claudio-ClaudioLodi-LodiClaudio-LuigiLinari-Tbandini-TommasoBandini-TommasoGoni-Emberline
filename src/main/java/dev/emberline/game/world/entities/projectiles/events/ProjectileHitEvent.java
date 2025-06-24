@@ -14,7 +14,7 @@ public class ProjectileHitEvent {
     private final Optional<Double> damageArea;
     private final Optional<EnchantmentEffect> effect;
 
-    public ProjectileHitEvent(Vector2D landingLocation, ProjectileInfo projInfo, EnchantmentInfo enchInfo) {
+    public ProjectileHitEvent(final Vector2D landingLocation, final ProjectileInfo projInfo, final EnchantmentInfo enchInfo) {
         this.landingLocation = landingLocation;
         this.damage = projInfo.getDamage();
         this.damageArea = projInfo.getDamageArea();

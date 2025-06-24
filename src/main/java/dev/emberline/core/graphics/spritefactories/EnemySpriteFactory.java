@@ -31,32 +31,32 @@ public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
     }
 
     @Override
-    public Sprite loadSprite(EnemySpriteKey key) {
-        EnemyType type = key.type();
-        FacingDirection direction = key.direction();
-        EnemyAppearance state = key.state();
+    public Sprite loadSprite(final EnemySpriteKey key) {
+        final EnemyType type = key.type();
+        final FacingDirection direction = key.direction();
+        final EnemyAppearance state = key.state();
 
-        String jsonPath = String.format("/sprites/enemyAssets/%s.json", type.name().toLowerCase());
-        Metadata metadata = ConfigLoader.loadConfig(jsonPath, Metadata.class);
+        final String jsonPath = String.format("/sprites/enemyAssets/%s.json", type.name().toLowerCase());
+        final Metadata metadata = ConfigLoader.loadConfig(jsonPath, Metadata.class);
 
-        int xOffset = metadata.direction.get(direction);
-        int yOffset = metadata.state.get(state);
+        final int xOffset = metadata.direction.get(direction);
+        final int yOffset = metadata.state.get(state);
 
-        String enemyAtlasPath = String.format("/sprites/enemyAssets/%sAtlas.png", type.name().toLowerCase());
-        Image enemyAtals = getEnemyAtlas(enemyAtlasPath);
+        final String enemyAtlasPath = String.format("/sprites/enemyAssets/%sAtlas.png", type.name().toLowerCase());
+        final Image enemyAtals = getEnemyAtlas(enemyAtlasPath);
 
-        Image[] frames = new Image[metadata.frames];
+        final Image[] frames = new Image[metadata.frames];
         for (int i = 0; i < metadata.frames; ++i) {
-            int frameStep = metadata.width * metadata.direction.size();
-            int x = xOffset + i * frameStep;
-            int y = yOffset;
+            final int frameStep = metadata.width * metadata.direction.size();
+            final int x = xOffset + i * frameStep;
+            final int y = yOffset;
             frames[i] = new WritableImage(enemyAtals.getPixelReader(), x, y, metadata.width, metadata.height);
         }
 
         return new AnimatedSprite(frames, metadata.frameTimeNs);
     }
 
-    private static Image getEnemyAtlas(String enemyAtlasPath) {
+    private static Image getEnemyAtlas(final String enemyAtlasPath) {
         return new Image(Objects.requireNonNull(EnemySpriteFactory.class.getResourceAsStream(enemyAtlasPath)));
     }
 

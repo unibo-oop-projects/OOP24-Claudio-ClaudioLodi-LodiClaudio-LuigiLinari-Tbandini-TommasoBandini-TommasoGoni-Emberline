@@ -27,8 +27,8 @@ public class WaveManager implements IWaveManager {
      *
      * @param world is the reference to the World
      */
-    public WaveManager(World world) {
-        for (String wavePath : wavesConfig.wavePaths) {
+    public WaveManager(final World world) {
+        for (final String wavePath : wavesConfig.wavePaths) {
             if (wavePath == null || wavePath.isEmpty()) {
                 throw new IllegalArgumentException("Wave path cannot be null or empty");
             }
@@ -56,7 +56,7 @@ public class WaveManager implements IWaveManager {
      * @param elapsed
      */
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         getWave().update(elapsed);
 
         if (getWave().isOver() && currentWaveIndex + 1 < waves.size()) {

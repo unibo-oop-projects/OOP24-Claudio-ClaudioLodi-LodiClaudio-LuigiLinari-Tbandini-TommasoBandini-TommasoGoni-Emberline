@@ -23,7 +23,7 @@ public enum RenderPriority {
 
     private final int priority;
 
-    RenderPriority(int priority) {
+    RenderPriority(final int priority) {
         this.priority = priority;
     }
 

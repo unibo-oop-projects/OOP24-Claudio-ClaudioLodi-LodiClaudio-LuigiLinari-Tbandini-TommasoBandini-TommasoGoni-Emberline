@@ -32,7 +32,7 @@ public class Wave implements Updatable, Renderable {
      * @param world             the world in which the wave is being played
      * @param waveDirectoryPath the path of the directory containing the wave files
      */
-    public Wave(World world, String waveDirectoryPath) {
+    public Wave(final World world, final String waveDirectoryPath) {
         this.world = world;
         this.roads = new Roads(waveDirectoryPath);
         this.spawnpoints = new Spawnpoints(waveDirectoryPath);
@@ -46,7 +46,7 @@ public class Wave implements Updatable, Renderable {
      * @param pos is the current position of the entity
      * @return next node to go to
      */
-    public Optional<Vector2D> getNext(Vector2D pos) {
+    public Optional<Vector2D> getNext(final Vector2D pos) {
         return roads.getNextNode(pos);
     }
 
@@ -58,9 +58,9 @@ public class Wave implements Updatable, Renderable {
     }
 
     private void sendEnemies() {
-        List<EnemyToSpawn> enemiesToSpawn = spawnpoints.retrieveEnemiesToSpawnNanoseconds(accumulatorNs);
+        final List<EnemyToSpawn> enemiesToSpawn = spawnpoints.retrieveEnemiesToSpawnNanoseconds(accumulatorNs);
 
-        for (EnemyToSpawn enemyToSpawn : enemiesToSpawn) {
+        for (final EnemyToSpawn enemyToSpawn : enemiesToSpawn) {
             world.getEnemiesManager().addEnemy(
                     enemyToSpawn.spawnLocation(),
                     enemyToSpawn.enemyType()
@@ -73,7 +73,7 @@ public class Wave implements Updatable, Renderable {
      * at the current time @param elapsed
      */
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         accumulatorNs += elapsed;
         sendEnemies();
     }

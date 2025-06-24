@@ -17,18 +17,18 @@ public class EnemiesManagerWithStats implements IEnemiesManager {
     private final Statistics statistics;
     private int deadEnemies;
 
-    public EnemiesManagerWithStats(World world) {
+    public EnemiesManagerWithStats(final World world) {
         enemiesManager = new EnemiesManager(world);
         statistics = world.getStatistics();
     }
 
     @Override
-    public void addEnemy(Vector2D spawnPoint, EnemyType type) {
+    public void addEnemy(final Vector2D spawnPoint, final EnemyType type) {
         enemiesManager.addEnemy(spawnPoint, type);
     }
 
     @Override
-    public List<IEnemy> getNear(Vector2D location, double radius) {
+    public List<IEnemy> getNear(final Vector2D location, final double radius) {
         return enemiesManager.getNear(location, radius);
     }
 
@@ -48,12 +48,12 @@ public class EnemiesManagerWithStats implements IEnemiesManager {
      * @param elapsed
      */
     @Override
-    public void update(long elapsed) {
-        int alivePreUpdate = enemiesManager.getAliveEnemiesNumber();
+    public void update(final long elapsed) {
+        final int alivePreUpdate = enemiesManager.getAliveEnemiesNumber();
 
         enemiesManager.update(elapsed);
 
-        int alivePostUpdate = enemiesManager.getAliveEnemiesNumber();
+        final int alivePostUpdate = enemiesManager.getAliveEnemiesNumber();
         deadEnemies = alivePreUpdate - alivePostUpdate;
         statistics.updateEnemiesKilled(deadEnemies);
     }

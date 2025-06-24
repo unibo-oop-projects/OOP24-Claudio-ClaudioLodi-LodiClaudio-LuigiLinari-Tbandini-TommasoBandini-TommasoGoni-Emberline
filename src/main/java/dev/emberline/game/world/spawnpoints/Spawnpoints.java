@@ -49,7 +49,7 @@ public class Spawnpoints {
     public record EnemyToSpawn(long spawnTimeNs, Vector2D spawnLocation,
                                EnemyType enemyType) implements Comparable<EnemyToSpawn> {
         @Override
-        public int compareTo(EnemyToSpawn enemyToSpawn) {
+        public int compareTo(final EnemyToSpawn enemyToSpawn) {
             return Long.compare(this.spawnTimeNs, enemyToSpawn.spawnTimeNs);
         }
 
@@ -72,19 +72,19 @@ public class Spawnpoints {
     /**
      * @param wavePath the path of the directory containing the wave files
      */
-    public Spawnpoints(String wavePath) {
+    public Spawnpoints(final String wavePath) {
         spawnpoints = ConfigLoader.loadConfig(wavePath + SPAWNPOINT_CONFIG_FILENAME, Spawnpoint[].class);
         populateSpawnQueue();
     }
 
     private void populateSpawnQueue() {
-        for (Spawnpoint spawnpoint : spawnpoints) {
+        for (final Spawnpoint spawnpoint : spawnpoints) {
             //adding (0.5, 0.5) to use the center of the tile's coordinates.
-            Vector2D spawnLocation = new Coordinate2D(spawnpoint.x, spawnpoint.y).add(0.5, 0.5);
-            for (SpawnSequence sequence : spawnpoint.spawnSequences) {
-                EnemyType[] enemies = sequence.enemies;
+            final Vector2D spawnLocation = new Coordinate2D(spawnpoint.x, spawnpoint.y).add(0.5, 0.5);
+            for (final SpawnSequence sequence : spawnpoint.spawnSequences) {
+                final EnemyType[] enemies = sequence.enemies;
                 for (int i = 0; i < enemies.length; ++i) {
-                    long currentSpawnTimeNs = sequence.firstSpawnTimeNs + i * sequence.spawnIntervalNs;
+                    final long currentSpawnTimeNs = sequence.firstSpawnTimeNs + i * sequence.spawnIntervalNs;
                     spawnQueue.add(new EnemyToSpawn(currentSpawnTimeNs, spawnLocation, enemies[i]));
                 }
             }
@@ -103,8 +103,8 @@ public class Spawnpoints {
      * @param timeNs time in nanoseconds
      * @return list of enemies
      */
-    public List<EnemyToSpawn> retrieveEnemiesToSpawnNanoseconds(long timeNs) {
-        List<EnemyToSpawn> result = new ArrayList<>();
+    public List<EnemyToSpawn> retrieveEnemiesToSpawnNanoseconds(final long timeNs) {
+        final List<EnemyToSpawn> result = new ArrayList<>();
         while (!spawnQueue.isEmpty() && spawnQueue.peek().spawnTimeNs <= timeNs) {
             result.add(spawnQueue.poll());
         }

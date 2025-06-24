@@ -30,12 +30,12 @@ public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListe
     }
 
     @Override
-    public void processInput(InputEvent inputEvent) {
+    public void processInput(final InputEvent inputEvent) {
         currentState.processInput(inputEvent);
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         currentState.update(elapsed);
     }
 
@@ -45,53 +45,53 @@ public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListe
     }
 
     @Override
-    public void onGuiEvent(GuiEvent event) {
-        if (event instanceof SetStartEvent startEvent) {
+    public void onGuiEvent(final GuiEvent event) {
+        if (event instanceof final SetStartEvent startEvent) {
             handleStartEvent(startEvent);
         }
-        else if (event instanceof SetMainMenuEvent menuEvent) {
+        else if (event instanceof final SetMainMenuEvent menuEvent) {
             handleSetMainMenuEvent(menuEvent);
         }
-        else if (event instanceof OpenOptionsEvent openOptionsEvent) {
+        else if (event instanceof final OpenOptionsEvent openOptionsEvent) {
             handleOpenOptionsEvent(openOptionsEvent);
         }
-        else if (event instanceof CloseOptionsEvent closeOptionsEvent) {
+        else if (event instanceof final CloseOptionsEvent closeOptionsEvent) {
             handleCloseOptionsEvent(closeOptionsEvent);
         }
-        else if (event instanceof ExitGameEvent exitGameEvent) {
+        else if (event instanceof final ExitGameEvent exitGameEvent) {
             handleExitGameEvent(exitGameEvent);
         }
     }
 
     @Override
-    public void onGameEvent(GameEvent event) {
-        if (event instanceof GameOverEvent gameOverEvent) {
+    public void onGameEvent(final GameEvent event) {
+        if (event instanceof final GameOverEvent gameOverEvent) {
             handleGameOverEvent(gameOverEvent);
         }
     }
 
-    private void handleStartEvent(SetStartEvent event) {
+    private void handleStartEvent(final SetStartEvent event) {
         currentState = world;
     }
 
-    private void handleSetMainMenuEvent(SetMainMenuEvent event) {
+    private void handleSetMainMenuEvent(final SetMainMenuEvent event) {
         currentState = mainMenu;
     }
 
-    private void handleOpenOptionsEvent(OpenOptionsEvent event) {
+    private void handleOpenOptionsEvent(final OpenOptionsEvent event) {
         previousState = currentState;
         currentState = options;
     }
 
-    private void handleCloseOptionsEvent(CloseOptionsEvent event) {
+    private void handleCloseOptionsEvent(final CloseOptionsEvent event) {
         currentState = previousState;
     }
 
-    private void handleGameOverEvent(GameOverEvent event) {
+    private void handleGameOverEvent(final GameOverEvent event) {
         currentState = gameOver;
     }
 
-    private void handleExitGameEvent(ExitGameEvent event) {
+    private void handleExitGameEvent(final ExitGameEvent event) {
         Platform.exit();
     }
 }

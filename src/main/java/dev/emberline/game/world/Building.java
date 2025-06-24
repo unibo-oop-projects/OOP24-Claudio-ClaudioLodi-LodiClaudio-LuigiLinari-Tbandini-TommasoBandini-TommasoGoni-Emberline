@@ -18,27 +18,27 @@ public abstract class Building implements Renderable, Updatable, Inputable {
     protected abstract void clicked();
 
     @Override
-    public void processInput(InputEvent inputEvent) {
+    public void processInput(final InputEvent inputEvent) {
         if (inputEvent.isConsumed()) {
             return;
         }
-        if (!(inputEvent instanceof MouseEvent mouse)) {
+        if (!(inputEvent instanceof final MouseEvent mouse)) {
             return;
         }
         if (mouse.getEventType() != MouseEvent.MOUSE_CLICKED) {
             return;
         }
 
-        CoordinateSystem worldCS = GameLoop.getInstance().getRenderer().getWorldCoordinateSystem();
-        double worldX = worldCS.toWorldX(mouse.getX());
-        double worldY = worldCS.toWorldY(mouse.getY());
+        final CoordinateSystem worldCS = GameLoop.getInstance().getRenderer().getWorldCoordinateSystem();
+        final double worldX = worldCS.toWorldX(mouse.getX());
+        final double worldY = worldCS.toWorldY(mouse.getY());
         if (isInside(worldX, worldY)) {
             clicked();
             inputEvent.consume();
         }
     }
 
-    private boolean isInside(double worldX, double worldY) {
+    private boolean isInside(final double worldX, final double worldY) {
         if (worldX < getWorldTopLeft().getX() || worldX > getWorldBottomRight().getX()) {
             return false;
         }

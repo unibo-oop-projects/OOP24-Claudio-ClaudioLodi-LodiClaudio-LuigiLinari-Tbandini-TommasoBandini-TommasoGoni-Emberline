@@ -36,7 +36,7 @@ public class BackGroundMusic {
     }
 
     private void loadSong() {
-        URL fileURL = Objects.requireNonNull(getClass().getResource(MUSIC_FILE));
+        final URL fileURL = Objects.requireNonNull(getClass().getResource(MUSIC_FILE));
         media = new Media(fileURL.toExternalForm());
     }
 }

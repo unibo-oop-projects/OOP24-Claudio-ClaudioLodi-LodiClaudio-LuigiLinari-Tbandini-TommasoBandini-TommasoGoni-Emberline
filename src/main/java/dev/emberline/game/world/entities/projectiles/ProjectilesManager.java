@@ -19,25 +19,25 @@ public class ProjectilesManager implements Updatable, Renderable {
     private final List<IProjectile> projectiles;
     private final World world;
 
-    public ProjectilesManager(World world) {
+    public ProjectilesManager(final World world) {
         this.projectiles = new LinkedList<>();
         this.world = world;
     }
 
-    public boolean addProjectile(Vector2D start, IEnemy target,
-                                 ProjectileInfo projInfo, EnchantmentInfo enchInfo) {
+    public boolean addProjectile(final Vector2D start, final IEnemy target,
+                                 final ProjectileInfo projInfo, final EnchantmentInfo enchInfo) {
         try {
-            Projectile projectile = new Projectile(start, target, projInfo, enchInfo, world);
+            final Projectile projectile = new Projectile(start, target, projInfo, enchInfo, world);
             projectiles.add(projectile);
-        } catch (FlightPathNotFound e) {
+        } catch (final FlightPathNotFound e) {
             return false;
         }
 
         return true;
     }
 
-    public void update(long elapsed) {
-        Iterator<IProjectile> it = projectiles.iterator();
+    public void update(final long elapsed) {
+        final Iterator<IProjectile> it = projectiles.iterator();
         IProjectile currProjectile;
         while (it.hasNext()) {
             currProjectile = it.next();

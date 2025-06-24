@@ -75,12 +75,12 @@ public class World implements GameState, Serializable {
         return statistics;
     }
 
-    public void setListener(GuiEventListener listener) {
+    public void setListener(final GuiEventListener listener) {
         this.listener = listener;
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         projectilesManager.update(elapsed);
         towersManager.update(elapsed);
         waveManager.update(elapsed);
@@ -99,7 +99,7 @@ public class World implements GameState, Serializable {
     }
 
     @Override
-    public void processInput(InputEvent inputEvent) {
+    public void processInput(final InputEvent inputEvent) {
         towersManager.processInput(inputEvent);
     }
 }

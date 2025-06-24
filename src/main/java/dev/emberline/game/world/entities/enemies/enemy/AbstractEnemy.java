@@ -26,7 +26,7 @@ public abstract class AbstractEnemy implements IEnemy {
         UP, RIGHT, DOWN, LEFT;
 
         @JsonCreator
-        public static FacingDirection fromString(String direction) {
+        public static FacingDirection fromString(final String direction) {
             return FacingDirection.valueOf(direction.toUpperCase());
         }
     }
@@ -34,7 +34,7 @@ public abstract class AbstractEnemy implements IEnemy {
     private final EnemyUpdateComponent updateComponent;
     private final EnemyRenderComponent renderComponent;
 
-    public AbstractEnemy(Vector2D spawnPoint, World world) {
+    public AbstractEnemy(final Vector2D spawnPoint, final World world) {
         this.updateComponent = new EnemyUpdateComponent(spawnPoint, world, this);
         this.renderComponent = new EnemyRenderComponent(this);
     }
@@ -65,7 +65,7 @@ public abstract class AbstractEnemy implements IEnemy {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         updateComponent.update(elapsed);
     }
 
@@ -75,17 +75,17 @@ public abstract class AbstractEnemy implements IEnemy {
     }
 
     @Override
-    public void dealDamage(double damage) {
+    public void dealDamage(final double damage) {
         updateComponent.dealDamage(damage);
     }
 
     @Override
-    public void applyEffect(EnchantmentEffect effect) {
+    public void applyEffect(final EnchantmentEffect effect) {
         updateComponent.applyEffect(effect);
     }
 
     @Override
-    public void setSlowFactor(double slowFactor) {
+    public void setSlowFactor(final double slowFactor) {
         updateComponent.setSlowFactor(slowFactor);
     }
 
@@ -105,7 +105,7 @@ public abstract class AbstractEnemy implements IEnemy {
      * That is described by a list of {@code UniformMotion}
      */
     @Override
-    public List<UniformMotion> getMotionUntil(long time) {
+    public List<UniformMotion> getMotionUntil(final long time) {
         return updateComponent.getMotionUntil(time);
     }
 

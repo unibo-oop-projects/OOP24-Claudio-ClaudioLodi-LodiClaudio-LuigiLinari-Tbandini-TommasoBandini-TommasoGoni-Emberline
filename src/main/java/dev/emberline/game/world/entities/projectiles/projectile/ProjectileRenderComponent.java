@@ -22,28 +22,28 @@ public class ProjectileRenderComponent implements Renderable {
     private final Projectile owner;
     private final ProjectileAnimation projectileAnimation;
 
-    public ProjectileRenderComponent(ProjectileInfo projInfo, EnchantmentInfo enchInfo, Projectile owner) {
+    public ProjectileRenderComponent(final ProjectileInfo projInfo, final EnchantmentInfo enchInfo, final Projectile owner) {
         this.owner = owner;
         this.projectileAnimation = new ProjectileAnimation(owner);
     }
 
     @Override
     public void render() {
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem cs = renderer.getWorldCoordinateSystem();
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
-        PositionAndRotation posAndRot = owner.getPositionAndRotation();
-        Vector2D position = posAndRot.position();
-        double rotation = posAndRot.rotation();
+        final PositionAndRotation posAndRot = owner.getPositionAndRotation();
+        final Vector2D position = posAndRot.position();
+        final double rotation = posAndRot.rotation();
 
-        double _width = WIDTH * cs.getScale();
-        double _height = HEIGHT * cs.getScale();
+        final double _width = WIDTH * cs.getScale();
+        final double _height = HEIGHT * cs.getScale();
 
-        double positionScreenX = cs.toScreenX(position.getX());
-        double positionScreenY = cs.toScreenY(position.getY());
+        final double positionScreenX = cs.toScreenX(position.getX());
+        final double positionScreenY = cs.toScreenY(position.getY());
 
-        Image currentFrame = projectileAnimation.getImage();
+        final Image currentFrame = projectileAnimation.getImage();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             gc.save();

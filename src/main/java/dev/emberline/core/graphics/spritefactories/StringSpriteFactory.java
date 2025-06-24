@@ -36,11 +36,11 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
     private final static Map<Character, Image> CHAR_CACHE = Collections.synchronizedMap(new HashMap<>());
 
     @Override
-    public Sprite loadSprite(StringSpriteKey key) {
+    public Sprite loadSprite(final StringSpriteKey key) {
         return new SingleSprite(getStringImage(key.string()));
     }
 
-    public static Image getCharImage(Character c) {
+    public static Image getCharImage(final Character c) {
         if (c == null) {
             return getCharImage(' '); // If the character is null, return a space character
         }
@@ -48,17 +48,17 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
         final int charWidth = metadata.atlasWidth / metadata.columns; // Width of a character in pixels
         final int charHeight = metadata.atlasHeight / metadata.rows; // Height of a character in pixels
 
-        Image result = CHAR_CACHE.computeIfAbsent(c, key -> {
-            Image atlas = getCharAtlas();
-            PixelReader atlasReader = atlas.getPixelReader();
+        final Image result = CHAR_CACHE.computeIfAbsent(c, key -> {
+            final Image atlas = getCharAtlas();
+            final PixelReader atlasReader = atlas.getPixelReader();
 
             // Locating the character in the atlas
-            int charIndex = metadata.charOrder.indexOf(c);
+            final int charIndex = metadata.charOrder.indexOf(c);
             if (charIndex == -1) {
                 return null; // Character not found
             }
             int charX = charIndex % metadata.columns * charWidth; //pixel coordinate of the char inside the atlas
-            int charY = charIndex / metadata.columns * charHeight;
+            final int charY = charIndex / metadata.columns * charHeight;
 
             // Truncate left and right columns of only transparent pixels (ignoring the space character)
             if (c == ' ') {
@@ -102,7 +102,7 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
         return CHAR_CACHE.get(c);
     }
 
-    private static Image getStringImage(String string) {
+    private static Image getStringImage(final String string) {
         final int charHeight = metadata.atlasHeight / metadata.rows;
 
         // If the string is null or empty, return a space character
@@ -111,18 +111,18 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
         }
         // Precalculate the width of the string (in pixels)
         int stringWidth = 0;
-        for (Character c : string.toCharArray()) {
+        for (final Character c : string.toCharArray()) {
             stringWidth += (int) getCharImage(c).getWidth() + 1; // +1 for the space between characters
         }
         // Build the image for the string
-        WritableImage stringImage = new WritableImage(stringWidth, charHeight);
-        PixelWriter writer = stringImage.getPixelWriter();
+        final WritableImage stringImage = new WritableImage(stringWidth, charHeight);
+        final PixelWriter writer = stringImage.getPixelWriter();
         int x = 0; // Current x position in the string image
-        for (Character c : string.toCharArray()) {
-            Image charImage = getCharImage(c);
-            int currWidth = (int) charImage.getWidth();
-            int currHeight = (int) charImage.getHeight();
-            PixelReader charReader = charImage.getPixelReader();
+        for (final Character c : string.toCharArray()) {
+            final Image charImage = getCharImage(c);
+            final int currWidth = (int) charImage.getWidth();
+            final int currHeight = (int) charImage.getHeight();
+            final PixelReader charReader = charImage.getPixelReader();
             for (int i = 0; i < currWidth; i++) {
                 for (int j = 0; j < currHeight; j++) {
                     writer.setColor(x + i, j, charReader.getColor(i, j));

@@ -34,20 +34,20 @@ public class ProjectileSpriteFactory implements SpriteFactory<ProjectileSpriteKe
     private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/projectile.json", Metadata.class);
 
     @Override
-    public Sprite loadSprite(ProjectileSpriteKey key) {
-        ProjectileInfo.Type size = key.size();
-        EnchantmentInfo.Type enchant = key.enchant();
+    public Sprite loadSprite(final ProjectileSpriteKey key) {
+        final ProjectileInfo.Type size = key.size();
+        final EnchantmentInfo.Type enchant = key.enchant();
 
-        int xOffset = metadata.size.get(size);
-        int yOffset = metadata.enchant.get(enchant);
+        final int xOffset = metadata.size.get(size);
+        final int yOffset = metadata.enchant.get(enchant);
 
-        Image projectileAtals = getProjectileAtlas();
+        final Image projectileAtals = getProjectileAtlas();
 
-        Image[] frames = new Image[metadata.frames];
+        final Image[] frames = new Image[metadata.frames];
         for (int i = 0; i < metadata.frames; ++i) {
-            int frameStep = metadata.width * metadata.size.size();
-            int x = xOffset + i * frameStep;
-            int y = yOffset;
+            final int frameStep = metadata.width * metadata.size.size();
+            final int x = xOffset + i * frameStep;
+            final int y = yOffset;
             frames[i] = new WritableImage(projectileAtals.getPixelReader(), x, y, metadata.width, metadata.height);
         }
 

@@ -24,7 +24,7 @@ public class EnemiesFactory {
         creatorRegistry.put(EnemyType.OGRE, Ogre::new);
     }
 
-    public IEnemy createEnemy(Vector2D spawnPoint, EnemyType type, World world) {
+    public IEnemy createEnemy(final Vector2D spawnPoint, final EnemyType type, final World world) {
         if (!creatorRegistry.containsKey(type)) {
             throw new IllegalArgumentException("Type " + type + " isn't present in the creator registry");
         }
