@@ -16,8 +16,8 @@ import javafx.scene.image.Image;
 
 public class ProjectileRenderComponent implements Renderable {
 
-    private static final double width = 1;
-    private static final double height = 1;
+    private static final double WIDTH = 1;
+    private static final double HEIGHT = 1;
 
     private final Projectile owner;
     private final ProjectileAnimation projectileAnimation;
@@ -37,8 +37,8 @@ public class ProjectileRenderComponent implements Renderable {
         Vector2D position = posAndRot.position();
         double rotation = posAndRot.rotation();
 
-        double _width = width * cs.getScale();
-        double _height = height * cs.getScale();
+        double _width = WIDTH * cs.getScale();
+        double _height = HEIGHT * cs.getScale();
 
         double positionScreenX = cs.toScreenX(position.getX());
         double positionScreenY = cs.toScreenY(position.getY());

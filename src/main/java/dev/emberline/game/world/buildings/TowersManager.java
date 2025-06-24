@@ -22,7 +22,7 @@ public class TowersManager implements Updatable, Renderable, Inputable {
     private TowerDialogLayer towerDialogLayer;
     private NewBuildDialogLayer newBuildDialogLayer;
 
-    private Set<Building> buildings = new HashSet<>();
+    private final Set<Building> buildings = new HashSet<>();
     private final Collection<TowerPreBuild> toBuild = new LinkedList<>();
 
     private final World world;

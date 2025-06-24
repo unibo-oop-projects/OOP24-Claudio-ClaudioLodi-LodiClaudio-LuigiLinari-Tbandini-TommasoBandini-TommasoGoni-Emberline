@@ -23,10 +23,10 @@ public class ProjectileUpdateComponent implements Updatable {
     private final double VELOCITY_MAG;
 
     /// Parameters defining the parabolic motion (arc of a circle) with a scaling factor of 1 
-    private static final double startTheta =        (3.0/4) * Math.PI;
-    private static final double endTheta =          startTheta - (1.0/2 * Math.PI);
-    private static final double unitRadius =        1.0/(2*Math.cos(endTheta));
-    private static final double unitArcLength =     unitRadius * (startTheta - endTheta);
+    private static final double START_THETA =        3.0/4 * Math.PI;
+    private static final double END_THETA =          START_THETA - (1.0/2 * Math.PI);
+    private static final double UNIT_RADIUS =        1.0/(2*Math.cos(END_THETA));
+    private static final double UNIT_ARC_LENGTH =     UNIT_RADIUS * (START_THETA - END_THETA);
     ///
 
     private final long flightTime;
@@ -127,7 +127,7 @@ public class ProjectileUpdateComponent implements Updatable {
 
             /// Solve quadratic
             // (l / v_proj) ^ 2
-            double lv_projSq = (unitArcLength / VELOCITY_MAG) * (unitArcLength / VELOCITY_MAG);
+            double lv_projSq = (UNIT_ARC_LENGTH / VELOCITY_MAG) * (UNIT_ARC_LENGTH / VELOCITY_MAG);
 
             double A1 = lv_projSq * (v_E.magnitude() * v_E.magnitude());
             double A = 1.0 - A1;
@@ -192,19 +192,19 @@ public class ProjectileUpdateComponent implements Updatable {
         double scalingFactor = cStart.distance(cEnd);
         double tranformationAngle = Math.toDegrees(Math.atan2(B1.getY(), B1.getX())); // I and II qudrant > 0, III and IV quadrant < 0
 
-        double radius = scalingFactor * unitRadius;
+        double radius = scalingFactor * UNIT_RADIUS;
         double angularVelocity = -(VELOCITY_MAG / radius);
         
-        long timeInAir = (long)((scalingFactor * unitArcLength) / VELOCITY_MAG);
+        long timeInAir = (long)((scalingFactor * UNIT_ARC_LENGTH) / VELOCITY_MAG);
         return new Trajectory((t) -> {
             if (t > flightTime) {
                 t = flightTime;
             }
             
-            double theta = theta(t, startTheta, angularVelocity);
+            double theta = theta(t, START_THETA, angularVelocity);
             
             // Compute the position on the scaled trajectory, rotate it and translate so that the starting point is cStart
-            Vector2D pos = rotation.apply(r(theta, radius, startTheta)).add(cStart);
+            Vector2D pos = rotation.apply(r(theta, radius, START_THETA)).add(cStart);
 
             Vector2D tangentTraj = r_derivative(theta, radius, angularVelocity);
             double tangentTrajAngle = Math.toDegrees(Math.atan2(tangentTraj.getY(), tangentTraj.getX()));

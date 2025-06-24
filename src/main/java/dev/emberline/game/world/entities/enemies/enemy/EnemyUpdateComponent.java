@@ -20,7 +20,7 @@ class EnemyUpdateComponent implements Updatable {
     private final AbstractEnemy enemy;
     private EnemyState enemyState;
     private EnchantmentEffect activeEffect = new DummyEffect();
-    private World world;
+    private final World world;
 
     private double health;
     private double slowFactor = 1;

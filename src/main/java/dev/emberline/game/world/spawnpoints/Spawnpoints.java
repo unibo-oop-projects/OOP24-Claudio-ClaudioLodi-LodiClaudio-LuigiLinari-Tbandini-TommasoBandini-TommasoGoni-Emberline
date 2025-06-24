@@ -12,14 +12,18 @@ import dev.emberline.utility.Vector2D;
  * This class represents spawnpoints as containers of enemies to spawn at a given time
  */
 public class Spawnpoints {
+
+    private final Spawnpoint[] spawnpoints;
+    private final Queue<EnemyToSpawn> spawnQueue = new PriorityQueue<>();
+
     // Single spawnpoint configuration
-    private static final String spawnpointConfigFilename = "spawnpoints.json";
-    private static class SpawnSequence {
+    private static final String SPAWNPOINT_CONFIG_FILENAME = "spawnpoints.json";
+    private static final class SpawnSequence {
         @JsonProperty long firstSpawnTimeNs;
         @JsonProperty long spawnIntervalNs;
         @JsonProperty EnemyType[] enemies;
     }
-    private static class Spawnpoint {
+    private static final class Spawnpoint {
         @JsonProperty("x")
         private double x;
         @JsonProperty("y")
@@ -39,7 +43,9 @@ public class Spawnpoints {
         public int compareTo(EnemyToSpawn enemyToSpawn) {
             return Long.compare(this.spawnTimeNs, enemyToSpawn.spawnTimeNs);
         }
-        // Data validation
+        /**
+         * Data validation
+         */
         public EnemyToSpawn {
             if (spawnTimeNs < 0) {
                 throw new IllegalArgumentException("Spawn time cannot be negative");
@@ -53,14 +59,11 @@ public class Spawnpoints {
         }
     }
 
-    private final Spawnpoint[] spawnpoints;
-    private final Queue<EnemyToSpawn> spawnQueue = new PriorityQueue<>();
-
     /**
      * @param wavePath the path of the directory containing the wave files
      */
     public Spawnpoints(String wavePath) {
-        spawnpoints = ConfigLoader.loadConfig(wavePath + spawnpointConfigFilename, Spawnpoint[].class);
+        spawnpoints = ConfigLoader.loadConfig(wavePath + SPAWNPOINT_CONFIG_FILENAME, Spawnpoint[].class);
         populateSpawnQueue();
     }
 

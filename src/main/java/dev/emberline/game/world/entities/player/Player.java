@@ -24,7 +24,7 @@ import dev.emberline.gui.event.UpgradeTowerInfoEvent;
 public class Player implements GuiEventListener {
     private int health;
     private int gold;
-    private World world;
+    private final World world;
     private GameEventListener gameEventListener;
 
     private record Metadata (

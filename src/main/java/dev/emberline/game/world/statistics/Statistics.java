@@ -20,7 +20,7 @@ public class Statistics implements Updatable, Serializable {
     private double dps = 0;
 
     private final long unitOfTime = 1_000_000_000;
-    private long acc = 0;
+    private final long acc = 0;
 
     /**
      * this class is relative to

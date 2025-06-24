@@ -8,7 +8,7 @@ import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.utility.Vector2D;
 
 public class Ogre extends AbstractEnemy {
-    private static Metadata metadata;
+    private static final Metadata metadata;
     private static final String ASSET_PATH = "/sprites/enemyAssets/ogre.json";
     static {
         JsonNode metadataNode = ConfigLoader.loadNode(ASSET_PATH).get("metadata");

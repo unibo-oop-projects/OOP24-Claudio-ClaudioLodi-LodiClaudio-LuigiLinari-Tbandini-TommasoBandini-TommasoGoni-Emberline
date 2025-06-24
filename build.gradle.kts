@@ -3,6 +3,7 @@ plugins {
     id("application")
     id("org.openjfx.javafxplugin") version "0.1.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    //id("org.danilopianini.gradle-java-qa") version "1.75.0"
 }
 
 application {

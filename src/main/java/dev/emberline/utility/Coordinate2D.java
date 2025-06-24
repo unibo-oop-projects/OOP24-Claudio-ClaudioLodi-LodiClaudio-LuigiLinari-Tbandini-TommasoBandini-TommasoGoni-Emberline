@@ -12,11 +12,11 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
     /**
      * x coordinate
      */
-    private double x;
+    private final double x;
     /**
      * y coordinate
      */
-    private double y;
+    private final double y;
 
     /**
      * The x coordinate.

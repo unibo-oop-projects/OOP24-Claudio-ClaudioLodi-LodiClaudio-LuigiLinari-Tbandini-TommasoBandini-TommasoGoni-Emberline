@@ -2,11 +2,8 @@ package dev.emberline.game.world.waves;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +12,11 @@ import java.util.List;
  */
 public class WaveManager implements IWaveManager {
     // Loading waves from resources
-    private static final String wavesConfigPath = "/world/waves/waves.json";
+    private static final String WAVES_CONFIG_PATH = "/world/waves/waves.json";
     private static class WavesConfig {
         @JsonProperty String[] wavePaths;
     }
-    private final static WavesConfig wavesConfig = ConfigLoader.loadConfig(wavesConfigPath, WavesConfig.class);
+    private final static WavesConfig wavesConfig = ConfigLoader.loadConfig(WAVES_CONFIG_PATH, WavesConfig.class);
 
     private final List<Wave> waves = new ArrayList<>();
     private int currentWaveIndex = 0;

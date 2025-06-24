@@ -24,14 +24,14 @@ public class Options extends GuiLayer implements GameState {
         private static final double BG_WIDTH = 32;
         private static final double BG_HEIGHT = 18;
         // Start Button
-        private static final double scale_factor = 2.5;
-        private static final double BTN_START_HEIGHT = 1.5 * scale_factor;
-        private static final double BTN_START_WIDTH = 3.5 * scale_factor;
+        private static final double SCALE_FACTOR = 2.5;
+        private static final double BTN_START_HEIGHT = 1.5 * SCALE_FACTOR;
+        private static final double BTN_START_WIDTH = 3.5 * SCALE_FACTOR;
         private static final double BTN_START_X = (BG_WIDTH - BTN_START_WIDTH) / 2;
         private static final double BTN_START_Y = (BG_HEIGHT - BTN_START_HEIGHT) / 2;
         // Options Button
-        private static final double BTN_OPTIONS_HEIGHT = 1.5 * scale_factor;
-        private static final double BTN_OPTIONS_WIDTH = 3.5 * scale_factor;
+        private static final double BTN_OPTIONS_HEIGHT = 1.5 * SCALE_FACTOR;
+        private static final double BTN_OPTIONS_WIDTH = 3.5 * SCALE_FACTOR;
         private static final double BTN_OPTIONS_X = (BG_WIDTH - BTN_OPTIONS_WIDTH) / 2;
         private static final double BTN_OPTIONS_Y = BTN_START_Y + BTN_START_HEIGHT - 0.25;
     }

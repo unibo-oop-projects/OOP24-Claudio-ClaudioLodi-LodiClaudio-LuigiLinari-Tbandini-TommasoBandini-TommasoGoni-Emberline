@@ -17,12 +17,12 @@ import javafx.scene.image.Image;
 
 public class TowerPreBuild extends Building {
 
-    private static String configsPath = "/sprites/towerAssets/towerPreBuild.json";
+    private static final String CONFIGS_PATH = "/sprites/towerAssets/towerPreBuild.json";
     private static class Metadata {
         @JsonProperty double width;
         @JsonProperty double height;
     }
-    private static Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
+    private static final Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(CONFIGS_PATH).get("worldDimensions"), Metadata.class);
 
     private final Vector2D locationBottomLeft;
     private final TowersManager towersManager;

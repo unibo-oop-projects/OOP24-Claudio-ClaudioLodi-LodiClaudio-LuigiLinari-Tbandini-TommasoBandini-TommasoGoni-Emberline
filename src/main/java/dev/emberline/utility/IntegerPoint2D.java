@@ -7,8 +7,8 @@ import java.util.Objects;
  */
 public class IntegerPoint2D {
     
-    private Integer x;
-    private Integer y;
+    private final Integer x;
+    private final Integer y;
 
     public IntegerPoint2D(Integer x, Integer y) {
         this.x = x;

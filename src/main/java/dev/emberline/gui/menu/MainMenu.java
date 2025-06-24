@@ -33,19 +33,19 @@ public class MainMenu extends GuiLayer implements GameState {
         private static final double TITLE_Y = (BG_HEIGHT - TITLE_HEIGHT) / 2 - 3.5;
 
         // Start Button
-        private static final double scale_factor = 1.7;
-        private static final double BTN_START_HEIGHT = 1.5 * scale_factor;
-        private static final double BTN_START_WIDTH = 3.5 * scale_factor;
+        private static final double SCALE_FACTOR = 1.7;
+        private static final double BTN_START_HEIGHT = 1.5 * SCALE_FACTOR;
+        private static final double BTN_START_WIDTH = 3.5 * SCALE_FACTOR;
         private static final double BTN_START_X = (BG_WIDTH - BTN_START_WIDTH) / 2;
-        private static final double BTN_START_Y = TITLE_Y + TITLE_HEIGHT - 0.05 * scale_factor;
+        private static final double BTN_START_Y = TITLE_Y + TITLE_HEIGHT - 0.05 * SCALE_FACTOR;
         // Options Button
-        private static final double BTN_OPTIONS_HEIGHT = 1.5 * scale_factor;
-        private static final double BTN_OPTIONS_WIDTH = 3.5 * scale_factor;
+        private static final double BTN_OPTIONS_HEIGHT = 1.5 * SCALE_FACTOR;
+        private static final double BTN_OPTIONS_WIDTH = 3.5 * SCALE_FACTOR;
         private static final double BTN_OPTIONS_X = (BG_WIDTH - BTN_OPTIONS_WIDTH) / 2;
         private static final double BTN_OPTIONS_Y = BTN_START_Y + BTN_START_HEIGHT - 0.25;
         // Exit Button
-        private static final double BTN_EXIT_HEIGHT = 1.5 * scale_factor;
-        private static final double BTN_EXIT_WIDTH = 3.5 * scale_factor;
+        private static final double BTN_EXIT_HEIGHT = 1.5 * SCALE_FACTOR;
+        private static final double BTN_EXIT_WIDTH = 3.5 * SCALE_FACTOR;
         private static final double BTN_EXIT_X = (BG_WIDTH - BTN_EXIT_WIDTH) / 2;
         private static final double BTN_EXIT_Y = BTN_OPTIONS_Y + BTN_OPTIONS_HEIGHT - 0.25;
     }

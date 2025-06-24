@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 public class BackGroundMusic {
 
-    private static final String musicFile = "/audio/emberlineSoundtrack.wav";
+    private static final String MUSIC_FILE = "/audio/emberlineSoundtrack.wav";
             //"/sounds/test.mp3";
     private Media media;
     private final MediaPlayer mediaPlayer;
@@ -36,7 +36,7 @@ public class BackGroundMusic {
     }
 
     private void loadSong() {
-        URL fileURL = Objects.requireNonNull(getClass().getResource(musicFile));
+        URL fileURL = Objects.requireNonNull(getClass().getResource(MUSIC_FILE));
         media = new Media(fileURL.toExternalForm());
     }
 }
