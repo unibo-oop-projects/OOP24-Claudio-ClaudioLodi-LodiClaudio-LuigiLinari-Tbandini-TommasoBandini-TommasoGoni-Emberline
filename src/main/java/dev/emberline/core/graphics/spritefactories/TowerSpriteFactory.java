@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
+
+    private static final Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/tower.json", Metadata.class);
+
     private static class Metadata {
         @JsonProperty
         String filename;
@@ -27,17 +30,15 @@ public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
         Map<EnchantmentInfo.Type, Integer> enchant;
     }
 
-    private static final Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/tower.json", Metadata.class);
-
     @Override
     public Sprite loadSprite(final TowerSpriteKey key) {
         final ProjectileInfo.Type size = key.size();
         final EnchantmentInfo.Type enchant = key.enchant();
 
-        final int width = metadata.width;
-        final int height = metadata.height.get(size);
-        final int x = metadata.size.get(size);
-        final int y = metadata.enchant.get(enchant) - height;
+        final int width = METADATA.width;
+        final int height = METADATA.height.get(size);
+        final int x = METADATA.size.get(size);
+        final int y = METADATA.enchant.get(enchant) - height;
 
         final Image towerAtlas = getTowerAtlas();
 
@@ -45,7 +46,7 @@ public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
     }
 
     private static Image getTowerAtlas() {
-        return new Image(Objects.requireNonNull(TowerSpriteFactory.class.getResourceAsStream(metadata.filename)));
+        return new Image(Objects.requireNonNull(TowerSpriteFactory.class.getResourceAsStream(METADATA.filename)));
     }
 
 

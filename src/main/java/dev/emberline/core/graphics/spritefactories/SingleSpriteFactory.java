@@ -12,6 +12,9 @@ import javafx.scene.image.WritableImage;
 import java.util.Objects;
 
 public class SingleSpriteFactory implements SpriteFactory<SingleSpriteKey> {
+
+    private static final JsonNode CONFIGS_ROOT = ConfigLoader.loadNode("/sprites/singleSprites.json");
+
     private static class SpriteMetadata {
         @JsonProperty
         String filename;
@@ -25,11 +28,9 @@ public class SingleSpriteFactory implements SpriteFactory<SingleSpriteKey> {
         int height;
     }
 
-    private static final JsonNode configsRoot = ConfigLoader.loadNode("/sprites/singleSprites.json");
-
     @Override
     public Sprite loadSprite(final SingleSpriteKey uiSpriteKey) {
-        final JsonNode currentNode = configsRoot.get(uiSpriteKey.name());
+        final JsonNode currentNode = CONFIGS_ROOT.get(uiSpriteKey.name());
         final SpriteMetadata spriteMetadata = ConfigLoader.loadConfig(currentNode, SpriteMetadata.class);
         final Image spriteAtlas = new Image(Objects.requireNonNull(SingleSpriteFactory.class.getResourceAsStream(spriteMetadata.filename)));
         return new SingleSprite(new WritableImage(spriteAtlas.getPixelReader(), spriteMetadata.x, spriteMetadata.y, spriteMetadata.width, spriteMetadata.height));

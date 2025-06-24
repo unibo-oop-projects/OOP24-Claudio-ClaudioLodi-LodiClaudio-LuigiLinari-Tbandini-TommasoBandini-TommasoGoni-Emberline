@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Objects;
 
 public class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKey> {
+
+    private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/crystal.json", Metadata.class);
+
     private static class Metadata {
         @JsonProperty
         String filename;
@@ -28,26 +31,24 @@ public class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKey> {
         Map<EnchantmentInfo.Type, Integer> enchant;
     }
 
-    private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/crystal.json", Metadata.class);
-
     @Override
     public Sprite loadSprite(final CrystalSpriteKey key) {
         final EnchantmentInfo.Type enchant = key.type();
 
-        final int yOffset = metadata.enchant.get(enchant);
+        final int yOffset = METADATA.enchant.get(enchant);
 
         final Image crystalAtlas = getCrystalAtlas();
-        final Image[] frames = new Image[metadata.frames];
-        for (int i = 0; i < metadata.frames; i++) {
+        final Image[] frames = new Image[METADATA.frames];
+        for (int i = 0; i < METADATA.frames; i++) {
             final int y = yOffset;
-            final int x = metadata.width * i;
-            frames[i] = new WritableImage(crystalAtlas.getPixelReader(), x, y, metadata.width, metadata.height);
+            final int x = METADATA.width * i;
+            frames[i] = new WritableImage(crystalAtlas.getPixelReader(), x, y, METADATA.width, METADATA.height);
         }
-        return new AnimatedSprite(frames, metadata.frameTimeNs);
+        return new AnimatedSprite(frames, METADATA.frameTimeNs);
     }
 
     private static Image getCrystalAtlas() {
-        return new Image(Objects.requireNonNull(CrystalSpriteFactory.class.getResourceAsStream(metadata.filename)));
+        return new Image(Objects.requireNonNull(CrystalSpriteFactory.class.getResourceAsStream(METADATA.filename)));
     }
 
     @Override
