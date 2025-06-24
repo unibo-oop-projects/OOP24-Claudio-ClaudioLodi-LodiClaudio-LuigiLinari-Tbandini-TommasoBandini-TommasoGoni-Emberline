@@ -1,5 +1,6 @@
 package dev.emberline.game.world;
 
+import dev.emberline.core.components.Renderable;
 import dev.emberline.game.GameState;
 import dev.emberline.game.world.buildings.TowersManager;
 import dev.emberline.game.world.entities.enemies.EnemiesManagerWithStats;
@@ -15,6 +16,15 @@ import javafx.scene.input.InputEvent;
 
 import java.io.Serializable;
 
+/**
+ * Represents the game world acting as the core container and coordinator
+ * of the various elements such as enemies, towers, projectiles, waves, and player interactions.
+ * Mainly it makes sure that each element is properly updated and rendered.
+ * It also functions as a provider of the elements inside it.
+ *
+ * Implements the {@link GameState} interface, allowing it to be part of the game loop.
+ * Implements the {@link Serializable} interface, for saving the state of the game.
+ */
 public class World implements GameState, Serializable {
 
     private final WorldRenderComponent worldRenderComponent;
@@ -36,6 +46,10 @@ public class World implements GameState, Serializable {
     // Player
     private final Player player;
 
+    /**
+     * Creates a new instance of the World class and initializes the
+     * various elements inside it.
+     */
     public World() {
         this.statistics = new Statistics(this);
         this.towersManager = new TowersManager(this);
@@ -47,38 +61,70 @@ public class World implements GameState, Serializable {
         this.worldRenderComponent = new WorldRenderComponent(waveManager);
     }
 
+    /**
+     * @return the {@code Player} instance associated with the World.
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * @return the {@code ProjectilesManager} instance associated with the World.
+     */
     public ProjectilesManager getProjectilesManager() {
         return projectilesManager;
     }
 
+    /**
+     * @return the {@code TowersManager} instance associated with the World.
+     */
     public TowersManager getTowersManager() {
         return towersManager;
     }
 
+    /**
+     * @return the {@code IEnemiesManager} instance associated with the World.
+     */
     public IEnemiesManager getEnemiesManager() {
         return enemiesManager;
     }
 
+    /**
+     * @return the {@code ProjectileHitListener} instance associated with the World.
+     */
     public ProjectileHitListener getProjectileHitListener() {
         return projectileHitListener;
     }
 
+    /**
+     * @return the {@code IWaveManager} instance associated with the World.
+     */
     public IWaveManager getWaveManager() {
         return waveManager;
     }
 
+    /**
+     * @return the {@code Statistics} instance associated with the World.
+     */
     public Statistics getStatistics() {
         return statistics;
     }
 
+    /**
+     * Sets the GUI event listener for this instance. The specified listener will be notified of GUI events
+     * that are triggered within the context of this instance.
+     *
+     * @param listener the {@code GuiEventListener} to be used for handling GUI events
+     */
     public void setListener(final GuiEventListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * Updates the state of the world and its various components.
+     *
+     * @param elapsed the time elapsed since the last update in nanoseconds
+     */
     @Override
     public void update(final long elapsed) {
         projectilesManager.update(elapsed);
@@ -89,6 +135,11 @@ public class World implements GameState, Serializable {
         worldRenderComponent.update(elapsed);
     }
 
+    /**
+     * Renders the world by calling the render methods of
+     * all the visual elements inside it.
+     * @see Renderable#render()
+     */
     @Override
     public void render() {
         towersManager.render();
@@ -98,6 +149,13 @@ public class World implements GameState, Serializable {
         waveManager.render();
     }
 
+    /**
+     * Processes the input event received by the World instance.
+     * All the {@code inputEvent} related to the world will be
+     * dispatched to the elements inside it which have input logic.
+     *
+     * @param inputEvent the {@link InputEvent} to be processed
+     */
     @Override
     public void processInput(final InputEvent inputEvent) {
         towersManager.processInput(inputEvent);
