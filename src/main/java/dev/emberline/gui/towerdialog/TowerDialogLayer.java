@@ -34,6 +34,19 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TowerDialogLayer extends GuiLayer {
+    // The Tower linked to this dialog layer
+    private final Tower tower;
+    // The current state of what is displayed in the dialog
+    private EnchantmentInfo displayedEnchantment = null;
+    private ProjectileInfo displayedProjectile = null;
+    // Initial aim type is set to FIRST
+    private AimType displayedAimType = AimType.FIRST;
+    private AimType currentAimType = displayedAimType;
+    // Tower Stats Views
+    private List<TowerStatView> statsViews = null;
+    // Data to display on button hover
+    private final Map<GuiButton, TowerStatsProvider> hoverData = new HashMap<>();
+
     /**
      * Defines layout constants used for specifying GUI element dimensions.
      * The numbers are relative to the GUI coordinate system.
@@ -138,19 +151,6 @@ public class TowerDialogLayer extends GuiLayer {
         private static final ColorAdjust STAT_NEW_VALUE = new ColorAdjust(0.9444, 1, -0.3, 0);
         private static final ColorAdjust SELECTOR_TITLE = new ColorAdjust(0.15, 0.9, -0.6, 0);
     }
-
-    // The Tower linked to this dialog layer
-    private final Tower tower;
-    // The current state of what is displayed in the dialog
-    private EnchantmentInfo displayedEnchantment = null;
-    private ProjectileInfo displayedProjectile = null;
-    // Initial aim type is set to FIRST
-    private AimType displayedAimType = AimType.FIRST;
-    private AimType currentAimType = displayedAimType;
-    // Tower Stats Views
-    private List<TowerStatView> statsViews = null;
-    // Data to display on button hover
-    private final Map<GuiButton, TowerStatsProvider> hoverData = new HashMap<>();
 
     public TowerDialogLayer(final Tower tower) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);

@@ -7,17 +7,17 @@ import javafx.geometry.Point2D;
  * It stores whether the mouse is currently inside the window and captures its current coordinates.
  */
 public class MouseLocation {
-    private static boolean mouseInside = true;
-    private static Point2D mouseLocation = new Point2D(0d, 0d);
+    private static boolean inside = true;
+    private static Point2D location = new Point2D(0d, 0d);
 
     // Package private method
     static void setIsMouseInside(final boolean mouseInside) {
-        MouseLocation.mouseInside = mouseInside;
+        MouseLocation.inside = mouseInside;
     }
 
     // Package private method
-    static void setMouseLocation(final Point2D mouseLocation) {
-        MouseLocation.mouseLocation = mouseLocation;
+    static void setLocation(final Point2D location) {
+        MouseLocation.location = location;
     }
 
     /**
@@ -25,8 +25,8 @@ public class MouseLocation {
      *
      * @return true if the mouse is inside, false otherwise.
      */
-    public static boolean isMouseInside() {
-        return MouseLocation.mouseInside;
+    public static boolean isInside() {
+        return MouseLocation.inside;
     }
 
     /**
@@ -35,7 +35,7 @@ public class MouseLocation {
      * @return the current mouse location stored as a Point2D object
      */
     public static Point2D getLocation() {
-        return MouseLocation.mouseLocation;
+        return MouseLocation.location;
     }
 
     /**
@@ -44,7 +44,7 @@ public class MouseLocation {
      * @return the x-coordinate of the mouse location as a double
      */
     public static double getX() {
-        return MouseLocation.mouseLocation.getX();
+        return MouseLocation.location.getX();
     }
 
     /**
@@ -53,6 +53,6 @@ public class MouseLocation {
      * @return the y-coordinate of the mouse position as a double.
      */
     public static double getY() {
-        return MouseLocation.mouseLocation.getY();
+        return MouseLocation.location.getY();
     }
 }
