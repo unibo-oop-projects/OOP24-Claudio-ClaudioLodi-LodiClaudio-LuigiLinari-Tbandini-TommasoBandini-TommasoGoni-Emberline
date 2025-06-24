@@ -15,6 +15,7 @@ package dev.emberline.core.render;
 public enum RenderPriority {
     GUI_HIGH(21),
     GUI(20),
+    FOG(19),
     // Enemies and Buildings have the same priority, enable z-ordering
     ENEMIES(10),
     BUILDINGS(10),

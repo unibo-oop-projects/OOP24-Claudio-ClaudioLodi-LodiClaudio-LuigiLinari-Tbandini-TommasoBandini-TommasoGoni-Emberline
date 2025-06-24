@@ -96,10 +96,10 @@ public class Statistics implements Updatable, Serializable {
     }
 
     void printToTerminal() {
-        System.out.println(enemiesKilled);
-        System.out.println(wavesSurvived);
-        System.out.println(dps);
-        System.out.println(timeInGame);
+//        System.out.println(enemiesKilled);
+//        System.out.println(wavesSurvived);
+//        System.out.println(dps);
+//        System.out.println(timeInGame);
         //System.out.println(enemiesKilled);
     }
 

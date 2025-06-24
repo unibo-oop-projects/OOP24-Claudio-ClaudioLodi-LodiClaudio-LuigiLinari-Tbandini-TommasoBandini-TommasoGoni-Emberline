@@ -6,8 +6,8 @@ import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.SpriteLoader;
-import dev.emberline.core.graphics.spritekeys.TowerSpriteKey;
 import dev.emberline.core.graphics.spritekeys.CrystalSpriteKey;
+import dev.emberline.core.graphics.spritekeys.TowerSpriteKey;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
@@ -15,6 +15,7 @@ import dev.emberline.core.render.Renderer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.Bloom;
 import javafx.scene.image.Image;
+import javafx.scene.transform.Rotate;
 
 class TowerRenderComponent implements Renderable {
     private static final JsonNode configsNode = ConfigLoader.loadNode("/sprites/towerAssets/crystal.json");
@@ -61,6 +62,8 @@ class TowerRenderComponent implements Renderable {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BUILDINGS, () -> {
             gc.save();
+            Rotate r = new Rotate( 2*Math.sin((System.nanoTime() - creationTimeNs) / 3e8), crystalScreenX + cs.getScale() * (Metadata.CRYSTAL_WIDTH / 2), crystalScreenY + cs.getScale() * (Metadata.CRYSTAL_HEIGHT / 2));
+            gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
             gc.setEffect(new Bloom(Metadata.CRYSTAL_BLOOM_THRESHOLD));
             gc.setGlobalAlpha(Metadata.CRYSTAL_TRANSPARENCY);
             gc.drawImage(crystalImage, crystalScreenX, crystalScreenY, Metadata.CRYSTAL_WIDTH * cs.getScale(), Metadata.CRYSTAL_HEIGHT * cs.getScale());

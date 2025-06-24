@@ -15,12 +15,9 @@ import java.util.Map;
 public class Tower extends Building implements TowerInfoProvider {
     private static String configsPath = "/sprites/towerAssets/tower.json";
     private static class Metadata {
-        @JsonProperty("width")
-        private double worldWidth;
-        @JsonProperty("height")
-        private Map<ProjectileInfo.Type, Double> worldHeight;
-        @JsonProperty("firingYOffsetTiles")
-        private double firingYOffsetTiles;
+        @JsonProperty double width;
+        @JsonProperty Map<ProjectileInfo.Type, Double> height;
+        @JsonProperty double firingYOffsetTiles;
     }
     private static Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
 
@@ -61,6 +58,7 @@ public class Tower extends Building implements TowerInfoProvider {
 
     @Override
     protected void clicked() {
+        world.getTowersManager().closeNewBuildDialog();
         world.getTowersManager().openTowerDialog(this);
     }
 
@@ -79,11 +77,11 @@ public class Tower extends Building implements TowerInfoProvider {
     }
 
     double getWorldWidth() {
-        return metadata.worldWidth;
+        return metadata.width;
     }
 
     double getWorldHeight() {
-        return metadata.worldHeight.get(getProjectileInfo().type());
+        return metadata.height.get(getProjectileInfo().type());
     }
 
     public void setUpgradableInfo(UpgradableInfo<?,?> info) {

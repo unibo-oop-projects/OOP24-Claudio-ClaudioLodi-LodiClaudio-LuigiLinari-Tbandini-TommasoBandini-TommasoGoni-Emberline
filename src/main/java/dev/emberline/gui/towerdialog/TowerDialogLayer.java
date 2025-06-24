@@ -68,8 +68,8 @@ public class TowerDialogLayer extends GuiLayer {
             private static final double SV_VALUE_WIDTH_FACTOR = 0.5; // value width relative to the title width
         }
         // Background
-        private static final double BG_WIDTH = 8 * 1.15;
-        private static final double BG_HEIGHT = 15 * 1.023;
+        private static final double BG_WIDTH = 9.2;
+        private static final double BG_HEIGHT = 15.34;
         private static final double BG_X = Renderer.GUICS_WIDTH * 0.98 - BG_WIDTH;
         private static final double BG_Y = 0;
         // Title
@@ -152,6 +152,7 @@ public class TowerDialogLayer extends GuiLayer {
     private final Map<GuiButton, TowerStatsProvider> hoverData = new HashMap<>();
 
     public TowerDialogLayer(Tower tower) {
+        super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         this.tower = tower;
         updateLayout();
     }

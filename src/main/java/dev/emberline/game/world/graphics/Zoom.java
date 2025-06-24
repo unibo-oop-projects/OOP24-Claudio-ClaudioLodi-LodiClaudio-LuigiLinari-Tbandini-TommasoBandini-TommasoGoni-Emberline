@@ -1,4 +1,4 @@
-package dev.emberline.core.render;
+package dev.emberline.game.world.graphics;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
@@ -17,19 +17,19 @@ public class Zoom implements Renderable {
         @JsonProperty double toX,
         @JsonProperty double toY
     ) {}
-    private record Translations(
+    private record Metadata(
         @JsonProperty Translation topLeft,
         @JsonProperty Translation bottomRight,
         @JsonProperty double animationDurationSeconds,
         @JsonProperty double animationDelaySeconds
     ) {}
-    private final Translations translations;
+    private final Metadata metadata;
 
     private long accumulatorNs = 0;
     private long previousTimeNs = System.nanoTime();
 
     public Zoom(String wavePath) {
-        translations = ConfigLoader.loadConfig(wavePath + "cs.json", Translations.class);
+        metadata = ConfigLoader.loadConfig(wavePath + "cs.json", Metadata.class);
         startAnimation();
     }
 
@@ -38,22 +38,22 @@ public class Zoom implements Renderable {
     }
 
     public boolean isOver() {
-        return accumulatorNs >= translations.animationDurationSeconds * 1e9;
+        return accumulatorNs >= metadata.animationDurationSeconds * 1e9;
     }
 
     public void startAnimation() {
         previousTimeNs = System.nanoTime();
-        accumulatorNs = -(long) (translations.animationDelaySeconds * 1e9);
+        accumulatorNs = -(long) (metadata.animationDelaySeconds * 1e9);
     }
 
     @Override
     public void render() {
         long currentTimeNs = System.nanoTime();
-        accumulatorNs += currentTimeNs - previousTimeNs; // Convert nanoseconds to seconds
+        accumulatorNs += currentTimeNs - previousTimeNs;
         previousTimeNs = currentTimeNs;
-        double t = Math.min((accumulatorNs/1e9) / translations.animationDurationSeconds, 1.0);
+        double t = Math.min((accumulatorNs/1e9) / metadata.animationDurationSeconds, 1.0);
         if (accumulatorNs < 0) { // Animation isn't started yet
-            updateCS(translations.topLeft.fromX, translations.topLeft.fromY, translations.bottomRight.fromX, translations.bottomRight.fromY);
+            updateCS(metadata.topLeft.fromX, metadata.topLeft.fromY, metadata.bottomRight.fromX, metadata.bottomRight.fromY);
             return;
         }
         if (t >= 1) { // Animation is over
@@ -61,10 +61,10 @@ public class Zoom implements Renderable {
         }
         double easedT = easeInOutExpo(t);
         updateCS(
-                lerp(translations.topLeft.fromX, translations.topLeft.toX, easedT),
-                lerp(translations.topLeft.fromY, translations.topLeft.toY, easedT),
-                lerp(translations.bottomRight.fromX, translations.bottomRight.toX, easedT),
-                lerp(translations.bottomRight.fromY, translations.bottomRight.toY, easedT)
+                lerp(metadata.topLeft.fromX, metadata.topLeft.toX, easedT),
+                lerp(metadata.topLeft.fromY, metadata.topLeft.toY, easedT),
+                lerp(metadata.bottomRight.fromX, metadata.bottomRight.toX, easedT),
+                lerp(metadata.bottomRight.fromY, metadata.bottomRight.toY, easedT)
         );
     }
 

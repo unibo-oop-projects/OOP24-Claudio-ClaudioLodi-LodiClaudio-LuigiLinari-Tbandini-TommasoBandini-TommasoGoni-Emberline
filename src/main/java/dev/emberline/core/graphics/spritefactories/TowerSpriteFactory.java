@@ -15,16 +15,11 @@ import java.util.Objects;
 
 public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
     private static class Metadata {
-        @JsonProperty("filename")
-        private String filename;
-        @JsonProperty("width")
-        private int width;
-        @JsonProperty("height")
-        private Map<ProjectileInfo.Type, Integer> height;
-        @JsonProperty("size")
-        private Map<ProjectileInfo.Type, Integer> size;
-        @JsonProperty("enchant")
-        private Map<EnchantmentInfo.Type, Integer> enchant;
+        @JsonProperty  String filename;
+        @JsonProperty int width;
+        @JsonProperty Map<ProjectileInfo.Type, Integer> height;
+        @JsonProperty Map<ProjectileInfo.Type, Integer> size;
+        @JsonProperty Map<EnchantmentInfo.Type, Integer> enchant;
     }
 
     private static final Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/tower.json", Metadata.class);

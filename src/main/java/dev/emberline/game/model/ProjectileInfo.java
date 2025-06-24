@@ -1,5 +1,6 @@
 package dev.emberline.game.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
@@ -8,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import static dev.emberline.gui.towerdialog.stats.TowerStat.TowerStatType;
 
@@ -65,16 +64,25 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canUpgrade() {
         return type != Type.BASE && level < MAX_LEVEL;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canChangeType() {
         return type == Type.BASE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectileInfo getUpgrade() {
         if (canUpgrade()) {
@@ -83,11 +91,17 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
         throw new IllegalStateException("Cannot upgrade projectile: " + this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getMaxLevel() {
         return MAX_LEVEL;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectileInfo getChangeType(Type newType) {
         if (canChangeType()) {
@@ -96,6 +110,9 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
         throw new IllegalStateException("Cannot change type of projectile: " + this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectileInfo getDefault() {
         return new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
@@ -134,12 +151,18 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
 
     private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/projectileInfoStats.json", Metadata.class);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getUpgradeCost() {
         if (type == Type.BASE) return metadata.BASE_UPGRADE_COST;
         return metadata.UPGRADE_COSTS[level];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getRefundValue() {
         if (type == Type.BASE) return 0;
@@ -209,6 +232,9 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
         };
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TowerStat> getTowerStats() {
         // To add the optional damage area a resizable list is needed,
