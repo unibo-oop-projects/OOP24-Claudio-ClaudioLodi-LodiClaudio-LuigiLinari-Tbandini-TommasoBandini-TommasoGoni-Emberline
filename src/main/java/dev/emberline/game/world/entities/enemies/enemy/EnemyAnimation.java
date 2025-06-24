@@ -7,8 +7,21 @@ import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
 import javafx.scene.image.Image;
 
+/**
+ * The EnemyAnimation class is responsible for managing the visual representation
+ * of an enemy in the game. This includes handling animations and updating the
+ * sprite based on the enemy's state, appearance, and facing direction.
+ */
 public class EnemyAnimation implements Updatable {
 
+    /**
+     * This enumeration defines different visual states that an enemy can have,
+     * which include:
+     * <ul>- NORMAL: The enemy is in its default appearance.</ul>
+     * <ul>- BURNING: The enemy is on fire.</ul>
+     * <ul>- FREEZING: The enemy is frozen.</ul>
+     * <ul>- DYING: The enemy is in the process of dying.</ul>
+     */
     public enum EnemyAppearance {
         NORMAL, BURNING, FREEZING, DYING;
 
@@ -29,6 +42,11 @@ public class EnemyAnimation implements Updatable {
     private boolean dyingAnimationFinished = false; // To track if the dying animation has finished
     private boolean isDying = false; // To track if the enemy is currently in a dying state
 
+    /**
+     * Constructs an instance of the {@link EnemyAnimation} class.
+     *
+     * @param enemy The AbstractEnemy instance for which the animation is to be managed.
+     */
     public EnemyAnimation(final AbstractEnemy enemy) {
         this.enemy = enemy;
         updateAnimatedSprite();
@@ -71,14 +89,26 @@ public class EnemyAnimation implements Updatable {
         this.animatedSprite = (AnimatedSprite) SpriteLoader.loadSprite(new EnemySpriteKey(enemy.getEnemyType(), facingDirection, enemyAppearance));
     }
 
+    /**
+     * @return the current frame of the enemy's animation as an image
+     */
     public Image getImage() {
         return animatedSprite.image(frameIndex);
     }
 
+    /**
+     * @return whether the enemy's dying animation has completed.
+     */
     public boolean isDyingAnimationFinished() {
         return dyingAnimationFinished;
     }
 
+    /**
+     * Updates the animation state of the enemy based on the elapsed time and current enemy state.
+     *
+     * @param elapsed The time in nanoseconds that has elapsed since the last update.
+     *                This is used to determine the progression of the animation.
+     */
     @Override
     public void update(final long elapsed) {
         if (dyingAnimationFinished) {

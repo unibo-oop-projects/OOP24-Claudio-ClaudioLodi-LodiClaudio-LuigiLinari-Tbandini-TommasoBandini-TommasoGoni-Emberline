@@ -63,6 +63,13 @@ class EnemyUpdateComponent implements Updatable {
         return this.health;
     }
 
+    /**
+     * Updates the enemy based on its current state and the elapsed time.
+     * Depending on the enemy's state, it performs specific actions such as walking,
+     * handling dying logic or updating related animations.
+     *
+     * @param elapsed the time elapsed since the last update in nanoseconds
+     */
     @Override
     public void update(final long elapsed) {
         switch (enemyState) {

@@ -9,8 +9,17 @@ import dev.emberline.utility.Vector2D;
 
 import java.util.List;
 
+/**
+ * Represents an abstract implementation of an enemy in the game, defining
+ * common properties and behaviors that all specific enemy types must implement.
+ */
 public abstract class AbstractEnemy implements IEnemy {
 
+    /**
+     * Represents metadata for an enemy in the game. This class encapsulates
+     * configuration and physical properties that define an enemy's behavior
+     * and appearance, such as dimensions, health, and movement speed.
+     */
     protected static class Metadata {
         @JsonProperty
         public double tileWidth;
@@ -22,6 +31,14 @@ public abstract class AbstractEnemy implements IEnemy {
         public double speed;
     }
 
+    /**
+     * This enum is used to indicate the direction an entity is currently facing.
+     * <p>
+     * The available directions are: {@code UP}, {@code RIGHT}, {@code DOWN} and {@code LEFT}.
+     * </p>
+     * It also provides a utility for converting string representations of directions
+     * into their corresponding enum values.
+     */
     public enum FacingDirection {
         UP, RIGHT, DOWN, LEFT;
 
@@ -39,78 +56,123 @@ public abstract class AbstractEnemy implements IEnemy {
         this.renderComponent = new EnemyRenderComponent(this);
     }
 
+    /**
+     * @return the {@link Metadata} associated with the enemy
+     */
     abstract protected Metadata getMetadata();
 
+    /**
+     * @return the {@link EnemyType} associated with the enemy
+     */
     abstract protected EnemyType getEnemyType();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getWidth() {
         return getMetadata().tileWidth;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getHealth() {
         return updateComponent.getHealth();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getHeight() {
         return getMetadata().tileHeight;
     }
 
+    /**
+     * @return the full health value of the enemy as described by its metadata
+     */
     protected double getFullHealth() {
         return getMetadata().fullHealth;
     }
 
+    /**
+     * @return the speed value of the enemy as described by its metadata.
+     */
     protected double getSpeed() {
         return getMetadata().speed;
     }
 
+    /**
+     * Updates the enemy.
+     * @see EnemyUpdateComponent#update(long)
+     */
     @Override
     public void update(final long elapsed) {
         updateComponent.update(elapsed);
     }
 
+    /**
+     * Renders the enemy.
+     * @see EnemyRenderComponent#render()
+     */
     @Override
     public void render() {
         renderComponent.render();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void dealDamage(final double damage) {
         updateComponent.dealDamage(damage);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void applyEffect(final EnchantmentEffect effect) {
         updateComponent.applyEffect(effect);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSlowFactor(final double slowFactor) {
         updateComponent.setSlowFactor(slowFactor);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isDead() {
         return updateComponent.isDead();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isHittable() {
         return updateComponent.isHittable();
     }
 
     /**
-     * @param time time of truncation
-     * @return All the uniform motions starting from the current position of the enemy
-     * That is described by a list of {@code UniformMotion}
+     * {@inheritDoc}
      */
     @Override
     public List<UniformMotion> getMotionUntil(final long time) {
         return updateComponent.getMotionUntil(time);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Vector2D getPosition() {
         return updateComponent.getPosition();

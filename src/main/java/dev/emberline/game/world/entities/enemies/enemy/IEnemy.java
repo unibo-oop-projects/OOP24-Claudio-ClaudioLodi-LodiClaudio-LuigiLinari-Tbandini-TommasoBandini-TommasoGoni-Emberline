@@ -7,36 +7,78 @@ import dev.emberline.utility.Vector2D;
 
 import java.util.List;
 
+/**
+ * Represents an enemy entity. This interface defines
+ * the core behavior and properties that any enemy implementation must
+ * fulfill, covering health management, motion, rendering, and status updates.
+ *
+ * <p>
+ * Enemies implementing this interface can be updated and rendered within the game loop.
+ *
+ * @see Updatable
+ * @see Renderable
+ */
 public interface IEnemy extends Updatable, Renderable {
 
+    /**
+     * @return the height of the enemy in the world space
+     */
     double getHeight();
 
+    /**
+     * @return the width of the enemy in the world space
+     */
     double getWidth();
 
+    /**
+     * Retrieves the current health of the enemy.
+     * @return the current health value of the enemy
+     */
     double getHealth();
 
+    /**
+     * Reduces the enemy's health by the given damage value.
+     * @param damage the amount of damage to be dealt to the enemy
+     */
     void dealDamage(double damage);
 
+    /**
+     * @param effect the effect to be assigned on the enemy
+     */
     void applyEffect(EnchantmentEffect effect);
 
+    /**
+     * Sets the slow factor of the enemy.
+     * @param slowFactor the value that will multiply the speed of the enemy
+     */
     void setSlowFactor(double slowFactor);
 
+    /**
+     * @return whether the enemy is dead
+     */
     boolean isDead();
 
+    /**
+     * @return whether the enemy is in a hittable state
+     */
     boolean isHittable();
 
     /**
-     * Uniform motion (s_0 + v * t) with t in [0, {@code duration}] ns
+     * Uniform motion ({@code origin}+ {@code velocity} * {@code t}) with {@code t} in [{@code 0}, {@code durationNs}] ns
      */
-    record UniformMotion(Vector2D origin, Vector2D velocity, long duration) {
+    record UniformMotion(Vector2D origin, Vector2D velocity, long durationNs) {
     }
 
     /**
-     * @param time time of truncation
+     * @param timeNs time of truncation
      * @return All the uniform motions starting from the current position of the enemy.
-     * That is described by a list of {@code UniformMotion}
+     * That is described by a list of {@link UniformMotion}
      */
-    List<UniformMotion> getMotionUntil(long time);
+    List<UniformMotion> getMotionUntil(long timeNs);
 
+    /**
+     * Retrieves the current position of the enemy in the world space.
+     * @return a {@code Vector2D} representing the current position of the enemy
+     */
     Vector2D getPosition();
 }

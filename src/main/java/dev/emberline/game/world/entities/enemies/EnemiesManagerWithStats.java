@@ -9,7 +9,8 @@ import dev.emberline.utility.Vector2D;
 import java.util.List;
 
 /**
- * Decorator for the basic enemymanager class, used for statistics.
+ * The EnemiesManagerWithStats class is a decorator for the EnemiesManager that adds the ability to track and update
+ * statistical data related to enemies in the game.
  */
 public class EnemiesManagerWithStats implements IEnemiesManager {
 
@@ -17,35 +18,53 @@ public class EnemiesManagerWithStats implements IEnemiesManager {
     private final Statistics statistics;
     private int deadEnemies;
 
+    /**
+     * Constructs an {@code EnemiesManagerWithStats} instance wrapping {@code EnemiesManager},
+     *
+     * @param world the game world within which the enemies manager operates; it provides the context
+     *              and statistics tracker used by this manager
+     */
     public EnemiesManagerWithStats(final World world) {
         enemiesManager = new EnemiesManager(world);
         statistics = world.getStatistics();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addEnemy(final Vector2D spawnPoint, final EnemyType type) {
         enemiesManager.addEnemy(spawnPoint, type);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<IEnemy> getNear(final Vector2D location, final double radius) {
         return enemiesManager.getNear(location, radius);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean areAllDead() {
         return enemiesManager.areAllDead();
     }
 
+    /**
+     * Renders all the enemies inside the {@code EnemiesManagerWithStats}
+     * @see EnemiesManager#render()
+     */
     @Override
     public void render() {
         enemiesManager.render();
     }
 
     /**
-     * Updates the basic enemymanager and keeps track of the dead enemy's number.
-     *
-     * @param elapsed
+     * Updates all the enemies inside the {@code EnemiesManagerWithStats}, and keeps track of the statistics
+     * @see EnemiesManager#update(long)
      */
     @Override
     public void update(final long elapsed) {
