@@ -10,17 +10,16 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
-
 import dev.emberline.game.GameState;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
-import dev.emberline.gui.event.OpenOptionsEvent;
-import dev.emberline.gui.event.SetStartEvent;
+import dev.emberline.gui.event.CloseOptionsEvent;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class MainMenu extends GuiLayer implements GameState {
-    private static class Layout {
+public class Options extends GuiLayer implements GameState {
+
+     private static class Layout {
         // Background
         private static final double BG_WIDTH = 32;
         private static final double BG_HEIGHT = 18;
@@ -37,39 +36,35 @@ public class MainMenu extends GuiLayer implements GameState {
         private static final double BTN_OPTIONS_Y = BTN_START_Y + BTN_START_HEIGHT - 0.25;
     }
 
-    // menu bounds
+    // Options bounds
     private record Coordinate(
         @JsonProperty int x,
         @JsonProperty int y
     ) {}
-    private record MenuBounds(
+    private record OptionsBounds(
         @JsonProperty Coordinate topLeftBound,
         @JsonProperty Coordinate bottomRightBound
     ) {}
 
-    private final MenuBounds menuBounds;
+   private final OptionsBounds optionsBounds;
     
-    // TODO refactor this constructors 
-    public MainMenu() {
-        this(ConfigLoader.loadConfig("/gui/menu/menuBounds.json", MenuBounds.class));
+    // TODO refactor these constructors 
+    public Options() {
+        this(ConfigLoader.loadConfig("/gui/options/optionsBounds.json", OptionsBounds.class));
     }
 
-    private MainMenu(MenuBounds menuBounds) {
-        super(menuBounds.topLeftBound.x, menuBounds.topLeftBound.y, menuBounds.bottomRightBound.x - menuBounds.topLeftBound.x, menuBounds.bottomRightBound.y - menuBounds.topLeftBound.y);
-        this.menuBounds = menuBounds;
-    }
-
-    // Start button
-    private void addStartButton() {
-        GuiButton startButton = new GuiButton(Layout.BTN_START_X, Layout.BTN_START_Y, Layout.BTN_START_WIDTH, Layout.BTN_START_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.START_SIGN_BUTTON).image());
-        startButton.setOnClick(() -> throwEvent(new SetStartEvent(startButton)));
-        super.buttons.add(startButton);
-    }
     // Options button
-    private void addOptionsButton() {
-        GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X, Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH, Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON).image());
-        optionsButton.setOnClick(() -> throwEvent(new OpenOptionsEvent(this)));
+    private void addCloseOptionsButton() {
+        GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X,
+            Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH, 
+            Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.DEFAULT_SIGN_BUTTON).image());
+        optionsButton.setOnClick(() -> throwEvent(new CloseOptionsEvent(this)));
         super.buttons.add(optionsButton);
+    }
+
+    private Options(OptionsBounds optionsBounds) {
+        super(optionsBounds.topLeftBound.x, optionsBounds.topLeftBound.y, optionsBounds.bottomRightBound.x - optionsBounds.topLeftBound.x, optionsBounds.bottomRightBound.y - optionsBounds.topLeftBound.y);
+        this.optionsBounds = optionsBounds;
     }
 
     @Override
@@ -79,13 +74,12 @@ public class MainMenu extends GuiLayer implements GameState {
         GraphicsContext gc = renderer.getGraphicsContext();
         CoordinateSystem cs = renderer.getGuiCoordinateSystem();
 
-        addStartButton();
-        addOptionsButton();
+        addCloseOptionsButton();
 
-        double menuScreenWidth = menuBounds.bottomRightBound.x * cs.getScale();
-        double menuScreenHeight = menuBounds.bottomRightBound.y * cs.getScale();
-        double menuScreenX = cs.toScreenX(menuBounds.topLeftBound.x);
-        double menuScreenY = cs.toScreenY(menuBounds.topLeftBound.y);
+        double menuScreenWidth = optionsBounds.bottomRightBound.x * cs.getScale();
+        double menuScreenHeight = optionsBounds.bottomRightBound.y * cs.getScale();
+        double menuScreenX = cs.toScreenX(optionsBounds.topLeftBound.x);
+        double menuScreenY = cs.toScreenY(optionsBounds.topLeftBound.y);
 
         Image menuBackground = SpriteLoader.loadSprite(SingleSpriteKey.MENU_BACKGROUND).image();
 
@@ -99,4 +93,5 @@ public class MainMenu extends GuiLayer implements GameState {
     @Override
     public void update(long elapsed) {
     }
+    
 }

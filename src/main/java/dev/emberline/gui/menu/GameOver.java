@@ -10,17 +10,17 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
-
 import dev.emberline.game.GameState;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
-import dev.emberline.gui.event.OpenOptionsEvent;
-import dev.emberline.gui.event.SetStartEvent;
+import dev.emberline.gui.event.CloseOptionsEvent;
+import dev.emberline.gui.event.SetMainMenuEvent;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class MainMenu extends GuiLayer implements GameState {
-    private static class Layout {
+public class GameOver extends GuiLayer implements GameState {
+
+     private static class Layout {
         // Background
         private static final double BG_WIDTH = 32;
         private static final double BG_HEIGHT = 18;
@@ -30,46 +30,42 @@ public class MainMenu extends GuiLayer implements GameState {
         private static final double BTN_START_WIDTH = 3.5 * scale_factor;
         private static final double BTN_START_X = (BG_WIDTH - BTN_START_WIDTH) / 2;
         private static final double BTN_START_Y = (BG_HEIGHT - BTN_START_HEIGHT) / 2;
-        // Options Button
+        // GameOver Button
         private static final double BTN_OPTIONS_HEIGHT = 1.5 * scale_factor;
         private static final double BTN_OPTIONS_WIDTH = 3.5 * scale_factor;
         private static final double BTN_OPTIONS_X = (BG_WIDTH - BTN_OPTIONS_WIDTH) / 2;
         private static final double BTN_OPTIONS_Y = BTN_START_Y + BTN_START_HEIGHT - 0.25;
     }
 
-    // menu bounds
+    // GameOver bounds
     private record Coordinate(
         @JsonProperty int x,
         @JsonProperty int y
     ) {}
-    private record MenuBounds(
+    private record GameOverBounds(
         @JsonProperty Coordinate topLeftBound,
         @JsonProperty Coordinate bottomRightBound
     ) {}
 
-    private final MenuBounds menuBounds;
+   private final GameOverBounds gameOverBounds;
     
-    // TODO refactor this constructors 
-    public MainMenu() {
-        this(ConfigLoader.loadConfig("/gui/menu/menuBounds.json", MenuBounds.class));
+    // TODO refactor these constructors 
+    public GameOver() {
+        this(ConfigLoader.loadConfig("/gui/gameOver/gameOverBounds.json", GameOverBounds.class));
     }
 
-    private MainMenu(MenuBounds menuBounds) {
-        super(menuBounds.topLeftBound.x, menuBounds.topLeftBound.y, menuBounds.bottomRightBound.x - menuBounds.topLeftBound.x, menuBounds.bottomRightBound.y - menuBounds.topLeftBound.y);
-        this.menuBounds = menuBounds;
-    }
-
-    // Start button
-    private void addStartButton() {
-        GuiButton startButton = new GuiButton(Layout.BTN_START_X, Layout.BTN_START_Y, Layout.BTN_START_WIDTH, Layout.BTN_START_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.START_SIGN_BUTTON).image());
-        startButton.setOnClick(() -> throwEvent(new SetStartEvent(startButton)));
-        super.buttons.add(startButton);
-    }
-    // Options button
-    private void addOptionsButton() {
-        GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X, Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH, Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON).image());
-        optionsButton.setOnClick(() -> throwEvent(new OpenOptionsEvent(this)));
+    // GameOver button
+    private void addMainMenuButton() {
+        GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X,
+            Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH, 
+            Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.DEFAULT_SIGN_BUTTON).image());
+        optionsButton.setOnClick(() -> throwEvent(new SetMainMenuEvent(this)));
         super.buttons.add(optionsButton);
+    }
+
+    private GameOver(GameOverBounds gameOverBounds) {
+        super(gameOverBounds.topLeftBound.x, gameOverBounds.topLeftBound.y, gameOverBounds.bottomRightBound.x - gameOverBounds.topLeftBound.x, gameOverBounds.bottomRightBound.y - gameOverBounds.topLeftBound.y);
+        this.gameOverBounds = gameOverBounds;
     }
 
     @Override
@@ -79,13 +75,12 @@ public class MainMenu extends GuiLayer implements GameState {
         GraphicsContext gc = renderer.getGraphicsContext();
         CoordinateSystem cs = renderer.getGuiCoordinateSystem();
 
-        addStartButton();
-        addOptionsButton();
+        addMainMenuButton();
 
-        double menuScreenWidth = menuBounds.bottomRightBound.x * cs.getScale();
-        double menuScreenHeight = menuBounds.bottomRightBound.y * cs.getScale();
-        double menuScreenX = cs.toScreenX(menuBounds.topLeftBound.x);
-        double menuScreenY = cs.toScreenY(menuBounds.topLeftBound.y);
+        double menuScreenWidth = gameOverBounds.bottomRightBound.x * cs.getScale();
+        double menuScreenHeight = gameOverBounds.bottomRightBound.y * cs.getScale();
+        double menuScreenX = cs.toScreenX(gameOverBounds.topLeftBound.x);
+        double menuScreenY = cs.toScreenY(gameOverBounds.topLeftBound.y);
 
         Image menuBackground = SpriteLoader.loadSprite(SingleSpriteKey.MENU_BACKGROUND).image();
 
@@ -99,4 +94,5 @@ public class MainMenu extends GuiLayer implements GameState {
     @Override
     public void update(long elapsed) {
     }
+    
 }
