@@ -8,6 +8,7 @@ import dev.emberline.game.world.World;
 import dev.emberline.utility.Vector2D;
 
 import java.util.List;
+import java.util.Locale;
 
 public abstract class AbstractEnemy implements IEnemy {
 
@@ -30,7 +31,7 @@ public abstract class AbstractEnemy implements IEnemy {
 
         @JsonCreator
         public static FacingDirection fromString(final String direction) {
-            return FacingDirection.valueOf(direction.toUpperCase());
+            return FacingDirection.valueOf(direction.toUpperCase(Locale.US));
         }
     }
 

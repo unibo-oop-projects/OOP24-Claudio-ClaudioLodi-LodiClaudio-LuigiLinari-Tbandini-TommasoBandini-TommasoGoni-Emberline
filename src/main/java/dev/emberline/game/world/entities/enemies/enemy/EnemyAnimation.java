@@ -7,6 +7,8 @@ import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
 import javafx.scene.image.Image;
 
+import java.util.Locale;
+
 public class EnemyAnimation implements Updatable {
 
     private final AbstractEnemy enemy;
@@ -25,7 +27,7 @@ public class EnemyAnimation implements Updatable {
 
         @JsonCreator
         public static EnemyAppearance fromString(final String appearance) {
-            return EnemyAppearance.valueOf(appearance.toUpperCase());
+            return EnemyAppearance.valueOf(appearance.toUpperCase(Locale.US));
         }
     }
 

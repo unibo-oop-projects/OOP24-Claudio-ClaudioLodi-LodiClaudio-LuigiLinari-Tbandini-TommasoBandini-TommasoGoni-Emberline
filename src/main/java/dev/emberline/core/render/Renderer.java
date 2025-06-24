@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -135,7 +136,7 @@ public class Renderer {
         final double areaInPixels = width * height * cs.getScale() * cs.getScale();
         // Convert to uppercase if the area is too small
         if (areaInPixels < MIN_TEXT_AREA_PX_UPPERCASE) {
-            text = text.toUpperCase();
+            text = text.toUpperCase(Locale.US);
         }
         // Use image smoothing if the area is too small
         if (height * cs.getScale() < MIN_TEXT_HEIGHT_PX_SMOOTH) {
