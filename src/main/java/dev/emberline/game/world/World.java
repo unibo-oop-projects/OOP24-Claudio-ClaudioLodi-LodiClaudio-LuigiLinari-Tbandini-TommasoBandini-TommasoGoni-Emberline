@@ -167,7 +167,6 @@ public class World implements GameState, Serializable {
             && keyEvent.getCode() == KeyCode.ESCAPE
         ) {
                 EventDispatcher.getInstance().dispatchEvent(new OpenOptionsEvent(this));
-            }
         }
     }
 }
