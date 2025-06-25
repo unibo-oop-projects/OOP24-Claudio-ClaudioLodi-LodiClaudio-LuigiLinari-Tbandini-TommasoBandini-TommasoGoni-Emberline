@@ -11,6 +11,8 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
+import dev.emberline.core.sounds.AudioController;
+import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.game.world.World;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
@@ -79,10 +81,7 @@ public class Topbar extends GuiLayer implements EventListener {
                 Layout.BTN_OPTIONS_WIDTH, Layout.BTN_OPTIONS_HEIGHT,
                 SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_OPTIONS_BUTTON_1).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_OPTIONS_BUTTON_2).image());
-        optionsButton.setOnClick(() -> {
-            throwEvent(new OpenOptionsEvent(optionsButton));
-            System.out.println("Opening options menu from Topbar");
-        });
+        optionsButton.setOnClick(() -> throwEvent(new OpenOptionsEvent(optionsButton)));
         super.buttons.add(optionsButton);
     }
 

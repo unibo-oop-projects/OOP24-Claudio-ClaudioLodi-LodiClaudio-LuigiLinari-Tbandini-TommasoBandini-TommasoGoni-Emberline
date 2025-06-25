@@ -9,6 +9,8 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
+import dev.emberline.core.sounds.AudioController;
+import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.game.GameState;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
@@ -47,14 +49,14 @@ public class Options extends GuiLayer implements GameState {
 
     // Options bounds
     private record Coordinate(
-            @JsonProperty int x,
-            @JsonProperty int y
+        @JsonProperty int x,
+        @JsonProperty int y
     ) {
     }
 
     private record OptionsBounds(
-            @JsonProperty Coordinate topLeftBound,
-            @JsonProperty Coordinate bottomRightBound
+        @JsonProperty Coordinate topLeftBound,
+        @JsonProperty Coordinate bottomRightBound
     ) {
     }
 
@@ -63,25 +65,56 @@ public class Options extends GuiLayer implements GameState {
     }
 
     private Options(final OptionsBounds bounds, final boolean showMenuButton) {
-        super(
-            bounds.topLeftBound.x,
-            bounds.topLeftBound.y,
-            bounds.bottomRightBound.x - bounds.topLeftBound.x,
-            bounds.bottomRightBound.y - bounds.topLeftBound.y
-        );
+        super(bounds.topLeftBound.x, bounds.topLeftBound.y, bounds.bottomRightBound.x - bounds.topLeftBound.x, bounds.bottomRightBound.y - bounds.topLeftBound.y);
         this.bounds = bounds;
         this.showMenuButton = showMenuButton;
     }
 
-    // Init buttons
-    private void initButtons() {
+    // Update the layout of the options menu
+    private void updateLayout() {
+        // Clear existing buttons
+        super.buttons.clear();
+
+        addMusicVolumeControl();
+        addMusicCheckbox();
+        addSfxVolumeControl();
+        addSfxCheckbox();
+        addFullScreenCheckbox();
+        
+        // Add navigation buttons
         addCloseOptionsButton();
+        
         if (showMenuButton) {
             addMenuOptionsButton();
         }
     }
 
-    // Back button
+    // Music volume control
+    private void addMusicVolumeControl() {
+        
+    }
+    
+    // Music checkbox
+    private void addMusicCheckbox() {
+        
+    }
+    
+    // SFX volume control
+    private void addSfxVolumeControl() {
+        
+    }
+
+    // SFX checkbox
+    private void addSfxCheckbox() {
+        
+    }
+
+    // Full screen checkbox
+    private void addFullScreenCheckbox() {
+
+    }
+
+    // Back navigation button
     private void addCloseOptionsButton() {
         final GuiButton backButton = new GuiButton(Layout.BTN_BACK_X,
                 Layout.BTN_BACK_Y, Layout.BTN_BACK_WIDTH,
@@ -90,7 +123,7 @@ public class Options extends GuiLayer implements GameState {
         super.buttons.add(backButton);
     }
 
-    // Menu button
+    // Menu navigation button
     private void addMenuOptionsButton() {
         final GuiButton menuButton = new GuiButton(Layout.BTN_MENU_X,
                 Layout.BTN_MENU_Y, Layout.BTN_MENU_WIDTH,
@@ -106,7 +139,7 @@ public class Options extends GuiLayer implements GameState {
         final GraphicsContext gc = renderer.getGraphicsContext();
         final CoordinateSystem cs = renderer.getGuiCoordinateSystem();
 
-        initButtons();
+        updateLayout();
 
         final double menuScreenWidth = bounds.bottomRightBound.x * cs.getScale();
         final double menuScreenHeight = bounds.bottomRightBound.y * cs.getScale();
