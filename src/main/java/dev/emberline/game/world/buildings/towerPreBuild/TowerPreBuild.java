@@ -15,6 +15,15 @@ import dev.emberline.utility.Vector2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/**
+ * Represents a pre-build state for a tower in the game. This class is responsible for
+ * handling its rendering, location, and interaction.
+ * <p>
+ * TowerPreBuild extends the functionality provided by the abstract {@code Building}
+ * class to implement specific behavior.
+ * <p>
+ * Configuration data such as dimensions are retrieved from an external JSON file using {@code ConfigLoader}.
+ */
 public class TowerPreBuild extends Building {
 
     private static final String CONFIGS_PATH = "/sprites/towerAssets/towerPreBuild.json";
@@ -31,27 +40,45 @@ public class TowerPreBuild extends Building {
     private final Vector2D locationBottomLeft;
     private final TowersManager towersManager;
 
+    /**
+     * Constructs a {@link TowerPreBuild} instance with a specified bottom-left location and towers manager reference.
+     *
+     * @param locationBottomLeft the bottom-left location of the tower in world coordinates
+     * @param towersManager the manager responsible for handling tower-related actions and dialogs
+     */
     public TowerPreBuild(final Vector2D locationBottomLeft, final TowersManager towersManager) {
         this.locationBottomLeft = locationBottomLeft;
         this.towersManager = towersManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Vector2D getWorldTopLeft() {
         return locationBottomLeft.subtract(0, metadata.height);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Vector2D getWorldBottomRight() {
         return locationBottomLeft.add(metadata.width, 0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void clicked() {
         towersManager.closeTowerDialog();
         towersManager.openNewBuildDialog(this);
     }
 
+    /**
+     * Renders the TowerPreBuild object using the {@code TOWER_PRE_BUILD} sprite.
+     */
     @Override
     public void render() {
         final Image image = SpriteLoader.loadSprite(SingleSpriteKey.TOWER_PRE_BUILD).image();
@@ -70,6 +97,11 @@ public class TowerPreBuild extends Building {
         }));
     }
 
+    /**
+     * Updates the tower pre-build based on the elapsed time since the last update call.
+     *
+     * @param elapsed the time in nanoseconds since the last update
+     */
     @Override
     public void update(final long elapsed) {
     }

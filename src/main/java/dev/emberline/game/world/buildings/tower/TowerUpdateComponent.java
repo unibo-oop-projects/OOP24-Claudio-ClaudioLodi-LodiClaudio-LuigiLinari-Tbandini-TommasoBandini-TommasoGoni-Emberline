@@ -18,6 +18,16 @@ class TowerUpdateComponent implements Updatable {
         this.tower = tower;
     }
 
+    /**
+     * Updates the tower by handling the logic for projectile shooting based on elapsed time
+     * and nearby enemies within the tower's range.
+     * <p>
+     * This method checks whether the tower is ready to shoot (based on its fire rate and the
+     * elapsed time since the last shot) and attempts to fire at enemies within its range.
+     * If a projectile is successfully created and fired, the accumulated time for shooting resets.
+     *
+     * @param elapsed the elapsed time in nanoseconds since the last update
+     */
     @Override
     public void update(final long elapsed) {
         final long shootingInterval = (long) (1e9 / tower.getProjectileInfo().getFireRate());
