@@ -49,7 +49,7 @@ public class InputDispatcher {
             final EventType<? extends MouseEvent> type = mouseEvent.getEventType();
 
             if (type == MouseEvent.MOUSE_MOVED) {
-                MouseLocation.setLocation(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+                MouseLocation.setMouseLocation(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
                 mouseEvent.consume();
                 return;
             }

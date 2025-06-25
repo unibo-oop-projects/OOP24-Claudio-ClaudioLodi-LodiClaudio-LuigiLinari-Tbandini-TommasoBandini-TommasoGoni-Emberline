@@ -13,7 +13,7 @@ import javafx.scene.image.WritableImage;
 import java.util.Map;
 import java.util.Objects;
 
-public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
+public final class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
 
     private static final Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/tower.json", Metadata.class);
 

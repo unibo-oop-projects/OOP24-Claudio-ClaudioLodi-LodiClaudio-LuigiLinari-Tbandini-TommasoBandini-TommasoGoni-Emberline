@@ -7,18 +7,18 @@ import javafx.geometry.Point2D;
  * It stores whether the mouse is currently inside the window and captures its current coordinates.
  */
 public class MouseLocation {
-    private static boolean inside = true;
-    private static Point2D location = new Point2D(0d, 0d);
+    private static boolean mouseInside = true;
+    private static Point2D mouseLocation = new Point2D(0d, 0d);
 
     private MouseLocation() {}
     // Package private method
-    static void setIsMouseInside(final boolean mouseInside) {
-        MouseLocation.inside = mouseInside;
+    static void setIsMouseInside(final boolean inside) {
+        mouseInside = inside;
     }
 
     // Package private method
-    static void setLocation(final Point2D location) {
-        MouseLocation.location = location;
+    static void setMouseLocation(final Point2D location) {
+        mouseLocation = location;
     }
 
     /**
@@ -26,8 +26,8 @@ public class MouseLocation {
      *
      * @return true if the mouse is inside, false otherwise.
      */
-    public static boolean isInside() {
-        return MouseLocation.inside;
+    public static boolean isMouseInside() {
+        return mouseInside;
     }
 
     /**
@@ -35,8 +35,8 @@ public class MouseLocation {
      *
      * @return the current mouse location stored as a Point2D object
      */
-    public static Point2D getLocation() {
-        return MouseLocation.location;
+    public static Point2D getMouseLocation() {
+        return mouseLocation;
     }
 
     /**
@@ -45,7 +45,7 @@ public class MouseLocation {
      * @return the x-coordinate of the mouse location as a double
      */
     public static double getX() {
-        return MouseLocation.location.getX();
+        return mouseLocation.getX();
     }
 
     /**
@@ -54,6 +54,6 @@ public class MouseLocation {
      * @return the y-coordinate of the mouse position as a double.
      */
     public static double getY() {
-        return MouseLocation.location.getY();
+        return MouseLocation.mouseLocation.getY();
     }
 }

@@ -12,7 +12,7 @@ import javafx.scene.image.WritableImage;
 import java.util.Map;
 import java.util.Objects;
 
-public class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKey> {
+public final class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKey> {
 
     private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/crystal.json", Metadata.class);
 

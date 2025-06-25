@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 
 import java.util.Objects;
 
-public class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
+public final class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
 
     private final static Metadata METADATA = ConfigLoader.loadConfig("/world/waves/map.json", Metadata.class);
 

@@ -13,7 +13,7 @@ import javafx.scene.image.WritableImage;
 import java.util.Map;
 import java.util.Objects;
 
-public class ProjectileSpriteFactory implements SpriteFactory<ProjectileSpriteKey> {
+public final class ProjectileSpriteFactory implements SpriteFactory<ProjectileSpriteKey> {
 
     private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/projectile.json", Metadata.class);
 

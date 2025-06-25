@@ -15,7 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
+public final class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
     private static class Metadata {
         @JsonProperty
         int width;

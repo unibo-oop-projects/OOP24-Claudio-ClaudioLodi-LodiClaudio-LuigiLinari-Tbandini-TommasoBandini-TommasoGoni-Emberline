@@ -11,7 +11,7 @@ import javafx.scene.image.WritableImage;
 
 import java.util.Objects;
 
-public class SingleSpriteFactory implements SpriteFactory<SingleSpriteKey> {
+public final class SingleSpriteFactory implements SpriteFactory<SingleSpriteKey> {
 
     private static final JsonNode CONFIGS_ROOT = ConfigLoader.loadNode("/sprites/singleSprites.json");
 

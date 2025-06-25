@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
+public final class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
 
     private final static Metadata METADATA = ConfigLoader.loadConfig("/font/font.json", Metadata.class);
 
@@ -50,8 +50,6 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
         final int charHeight = METADATA.atlasHeight / METADATA.rows; // Height of a character in pixels
 
         final Image result = CHAR_CACHE.computeIfAbsent(c, key -> {
-            final Image atlas = getCharAtlas();
-
             // Locating the character in the atlas
             final int charIndex = METADATA.charOrder.indexOf(c);
             if (charIndex == -1) {
@@ -59,6 +57,7 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
             }
             int charX = charIndex % METADATA.columns * charWidth; //pixel coordinate of the char inside the atlas
             final int charY = charIndex / METADATA.columns * charHeight;
+            final Image atlas = getCharAtlas();
             final PixelReader atlasReader = atlas.getPixelReader();
 
             // Truncate left and right columns of only transparent pixels (ignoring the space character)
