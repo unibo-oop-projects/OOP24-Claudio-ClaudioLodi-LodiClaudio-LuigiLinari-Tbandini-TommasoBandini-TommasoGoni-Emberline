@@ -22,7 +22,7 @@ public class Topbar extends GuiLayer implements EventListener {
     private int health;
     private int gold;
     private int wave;
-    private World world;
+    private final World world;
     private Image healtImageString;
     private Image goldImageString;
     private Image waveImageString;
@@ -49,12 +49,12 @@ public class Topbar extends GuiLayer implements EventListener {
         private static final double STATS_X_WAVE = ENDX;
     }
 
-    public Topbar(World world) {
+    public Topbar(final World world) {
         this(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT, world);
         EventDispatcher.getInstance().registerListener(this);
     }
 
-    protected Topbar(double x, double y, double width, double height, World world) {
+    protected Topbar(final double x, final double y, final double width, final double height, final World world) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         this.world = world;
         updateLayout();
@@ -75,7 +75,7 @@ public class Topbar extends GuiLayer implements EventListener {
     }
 
     private void addOptionsButton() {
-        GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X, Layout.BTN_OPTIONS_Y,
+        final GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X, Layout.BTN_OPTIONS_Y,
                 Layout.BTN_OPTIONS_WIDTH, Layout.BTN_OPTIONS_HEIGHT,
                 SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_OPTIONS_BUTTON_1).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_OPTIONS_BUTTON_2).image());
@@ -86,24 +86,24 @@ public class Topbar extends GuiLayer implements EventListener {
         super.buttons.add(optionsButton);
     }
 
-    private void drawStats(GraphicsContext gc, CoordinateSystem cs, Image healtImage, Image goldImage, Image waveImage) {
+    private void drawStats(final GraphicsContext gc, final CoordinateSystem cs, final Image healtImage, final Image goldImage, final Image waveImage) {
         drawStatImage(gc, cs, healtImage, Layout.STATS_X_HEALT, Layout.STATS_HEIGHT);
         drawStatImage(gc, cs, goldImage, Layout.STATS_X_GOLD, Layout.STATS_HEIGHT);
         drawStatImage(gc, cs, waveImage, Layout.STATS_X_WAVE, Layout.STATS_HEIGHT);
     }
 
-    private void drawStatImage(GraphicsContext gc, CoordinateSystem cs, Image img, double x, double baseHeight) {
-        double ratio = img.getWidth() / img.getHeight();
-        double targetHeight = baseHeight * 0.8; // Scale down a bit for better appearance
-        double targetWidth = targetHeight * ratio;
+    private void drawStatImage(final GraphicsContext gc, final CoordinateSystem cs, final Image img, final double x, final double baseHeight) {
+        final double ratio = img.getWidth() / img.getHeight();
+        final double targetHeight = baseHeight * 0.8; // Scale down a bit for better appearance
+        final double targetWidth = targetHeight * ratio;
         Renderer.drawImage(img, gc, cs, x, (Layout.BG_HEIGHT - targetHeight) / 2, targetWidth, targetHeight);
     }
 
     @Override
     public void render() {
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem guics = renderer.getGuiCoordinateSystem();
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem guics = renderer.getGuiCoordinateSystem();
 
         updateLayout();
 

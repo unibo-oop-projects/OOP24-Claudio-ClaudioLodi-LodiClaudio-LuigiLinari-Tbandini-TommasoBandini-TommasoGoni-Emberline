@@ -28,7 +28,7 @@ public class TowerPreBuild extends Building {
 
     private static final String CONFIGS_PATH = "/sprites/towerAssets/towerPreBuild.json";
 
-    private static Metadata metadata = ConfigLoader.loadConfig(CONFIGS_PATH, Metadata.class);
+    private static final Metadata metadata = ConfigLoader.loadConfig(CONFIGS_PATH, Metadata.class);
 
     private final Vector2D locationBottomLeft;
     private final TowersManager towersManager;
