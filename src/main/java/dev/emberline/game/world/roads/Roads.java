@@ -10,7 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * A class that represents the roads of the map, as weighted arches.
+ * The Roads class represents the navigable road network in a map, structured as a graph of nodes and edges.
+ * It allows for determining the next road node from a given position and is initialized using a configuration file.
  */
 public class Roads {
 
@@ -37,6 +38,8 @@ public class Roads {
     ) {}
 
     /**
+     * Creates a new Roads object and determines the road network based on the configuration file.
+     *
      * @param wavePath represents the path of the files regarding the current wave
      */
     public Roads(final String wavePath) {
@@ -45,6 +48,8 @@ public class Roads {
     }
 
     /**
+     * Returns the next node of the chosen path.
+     *
      * @param pos is the current position.
      * @return the next node of the graph based on the current state.
      */
