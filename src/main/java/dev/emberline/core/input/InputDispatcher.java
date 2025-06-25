@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class InputDispatcher {
 
     // This queue will be filled by JavaFX and polled by the Game Loop
-    private static final Queue<InputEvent> inputs = new ConcurrentLinkedQueue<>();
+    private static final Queue<InputEvent> INPUTS = new ConcurrentLinkedQueue<>();
     private final Inputable root;
 
     /**
@@ -66,7 +66,7 @@ public class InputDispatcher {
         }
 
         // Other events get enqueued
-        inputs.add(input);
+        INPUTS.add(input);
     }
 
     /**
@@ -80,8 +80,8 @@ public class InputDispatcher {
      * they fully handle.
      */
     public void dispatchInputs() {
-        while (!inputs.isEmpty()) {
-            final InputEvent inputEvent = inputs.poll();
+        while (!INPUTS.isEmpty()) {
+            final InputEvent inputEvent = INPUTS.poll();
 
             root.processInput(inputEvent);
         }

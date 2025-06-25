@@ -8,16 +8,16 @@ import java.util.Collections;
 import java.util.List;
 
 class SpriteFactoryRegistry {
-    private final static List<SpriteFactory<?>> factories = Collections.synchronizedList(new ArrayList<>());
+    private final static List<SpriteFactory<?>> FACTORIES = Collections.synchronizedList(new ArrayList<>());
 
     static <K extends SpriteKey> void registerFactory(final SpriteFactory<K> factory) {
-        factories.add(factory);
+        FACTORIES.add(factory);
     }
 
     static <K extends SpriteKey> SpriteFactory<K> getFactory(final K key) {
         final Class<?> keyType = key.getClass(); //todo check uf this is correct
 
-        for (final SpriteFactory<?> factory : factories) {
+        for (final SpriteFactory<?> factory : FACTORIES) {
             if (factory.getKeyType().isAssignableFrom(keyType)) {
                 // This cast is safe because we check the key type against the factory's key type,
                 // and we know that the factory is registered for this key type.

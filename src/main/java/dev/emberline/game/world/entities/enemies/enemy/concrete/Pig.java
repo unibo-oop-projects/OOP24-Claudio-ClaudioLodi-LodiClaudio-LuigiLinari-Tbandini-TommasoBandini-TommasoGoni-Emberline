@@ -18,12 +18,12 @@ import dev.emberline.utility.Vector2D;
  * should be pretty balanced
  */
 public class Pig extends AbstractEnemy {
-    private static final Metadata metadata;
+    private static final Metadata METADATA;
     private static final String ASSET_PATH = "/sprites/enemyAssets/pig.json";
 
     static {
         final JsonNode metadataNode = ConfigLoader.loadNode(ASSET_PATH).get("metadata");
-        metadata = ConfigLoader.loadConfig(metadataNode, Metadata.class);
+        METADATA = ConfigLoader.loadConfig(metadataNode, Metadata.class);
     }
 
     /**
@@ -42,7 +42,7 @@ public class Pig extends AbstractEnemy {
      */
     @Override
     protected Metadata getMetadata() {
-        return metadata;
+        return METADATA;
     }
 
     /**
