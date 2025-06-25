@@ -1,7 +1,7 @@
 package dev.emberline.core;
 
 import dev.emberline.core.input.InputDispatcher;
-import dev.emberline.core.sounds.BackGroundMusic;
+import dev.emberline.core.sounds.AudioController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -19,7 +19,7 @@ public class EmberlineApp extends Application {
     private static final long MIN_WINDOW_WIDTH = 400;
     private static final long MIN_WINDOW_HEIGHT = 400;
     private GameLoop gameLoop;
-    private BackGroundMusic backGroundMusic;
+    private AudioController audioController;
 
     @Override
     public void start(final Stage stage) {
@@ -59,9 +59,9 @@ public class EmberlineApp extends Application {
         GameLoop.init(stage, canvas);
         this.gameLoop = GameLoop.getInstance();
         this.gameLoop.start();
-        //loops musical track of the game
-        this.backGroundMusic = new BackGroundMusic();
-        this.backGroundMusic.start();
+        // Loops musical track of the game
+        this.audioController = new AudioController();
+        this.audioController.startSoundtrack();
     }
 
     /**

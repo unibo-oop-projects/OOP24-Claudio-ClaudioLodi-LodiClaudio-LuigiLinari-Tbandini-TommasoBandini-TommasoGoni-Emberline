@@ -19,7 +19,8 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     // Navigation States
     private final World world = new World();
     private final MainMenu mainMenu = new MainMenu();
-    private final Options options = new Options();
+    private final Options optionsFromGame = new Options(true);
+    private final Options optionsFromMenu = new Options(false);
     private final GameOver gameOver = new GameOver();
 
     private GameState currentState;
@@ -59,8 +60,12 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     @EventHandler
     private void handleOpenOptionsEvent(final OpenOptionsEvent event) {
         previousState = currentState;
-        System.out.println("Opening options menu from GameRoot");
-        currentState = options;
+
+        if (previousState == mainMenu) {
+            currentState = optionsFromMenu;
+        } else {
+            currentState = optionsFromGame;
+        }
     }
 
     @EventHandler
