@@ -10,6 +10,14 @@ import javafx.stage.Stage;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Represents the main game loop thread responsible for managing game processes in a loop,
+ * such as input handling, updating game logic, and rendering frames. The game loop runs
+ * with a fixed update rate to ensure consistent gameplay.
+ * <p>
+ * This class is implemented as a singleton and must be initialized using the static
+ * {@link GameLoop#init(Stage, Canvas)} method before obtaining an instance.
+ */
 public class GameLoop extends Thread {
     // GameLoop initialized only once
     private static GameLoop instance;
@@ -42,6 +50,15 @@ public class GameLoop extends Thread {
         this.inputDispatcher = new InputDispatcher(gameRoot);
     }
 
+    /**
+     * Initializes the {@code GameLoop} as a singleton instance. This method must be called
+     * before getting an instance of the game loop or attempting to start the game processes.
+     * It associates the game loop with the specified JavaFX {@link Stage} and {@link Canvas}.
+     *
+     * @param stage the primary {@link Stage} of the JavaFX application, used for managing the GUI and resources.
+     * @param canvas the {@link Canvas} on which the game is rendered, dynamically bound to the stage dimensions.
+     * @throws IllegalStateException if the {@code GameLoop} is already initialized.
+     */
     public static synchronized void init(final Stage stage, final Canvas canvas) {
         if (instance != null) {
             throw new IllegalStateException("GameLoop already initialized");
@@ -50,6 +67,13 @@ public class GameLoop extends Thread {
         initialized = true;
     }
 
+    /**
+     * Provides the singleton instance of the {@code GameLoop}.
+     * This method ensures the instance is properly initialized before it is returned.
+     *
+     * @return the singleton instance of the {@code GameLoop}.
+     * @throws IllegalStateException if the {@code GameLoop} has not been initialized by calling {@code init()}.
+     */
     public static synchronized GameLoop getInstance() {
         if (!initialized) {
             throw new IllegalStateException("GameLoop not initialized yet. Call init() first.");
@@ -57,6 +81,11 @@ public class GameLoop extends Thread {
         return instance;
     }
 
+    /**
+     * Executes the game loop that manages the core lifecycle of the game, including input processing,
+     * updating, and rendering. This method runs until explicitly stopped, maintaining a fixed
+     * update rate for consistent gameplay.
+     */
     @Override
     public void run() {
         long previous = System.nanoTime();
@@ -87,6 +116,11 @@ public class GameLoop extends Thread {
         }
     }
 
+    /**
+     * Retrieves the renderer associated with the game loop.
+     *
+     * @return the {@link Renderer} responsible for rendering the game state.
+     */
     public Renderer getRenderer() {
         return renderer;
     }
