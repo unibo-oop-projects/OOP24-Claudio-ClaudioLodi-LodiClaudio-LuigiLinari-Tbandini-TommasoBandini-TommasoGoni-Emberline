@@ -12,7 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Paint;
 
-public class EnemyRenderComponent implements Renderable {
+class EnemyRenderComponent implements Renderable {
     private final AbstractEnemy enemy;
     private final EnemyAnimation enemyAnimation;
 
