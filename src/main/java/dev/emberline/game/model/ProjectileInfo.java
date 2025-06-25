@@ -21,10 +21,12 @@ import static dev.emberline.gui.towerdialog.stats.TowerStat.TowerStatType;
  * @param type  The type of the projectile.
  * @param level The level of the projectile, which can be between 0 and {@link #MAX_LEVEL}.
  */
-public record ProjectileInfo(Type type,
-                             int level) implements TowerStatsProvider, UpgradableInfo<ProjectileInfo.Type, ProjectileInfo> {
+public record ProjectileInfo(
+        Type type, int level
+    ) implements TowerStatsProvider, UpgradableInfo<ProjectileInfo.Type, ProjectileInfo> {
 
-    private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/projectileInfoStats.json", Metadata.class);
+    private final static Metadata METADATA =
+            ConfigLoader.loadConfig("/sprites/towerAssets/projectileInfoStats.json", Metadata.class);
 
     /**
      * Represents the type of projectile in the game, influencing the projectile's behavior, such as damage, speed,
@@ -142,7 +144,7 @@ public record ProjectileInfo(Type type,
             @JsonProperty double baseProjectileSpeed,
             @JsonProperty double[] projectileSpeedSmall,
             @JsonProperty double[] projectileSpeedBig
-    ) {}
+    ) { }
 
     /**
      * {@inheritDoc}
