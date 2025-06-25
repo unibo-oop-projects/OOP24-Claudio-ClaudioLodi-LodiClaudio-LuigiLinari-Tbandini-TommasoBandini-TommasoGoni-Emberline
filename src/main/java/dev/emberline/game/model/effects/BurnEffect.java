@@ -16,6 +16,8 @@ import java.util.List;
  */
 public class BurnEffect implements EnchantmentEffect {
 
+    public static final int secondInNs = 1_000_000_000;
+
     private final double damagePerSecond;
     private final double damagePerNs;
 
@@ -33,10 +35,10 @@ public class BurnEffect implements EnchantmentEffect {
      */
     public BurnEffect(final double damagePerSecond, final double duration) {
         this.damagePerSecond = damagePerSecond;
-        this.damagePerNs = damagePerSecond / 1_000_000_000;
+        this.damagePerNs = damagePerSecond / secondInNs;
 
         this.duration = duration;
-        this.durationNs = (long) (duration * 1_000_000_000);
+        this.durationNs = (long) (duration * secondInNs);
     }
 
     /**
@@ -49,7 +51,8 @@ public class BurnEffect implements EnchantmentEffect {
         }
         totalElapsed += elapsedNs;
         if (totalElapsed >= durationNs) {
-            enemy.dealDamage(damagePerNs * (durationNs - (totalElapsed - elapsedNs))); // Deal remaining damage before ending effect
+            // Deal remaining damage before ending effect
+            enemy.dealDamage(damagePerNs * (durationNs - (totalElapsed - elapsedNs)));
             endEffect(enemy);
             return;
         }

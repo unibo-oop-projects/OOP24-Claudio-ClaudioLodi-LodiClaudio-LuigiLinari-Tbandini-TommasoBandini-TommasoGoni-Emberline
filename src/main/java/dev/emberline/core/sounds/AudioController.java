@@ -35,12 +35,12 @@ public class AudioController implements EventListener {
         @JsonProperty double SFX_VOLUME,
         @JsonProperty boolean MUSIC_MUTE,
         @JsonProperty boolean SFX_MUTE
-    ) {}
+    ) { }
 
     public AudioController() {
         EventDispatcher.getInstance().registerListener(this);
         metadata = ConfigLoader.loadConfig(METADATA_PATH, Metadata.class);
-        
+
         loadSoundtrack();
         mediaPlayer = new MediaPlayer(musicMedia);
         initializeSoundtrack();

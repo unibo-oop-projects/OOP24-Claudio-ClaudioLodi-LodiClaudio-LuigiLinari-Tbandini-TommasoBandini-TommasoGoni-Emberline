@@ -22,10 +22,12 @@ import java.util.Optional;
  * @param level The level of the enchantment, which can be between 0 and {@link #MAX_LEVEL}.
  * @see EnchantmentEffect
  */
-public record EnchantmentInfo(Type type,
-                              int level) implements TowerStatsProvider, UpgradableInfo<EnchantmentInfo.Type, EnchantmentInfo> {
+public record EnchantmentInfo (
+        Type type, int level
+    ) implements TowerStatsProvider, UpgradableInfo<EnchantmentInfo.Type, EnchantmentInfo> {
 
-    private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/enchantmentInfoStats.json", Metadata.class);
+    private final static Metadata METADATA = ConfigLoader.loadConfig(
+            "/sprites/towerAssets/enchantmentInfoStats.json", Metadata.class);
 
     /**
      * Represents the type of enchantment in the game.
@@ -141,7 +143,7 @@ public record EnchantmentInfo(Type type,
         double[] fireDamagePerSecond,
         @JsonProperty
         double[] iceSlowingFactor
-    ) {}
+    ) { }
 
     /**
      * {@inheritDoc}

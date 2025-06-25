@@ -112,19 +112,28 @@ public class Renderer {
     }
 
     // UTILITY METHODS FOR RENDERING; must be called from the JavaFX Application Thread (rendertask lambda) // TODO DOCUMENTATION
-    public static void drawImage(final Image image, final GraphicsContext gc, final CoordinateSystem cs, final double x, final double y, final double width, final double height) {
+    public static void drawImage(
+            final Image image, final GraphicsContext gc, final CoordinateSystem cs,
+            final double x, final double y, final double width, final double height
+    ) {
         gc.drawImage(image, cs.toScreenX(x), cs.toScreenY(y), cs.getScale() * width, cs.getScale() * height);
     }
 
     // Draw an Image with a fixed aspect ratio, aligned to the left and centered vertically of the given rectangular area
-    public static void drawImageFit(final Image image, final GraphicsContext gc, final CoordinateSystem cs, final double x, double y, final double width, final double height) {
+    public static void drawImageFit(
+            final Image image, final GraphicsContext gc, final CoordinateSystem cs,
+            final double x, double y, final double width, final double height
+    ) {
         final double scalingFactor = Math.min(width / image.getWidth(), height / image.getHeight());
         y += (height - image.getHeight() * scalingFactor) / 2; // vertical centering
         drawImage(image, gc, cs, x, y, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
     }
 
     // Draw an Image with a fixed aspect ratio, aligned to the center of the given rectangular area in both axes
-    public static void drawImageFitCenter(final Image image, final GraphicsContext gc, final CoordinateSystem cs, double x, double y, final double width, final double height) {
+    public static void drawImageFitCenter(
+            final Image image, final GraphicsContext gc, final CoordinateSystem cs,
+            double x, double y, final double width, final double height
+    ) {
         final double scalingFactor = Math.min(width / image.getWidth(), height / image.getHeight());
         y += (height - image.getHeight() * scalingFactor) / 2; // vertical centering
         x += (width - image.getWidth() * scalingFactor) / 2; // horizontal centering
@@ -132,7 +141,10 @@ public class Renderer {
     }
 
     // Draw a string within the given rectangular area optimizing for readability
-    public static void drawText(String text, final GraphicsContext gc, final CoordinateSystem cs, final double x, final double y, final double width, final double height) {
+    public static void drawText(
+            String text, final GraphicsContext gc, final CoordinateSystem cs,
+            final double x, final double y, final double width, final double height
+    ) {
         final boolean gcImageSmoothing = gc.isImageSmoothing();
         final double areaInPixels = width * height * cs.getScale() * cs.getScale();
         // Convert to uppercase if the area is too small
@@ -154,7 +166,10 @@ public class Renderer {
     }
 
     // Draw a rectangle with the given coordinates and size, filling it with the current fill color
-    public static void fillRect(final GraphicsContext gc, final CoordinateSystem cs, final double x, final double y, final double width, final double height) {
+    public static void fillRect(
+            final GraphicsContext gc, final CoordinateSystem cs, final double x,
+            final double y, final double width, final double height
+    ) {
         gc.fillRect(cs.toScreenX(x), cs.toScreenY(y), cs.getScale() * width, cs.getScale() * height);
     }
 
