@@ -10,6 +10,8 @@ import java.util.List;
 class SpriteFactoryRegistry {
     private final static List<SpriteFactory<?>> FACTORIES = Collections.synchronizedList(new ArrayList<>());
 
+    private SpriteFactoryRegistry() {}
+
     static <K extends SpriteKey> void registerFactory(final SpriteFactory<K> factory) {
         FACTORIES.add(factory);
     }

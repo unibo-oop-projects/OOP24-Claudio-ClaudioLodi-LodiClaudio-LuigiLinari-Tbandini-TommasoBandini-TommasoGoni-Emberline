@@ -10,6 +10,7 @@ public class MouseLocation {
     private static boolean inside = true;
     private static Point2D location = new Point2D(0d, 0d);
 
+    private MouseLocation() {}
     // Package private method
     static void setIsMouseInside(final boolean mouseInside) {
         MouseLocation.inside = mouseInside;

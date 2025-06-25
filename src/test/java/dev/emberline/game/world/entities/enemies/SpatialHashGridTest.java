@@ -87,8 +87,8 @@ class EnemyMock implements IEnemy {
 
 class SpatialHashGridTest {
 
-    int x_min = 0, y_min = 0, x_max = 100, y_max = 100;
-    private final SpatialHashGrid hashGrid = new SpatialHashGrid(x_min, y_min, x_max, y_max);
+    int xMin = 0, yMin = 0, xMax = 100, yMax = 100;
+    private final SpatialHashGrid hashGrid = new SpatialHashGrid(xMin, yMin, xMax, yMax);
     private final List<EnemyMock> enemies = new ArrayList<>();
 
     private final long seed = 123456789L;
@@ -136,20 +136,20 @@ class SpatialHashGridTest {
 
     @Test
     void testEdges() {
-        final EnemyMock enemy = new EnemyMock(new Coordinate2D(x_min, y_min));
+        final EnemyMock enemy = new EnemyMock(new Coordinate2D(xMin, yMin));
         hashGrid.add(enemy);
         enemies.add(enemy);
         integrityCheck();
 
-        enemy.setPosition(new Coordinate2D(x_max, y_min));
+        enemy.setPosition(new Coordinate2D(xMax, yMin));
         hashGrid.update(enemy);
         integrityCheck();
 
-        enemy.setPosition(new Coordinate2D(x_max, y_max));
+        enemy.setPosition(new Coordinate2D(xMax, yMax));
         hashGrid.update(enemy);
         integrityCheck();
 
-        enemy.setPosition(new Coordinate2D(x_min, y_max));
+        enemy.setPosition(new Coordinate2D(xMin, yMax));
         hashGrid.update(enemy);
         integrityCheck();
     }
@@ -170,11 +170,11 @@ class SpatialHashGridTest {
     }
 
     private double nextX() {
-        return generator.nextInt(x_max - x_min - 1) + x_min;
+        return generator.nextInt(xMax - xMin - 1) + xMin;
     }
 
     private double nextY() {
-        return generator.nextInt(y_max - y_min - 1) + y_min;
+        return generator.nextInt(yMax - yMin - 1) + yMin;
     }
 
     private void integrityCheck() {

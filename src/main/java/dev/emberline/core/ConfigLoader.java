@@ -14,6 +14,8 @@ public class ConfigLoader {
             .registerModule(new ParameterNamesModule())
             .findAndRegisterModules();
 
+    private ConfigLoader() {}
+
     public static JsonNode loadNode(final String resourcePath) {
         try {
             return OBJECT_MAPPER.readTree(ConfigLoader.class.getResourceAsStream(resourcePath));
