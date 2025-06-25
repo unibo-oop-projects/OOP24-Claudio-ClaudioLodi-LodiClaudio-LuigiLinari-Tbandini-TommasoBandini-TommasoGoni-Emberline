@@ -11,14 +11,13 @@ import java.io.Serializable;
  */
 public class Statistics implements Updatable, Serializable {
 
-    private int enemiesKilled = 0;
-    private int wavesSurvived = 0;
-    private long timeInGame = 0;
-    private double totalDamage = 0;
-    private double dps = 0;
+    private int enemiesKilled;
+    private int wavesSurvived;
+    private long timeInGame;
+    private double totalDamage;
+    private double dps;
 
     private static final long UNIT_OF_TIME = 1_000_000_000;
-    private final long acc = 0;
 
     /**
      * Sums the enemies that died in the current update

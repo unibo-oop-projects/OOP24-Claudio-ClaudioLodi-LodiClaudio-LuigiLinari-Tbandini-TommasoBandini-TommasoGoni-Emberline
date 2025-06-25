@@ -13,7 +13,7 @@ import java.util.List;
 public class WaveManager implements IWaveManager {
 
     private final List<Wave> waves = new ArrayList<>();
-    private int currentWaveIndex = 0;
+    private int currentWaveIndex;
 
     private static final String WAVES_CONFIG_PATH = "/world/waves/waves.json";
     private static final WavesConfig WAVES_CONFIG = ConfigLoader.loadConfig(WAVES_CONFIG_PATH, WavesConfig.class);

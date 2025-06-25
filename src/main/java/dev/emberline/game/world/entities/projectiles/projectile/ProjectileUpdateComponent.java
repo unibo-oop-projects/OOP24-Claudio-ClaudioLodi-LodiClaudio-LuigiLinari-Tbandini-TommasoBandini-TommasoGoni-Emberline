@@ -47,8 +47,11 @@ class ProjectileUpdateComponent implements Updatable {
                               Long flightTime) {
     }
 
-    public ProjectileUpdateComponent(final Vector2D start, final IEnemy target,
-                                     final ProjectileInfo projInfo, final EnchantmentInfo enchInfo, final World world, final Projectile owner) throws FlightPathNotFound {
+    public ProjectileUpdateComponent(
+            final Vector2D start, final IEnemy target,
+            final ProjectileInfo projInfo, final EnchantmentInfo enchInfo,
+            final World world, final Projectile owner
+    ) throws FlightPathNotFound {
         this.velocityMag = projInfo.getProjectileSpeed() / 1e9; // Converted to tile/ns
 
         final Vector2D prediction = enemyPrediction(start, target);
@@ -139,7 +142,7 @@ class ProjectileUpdateComponent implements Updatable {
 
             /// Solve quadratic
             // (l / v_proj) ^ 2
-            final double lvProjSq = UNIT_ARC_LENGTH / velocityMag * (UNIT_ARC_LENGTH / velocityMag);
+            final double lvProjSq = UNIT_ARC_LENGTH / velocityMag * UNIT_ARC_LENGTH / velocityMag;
 
             final double a1 = lvProjSq * (vE.magnitude() * vE.magnitude());
             final double a = 1.0 - a1;
@@ -149,7 +152,7 @@ class ProjectileUpdateComponent implements Updatable {
             final double b = b1 - b2;
 
             final double c1 = t0 * t0;
-            final double c2 = lvProjSq * (e0.subtract(start).magnitude() * e0.subtract(start).magnitude());
+            final double c2 = lvProjSq * e0.subtract(start).magnitude() * e0.subtract(start).magnitude();
             final double c = c1 - c2;
 
             // sqrt delta
@@ -240,12 +243,12 @@ class ProjectileUpdateComponent implements Updatable {
     ///// Circular uniform motion
     /**
      * @param t       time
-     * @param theta_0 starting angle
+     * @param theta0 starting angle
      * @param w       angular velocity
-     * @return the angle after {@code t} time with starting angle {@code theta_0} and {@code w} angular velocity
+     * @return the angle after {@code t} time with starting angle {@code theta0} and {@code w} angular velocity
      */
-    private double theta(final long t, final double theta_0, final double w) {
-        return theta_0 + w * t;
+    private double theta(final long t, final double theta0, final double w) {
+        return theta0 + w * t;
     }
 
     /**

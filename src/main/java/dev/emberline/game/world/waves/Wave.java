@@ -23,10 +23,10 @@ public class Wave implements Updatable, Renderable {
     private final Spawnpoints spawnpoints;
     private final Zoom zoom;
     private final Fog fog;
-    private boolean firstRender = false;
+    private boolean firstRender;
 
     // In nanoseconds, keeps track of the total time elapsed from the start of the wave
-    private long accumulatorNs = 0;
+    private long accumulatorNs;
 
     /**
      * @param world             the world in which the wave is being played
