@@ -1,6 +1,6 @@
 package dev.emberline.game.world;
 
-import dev.emberline.core.components.Renderable;
+import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.game.GameState;
 import dev.emberline.game.world.buildings.TowersManager;
 import dev.emberline.game.world.entities.enemies.EnemiesManagerWithStats;
@@ -11,9 +11,11 @@ import dev.emberline.game.world.entities.projectiles.events.ProjectileHitListene
 import dev.emberline.game.world.statistics.Statistics;
 import dev.emberline.game.world.waves.IWaveManager;
 import dev.emberline.game.world.waves.WaveManagerWithStats;
-import dev.emberline.gui.event.GuiEventListener;
+import dev.emberline.gui.event.OpenOptionsEvent;
 import dev.emberline.gui.topbar.Topbar;
 import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.io.Serializable;
 
@@ -41,8 +43,6 @@ public class World implements GameState, Serializable {
     private final Statistics statistics;
     // HitListener
     private final ProjectileHitListener projectileHitListener;
-
-    private GuiEventListener listener;
 
     // Player
     private final Player player;
@@ -118,15 +118,6 @@ public class World implements GameState, Serializable {
         return statistics;
     }
 
-    /**
-     * Sets the GUI event listener for this instance. The specified listener will be notified of GUI events
-     * that are triggered within the context of this instance.
-     *
-     * @param listener the {@code GuiEventListener} to be used for handling GUI events
-     */
-    public void setListener(final GuiEventListener listener) {
-        this.listener = listener;
-    }
 
     /**
      * Updates the state of the world and its various components.
@@ -167,6 +158,13 @@ public class World implements GameState, Serializable {
      */
     @Override
     public void processInput(final InputEvent inputEvent) {
+        topbar.processInput(inputEvent);
         towersManager.processInput(inputEvent);
+
+        if (inputEvent instanceof final KeyEvent keyEvent && keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
+            if(keyEvent.getCode() == KeyCode.ESCAPE) {
+                EventDispatcher.getInstance().dispatchEvent(new OpenOptionsEvent(this));
+            }
+        }
     }
 }

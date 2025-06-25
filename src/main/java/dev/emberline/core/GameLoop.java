@@ -22,7 +22,6 @@ public class GameLoop extends Thread {
     private final Updater updater;
     private final Renderer renderer;
     private final InputDispatcher inputDispatcher;
-    private final EventDispatcher eventDispatcher;
 
     // Game loop settings
     private final long TICKS_PER_SECOND = 20;
@@ -37,7 +36,6 @@ public class GameLoop extends Thread {
     private GameLoop(final Stage stage, final Canvas canvas) {
         super("Game Thread");
         this.stage = stage;
-        this.eventDispatcher = new EventDispatcher();
         this.gameRoot = new GameRoot();
         this.renderer = new Renderer(gameRoot, canvas);
         this.updater = new Updater(gameRoot);
@@ -91,9 +89,5 @@ public class GameLoop extends Thread {
 
     public Renderer getRenderer() {
         return renderer;
-    }
-
-    public EventDispatcher getEventDispatcher() {
-        return eventDispatcher;
     }
 }

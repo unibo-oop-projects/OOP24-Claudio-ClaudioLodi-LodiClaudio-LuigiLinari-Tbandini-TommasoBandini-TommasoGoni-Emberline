@@ -1,6 +1,9 @@
 package dev.emberline.gui.topbar;
 
+import java.util.EventListener;
+
 import dev.emberline.core.GameLoop;
+import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
@@ -15,8 +18,8 @@ import dev.emberline.gui.event.OpenOptionsEvent;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class Topbar extends GuiLayer {
-    private int healt;
+public class Topbar extends GuiLayer implements EventListener {
+    private int health;
     private int gold;
     private int wave;
     private World world;
@@ -47,6 +50,7 @@ public class Topbar extends GuiLayer {
 
     public Topbar(World world) {
         this(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT, world);
+        EventDispatcher.getInstance().registerListener(this);
     }
 
     protected Topbar(double x, double y, double width, double height, World world) {
@@ -61,12 +65,12 @@ public class Topbar extends GuiLayer {
     }
 
     private void addStatsImages() {
-        healt = world.getPlayer().getHealt();
+        health = world.getPlayer().getHealth();
         gold = world.getPlayer().getGold();
         wave = world.getWaveManager().getCurrentWaveIndex() + 1;
-        healtImageString = SpriteLoader.loadSprite(new StringSpriteKey("♥:" + healt)).image();
-        goldImageString = SpriteLoader.loadSprite(new StringSpriteKey("$:" + gold)).image();
-        waveImageString = SpriteLoader.loadSprite(new StringSpriteKey("☠:" + wave)).image();
+        healtImageString = SpriteLoader.loadSprite(new StringSpriteKey("♥: " + health)).image();
+        goldImageString = SpriteLoader.loadSprite(new StringSpriteKey("$: " + gold)).image();
+        waveImageString = SpriteLoader.loadSprite(new StringSpriteKey("☠: " + wave)).image();
     }
 
     private void addOptionsButton() {
@@ -75,6 +79,7 @@ public class Topbar extends GuiLayer {
                 SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_OPTIONS_BUTTON).image());
         optionsButton.setOnClick(() -> {
             throwEvent(new OpenOptionsEvent(optionsButton));
+            System.out.println("Opening options menu from Topbar");
         });
         super.buttons.add(optionsButton);
     }

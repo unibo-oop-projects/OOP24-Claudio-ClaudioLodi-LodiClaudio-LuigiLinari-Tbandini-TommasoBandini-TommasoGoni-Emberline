@@ -59,7 +59,6 @@ public class MainMenu extends GuiLayer implements GameState {
     }
 
     private final MenuBounds menuBounds;
-    private GameEventListener gameEventListener;
 
     // TODO refactor this constructors 
     public MainMenu() {
@@ -73,21 +72,21 @@ public class MainMenu extends GuiLayer implements GameState {
 
     // Start button
     private void addStartButton() {
-        final GuiButton startButton = new GuiButton(Layout.BTN_START_X, Layout.BTN_START_Y, Layout.BTN_START_WIDTH, Layout.BTN_START_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.START_SIGN_BUTTON).image());
+        final GuiButton startButton = new GuiButton(Layout.BTN_START_X, Layout.BTN_START_Y, Layout.BTN_START_WIDTH, Layout.BTN_START_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.START_SIGN_BUTTON).image(), SpriteLoader.loadSprite(SingleSpriteKey.START_SIGN_BUTTON).image());
         startButton.setOnClick(() -> throwEvent(new SetStartEvent(startButton)));
         super.buttons.add(startButton);
     }
 
     // Options button
     private void addOptionsButton() {
-        final GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X, Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH, Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON).image());
+        final GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X, Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH, Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON).image(),  SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON).image());
         optionsButton.setOnClick(() -> throwEvent(new OpenOptionsEvent(optionsButton)));
         super.buttons.add(optionsButton);
     }
 
     // Exit button
     private void addExitButton() {
-        final GuiButton exitButton = new GuiButton(Layout.BTN_EXIT_X, Layout.BTN_EXIT_Y, Layout.BTN_EXIT_WIDTH, Layout.BTN_EXIT_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON).image());
+        final GuiButton exitButton = new GuiButton(Layout.BTN_EXIT_X, Layout.BTN_EXIT_Y, Layout.BTN_EXIT_WIDTH, Layout.BTN_EXIT_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON).image(), SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON).image());
         exitButton.setOnClick(() -> throwEvent(new ExitGameEvent(exitButton)));
         super.buttons.add(exitButton);
     }
@@ -121,11 +120,5 @@ public class MainMenu extends GuiLayer implements GameState {
 
     @Override
     public void update(final long elapsed) {
-    }
-
-    protected final void throwGameEvent(final GameEvent event) {
-        if (gameEventListener != null) {
-            gameEventListener.onGameEvent(event);
-        }
     }
 }
