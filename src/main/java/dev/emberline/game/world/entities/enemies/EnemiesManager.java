@@ -71,10 +71,7 @@ public class EnemiesManager implements IEnemiesManager {
     }
 
     /**
-     * Updates all enemy entities managed by the {@code EnemiesManager}.
-     * Active enemies are marked for an update in the spatial hash grid, while dead enemies are marked for removal.
-     *
-     * @param elapsed the time elapsed since the last update in nanoseconds
+     * {@inheritDoc}
      */
     @Override
     public void update(final long elapsed) {
@@ -94,9 +91,7 @@ public class EnemiesManager implements IEnemiesManager {
     }
 
     /**
-     * Renders all active enemy entities managed by this {@code EnemiesManager}.
-     *
-     * @see IEnemy#render()
+     * {@inheritDoc}
      */
     @Override
     public void render() {

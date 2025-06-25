@@ -40,4 +40,20 @@ public interface IEnemiesManager extends Updatable, Renderable {
      */
     boolean areAllDead();
 
+    /**
+     * Updates all enemy entities managed by the {@code EnemiesManager}.
+     * Active enemies are marked for an update in the spatial hash grid, while dead enemies are marked for removal.
+     *
+     * @param elapsed the time elapsed since the last update in nanoseconds
+     */
+    @Override
+    void update(long elapsed);
+
+    /**
+     * Renders all active enemy entities managed by this {@code EnemiesManager}.
+     *
+     * @see IEnemy#render()
+     */
+    @Override
+    void render();
 }
