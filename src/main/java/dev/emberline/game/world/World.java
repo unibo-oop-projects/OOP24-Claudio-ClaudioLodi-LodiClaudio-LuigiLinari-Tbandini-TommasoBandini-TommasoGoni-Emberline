@@ -21,7 +21,7 @@ import java.io.Serializable;
  * of the various elements such as enemies, towers, projectiles, waves, and player interactions.
  * Mainly it makes sure that each element is properly updated and rendered.
  * It also functions as a provider of the elements inside it.
- *
+ * <p>
  * Implements the {@link GameState} interface, allowing it to be part of the game loop.
  * Implements the {@link Serializable} interface, for saving the state of the game.
  */

@@ -30,7 +30,7 @@ class EnemyRenderComponent implements Renderable {
 
     /**
      * Renders the enemy along with its health bar on the screen.
-     *
+     * <p>
      * The method calculates the enemy's position and dimensions on the screen
      * based on the world coordinate system and scales them as needed.
      * The rendering tasks are added to the renderer with the appropriate {@link RenderPriority}

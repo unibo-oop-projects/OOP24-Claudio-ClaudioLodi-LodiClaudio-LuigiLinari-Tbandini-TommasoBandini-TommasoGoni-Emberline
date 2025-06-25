@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * A decorator class that enriches an {@link IEnemy} instance with additional
  * functionality to keep track of game statistics via a {@link Statistics} object.
- *
+ * <p>
  * This class delegates the core behavior to the provided {@link IEnemy} instance while
  * tracking and recording statistical information.
  */

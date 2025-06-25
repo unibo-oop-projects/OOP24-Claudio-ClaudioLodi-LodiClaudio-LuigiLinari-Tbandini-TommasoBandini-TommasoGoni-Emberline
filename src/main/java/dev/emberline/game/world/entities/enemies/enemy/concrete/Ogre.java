@@ -13,7 +13,7 @@ import dev.emberline.utility.Vector2D;
  * the implementations unique to an Ogre enemy.
  * The Ogre class defines its metadata properties by using
  * a JSON configuration file specified by {@link #ASSET_PATH}.
- *
+ * <p>
  * An Ogre should represent a tank, that means that it should have more health
  * than a regular enemy and be much slower.
  */

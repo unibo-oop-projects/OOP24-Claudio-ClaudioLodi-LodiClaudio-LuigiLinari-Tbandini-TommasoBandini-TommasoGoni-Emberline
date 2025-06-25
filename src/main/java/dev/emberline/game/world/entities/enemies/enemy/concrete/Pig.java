@@ -13,7 +13,7 @@ import dev.emberline.utility.Vector2D;
  * the implementations unique to a Pig enemy.
  * The Pig class defines its metadata properties by using
  * a JSON configuration file specified by {@link #ASSET_PATH}.
- *
+ * <p>
  * A Pig should represent a normal enemy, that means that all the stats
  * should be pretty balanced
  */

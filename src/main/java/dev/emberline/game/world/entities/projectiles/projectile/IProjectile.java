@@ -5,7 +5,7 @@ import dev.emberline.core.components.Updatable;
 
 /**
  * Represents a projectile entity in the game world that will hit a target.
- *
+ * <p>
  * Classes implementing this interface should define the specific logic for
  * the projectile's update and rendering behavior.
  */
