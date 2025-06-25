@@ -48,5 +48,11 @@ public enum SingleSpriteKey implements SpriteKey {
     FOG_TOP_LEFT,
     FOG_TOP_RIGHT,
     FOG_BOTTOM_LEFT,
-    FOG_BOTTOM_RIGHT;
+    FOG_BOTTOM_RIGHT,
+    // In game gui
+    TOPBAR_BACKGROUND,
+    TOPBAR_OPTIONS_BUTTON,
+    // Game Over
+    GAME_OVER_BACKGROUND,
+    GAME_OVER
 }

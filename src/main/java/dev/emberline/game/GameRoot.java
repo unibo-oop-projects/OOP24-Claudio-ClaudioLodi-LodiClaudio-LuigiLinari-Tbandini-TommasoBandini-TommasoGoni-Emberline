@@ -36,7 +36,7 @@ public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListe
         mainMenu.setListener(this);
         options.setListener(this);
         world.getPlayer().setListener(this);
-        world.setListener(this);
+        world.getTopbar().setListener(this);
     }
 
     @Override
@@ -64,9 +64,7 @@ public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListe
             handleOpenOptionsEvent(openOptionsEvent);
         } else if (event instanceof CloseOptionsEvent closeOptionsEvent) {
             handleCloseOptionsEvent(closeOptionsEvent);
-        } else if (event instanceof ExitGameEvent exitGameEvent) {
-            handleExitGameEvent(exitGameEvent);
-        }
+        } 
     }
 
     @Override

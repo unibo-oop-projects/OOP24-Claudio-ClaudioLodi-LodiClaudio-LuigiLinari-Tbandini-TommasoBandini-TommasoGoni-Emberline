@@ -42,5 +42,9 @@
   "OPTIONS_SIGN_BUTTON":    { "filename": "/gui/menu/optionsButtonSign.png",          "x": 0,  "y": 0, "width": 112, "height": 48 },
   "EXIT_SIGN_BUTTON":       { "filename": "/gui/menu/exitButtonSign.png",             "x": 0,  "y": 0, "width": 112, "height": 48 },
   "DEFAULT_SIGN_BUTTON":    { "filename": "/gui/options/defaultButtonSign.png",       "x": 0,  "y": 0, "width": 112, "height": 48 },
-  "EMBERLINE_TITLE":         { "filename": "/gui/menu/emberlineTitle.png",             "x": 0,  "y": 0, "width": 272, "height": 80 }
+  "EMBERLINE_TITLE":        { "filename": "/gui/menu/emberlineTitle.png",             "x": 0,  "y": 0, "width": 272, "height": 80 },
+  "GAME_OVER_BACKGROUND":   { "filename": "/gui/gameOver/gameOverBackground.png",     "x": 0,  "y": 0, "width": 1920, "height": 1080 },
+  "GAME_OVER":               { "filename": "/gui/gameOver/gameOver.png",              "x": 0,  "y": 0, "width": 272, "height": 80 },
+  "TOPBAR_BACKGROUND":      { "filename": "/gui/topbar/topbarElements.png",           "x": 32,  "y": 0, "width": 144, "height": 16 },
+  "TOPBAR_OPTIONS_BUTTON":  { "filename": "/gui/topbar/topbarElements.png",           "x": 6,  "y": 6, "width": 19, "height": 19 }
 }
