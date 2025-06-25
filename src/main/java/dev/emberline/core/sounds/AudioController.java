@@ -52,6 +52,14 @@ public class AudioController implements EventListener {
         }
     }
 
+    /**
+     * Requests a sound effect to be played.
+     * This method dispatches an event that will be handled by the audio controller.
+     */
+    public static void requestSfxSound(Object src, final SoundType soundType) {
+        EventDispatcher.getInstance().dispatchEvent(new SfxSoundEvent(src, soundType));
+    }
+
     private void initializeSoundtrack() {
         mediaPlayer.setStartTime(Duration.ZERO);
         mediaPlayer.setStopTime(musicMedia.getDuration());

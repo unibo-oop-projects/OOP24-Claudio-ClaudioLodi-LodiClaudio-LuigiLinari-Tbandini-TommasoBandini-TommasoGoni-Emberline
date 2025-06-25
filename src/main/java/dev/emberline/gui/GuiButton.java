@@ -8,6 +8,8 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
+import dev.emberline.core.sounds.AudioController;
+import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.InputEvent;
@@ -98,6 +100,7 @@ public class GuiButton implements Inputable, Renderable {
         final double x = guics.toWorldX(mouse.getX());
         final double y = guics.toWorldY(mouse.getY());
         if (isInside(x, y) && onClick != null) {
+            AudioController.requestSfxSound(this, SoundType.CLICK);
             onClick.run();
             inputEvent.consume();
         }

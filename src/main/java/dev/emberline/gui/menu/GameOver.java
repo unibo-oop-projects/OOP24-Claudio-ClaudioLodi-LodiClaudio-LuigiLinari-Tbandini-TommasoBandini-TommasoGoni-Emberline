@@ -9,6 +9,8 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
+import dev.emberline.core.sounds.AudioController;
+import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.game.GameState;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
