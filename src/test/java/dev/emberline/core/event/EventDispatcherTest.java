@@ -74,7 +74,7 @@ class EventDispatcherTest {
 
     @Test
     void testBasicEventDispatching() {
-        EventDispatcher dispatcher = new EventDispatcher();
+        EventDispatcher dispatcher = EventDispatcher.getInstance();
 
         // Dispatching an event before any listeners are registered
         dispatcher.dispatchEvent(new TestEvent(this, "Event before listeners"));
@@ -136,39 +136,39 @@ class EventDispatcherTest {
 
     @Test
     void testEventDispatchingWithNullEvent() {
-        EventDispatcher dispatcher = new EventDispatcher();
+        EventDispatcher dispatcher = EventDispatcher.getInstance();
         Assertions.assertThrows(IllegalArgumentException.class, () -> dispatcher.dispatchEvent(null), "Dispatching a null event should throw IllegalArgumentException");
     }
 
     @Test
     void testRegisterNullListener() {
-        EventDispatcher dispatcher = new EventDispatcher();
+        EventDispatcher dispatcher = EventDispatcher.getInstance();
         Assertions.assertThrows(IllegalArgumentException.class, () -> dispatcher.registerListener(null), "Registering a null listener should throw IllegalArgumentException");
     }
 
     @Test
     void testUnregisterNullListener() {
-        EventDispatcher dispatcher = new EventDispatcher();
+        EventDispatcher dispatcher = EventDispatcher.getInstance();
         Assertions.assertThrows(IllegalArgumentException.class, () -> dispatcher.unregisterListener(null), "Unregistering a null listener should throw IllegalArgumentException");
     }
 
     @Test
     void testUnregisteringNonExistentListener() {
-        EventDispatcher dispatcher = new EventDispatcher();
+        EventDispatcher dispatcher = EventDispatcher.getInstance();
         TestListener nonExistentListener = new TestListener("NonExistent");
         Assertions.assertDoesNotThrow(() -> dispatcher.unregisterListener(nonExistentListener), "Unregistering a non-existent listener should not throw an exception");
     }
 
     @Test
     void testInvalidListenerParameterType() {
-        EventDispatcher dispatcher = new EventDispatcher();
+        EventDispatcher dispatcher = EventDispatcher.getInstance();
         InvalidListenerParameterType invalidListener = new InvalidListenerParameterType("InvalidListener");
         Assertions.assertThrows(InvalidEventHandlerException.class, () -> dispatcher.registerListener(invalidListener), "Registering a listener with an invalid parameter type should throw IllegalArgumentException");
     }
 
     @Test
     void testInvalidListenerTooManyParameters() {
-        EventDispatcher dispatcher = new EventDispatcher();
+        EventDispatcher dispatcher = EventDispatcher.getInstance();
         InvalidListenerTooManyParameters invalidListener = new InvalidListenerTooManyParameters("InvalidListener");
         Assertions.assertThrows(InvalidEventHandlerException.class, () -> dispatcher.registerListener(invalidListener), "Registering a listener with too many parameters should throw IllegalArgumentException");
     }

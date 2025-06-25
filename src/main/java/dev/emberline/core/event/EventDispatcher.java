@@ -7,19 +7,31 @@ import java.util.*;
  * TODO
  */
 public class EventDispatcher {
+    private static EventDispatcher instance;
+
     // Map to hold event handler methods and their corresponding listeners
     private final Map<EventHandlerMethod, List<EventListener>> eventHandlers = new HashMap<>();
-
+    
     private record EventHandlerMethod(Class<? extends EventObject> eventType, Method method) {
         private EventHandlerMethod {
             if (eventType == null || method == null) {
                 throw new IllegalArgumentException("Event type and method cannot be null");
             }
         }
-
+        
         private EventHandlerMethod(Method method) {
             this(method.getParameterTypes()[0].asSubclass(EventObject.class), method);
         }
+    }
+    
+    private EventDispatcher() {
+    }
+
+    public static EventDispatcher getInstance() {
+        if (instance == null) {
+            instance = new EventDispatcher();
+        }
+        return instance;
     }
 
     /**
@@ -72,6 +84,7 @@ public class EventDispatcher {
                 continue;
             }
             Method method = entry.getKey().method;
+            method.setAccessible(true);
             List<EventListener> listeners = entry.getValue();
             listeners.forEach(listener -> {
                 try {
