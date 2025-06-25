@@ -119,8 +119,8 @@ class ProjectileUpdateComponent implements Updatable {
      * Due to the changes of direction of the enemy, it's equation of motion is also described with a duration.
      * So to find the right {@code t}, we need to try with each motion and take the first that doesn't exceed the duration.
      *
-     * @param start
-     * @param target
+     * @param start the start position of the projectile
+     * @param target the {@link IEnemy}
      * @return The first position of the enemy such that the flight time of the projectile is equal
      * to the time it takes the enemy to reach that position
      * @throws IllegalStateException if that position doesn't exist or the flight time to reach it exceeds {@code MAX_FLIGHT_TIME}
@@ -185,8 +185,8 @@ class ProjectileUpdateComponent implements Updatable {
      * and rotating it by the angle formed by the vector {@code end - start}. Note that when the {@code end} sits to the left of {@code start},
      * the model trajectory also has to be mirrored.
      *
-     * @param start
-     * @param end
+     * @param start start location of the projectile
+     * @param end landing location of the projectile
      * @return The {@code Trajectory} from {@code start} to {@code end}
      */
     private Trajectory calculateTrajectory(final Vector2D start, final Vector2D end) {
@@ -252,10 +252,10 @@ class ProjectileUpdateComponent implements Updatable {
     }
 
     /**
-     * @param theta
-     * @param radius
-     * @param theta_0
-     * @return the position vector on a circonference of radius {@code radius} at {@code theta}, translated so that {@code (cos(theta_0), sin(theta_0))} is in {@code (0, 0)}
+     * @param theta the angle along the circumference
+     * @param radius the radius of the circumference
+     * @param theta_0 the starting angle
+     * @return the position vector on a circumference of radius {@code radius} at {@code theta}, translated so that {@code (cos(theta_0), sin(theta_0))} is in {@code (0, 0)}
      */
     private Vector2D r(final double theta, final double radius, final double theta_0) {
         final double x = radius * (Math.cos(theta) - Math.cos(theta_0));
@@ -264,8 +264,8 @@ class ProjectileUpdateComponent implements Updatable {
     }
 
     /**
-     * @param theta
-     * @param radius
+     * @param theta the angle along the circumference
+     * @param radius the radius of the circular motion
      * @param w      angular velocity
      * @return vector tangent to the trajectory at {@code theta}
      */
@@ -275,7 +275,7 @@ class ProjectileUpdateComponent implements Updatable {
         return new Coordinate2D(x, y);
     }
 
-    /// // Circular uniform motion
+    /// Circular uniform motion
 
     private Vector2D worldToCanonical(final Vector2D p) {
         return new Coordinate2D(p.getX(), -p.getY());
