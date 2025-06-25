@@ -11,6 +11,7 @@ import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.media.MediaPlayer;
 
 /**
  * The Fog class is responsible for rendering a layer of fog in the game environment. It is used to hide parts of the world
@@ -104,6 +105,12 @@ public class Fog implements Renderable {
         accumulatorNs = -(long) (metadata.animationDelaySeconds * 1e9);
     }
 
+    /**
+     * Renders the fog element with animation effects, such as blinking and positional transitions,
+     * based on the current animation time and configuration metadata.
+     * <p>
+     * The animation uses a duty cycle to handle blinking behavior.
+     */
     @Override
     public void render() {
         final long currentTimeNs = System.nanoTime();
