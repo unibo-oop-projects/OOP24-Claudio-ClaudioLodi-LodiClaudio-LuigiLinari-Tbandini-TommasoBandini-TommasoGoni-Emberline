@@ -56,13 +56,14 @@ public class Zoom implements Renderable {
         final long currentTimeNs = System.nanoTime();
         accumulatorNs += currentTimeNs - previousTimeNs;
         previousTimeNs = currentTimeNs;
-        final double t = Math.min(accumulatorNs / 1e9 / metadata.animationDurationSeconds, 1.0);
+        // todo: check finals
+        double t = Math.min(accumulatorNs / 1e9 / metadata.animationDurationSeconds, 1.0);
         if (accumulatorNs < 0) { // Animation isn't started yet
             updateCS(metadata.topLeft.fromX, metadata.topLeft.fromY, metadata.bottomRight.fromX, metadata.bottomRight.fromY);
             return;
         }
         if (t >= 1) { // Animation is over
-            return;
+            t = 1;
         }
         final double easedT = easeInOutExpo(t);
         updateCS(
