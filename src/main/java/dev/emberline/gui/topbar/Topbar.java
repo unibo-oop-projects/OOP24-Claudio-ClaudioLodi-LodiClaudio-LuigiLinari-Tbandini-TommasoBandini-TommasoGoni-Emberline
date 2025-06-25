@@ -109,8 +109,9 @@ public class Topbar extends GuiLayer implements EventListener {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             // Background
-            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_BACKGROUND).image(), gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
-            // Stats        
+            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_BACKGROUND).image(),
+                    gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
+            // Stats
             drawStats(gc, guics, healtImageString, goldImageString, waveImageString);
         }));
 
