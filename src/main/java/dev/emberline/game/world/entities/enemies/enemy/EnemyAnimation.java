@@ -30,14 +30,45 @@ public class EnemyAnimation implements Updatable {
     /**
      * This enumeration defines different visual states that an enemy can have,
      * which include:
-     * NORMAL: The enemy is in its default appearance.
-     * BURNING: The enemy is on fire.
-     * FREEZING: The enemy is frozen.
-     * DYING: The enemy is in the process of dying.
+     * <ul>
+     * <li>NORMAL: The enemy is in its default appearance.</li>
+     * <li>BURNING: The enemy is on fire.</li>
+     * <li>FREEZING: The enemy is frozen.</li>
+     * <li>DYING: The enemy is in the process of dying.</li>
+     * </ul>
      */
     public enum EnemyAppearance {
-        NORMAL, BURNING, FREEZING, DYING;
+        /**
+         * The enemy default appearance.
+         */
+        NORMAL,
 
+        /**
+         * The enemy is on fire.
+         */
+        BURNING,
+
+        /**
+         * The enemy is frozen.
+         */
+        FREEZING,
+
+        /**
+         * The enemy is in the process of dying.
+         */
+        DYING;
+
+        /**
+         * Converts a string representation of an enemy's appearance to the corresponding
+         * {@code EnemyAppearance} enum value.
+         *
+         * @param appearance the string representation of the enemy's appearance; must match
+         *                   one of the enum values (case-insensitive)
+         * @return the {@code EnemyAppearance} enum value corresponding to the provided string
+         *         representation
+         * @throws IllegalArgumentException if the provided string does not match any of the
+         *                                  defined enum values
+         */
         @JsonCreator
         public static EnemyAppearance fromString(final String appearance) {
             return EnemyAppearance.valueOf(appearance.toUpperCase(Locale.US));
@@ -92,6 +123,8 @@ public class EnemyAnimation implements Updatable {
     }
 
     /**
+     * Returns the current frame of the enemy's animation as an image
+     *
      * @return the current frame of the enemy's animation as an image
      */
     public Image getImage() {
@@ -99,6 +132,8 @@ public class EnemyAnimation implements Updatable {
     }
 
     /**
+     * Returns whether the enemy's dying animation has completed.
+     *
      * @return whether the enemy's dying animation has completed.
      */
     public boolean isDyingAnimationFinished() {

@@ -11,7 +11,6 @@ import java.util.List;
  * Represents an enemy entity. This interface defines
  * the core behavior and properties that any enemy implementation must
  * fulfill, covering health management, motion, rendering, and status updates.
- *
  * <p>
  * Enemies implementing this interface can be updated and rendered within the game loop.
  *
@@ -21,11 +20,13 @@ import java.util.List;
 public interface IEnemy extends Updatable, Renderable {
 
     /**
+     * Returns the height of the enemy in the world space
      * @return the height of the enemy in the world space
      */
     double getHeight();
 
     /**
+     * Returns the width of the enemy in the world space
      * @return the width of the enemy in the world space
      */
     double getWidth();
@@ -43,6 +44,7 @@ public interface IEnemy extends Updatable, Renderable {
     void dealDamage(double damage);
 
     /**
+     * Applies the provided {@link EnchantmentEffect}
      * @param effect the effect to be assigned on the enemy
      */
     void applyEffect(EnchantmentEffect effect);
@@ -54,11 +56,15 @@ public interface IEnemy extends Updatable, Renderable {
     void setSlowFactor(double slowFactor);
 
     /**
+     * Returns whether the enemy is dead
+     *
      * @return whether the enemy is dead
      */
     boolean isDead();
 
     /**
+     * Returns whether the enemy is dead
+     *
      * @return whether the enemy is in a hittable state
      */
     boolean isHittable();
@@ -73,6 +79,7 @@ public interface IEnemy extends Updatable, Renderable {
     }
 
     /**
+     * Returns all the uniform motions describing the enemy's movement starting from the current position of the enemy.
      * @param timeNs time of truncation
      * @return All the uniform motions starting from the current position of the enemy.
      * That is described by a list of {@link UniformMotion}

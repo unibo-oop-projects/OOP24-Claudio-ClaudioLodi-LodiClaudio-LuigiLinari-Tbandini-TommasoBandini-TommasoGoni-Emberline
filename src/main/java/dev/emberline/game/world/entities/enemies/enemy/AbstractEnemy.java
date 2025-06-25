@@ -25,12 +25,24 @@ public abstract class AbstractEnemy implements IEnemy {
      * and appearance, such as dimensions, health, and movement speed.
      */
     protected static class Metadata {
+        /**
+         * Represents the width in the game world for an enemy entity.
+         */
         @JsonProperty
         public double tileWidth;
+        /**
+         * Represents the height in the game world for an enemy entity.
+         */
         @JsonProperty
         public double tileHeight;
+        /**
+         * Represents the full health of the enemy entity.
+         */
         @JsonProperty
         public double fullHealth;
+        /**
+         * Represents the normal speed of the enemy entity in tile/ns.
+         */
         @JsonProperty
         public double speed;
     }
@@ -44,25 +56,58 @@ public abstract class AbstractEnemy implements IEnemy {
      * into their corresponding enum values.
      */
     public enum FacingDirection {
-        UP, RIGHT, DOWN, LEFT;
+        /**
+         * Represents that the enemy is facing upwards
+         */
+        UP,
+        /**
+         * Represents that the enemy is facing rightwards
+         */
+        RIGHT,
+        /**
+         * Represents that the enemy is facing downwards
+         */
+        DOWN,
+        /**
+         * Represents that the enemy is facing leftwards
+         */
+        LEFT;
 
+        /**
+         * Converts a given string representation of a direction into its corresponding
+         * {@code FacingDirection} enum value.
+         *
+         * @param direction the string representation of the direction; must match one of
+         *                  the enum constants (case insensitive).
+         * @return the {@code FacingDirection} enum value corresponding to the given string.
+         * @throws IllegalArgumentException if the provided string does not match any of the
+         *                                  defined {@code FacingDirection} constants.
+         */
         @JsonCreator
         public static FacingDirection fromString(final String direction) {
             return FacingDirection.valueOf(direction.toUpperCase(Locale.US));
         }
     }
 
+    /**
+     * Initializes the update and render components of the enemy.
+     *
+     * @param spawnPoint the initial position of the enemy
+     * @param world the game world associated with this enemy
+     */
     public AbstractEnemy(final Vector2D spawnPoint, final World world) {
         this.updateComponent = new EnemyUpdateComponent(spawnPoint, world, this);
         this.renderComponent = new EnemyRenderComponent(this);
     }
 
     /**
+     * Returns the {@link Metadata} associated with the enemy
      * @return the {@link Metadata} associated with the enemy
      */
     abstract protected Metadata getMetadata();
 
     /**
+     * Returns the {@link Metadata} associated with the enemy
      * @return the {@link EnemyType} associated with the enemy
      */
     abstract protected EnemyType getEnemyType();
@@ -92,6 +137,7 @@ public abstract class AbstractEnemy implements IEnemy {
     }
 
     /**
+     * Returns the full health value of the enemy as described by its metadata
      * @return the full health value of the enemy as described by its metadata
      */
     protected double getFullHealth() {
@@ -99,6 +145,7 @@ public abstract class AbstractEnemy implements IEnemy {
     }
 
     /**
+     * Returns the speed value of the enemy as described by its metadata.
      * @return the speed value of the enemy as described by its metadata.
      */
     protected double getSpeed() {
