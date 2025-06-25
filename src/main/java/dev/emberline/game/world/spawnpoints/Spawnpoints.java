@@ -14,6 +14,14 @@ import java.util.Queue;
 /**
  * This class represents spawnpoints as containers of enemies to spawn at a given time
  */
+
+/**
+ * The {@code Spawnpoints} class is responsible for keeping track of spawnpoints and providing
+ * the enemies to spawn given an elapsed time.
+ * <p>
+ * It loads spawnpoints configuration from a file and creates a scheduled queue of enemies to spawn
+ * based on specified timings and locations.
+ */
 public class Spawnpoints {
 
     private final Spawnpoint[] rawSpawnpoints;
@@ -49,13 +57,26 @@ public class Spawnpoints {
      */
     public record EnemyToSpawn(long spawnTimeNs, Vector2D spawnLocation,
                                EnemyType enemyType) implements Comparable<EnemyToSpawn> {
+        /**
+         * The comparison is based on the {@code spawnTimeNs} field of each instance.
+         *
+         * @param enemyToSpawn the {@code EnemyToSpawn} instance to be compared
+         * @return a negative integer, zero, or a positive integer as this {@code EnemyToSpawn}'s {@code spawnTimeNs}
+         *         is less than, equal to, or greater than the specified {@code EnemyToSpawn}'s {@code spawnTimeNs}.
+         */
         @Override
         public int compareTo(final EnemyToSpawn enemyToSpawn) {
             return Long.compare(this.spawnTimeNs, enemyToSpawn.spawnTimeNs);
         }
 
         /**
-         * Data validation
+         * Initializes an instance of {@code EnemyToSpawn} and validates that the provided parameters.
+         *
+         * @param spawnTimeNs the time in nanoseconds when the enemy is to be spawned; must be non-negative.
+         * @param spawnLocation the location where the enemy is to be spawned; must not be null.
+         * @param enemyType the type of enemy to spawn; must not be null.
+         * @throws IllegalArgumentException if {@code spawnTimeNs} is negative, {@code spawnLocation} is null,
+         *                                  or {@code enemyType} is null.
          */
         public EnemyToSpawn {
             if (spawnTimeNs < 0) {
@@ -71,7 +92,10 @@ public class Spawnpoints {
     }
 
     /**
+     * Creates an instance of {@code SpawnPoints} based on the configuration file passed as a parameter.
+     *
      * @param wavePath the path of the directory containing the wave files
+     * @see Spawnpoints
      */
     public Spawnpoints(final String wavePath) {
         rawSpawnpoints = ConfigLoader.loadConfig(wavePath + SPAWNPOINT_CONFIG_FILENAME, Spawnpoint[].class);
@@ -93,7 +117,8 @@ public class Spawnpoints {
     }
 
     /**
-     * @return false only if there are no more enemies to spawn in the current wave.
+     * Returns whether there are any more enemies to spawn.
+     * @return whether there are any more enemies to spawn.
      */
     public boolean hasMoreEnemiesToSpawn() {
         return !spawnQueue.isEmpty();
