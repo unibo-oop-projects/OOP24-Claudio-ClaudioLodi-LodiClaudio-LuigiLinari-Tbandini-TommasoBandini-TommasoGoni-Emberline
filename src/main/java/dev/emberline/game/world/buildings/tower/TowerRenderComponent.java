@@ -37,6 +37,15 @@ class TowerRenderComponent implements Renderable {
         this.tower = tower;
     }
 
+    /**
+     * Renders the tower body and its crystal animation, onto the game screen.
+     * It translates locations and dimensions to screen space and draws the appropriate sprites.
+     * <p>
+     * The tower body is drawn at the calculated screen position based on its world coordinates, and the crystal,
+     * which oscillates and rotates slightly, is drawn with a bloom visual effect and transparency applied.
+     * <p>
+     * Rendering tasks are queued and executed with z-order using the bottom y coordinate.
+     */
     @Override
     public void render() {
         final Image bodyImage = SpriteLoader.loadSprite(new TowerSpriteKey(tower.getProjectileInfo().type(), tower.getEnchantmentInfo().type())).image();

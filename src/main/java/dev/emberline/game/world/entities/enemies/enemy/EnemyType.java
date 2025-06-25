@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Locale;
 
+/**
+ * Enum representing the type of enemies in the game.
+ */
 public enum EnemyType {
     PIG, OGRE;
 

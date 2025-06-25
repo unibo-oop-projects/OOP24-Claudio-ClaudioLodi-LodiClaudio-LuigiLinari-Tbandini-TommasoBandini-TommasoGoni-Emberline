@@ -12,6 +12,17 @@ import dev.emberline.utility.Vector2D;
 
 import java.util.Map;
 
+/**
+ * The {@code Tower} class represents a building within the game world with
+ * capabilities to fire projectiles. The class extends {@code Building}
+ * and implements {@code TowerInfoProvider} to provide information about its projectile and
+ * enchantment characteristics.
+ * <p>
+ * The {@code Tower} dynamically retrieves its dimensions, firing location, and other properties
+ * based on configuration data loaded from a JSON file.
+ * <p>
+ * It interacts with the game world to react to events such as clicks and updates.
+ */
 public class Tower extends Building implements TowerInfoProvider {
     private static String configsPath = "/sprites/towerAssets/tower.json";
 
@@ -34,6 +45,12 @@ public class Tower extends Building implements TowerInfoProvider {
         double firingYOffsetTiles;
     }
 
+    /**
+     * Constructs a new Tower object with a specified location and associated world.
+     *
+     * @param locationBottomLeft the bottom-left corner location of the tower in the world
+     * @param world the world instance where this tower exists
+     */
     public Tower(final Vector2D locationBottomLeft, final World world) {
         this.world = world;
         this.towerUpdateComponent = new TowerUpdateComponent(world, this);
@@ -41,37 +58,60 @@ public class Tower extends Building implements TowerInfoProvider {
         this.locationBottomLeft = locationBottomLeft;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectileInfo getProjectileInfo() {
         return projectileInfo;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnchantmentInfo getEnchantmentInfo() {
         return enchantmentInfo;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Vector2D getWorldTopLeft() {
         return locationBottomLeft.subtract(0, getWorldHeight());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Vector2D getWorldBottomRight() {
         return locationBottomLeft.add(getWorldWidth(), 0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void clicked() {
         world.getTowersManager().closeNewBuildDialog();
         world.getTowersManager().openTowerDialog(this);
     }
 
+    /**
+     * Updates the tower
+     * @see TowerUpdateComponent#update(long)
+     */
     @Override
     public void update(final long elapsed) {
         towerUpdateComponent.update(elapsed);
     }
 
+    /**
+     * Renders the tower
+     * @see TowerRenderComponent#render()
+     */
     @Override
     public void render() {
         towerRenderComponent.render();

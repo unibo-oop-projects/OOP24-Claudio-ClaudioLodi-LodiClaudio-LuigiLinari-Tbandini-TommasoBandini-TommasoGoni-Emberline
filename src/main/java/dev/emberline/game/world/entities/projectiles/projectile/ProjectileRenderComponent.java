@@ -14,7 +14,7 @@ import dev.emberline.utility.Vector2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class ProjectileRenderComponent implements Renderable {
+class ProjectileRenderComponent implements Renderable {
 
     private static final double WIDTH = 1;
     private static final double HEIGHT = 1;
@@ -22,11 +22,17 @@ public class ProjectileRenderComponent implements Renderable {
     private final Projectile owner;
     private final ProjectileAnimation projectileAnimation;
 
-    public ProjectileRenderComponent(final ProjectileInfo projInfo, final EnchantmentInfo enchInfo, final Projectile owner) {
+    ProjectileRenderComponent(final ProjectileInfo projInfo, final EnchantmentInfo enchInfo, final Projectile owner) {
         this.owner = owner;
         this.projectileAnimation = new ProjectileAnimation(owner);
     }
 
+    /**
+     * This method retrieves the current position and rotation of the projectile
+     * and translates it to the screen coordinate system. It then rotates the screen space
+     * by the rotation amount and draws the current frame of the {@link ProjectileAnimation}
+     * to have the effect of the projectile following the trajectory.
+     */
     @Override
     public void render() {
         final Renderer renderer = GameLoop.getInstance().getRenderer();

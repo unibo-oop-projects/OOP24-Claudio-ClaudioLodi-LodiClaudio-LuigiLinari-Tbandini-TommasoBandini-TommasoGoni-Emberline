@@ -9,6 +9,10 @@ import dev.emberline.utility.Vector2D;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * An implementation of the {@link IEnemiesManager}.
+ * This class uses a spatial hash grid for efficient spatial queries.
+ */
 public class EnemiesManager implements IEnemiesManager {
 
     private final EnemiesFactory enemiesFactory = new EnemiesFactory();
@@ -17,6 +21,13 @@ public class EnemiesManager implements IEnemiesManager {
 
     private final World world;
 
+    /**
+     * Constructs an instance of the EnemiesManager.
+     * This manager operates within the specified game world and initializes
+     * a spatial hash grid with the bounds of the world.
+     *
+     * @param world the game world where this manager lives
+     */
     public EnemiesManager(final World world) {
         this.world = world;
 
@@ -27,6 +38,9 @@ public class EnemiesManager implements IEnemiesManager {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addEnemy(final Vector2D spawnPoint, final EnemyType type) {
         final IEnemy newEnemy = enemiesFactory.createEnemy(spawnPoint, type, world);
@@ -34,6 +48,9 @@ public class EnemiesManager implements IEnemiesManager {
         spatialHashGrid.add(newEnemyWrapper);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<IEnemy> getNear(final Vector2D location, final double radius) {
         final List<IEnemy> near = spatialHashGrid.getNear(location, radius);
@@ -41,6 +58,9 @@ public class EnemiesManager implements IEnemiesManager {
         return near;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean areAllDead() {
         return spatialHashGrid.size() == 0;
@@ -50,6 +70,9 @@ public class EnemiesManager implements IEnemiesManager {
         return spatialHashGrid.size();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update(final long elapsed) {
         final List<IEnemy> toUpdate = new LinkedList<>();
@@ -66,6 +89,9 @@ public class EnemiesManager implements IEnemiesManager {
         spatialHashGrid.removeAll(toRemove);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void render() {
         for (final IEnemy enemy : spatialHashGrid) {

@@ -12,6 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Paint;
 
+class EnemyRenderComponent implements Renderable {
 public class EnemyRenderComponent implements Renderable {
     private final AbstractEnemy enemy;
     private final EnemyAnimation enemyAnimation;
@@ -28,6 +29,14 @@ public class EnemyRenderComponent implements Renderable {
         this.enemyAnimation = new EnemyAnimation(enemy);
     }
 
+    /**
+     * Renders the enemy along with its health bar on the screen.
+     * <p>
+     * The method calculates the enemy's position and dimensions on the screen
+     * based on the world coordinate system and scales them as needed.
+     * The rendering tasks are added to the renderer with the appropriate {@link RenderPriority}
+     * and given a z-order based on the y coordinate of its feet.
+     */
     @Override
     public void render() {
         final Renderer renderer = GameLoop.getInstance().getRenderer();
