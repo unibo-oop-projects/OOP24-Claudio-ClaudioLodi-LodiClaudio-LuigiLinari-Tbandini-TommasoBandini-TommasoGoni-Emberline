@@ -29,19 +29,20 @@ public class Topbar extends GuiLayer implements EventListener {
 
     private static class Layout {
         // Background
-        private static final double BG_WIDTH = 11.97;
-        private static final double BG_HEIGHT = 1.33;
+        private static final double scale = 1.25;
+        private static final double BG_WIDTH = 11.97 * scale;
+        private static final double BG_HEIGHT = 1.33 * scale;
         private static final double BG_Y = 0;
         private static final double BG_X = 32 - BG_WIDTH;
         // Options Button
-        private static final double scale_factor = 0.9;
+        private static final double scale_factor = 0.95;
         private static final double BTN_OPTIONS_HEIGHT = 1 * scale_factor;
         private static final double BTN_OPTIONS_WIDTH = 1 * scale_factor;
         private static final double BTN_OPTIONS_X = BG_X + BG_WIDTH - BTN_OPTIONS_WIDTH * 2;
         private static final double BTN_OPTIONS_Y = BG_Y + (BG_HEIGHT - BTN_OPTIONS_HEIGHT) / 2;
         // Stats
-        private static final double STARTX = BG_X + 1;
-        private static final double ENDX = BTN_OPTIONS_X - 2;
+        private static final double STARTX = BG_X + 1.3;
+        private static final double ENDX = BTN_OPTIONS_X - 2.7;
         private static final double STATS_HEIGHT = 1;
         private static final double STATS_X_HEALT = STARTX;
         private static final double STATS_X_GOLD = STARTX + (ENDX - STARTX) / 2;
@@ -76,7 +77,8 @@ public class Topbar extends GuiLayer implements EventListener {
     private void addOptionsButton() {
         GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X, Layout.BTN_OPTIONS_Y,
                 Layout.BTN_OPTIONS_WIDTH, Layout.BTN_OPTIONS_HEIGHT,
-                SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_OPTIONS_BUTTON).image());
+                SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_OPTIONS_BUTTON_1).image(),
+                SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_OPTIONS_BUTTON_2).image());
         optionsButton.setOnClick(() -> {
             throwEvent(new OpenOptionsEvent(optionsButton));
             System.out.println("Opening options menu from Topbar");
@@ -92,7 +94,7 @@ public class Topbar extends GuiLayer implements EventListener {
 
     private void drawStatImage(GraphicsContext gc, CoordinateSystem cs, Image img, double x, double baseHeight) {
         double ratio = img.getWidth() / img.getHeight();
-        double targetHeight = baseHeight * 0.65; // Scale down a bit for better appearance
+        double targetHeight = baseHeight * 0.8; // Scale down a bit for better appearance
         double targetWidth = targetHeight * ratio;
         Renderer.drawImage(img, gc, cs, x, (Layout.BG_HEIGHT - targetHeight) / 2, targetWidth, targetHeight);
     }

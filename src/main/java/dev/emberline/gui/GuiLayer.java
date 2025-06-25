@@ -29,7 +29,6 @@ public class GuiLayer implements Renderable, Inputable {
 
     @Override
     public final void processInput(final InputEvent input) {
-        System.out.println(input.getEventType());
         final CoordinateSystem guiCS = GameLoop.getInstance().getRenderer().getGuiCoordinateSystem();
         if (input instanceof final MouseEvent mouse && mouse.getEventType() == MouseEvent.MOUSE_CLICKED) {
             final double guiX = guiCS.toWorldX(mouse.getX());
@@ -45,7 +44,6 @@ public class GuiLayer implements Renderable, Inputable {
             button.processInput(input);
         }
 
-        System.out.println("Click cosumed");
         input.consume(); // Consume the input event to prevent closing the active dialog
     }
 
