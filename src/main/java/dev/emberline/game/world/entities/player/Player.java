@@ -1,7 +1,12 @@
 package dev.emberline.game.world.entities.player;
 
+import java.util.EventListener;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.GameLoop;
+import dev.emberline.core.event.EventDispatcher;
+import dev.emberline.core.event.EventHandler;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.UpgradableInfo;
@@ -9,11 +14,10 @@ import dev.emberline.game.world.World;
 import dev.emberline.gui.event.*;
 
 
-public class Player implements GuiEventListener {
+public class Player implements EventListener {
     private int health;
     private int gold;
     private final World world;
-    private GameEventListener gameEventListener;
 
     private record Metadata(
             @JsonProperty int health,
@@ -27,16 +31,8 @@ public class Player implements GuiEventListener {
         this.health = metadata.health;
         this.gold = metadata.gold;
         this.world = world;
-    }
 
-    public final void setListener(final GameEventListener gameEventListener) {
-        this.gameEventListener = gameEventListener;
-    }
-
-    protected final void throwGameEvent(final GameEvent event) {
-        if (gameEventListener != null) {
-            gameEventListener.onGameEvent(event);
-        }
+        EventDispatcher.getInstance().registerListener(this);
     }
 
     private boolean spendGold(final int amount) {
@@ -47,7 +43,7 @@ public class Player implements GuiEventListener {
         return false;
     }
 
-    public int getHealt() {
+    public int getHealth() {
         return this.health;
     }
 
@@ -60,46 +56,40 @@ public class Player implements GuiEventListener {
     }
 
     public void takeDamage() {
-        if (this.health - 200 <= 0) {
-            throwGameEvent(new GameOverEvent(this));
+        if (this.health - 1 <= 0) {
+            EventDispatcher.getInstance().dispatchEvent(new GameOverEvent(this));
         }
         this.health -= 1;
     }
 
-    @Override
-    public void onGuiEvent(GuiEvent event) {
-        if (event instanceof UpgradeTowerInfoEvent upgradeEvent && spendGold(upgradeEvent.getUpgradableInfo().getUpgradeCost())) {
-            handleUpgradeEvent(upgradeEvent);
-        } else if (event instanceof ResetTowerInfoEvent resetEvent) {
-            handleResetEvent(resetEvent);
-        } else if (event instanceof SetTowerInfoEvent setTowerEvent) {
-            handleSetEvent(setTowerEvent);
-        } else if (event instanceof NewBuildEvent newBuildEvent && spendGold(newBuildEvent.getTowerPreBuild().getNewBuildCost())) {
-            handleNewBuildEvent(newBuildEvent);
-        }
-    }
-
+    @EventHandler
     private void handleNewBuildEvent(final NewBuildEvent event) {
+        if (!spendGold(event.getTowerPreBuild().getNewBuildCost())) {
+            return;
+        }
         world.getTowersManager().buildTower(event.getTowerPreBuild());
     }
 
+    @EventHandler
     private void handleUpgradeEvent(final UpgradeTowerInfoEvent event) {
         final UpgradableInfo<?, ?> info = event.getUpgradableInfo();
-        if (!info.canUpgrade()) {
+        if (!spendGold(info.getUpgradeCost()) || !info.canUpgrade()) {
             return;
         }
         event.getTower().setUpgradableInfo(info.getUpgrade());
     }
 
+    @EventHandler
     private void handleResetEvent(final ResetTowerInfoEvent event) {
         final UpgradableInfo<?,?> info = event.getUpgradableInfo();
         earnGold(event.getUpgradableInfo().getRefundValue());
         event.getTower().setUpgradableInfo(info.getDefault());
     }
 
+    @EventHandler
     private void handleSetEvent(final SetTowerInfoEvent event) {
         final UpgradableInfo<?, ?> info = event.getUpgradableInfo();
-        if (!info.canChangeType()) {
+        if (!info.canChangeType() || !spendGold(info.getUpgradeCost())) {
             return;
         }
         if (info instanceof final ProjectileInfo infoCast) {

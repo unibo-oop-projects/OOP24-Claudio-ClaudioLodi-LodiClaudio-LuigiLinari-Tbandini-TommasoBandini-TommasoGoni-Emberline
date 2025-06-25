@@ -3,9 +3,9 @@ package dev.emberline.gui;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
+import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.gui.event.GuiEvent;
-import dev.emberline.gui.event.GuiEventListener;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 
@@ -14,8 +14,6 @@ import java.util.List;
 
 public class GuiLayer implements Renderable, Inputable {
     protected final List<GuiButton> buttons = new ArrayList<>();
-    private GuiEventListener listener;
-
     protected double x, y, width, height;
 
     protected GuiLayer(final double x, final double y, final double width, final double height) {
@@ -25,18 +23,13 @@ public class GuiLayer implements Renderable, Inputable {
         this.height = height;
     }
 
-    public final void setListener(final GuiEventListener listener) {
-        this.listener = listener;
-    }
-
     protected final void throwEvent(final GuiEvent event) {
-        if (listener != null) {
-            listener.onGuiEvent(event);
-        }
+        EventDispatcher.getInstance().dispatchEvent(event);
     }
 
     @Override
     public final void processInput(final InputEvent input) {
+        System.out.println(input.getEventType());
         final CoordinateSystem guiCS = GameLoop.getInstance().getRenderer().getGuiCoordinateSystem();
         if (input instanceof final MouseEvent mouse && mouse.getEventType() == MouseEvent.MOUSE_CLICKED) {
             final double guiX = guiCS.toWorldX(mouse.getX());
@@ -52,6 +45,7 @@ public class GuiLayer implements Renderable, Inputable {
             button.processInput(input);
         }
 
+        System.out.println("Click cosumed");
         input.consume(); // Consume the input event to prevent closing the active dialog
     }
 

@@ -1,8 +1,12 @@
 package dev.emberline.game;
 
+import java.util.EventListener;
+
 import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
+import dev.emberline.core.event.EventDispatcher;
+import dev.emberline.core.event.EventHandler;
 import dev.emberline.game.world.World;
 import dev.emberline.gui.event.*;
 import dev.emberline.gui.menu.GameOver;
@@ -11,7 +15,7 @@ import dev.emberline.gui.menu.Options;
 import javafx.application.Platform;
 import javafx.scene.input.InputEvent;
 
-public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListener, GameEventListener {
+public class GameRoot implements Inputable, Updatable, Renderable, EventListener {
     // Navigation States
     private final World world = new World();
     private final MainMenu mainMenu = new MainMenu();
@@ -23,10 +27,7 @@ public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListe
 
     public GameRoot() {
         currentState = mainMenu;
-        mainMenu.setListener(this);
-        options.setListener(this);
-        world.getPlayer().setListener(this);
-        world.getTopbar().setListener(this);
+        EventDispatcher.getInstance().registerListener(this);
     }
 
     @Override
@@ -44,49 +45,35 @@ public class GameRoot implements Inputable, Updatable, Renderable, GuiEventListe
         currentState.render();
     }
 
-    @Override
-    public void onGuiEvent(final GuiEvent event) {
-        if (event instanceof final SetStartEvent startEvent) {
-            handleStartEvent(startEvent);
-        } else if (event instanceof final SetMainMenuEvent menuEvent) {
-            handleSetMainMenuEvent(menuEvent);
-        } else if (event instanceof final OpenOptionsEvent openOptionsEvent) {
-            handleOpenOptionsEvent(openOptionsEvent);
-        } else if (event instanceof final CloseOptionsEvent closeOptionsEvent) {
-            handleCloseOptionsEvent(closeOptionsEvent);
-        } else if (event instanceof final ExitGameEvent exitGameEvent) {
-            handleExitGameEvent(exitGameEvent);
-        }
-    }
-
-    @Override
-    public void onGameEvent(final GameEvent event) {
-        if (event instanceof final GameOverEvent gameOverEvent) {
-            handleGameOverEvent(gameOverEvent);
-        }
-    }
-
+    // Event Handlers
+    @EventHandler
     private void handleStartEvent(final SetStartEvent event) {
         currentState = world;
     }
 
+    @EventHandler
     private void handleSetMainMenuEvent(final SetMainMenuEvent event) {
         currentState = mainMenu;
     }
 
+    @EventHandler
     private void handleOpenOptionsEvent(final OpenOptionsEvent event) {
         previousState = currentState;
+        System.out.println("Opening options menu from GameRoot");
         currentState = options;
     }
 
+    @EventHandler
     private void handleCloseOptionsEvent(final CloseOptionsEvent event) {
         currentState = previousState;
     }
 
+    @EventHandler
     private void handleGameOverEvent(final GameOverEvent event) {
         currentState = gameOver;
     }
 
+    @EventHandler
     private void handleExitGameEvent(final ExitGameEvent event) {
         Platform.exit();
     }
