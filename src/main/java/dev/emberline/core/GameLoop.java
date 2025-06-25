@@ -1,6 +1,5 @@
 package dev.emberline.core;
 
-import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.input.InputDispatcher;
 import dev.emberline.core.render.Renderer;
 import dev.emberline.core.update.Updater;
