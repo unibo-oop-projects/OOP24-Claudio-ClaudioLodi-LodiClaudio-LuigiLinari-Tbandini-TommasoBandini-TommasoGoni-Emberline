@@ -51,9 +51,9 @@ public class Spawnpoints {
     /**
      * Single enemy identified by these 3 parameters:
      *
-     * @param spawnTimeNs
-     * @param spawnLocation
-     * @param enemyType
+     * @param spawnTimeNs the spawn time of the enemy in nanoseconds
+     * @param spawnLocation the spawn location of the enemy as a {@link Vector2D}
+     * @param enemyType the {@link EnemyType}
      */
     public record EnemyToSpawn(long spawnTimeNs, Vector2D spawnLocation,
                                EnemyType enemyType) implements Comparable<EnemyToSpawn> {

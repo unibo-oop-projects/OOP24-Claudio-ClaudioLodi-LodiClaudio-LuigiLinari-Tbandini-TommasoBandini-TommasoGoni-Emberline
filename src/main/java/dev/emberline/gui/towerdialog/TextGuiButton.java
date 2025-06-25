@@ -14,6 +14,11 @@ import javafx.scene.image.Image;
 
 import java.util.Locale;
 
+/**
+ * Represents a {@link GuiButton} that supports rendering text within its boundaries.
+ * This class extends the {@code GuiButton} to integrate a text layout system for displaying a label on the button.
+ * The text layout is customizable based on the specified {@code TextLayoutType}.
+ */
 public class TextGuiButton extends GuiButton {
     private final String labelText;
     private final TextLayout textLayout;
@@ -29,6 +34,19 @@ public class TextGuiButton extends GuiButton {
         double textYPosition;
     }
 
+    /**
+     * Enumerates the possible layout types for positioning text within a graphical user interface button.
+     * The text layout determines where the label text should be rendered relative to the button boundaries.
+     * <p>
+     * Each layout type corresponds to a specific predefined position:
+     * <ul>
+     * <li>LEFT: Aligns the text to the left side of the button.</li>
+     * <li>RIGHT: Aligns the text to the right side of the button.</li>
+     * <li>TOP: Positions the text at the top of the button.</li>
+     * <li>BOTTOM: Positions the text at the bottom of the button.</li>
+     * <li>CENTER: Centers the text within the button.</li>
+     * </ul>
+     */
     public enum TextLayoutType {
         LEFT,
         RIGHT,
@@ -37,24 +55,65 @@ public class TextGuiButton extends GuiButton {
         CENTER
     }
 
+    /**
+     * Loads a {@link TextLayout} configuration based on the specified {@link TextLayoutType}.
+     * The method retrieves the layout configuration from a predefined JSON resource file and
+     * deserializes it into a {@code TextLayout} instance using the {@link ConfigLoader}.
+     *
+     * @param type the {@link TextLayoutType} indicating the desired text layout configuration.
+     *             This determines which specific subsection of the JSON resource will be used.
+     * @return a {@link TextLayout} instance representing the layout configuration for the given type.
+     * @throws RuntimeException if the JSON resource or layout subsection cannot be loaded or parsed.
+     */
     public static TextLayout loadLayout(final TextLayoutType type) {
         final JsonNode root = ConfigLoader.loadNode("/sprites/ui/buttonTextLayout.json");
         final JsonNode sublayout = root.get(type.name().toLowerCase(Locale.US));
         return ConfigLoader.loadConfig(sublayout, TextLayout.class);
     }
 
+    /**
+     * Creates a new {@code TextGuiButton} with specified position, dimensions, and appearance,
+     * as well as a label text and a layout type that determines the positioning of the text
+     * within the button.
+     *
+     * @param x           The x-coordinate of the button's top-left corner.
+     * @param y           The y-coordinate of the button's top-left corner.
+     * @param width       The width of the button.
+     * @param height      The height of the button.
+     * @param normalSprite The image to display when the button is in its normal state.
+     * @param hoverSprite  The image to display when the button is hovered over.
+     * @param labelText   The text to be displayed as the button's label.
+     * @param textLayout  The {@link TextLayoutType} determining the positioning of the label text.
+     * @see TextGuiButton
+     */
     public TextGuiButton(final double x, final double y, final double width, final double height, final Image normalSprite, final Image hoverSprite, final String labelText, final TextLayoutType textLayout) {
         super(x, y, width, height, normalSprite, hoverSprite);
         this.labelText = labelText;
         this.textLayout = loadLayout(textLayout);
     }
 
+    /**
+     * Constructs a new TextGuiButton with the specified position, dimensions, appearance,
+     * and text layout for the button's label.
+     *
+     * @param x           The x-coordinate of the button's top-left corner.
+     * @param y           The y-coordinate of the button's top-left corner.
+     * @param width       The width of the button.
+     * @param height      The height of the button.
+     * @param normalSprite The image to display when the button is in its normal state.
+     * @param labelText   The text to be displayed as the button's label.
+     * @param textLayout  The {@link TextLayoutType} determining the positioning of the label text.
+     * @see TextGuiButton
+     */
     public TextGuiButton(final double x, final double y, final double width, final double height, final Image normalSprite, final String labelText, final TextLayoutType textLayout) {
         super(x, y, width, height, normalSprite);
         this.labelText = labelText;
         this.textLayout = loadLayout(textLayout);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void render() {
         super.render();

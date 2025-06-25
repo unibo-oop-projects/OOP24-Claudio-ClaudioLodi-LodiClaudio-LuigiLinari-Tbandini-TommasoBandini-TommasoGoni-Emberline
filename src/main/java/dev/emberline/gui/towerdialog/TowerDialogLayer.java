@@ -33,6 +33,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Represents a graphical user interface layer specifically designed to show detailed
+ * information, and customization buttons for a {@code Tower} instance.
+ * This layer allows players to modify the tower's properties, such as projectiles,
+ * enchantments, and aiming modes, as well as view stat comparisons.
+ */
 public class TowerDialogLayer extends GuiLayer {
     // The Tower linked to this dialog layer
     private final Tower tower;
@@ -152,12 +158,23 @@ public class TowerDialogLayer extends GuiLayer {
         private static final ColorAdjust SELECTOR_TITLE = new ColorAdjust(0.15, 0.9, -0.6, 0);
     }
 
+    /**
+     * Constructs a new TowerDialogLayer.
+     *
+     * @param tower the tower instance for which the dialog layer is being created
+     * @see TowerDialogLayer
+     */
     public TowerDialogLayer(final Tower tower) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         this.tower = tower;
         updateLayout();
     }
 
+    /**
+     * Returns the tower instance associated with this dialog layer.
+     *
+     * @return the tower instance associated with this dialog layer.
+     */
     public Tower getTower() {
         return tower;
     }
@@ -268,6 +285,9 @@ public class TowerDialogLayer extends GuiLayer {
         rebuildStats();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void render() {
         if (displayedEnchantment != tower.getEnchantmentInfo()) {

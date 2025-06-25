@@ -13,6 +13,10 @@ import dev.emberline.game.world.waves.IWaveManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/**
+ * The WorldRenderComponent class is responsible for rendering the game world, specifically
+ * it's underlying map. That also means keeping track of how the map changes due to its animation.
+ */
 public class WorldRenderComponent implements Renderable, Updatable {
 
     private final WorldBounds worldBounds;

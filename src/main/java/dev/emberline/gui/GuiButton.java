@@ -17,19 +17,76 @@ import javafx.scene.paint.Paint;
 
 import java.util.Objects;
 
+/**
+ * Represents a graphical user interface button that can respond to mouse
+ * input events and render itself on the screen. A GUI button can have a normal
+ * sprite, a hover sprite (optional), and user-defined behavior such as click,
+ * mouse-enter, and mouse-leave actions.
+ * <p>
+ * The position and size of the button are defined in GUI coordinates. The button
+ * is interactive and can track the hover state of the mouse. It also provides
+ * methods for registering event handlers for various mouse interactions.
+ */
 public class GuiButton implements Inputable, Renderable {
+    /**
+     * Represents the normal state image of the GUI button.
+     */
     protected final Image normalSprite;
+
+    /**
+     * Represents the sprite image to be displayed when the button is in a hovered state.
+     */
     protected final Image hoverSprite; // Can be null
+
+    /**
+     * The x-coordinate of the top-left corner of the graphical button in the GUI coordinate system.
+     */
     protected final double x;
+
+    /**
+     * Represents the top-left y-coordinate of the button in the GUI coordinate system.
+     */
     protected final double y;
+
+    /**
+     * The width of the GUI button in the GUI coordinate system.
+     */
     protected final double width;
+
+    /**
+     * Represents the height of the {@code GuiButton} in the GUI coordinate system.
+     */
     protected final double height;
+
+    /**
+     * Defines the action to be executed when the button is clicked.
+     */
     protected Runnable onClick;
+
+    /**
+     * Defines the action to be executed when the button enters the bounds of the {@code GuiButton}.
+     */
     protected Runnable onMouseEnter;
+
+    /**
+     * Defines the action to be executed when the mouse leaves the bounds of the {@code GuiButton}.
+     */
     protected Runnable onMouseLeave;
-    // use this only for holding the previous hovered state, use hovered to communicate to the outside world
+
+    /**
+     * Indicates whether the button was previously in a hovered state.
+     * <p>
+     * Note: use this only for holding the previous hovered state, use hovered to communicate to the outside world.
+     */
     private boolean wasHovered = false;
-    // this is needed if isHovered() is called from onMouseEnter or onMouseLeave, because the wasHovered state is not updated yet.
+
+    /**
+     * Indicates whether the GUI button is currently being hovered over by the mouse.
+     * This is needed if isHovered() is called from onMouseEnter or onMouseLeave, because the wasHovered state is not updated yet.
+     *
+     * @see GuiButton#isHovered()
+     * @see GuiButton#computeHoverState(double, double)
+     */
     private boolean hovered = false;
 
     /**
@@ -66,22 +123,48 @@ public class GuiButton implements Inputable, Renderable {
         this(x, y, width, height, sprite, null);
     }
 
+    /**
+     * Sets the action to be performed when this button is clicked.
+     *
+     * @param onClick A Runnable containing the code to execute when the button is clicked.
+     */
     public void setOnClick(final Runnable onClick) {
         this.onClick = onClick;
     }
 
+    /**
+     * Sets the action to be performed when the mouse leaves the bounds of this button.
+     *
+     * @param onMouseLeave A Runnable containing the code to execute when the mouse leaves the button.
+     */
     public void setOnMouseLeave(final Runnable onMouseLeave) {
         this.onMouseLeave = onMouseLeave;
     }
 
+    /**
+     * Sets the action to be performed when the mouse enters the bounds of this button.
+     *
+     * @param onMouseEnter A Runnable containing the code to execute when the mouse enters the button.
+     */
     public void setOnMouseEnter(final Runnable onMouseEnter) {
         this.onMouseEnter = onMouseEnter;
     }
 
+    /**
+     * Returns whether the GUI button is currently in a hovered state.
+     *
+     * @return whether the GUI button is currently in a hovered state.
+     */
     public boolean isHovered() {
         return hovered;
     }
 
+    /**
+     * Processes input events to handle mouse interactions with the GUI button.
+     *
+     * @param inputEvent The input event to process.
+     * @see Inputable#processInput(InputEvent)
+     */
     @Override
     public void processInput(final InputEvent inputEvent) {
         if (inputEvent.isConsumed()) {
@@ -103,6 +186,10 @@ public class GuiButton implements Inputable, Renderable {
         }
     }
 
+    /**
+     * Renders the GUI button based on its visual representation, such as rendering the normal or hover state
+     * @see Renderable#render()
+     */
     @Override
     public void render() {
         // Rendering
@@ -132,7 +219,13 @@ public class GuiButton implements Inputable, Renderable {
         }));
     }
 
-    // In GUI coordinates
+    /**
+     * Determines if a given point is inside the bounds of the object.
+     *
+     * @param x The x-coordinate of the point to be checked.
+     * @param y The y-coordinate of the point to be checked.
+     * @return true if the point specified by the x and y coordinates is within the bounds; false otherwise.
+     */
     protected boolean isInside(final double x, final double y) {
         if (x < this.x || x > this.x + width) {
             return false;
@@ -140,6 +233,15 @@ public class GuiButton implements Inputable, Renderable {
         return y >= this.y && y <= this.y + height;
     }
 
+    /**
+     * Updates the hover state of the button based on the specified mouse coordinates.
+     * If the mouse enters the button's area, the onMouseEnter action is executed.
+     * If the mouse leaves the button's area, the onMouseLeave action is executed.
+     * The state of "hovered" and "wasHovered" is updated accordingly.
+     *
+     * @param mouseGuiX The x-coordinate of the mouse in GUI coordinates.
+     * @param mouseGuiY The y-coordinate of the mouse in GUI coordinates.
+     */
     protected void computeHoverState(final double mouseGuiX, final double mouseGuiY) {
         hovered = isInside(mouseGuiX, mouseGuiY);
         if (hovered && !wasHovered && onMouseEnter != null) {

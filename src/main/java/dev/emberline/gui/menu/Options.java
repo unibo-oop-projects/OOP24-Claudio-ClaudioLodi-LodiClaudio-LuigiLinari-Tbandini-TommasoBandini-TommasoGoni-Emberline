@@ -16,6 +16,16 @@ import dev.emberline.gui.event.CloseOptionsEvent;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/**
+ * Represents the "Options" menu in the game, providing functionality for rendering
+ * and interacting with the options interface of the GUI layer. This class controls
+ * the layout of buttons and the display of the background for the options menu.
+ * <p>
+ * The class extends the {@link GuiLayer} to manage its graphical elements
+ * and interactions within a defined layer, while implementing the {@link GameState}.
+ * <p>
+ * It is responsible to throw change of option related events.
+ */
 public class Options extends GuiLayer implements GameState {
 
     private static class Layout {
@@ -50,7 +60,16 @@ public class Options extends GuiLayer implements GameState {
 
     private final OptionsBounds optionsBounds;
 
-    // TODO refactor these constructors 
+    // TODO refactor these constructors
+
+    /**
+     * Constructs an {@code Options} object by initializing it with the configuration
+     * data loaded from a predefined JSON resource file. The configuration provides
+     * the bounds necessary for setting up the {@code Options} screen in the GUI.
+     *
+     * @throws RuntimeException if the configuration file cannot be loaded or parsed.
+     * @see Options
+     */
     public Options() {
         this(ConfigLoader.loadConfig("/gui/options/optionsBounds.json", OptionsBounds.class));
     }
@@ -69,6 +88,9 @@ public class Options extends GuiLayer implements GameState {
         this.optionsBounds = optionsBounds;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void render() {
         // Render background
@@ -92,6 +114,9 @@ public class Options extends GuiLayer implements GameState {
         super.render();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update(final long elapsed) {
     }

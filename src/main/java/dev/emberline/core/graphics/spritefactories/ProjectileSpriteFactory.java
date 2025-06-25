@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
+import dev.emberline.core.graphics.spritekeys.MapSpriteKey;
 import dev.emberline.core.graphics.spritekeys.ProjectileSpriteKey;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
@@ -13,6 +14,11 @@ import javafx.scene.image.WritableImage;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * A factory class for creating animated projectile sprites based on a provided {@link ProjectileSpriteKey}.
+ * The projectile sprite atlas is a single image containing all sprite frames,
+ * and the individual frames are extracted during sprite creation based on metadata values.
+ */
 public class ProjectileSpriteFactory implements SpriteFactory<ProjectileSpriteKey> {
 
     private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/projectile.json", Metadata.class);
@@ -34,6 +40,9 @@ public class ProjectileSpriteFactory implements SpriteFactory<ProjectileSpriteKe
         Map<EnchantmentInfo.Type, Integer> enchant;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Sprite loadSprite(final ProjectileSpriteKey key) {
         final ProjectileInfo.Type size = key.size();
@@ -59,6 +68,9 @@ public class ProjectileSpriteFactory implements SpriteFactory<ProjectileSpriteKe
         return new Image(Objects.requireNonNull(ProjectileSpriteFactory.class.getResourceAsStream(METADATA.filename)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<ProjectileSpriteKey> getKeyType() {
         return ProjectileSpriteKey.class;

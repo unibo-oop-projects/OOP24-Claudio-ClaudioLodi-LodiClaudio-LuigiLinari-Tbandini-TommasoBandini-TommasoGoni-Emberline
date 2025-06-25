@@ -1,5 +1,6 @@
 package dev.emberline.game.world;
 
+import dev.emberline.core.components.Renderable;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.game.GameState;
 import dev.emberline.game.world.buildings.TowersManager;
@@ -66,17 +67,23 @@ public class World implements GameState, Serializable {
     }
 
     /**
+     * Returns the {@code Player} instance associated with the World.
      * @return the {@code Player} instance associated with the World.
      */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Returns the {@code Topbar} instance associated with the World.
+     * @return the {@code Topbar} instance associated with the World.
+     */
     public Topbar getTopbar() {
         return topbar;
     }
 
     /**
+     * Returns the {@code ProjectilesManager} instance associated with the World.
      * @return the {@code ProjectilesManager} instance associated with the World.
      */
     public ProjectilesManager getProjectilesManager() {
@@ -84,6 +91,7 @@ public class World implements GameState, Serializable {
     }
 
     /**
+     * Returns the {@code TowersManager} instance associated with the World.
      * @return the {@code TowersManager} instance associated with the World.
      */
     public TowersManager getTowersManager() {
@@ -91,6 +99,7 @@ public class World implements GameState, Serializable {
     }
 
     /**
+     * Returns the {@code IEnemiesManager} instance associated with the World.
      * @return the {@code IEnemiesManager} instance associated with the World.
      */
     public IEnemiesManager getEnemiesManager() {
@@ -98,6 +107,7 @@ public class World implements GameState, Serializable {
     }
 
     /**
+     * Returns the {@code ProjectileHitListener} instance associated with the World.
      * @return the {@code ProjectileHitListener} instance associated with the World.
      */
     public ProjectileHitListener getProjectileHitListener() {
@@ -105,6 +115,7 @@ public class World implements GameState, Serializable {
     }
 
     /**
+     * Returns the {@code IWaveManager} instance associated with the World.
      * @return the {@code IWaveManager} instance associated with the World.
      */
     public IWaveManager getWaveManager() {
@@ -112,6 +123,7 @@ public class World implements GameState, Serializable {
     }
 
     /**
+     * Returns the {@code Statistics} instance associated with the World.
      * @return the {@code Statistics} instance associated with the World.
      */
     public Statistics getStatistics() {

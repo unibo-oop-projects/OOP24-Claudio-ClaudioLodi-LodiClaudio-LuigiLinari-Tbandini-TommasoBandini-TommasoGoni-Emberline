@@ -17,7 +17,6 @@ import javafx.scene.media.MediaPlayer;
  * The Fog class is responsible for rendering a layer of fog in the game environment. It is used to hide parts of the world
  * and guarantees that the player can only see a limited area of the game world at any given time. Fog tiles are rendered
  * in a grid pattern, with each tile being 2x2 units in size.
- * <p>
  * <h2>Fog Animation</h2>
  * The fog begins its animation with a transition between two world regions. The animation is divided into three stages:
  * <ol>
@@ -25,7 +24,6 @@ import javafx.scene.media.MediaPlayer;
  * <li>After a delay, it begins to blink, alternating between the two regions.</li>
  * <li>Finally, after the blinking phase, it permanently transitions to the second region.</li>
  * </ol>
- * <p>
  * <h2>Configuration</h2>
  * The JSON file contains the following structure:
  * <pre>

@@ -12,6 +12,7 @@ import dev.emberline.core.components.Updatable;
 public interface IProjectile extends Updatable, Renderable {
 
     /**
+     * Returns whether the projectile has hit the target
      * @return whether the projectile has hit the target
      */
     boolean hasHit();

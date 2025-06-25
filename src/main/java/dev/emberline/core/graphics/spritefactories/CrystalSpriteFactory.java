@@ -12,6 +12,14 @@ import javafx.scene.image.WritableImage;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * A factory for creating {@link Sprite} objects based on {@link CrystalSpriteKey}.
+ * This class is used to load and generate animated sprites for crystal assets
+ * of different enchantment types.
+ * <p>
+ * The crystal sprite atlas is a single image containing all sprite frames,
+ * and the individual frames are extracted during sprite creation based on metadata values.
+ */
 public class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKey> {
 
     private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/crystal.json", Metadata.class);
@@ -31,6 +39,9 @@ public class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKey> {
         Map<EnchantmentInfo.Type, Integer> enchant;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Sprite loadSprite(final CrystalSpriteKey key) {
         final EnchantmentInfo.Type enchant = key.type();
@@ -51,6 +62,9 @@ public class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKey> {
         return new Image(Objects.requireNonNull(CrystalSpriteFactory.class.getResourceAsStream(METADATA.filename)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<CrystalSpriteKey> getKeyType() {
         return CrystalSpriteKey.class;

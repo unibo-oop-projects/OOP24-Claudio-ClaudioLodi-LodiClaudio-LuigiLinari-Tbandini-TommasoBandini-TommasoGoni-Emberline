@@ -18,6 +18,12 @@ import dev.emberline.gui.event.OpenOptionsEvent;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/**
+ * The {@code Topbar} class represents a {@link GuiLayer} for the top section of the screen
+ * displaying player stats such as health, gold, and the current wave.
+ * <p>
+ * This class also provides an options button that allows users to access the options menu.
+ */
 public class Topbar extends GuiLayer implements EventListener {
     private int health;
     private int gold;
@@ -48,11 +54,30 @@ public class Topbar extends GuiLayer implements EventListener {
         private static final double STATS_X_WAVE = ENDX;
     }
 
+    /**
+     * Initializes a new instance of the {@code Topbar} class and registers it as an event listener.
+     *
+     * @param world the {@code World} instance associated with this Topbar,
+     *              providing access to game state and necessary data.
+     * @see Topbar
+     */
     public Topbar(World world) {
         this(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT, world);
         EventDispatcher.getInstance().registerListener(this);
     }
 
+    /**
+     * Constructs an instance of the {@code Topbar} class with specified position, dimensions,
+     * and associated {@code World} instance.
+     *
+     * @param x      the x-coordinate of the top-left corner of the Topbar
+     * @param y      the y-coordinate of the top-left corner of the Topbar
+     * @param width  the width of the Topbar
+     * @param height the height of the Topbar
+     * @param world  the {@code World} instance associated with this {@code Topbar},
+     *               providing access to the game's state and data
+     * @see Topbar
+     */
     protected Topbar(double x, double y, double width, double height, World world) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         this.world = world;
@@ -97,6 +122,9 @@ public class Topbar extends GuiLayer implements EventListener {
         Renderer.drawImage(img, gc, cs, x, (Layout.BG_HEIGHT - targetHeight) / 2, targetWidth, targetHeight);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void render() {
         Renderer renderer = GameLoop.getInstance().getRenderer();

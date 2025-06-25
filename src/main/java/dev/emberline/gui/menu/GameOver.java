@@ -16,6 +16,17 @@ import dev.emberline.gui.event.SetMainMenuEvent;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/**
+ * Represents the "Game Over" state of the game. This class functions as a GUI layer
+ * and implements the {@link GameState} interface to define behavior specific to when
+ * the game has concluded.
+ * <p>
+ * The screen includes static graphics such as a background image and a "Game Over" title,
+ * as well as interactive components like buttons for navigating to other game states.
+ * <p>
+ * It is responsible for triggering appropriate events for game state transitions
+ * (e.g., exiting the game, returning to the main menu).
+ */
 public class GameOver extends GuiLayer implements GameState {
 
     private static class Layout {
@@ -55,7 +66,14 @@ public class GameOver extends GuiLayer implements GameState {
 
     private final GameOverBounds gameOverBounds;
 
-    // TODO refactor these constructors 
+    // TODO refactor these constructors
+
+    /**
+     * Constructs an instance of the {@code GameOver} class using bounds defined in a configuration file.
+     *
+     * @throws RuntimeException if the configuration file cannot be loaded or deserialized.
+     * @see GameOver
+     */
     public GameOver() {
         this(ConfigLoader.loadConfig("/gui/gameOver/gameOverBounds.json", GameOverBounds.class));
     }
@@ -74,6 +92,9 @@ public class GameOver extends GuiLayer implements GameState {
         this.gameOverBounds = gameOverBounds;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void render() {
         // Render background
@@ -99,6 +120,9 @@ public class GameOver extends GuiLayer implements GameState {
         super.render();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update(final long elapsed) {
     }

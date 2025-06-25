@@ -7,6 +7,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The SpriteFactoryRegistry class provides a centralized registry for managing and retrieving
+ * sprite factories based on specific key types.
+ * <p>
+ * This class uses a synchronized list to store registered factories, ensuring thread-safe access
+ * and modifications. Factories are registered with their respective key type statically.
+ * <p>
+ * {@link IllegalArgumentException} is thrown when no matching factory is found for a given key type.
+ */
 class SpriteFactoryRegistry {
     private final static List<SpriteFactory<?>> factories = Collections.synchronizedList(new ArrayList<>());
 

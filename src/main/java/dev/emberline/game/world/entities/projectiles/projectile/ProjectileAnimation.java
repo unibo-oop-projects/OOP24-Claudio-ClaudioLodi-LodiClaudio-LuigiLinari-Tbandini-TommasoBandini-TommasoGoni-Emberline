@@ -47,6 +47,7 @@ public class ProjectileAnimation implements Updatable {
     }
 
     /**
+     * Returns the current image representing the active animation frame of the projectile
      * @return the current image representing the active animation frame of the projectile
      */
     public Image getImage() {

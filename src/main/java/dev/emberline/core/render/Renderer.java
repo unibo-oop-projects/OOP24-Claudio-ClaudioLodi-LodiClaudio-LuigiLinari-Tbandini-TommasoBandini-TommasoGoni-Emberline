@@ -28,7 +28,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * and the {@code guiCoordinateSystem} based on the attached {@link Canvas}.
  */
 public class Renderer {
+    /**
+     * Defines the default height in GUI coordinate space used for rendering GUI elements.
+     * This constant is utilized as a standard height measurement when rendering
+     * or placing graphical user interface components.
+     */
     public static final int GUICS_HEIGHT = 18;
+    /**
+     * Defines the default width in GUI coordinate space used for rendering GUI elements.
+     * This constant is utilized as a standard width measurement when rendering
+     * or placing graphical user interface components.
+     */
     public static final int GUICS_WIDTH = 32;
 
     // JavaFX Canvas, only JavaFX thread can modify the scene graph, do not modify the scene graph from another thread

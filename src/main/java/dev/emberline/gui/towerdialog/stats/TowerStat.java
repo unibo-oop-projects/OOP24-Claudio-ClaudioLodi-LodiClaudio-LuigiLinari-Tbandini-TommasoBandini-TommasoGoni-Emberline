@@ -15,6 +15,18 @@ import javafx.scene.image.Image;
  * @see TowerStatsProvider
  */
 public record TowerStat(TowerStatType type, double value) {
+    /**
+     * An enum representing various types of statistical properties for towers.
+     * These properties describe specific attributes of a tower's performance, such as the
+     * rate of fire, damage output, range, and special effects. Each type is associated with
+     * a human-readable name and a graphical icon.
+     * <p>
+     * The enumeration is divided into two categories:
+     * <ul>
+     * <li>Projectile stats: Attributes affecting the tower's basic attack capabilities.</li>
+     * <li>Enchantment stats: Attributes affecting additional special effects applied by the tower.</li>
+     * </ul>
+     */
     public enum TowerStatType {
         // Projectile stats
         FIRE_RATE("Fire Rate", SpriteLoader.loadSprite(SingleSpriteKey.FIRE_RATE).image()),
@@ -35,10 +47,20 @@ public record TowerStat(TowerStatType type, double value) {
             this.icon = icon;
         }
 
+        /**
+         * Returns the human-readable display name associated with this tower stat type.
+         *
+         * @return the human-readable display name associated with this tower stat type.
+         */
         public String getDisplayName() {
             return displayName;
         }
 
+        /**
+         * Returns the icon representing the tower stat type.
+         *
+         * @return the icon associated with the tower stat type
+         */
         public Image getIcon() {
             return icon;
         }

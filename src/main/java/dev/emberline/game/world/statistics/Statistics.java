@@ -39,14 +39,16 @@ public class Statistics implements Updatable, Serializable {
     }
 
     /**
-     * sums @param elapsed to the current time spent in game.
+     * Keeps track of how much time is spent in the game.
+     * @param elapsed the time spent in game since last call.
      */
     public void updateTimeInGame(final long elapsed) {
         this.timeInGame += elapsed;
     }
 
     /**
-     * Sums @param damage to the total damage already dealt by the towers to the enemies.
+     * Keeps track of how much damage is dealt throughout the game.
+     * @param damage the damage to be added to the total.
      */
     public void updateTotalDamage(final double damage) {
         totalDamage += damage;
@@ -62,6 +64,7 @@ public class Statistics implements Updatable, Serializable {
     }
 
     /**
+     * Returns the number of enemies killed
      * @return the number of enemies killed
      */
     public int getEnemiesKilled() {
@@ -69,13 +72,15 @@ public class Statistics implements Updatable, Serializable {
     }
 
     /**
-     * @return number of waves survived
+     * Returns the number of waves survived
+     * @return the number of waves survived
      */
     public int getWavesSurvived() {
         return this.wavesSurvived;
     }
 
     /**
+     * Returns the time spent playing this series of waves.
      * @return the time spent playing this series of waves.
      */
     public long getTimeInGame() {
@@ -83,8 +88,8 @@ public class Statistics implements Updatable, Serializable {
     }
 
     /**
-     * @return average damage per second,
-     * dealt by the towers to the enemies.
+     * Returns the average damage per second, dealt by the towers to the enemies.
+     * @return the average damage per second, dealt by the towers to the enemies.
      */
     public double getDPS() {
         return this.dps;
