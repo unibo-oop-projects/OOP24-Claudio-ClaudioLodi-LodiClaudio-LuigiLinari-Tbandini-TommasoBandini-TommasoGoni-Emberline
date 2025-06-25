@@ -2,7 +2,7 @@ package dev.emberline.gui.event;
 
 public class GameOverEvent extends GameEvent {
 
-    public GameOverEvent(Object source) {
+    public GameOverEvent(final Object source) {
         super(source);
     }
 }

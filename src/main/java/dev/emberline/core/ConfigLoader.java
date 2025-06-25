@@ -9,31 +9,31 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import java.io.IOException;
 
 public class ConfigLoader {
-    private static final ObjectMapper objectMapper = new ObjectMapper()
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .registerModule(new ParameterNamesModule())
             .findAndRegisterModules();
 
-    public static JsonNode loadNode(String resourcePath) {
+    public static JsonNode loadNode(final String resourcePath) {
         try {
-            return objectMapper.readTree(ConfigLoader.class.getResourceAsStream(resourcePath));
-        } catch (IOException e) {
+            return OBJECT_MAPPER.readTree(ConfigLoader.class.getResourceAsStream(resourcePath));
+        } catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static <T> T loadConfig(String resourcePath, Class<T> valueType) {
+    public static <T> T loadConfig(final String resourcePath, final Class<T> valueType) {
         try {
-            return objectMapper.treeToValue(loadNode(resourcePath), valueType);
-        } catch (JsonProcessingException e) {
+            return OBJECT_MAPPER.treeToValue(loadNode(resourcePath), valueType);
+        } catch (final JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static <T> T loadConfig(JsonNode node, Class<T> valueType) {
+    public static <T> T loadConfig(final JsonNode node, final Class<T> valueType) {
         try {
             return new ObjectMapper().treeToValue(node, valueType);
-        } catch (JsonProcessingException e) {
+        } catch (final JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }

@@ -1,7 +1,5 @@
 package dev.emberline.core.render;
 
-import java.lang.Comparable;
-
 public class RenderTask implements Comparable<RenderTask>, Runnable {
     private final RenderPriority renderPriority;
     private boolean zOrderEnabled = false;
@@ -9,7 +7,7 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
     private long secondaryPriority = 0; //lower values get rendered first
     private final Runnable runnable;
 
-    public RenderTask(RenderPriority renderPriority, Runnable runnable) {
+    public RenderTask(final RenderPriority renderPriority, final Runnable runnable) {
         this.renderPriority = renderPriority;
         this.runnable = runnable;
     }
@@ -26,11 +24,11 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
      *
      * @param secondaryPriority the secondary priority value to set
      */
-    public void setSecondaryPriority(long secondaryPriority) {
+    public void setSecondaryPriority(final long secondaryPriority) {
         this.secondaryPriority = secondaryPriority;
     }
 
-    public RenderTask enableZOrder(double lowestUnder) {
+    public RenderTask enableZOrder(final double lowestUnder) {
         this.zOrderEnabled = true;
         this.zOrder = lowestUnder;
         return this;
@@ -38,26 +36,28 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
 
     /**
      * Compares this object with the specified object for order.
+     *
      * @return Returns a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object.
      */
     @Override
-    public int compareTo(RenderTask t1) {
-        int comparison = this.renderPriority.getPriority() - t1.renderPriority.getPriority();
+    public int compareTo(final RenderTask t1) {
+        final int comparison = this.renderPriority.getPriority() - t1.renderPriority.getPriority();
         if (comparison != 0) {
             return comparison;
         }
-        int secondaryComparison = comparisonToInt(this.secondaryPriority - t1.secondaryPriority);
-        int zOrderComparison = comparisonToInt(this.zOrder - t1.zOrder);
+        final int secondaryComparison = comparisonToInt(this.secondaryPriority - t1.secondaryPriority);
+        final int zOrderComparison = comparisonToInt(this.zOrder - t1.zOrder);
         if (zOrderEnabled && zOrderComparison != 0) {
             return zOrderComparison;
         }
         return secondaryComparison;
     }
 
-    private int comparisonToInt(double comparison) {
+    private int comparisonToInt(final double comparison) {
         return comparison < 0 ? -1 : comparison > 0 ? 1 : 0;
     }
-    private int comparisonToInt(long comparison) {
+
+    private int comparisonToInt(final long comparison) {
         return comparison < 0 ? -1 : comparison > 0 ? 1 : 0;
     }
 }

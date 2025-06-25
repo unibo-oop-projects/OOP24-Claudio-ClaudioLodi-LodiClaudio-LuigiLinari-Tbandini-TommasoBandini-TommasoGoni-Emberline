@@ -13,7 +13,7 @@ import dev.emberline.core.render.Renderer;
  * <p>
  * This interface should be implemented by any component that requires
  * rendering capabilities.
- * 
+ *
  * @see dev.emberline.core.render.Renderer
  */
 @FunctionalInterface
@@ -27,8 +27,8 @@ public interface Renderable {
      * that it is being processed on the {@link GameLoop Game Thread}.
      * <p>
      * This method should be the only source of rendering calls to the {@link Renderer}.
-     * 
-     * @see Renderer#addRenderTask(RenderTask) 
+     *
+     * @see Renderer#addRenderTask(RenderTask)
      */
     void render();
 }

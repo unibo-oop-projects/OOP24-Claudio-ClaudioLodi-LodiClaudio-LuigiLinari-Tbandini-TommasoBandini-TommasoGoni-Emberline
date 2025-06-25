@@ -2,7 +2,8 @@
 plugins {
     id("application")
     id("org.openjfx.javafxplugin") version "0.1.0"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    //id("com.github.johnrengelman.shadow") version "8.1.1"
+    //id("org.danilopianini.gradle-java-qa") version "1.75.0"
 }
 
 application {
@@ -17,6 +18,7 @@ dependencies {
     implementation("org.apache.commons:commons-geometry-euclidean:1.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     testImplementation("org.mockito:mockito-core:5.+")
+    testImplementation("org.assertj:assertj-core:4.0.0-M1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
     implementation("com.fasterxml.jackson.module:jackson-module-parameter-names:2.19.0")
@@ -24,7 +26,7 @@ dependencies {
 
 javafx {
     version = "23.0.2"
-    modules = listOf("javafx.controls")
+    modules = listOf("javafx.controls", "javafx.media")
 }
 
 tasks.named<Test>("test") {

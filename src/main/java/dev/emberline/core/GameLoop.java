@@ -1,5 +1,6 @@
 package dev.emberline.core;
 
+import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.input.InputDispatcher;
 import dev.emberline.core.render.Renderer;
 import dev.emberline.core.update.Updater;
@@ -21,6 +22,7 @@ public class GameLoop extends Thread {
     private final Updater updater;
     private final Renderer renderer;
     private final InputDispatcher inputDispatcher;
+    private final EventDispatcher eventDispatcher;
 
     // Game loop settings
     private final long TICKS_PER_SECOND = 20;
@@ -32,16 +34,17 @@ public class GameLoop extends Thread {
     // Game
     private final GameRoot gameRoot;
 
-    private GameLoop(Stage stage, Canvas canvas) {
+    private GameLoop(final Stage stage, final Canvas canvas) {
         super("Game Thread");
         this.stage = stage;
-        gameRoot = new GameRoot();
-        renderer = new Renderer(gameRoot, canvas);
-        updater = new Updater(gameRoot);
-        inputDispatcher = new InputDispatcher(gameRoot);
+        this.eventDispatcher = new EventDispatcher();
+        this.gameRoot = new GameRoot();
+        this.renderer = new Renderer(gameRoot, canvas);
+        this.updater = new Updater(gameRoot);
+        this.inputDispatcher = new InputDispatcher(gameRoot);
     }
 
-    public static synchronized void init(Stage stage, Canvas canvas) {
+    public static synchronized void init(final Stage stage, final Canvas canvas) {
         if (instance != null) {
             throw new IllegalStateException("GameLoop already initialized");
         }
@@ -62,10 +65,10 @@ public class GameLoop extends Thread {
         long lagUpdate = 0;
 
         running.set(true);
-        while(running.get()) {
+        while (running.get()) {
             // Timings
-            long now = System.nanoTime();
-            long elapsed = now - previous;
+            final long now = System.nanoTime();
+            final long elapsed = now - previous;
             previous = now;
             lagUpdate += elapsed;
 
@@ -73,7 +76,7 @@ public class GameLoop extends Thread {
             inputDispatcher.dispatchInputs();
 
             // Update with fixed time step
-            while(lagUpdate >= NS_PER_UPDATE) {
+            while (lagUpdate >= NS_PER_UPDATE) {
                 lagUpdate -= NS_PER_UPDATE;
                 updater.update(NS_PER_UPDATE);
             }
@@ -88,5 +91,9 @@ public class GameLoop extends Thread {
 
     public Renderer getRenderer() {
         return renderer;
+    }
+
+    public EventDispatcher getEventDispatcher() {
+        return eventDispatcher;
     }
 }

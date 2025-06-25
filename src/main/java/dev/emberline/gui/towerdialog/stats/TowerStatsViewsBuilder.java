@@ -36,7 +36,7 @@ public final class TowerStatsViewsBuilder {
         private final Type type;
 
         // Constructor for normal or new stat view
-        private TowerStatView(TowerStat stat, Type type) {
+        private TowerStatView(final TowerStat stat, final Type type) {
             if (type == Type.COMPARED) {
                 throw new IllegalArgumentException("Cannot create a compared stat view without a compared stat");
             }
@@ -44,8 +44,9 @@ public final class TowerStatsViewsBuilder {
             this.type = Objects.requireNonNull(type, "Type cannot be null");
             this.comparedStat = null;
         }
+
         // Constructor for compared stat view
-        private TowerStatView(TowerStat stat, TowerStat comparedStat) {
+        private TowerStatView(final TowerStat stat, final TowerStat comparedStat) {
             this.stat = Objects.requireNonNull(stat, "TowerStat cannot be null");
             this.comparedStat = Objects.requireNonNull(comparedStat, "Compared TowerStat cannot be null");
             this.type = Type.COMPARED;
@@ -80,7 +81,7 @@ public final class TowerStatsViewsBuilder {
 
         // TowerStatView is comparable based on the stat type
         @Override
-        public int compareTo(TowerStatView compared) {
+        public int compareTo(final TowerStatView compared) {
             return this.stat.type().compareTo(compared.stat.type());
         }
     }
@@ -94,9 +95,10 @@ public final class TowerStatsViewsBuilder {
      * @param provider the provider containing tower stats
      * @return this builder instance
      */
-    public TowerStatsViewsBuilder addStats(TowerStatsProvider provider) {
-        for (TowerStat stat : provider.getTowerStats())
+    public TowerStatsViewsBuilder addStats(final TowerStatsProvider provider) {
+        for (final TowerStat stat : provider.getTowerStats()) {
             statsMap.putIfAbsent(stat.type(), stat);
+        }
         return this;
     }
 
@@ -107,9 +109,10 @@ public final class TowerStatsViewsBuilder {
      * @param provider the provider containing tower stats
      * @return this builder instance
      */
-    public TowerStatsViewsBuilder addComparedStats(TowerStatsProvider provider) {
-        for (TowerStat stat : provider.getTowerStats())
+    public TowerStatsViewsBuilder addComparedStats(final TowerStatsProvider provider) {
+        for (final TowerStat stat : provider.getTowerStats()) {
             comparedStatsMap.putIfAbsent(stat.type(), stat);
+        }
         return this;
     }
 
@@ -119,18 +122,18 @@ public final class TowerStatsViewsBuilder {
      * @return an unmodifiable sorted List of tower stat views
      */
     public List<TowerStatView> build() {
-        ArrayList<TowerStatView> views = new ArrayList<>();
+        final List<TowerStatView> views = new ArrayList<>();
 
         // Add NORMAL stat views (stats that are in the stat map but not in the compared stats map or are in both but have the same value)
-        Stream<TowerStatView> normalStatViews = statsMap.values().stream()
+        final Stream<TowerStatView> normalStatViews = statsMap.values().stream()
                 .filter(stat -> !comparedStatsMap.containsKey(stat.type()) || stat.value() == comparedStatsMap.get(stat.type()).value())
                 .map(stat -> new TowerStatView(stat, TowerStatView.Type.NORMAL));
         // Add COMPARED stat views (stats that are in both maps but have different values)
-        Stream<TowerStatView> comparedStatViews = statsMap.values().stream()
+        final Stream<TowerStatView> comparedStatViews = statsMap.values().stream()
                 .filter(stat -> comparedStatsMap.containsKey(stat.type()) && stat.value() != comparedStatsMap.get(stat.type()).value())
                 .map(stat -> new TowerStatView(stat, comparedStatsMap.get(stat.type())));
         // Add NEW stat views (compared stats that are not in the stats map)
-        Stream<TowerStatView> newStatViews = comparedStatsMap.values().stream()
+        final Stream<TowerStatView> newStatViews = comparedStatsMap.values().stream()
                 .filter(stat -> !statsMap.containsKey(stat.type()))
                 .map(stat -> new TowerStatView(stat, TowerStatView.Type.NEW));
         // Combine all views into a single unmodifiable sorted list

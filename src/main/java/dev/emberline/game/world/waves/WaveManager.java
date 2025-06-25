@@ -2,11 +2,8 @@ package dev.emberline.game.world.waves;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,22 +11,26 @@ import java.util.List;
  * A class that keeps track of all the waves, and the current wave.
  */
 public class WaveManager implements IWaveManager {
-    // Loading waves from resources
-    private static final String wavesConfigPath = "/world/waves/waves.json";
-    private static class WavesConfig {
-        @JsonProperty String[] wavePaths;
-    }
-    private final static WavesConfig wavesConfig = ConfigLoader.loadConfig(wavesConfigPath, WavesConfig.class);
 
     private final List<Wave> waves = new ArrayList<>();
     private int currentWaveIndex = 0;
 
+    private static final String WAVES_CONFIG_PATH = "/world/waves/waves.json";
+    private static final WavesConfig WAVES_CONFIG = ConfigLoader.loadConfig(WAVES_CONFIG_PATH, WavesConfig.class);
+
+    // Loading waves from resources
+    private static class WavesConfig {
+        @JsonProperty
+        String[] wavePaths;
+    }
+
     /**
      * Creates a new instance of {@code WaveManager}
+     *
      * @param world is the reference to the World
      */
-    public WaveManager(World world) {
-        for (String wavePath : wavesConfig.wavePaths) {
+    public WaveManager(final World world) {
+        for (final String wavePath : WAVES_CONFIG.wavePaths) {
             if (wavePath == null || wavePath.isEmpty()) {
                 throw new IllegalArgumentException("Wave path cannot be null or empty");
             }
@@ -40,6 +41,7 @@ public class WaveManager implements IWaveManager {
     /**
      * @return the current {@code Wave}
      */
+    @Override
     public Wave getWave() {
         return this.waves.get(currentWaveIndex);
     }
@@ -47,19 +49,21 @@ public class WaveManager implements IWaveManager {
     /**
      * @return the number of the current wave
      */
+    @Override
     public int getCurrentWaveIndex() {
         return currentWaveIndex;
     }
 
     /**
      * Updates the current wave and check weather it is over.
+     *
      * @param elapsed
      */
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         getWave().update(elapsed);
 
-        if (getWave().isOver() && currentWaveIndex+1 < waves.size()) {
+        if (getWave().isOver() && currentWaveIndex + 1 < waves.size()) {
             currentWaveIndex++;
         }
     }

@@ -5,9 +5,9 @@ import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.Building;
 import dev.emberline.game.world.World;
+import dev.emberline.game.world.buildings.tower.Tower;
 import dev.emberline.game.world.buildings.towerPreBuild.TowerPreBuild;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
-import dev.emberline.game.world.buildings.tower.Tower;
 import dev.emberline.gui.towerdialog.NewBuildDialogLayer;
 import dev.emberline.gui.towerdialog.TowerDialogLayer;
 import dev.emberline.utility.Coordinate2D;
@@ -15,39 +15,42 @@ import dev.emberline.utility.Vector2D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
 public class TowersManager implements Updatable, Renderable, Inputable {
 
     private TowerDialogLayer towerDialogLayer;
     private NewBuildDialogLayer newBuildDialogLayer;
 
-    private Set<Building> buildings = new HashSet<>();
+    private final Set<Building> buildings = new HashSet<>();
     private final Collection<TowerPreBuild> toBuild = new LinkedList<>();
 
     private final World world;
     private final IEnemiesManager enemiesManager;
 
-    public TowersManager(World world) {
+    public TowersManager(final World world) {
         this.world = world;
         this.enemiesManager = world.getEnemiesManager();
 
         // TODO
-        buildings.add(new TowerPreBuild(new Coordinate2D(10,10), this));
-        buildings.add(new TowerPreBuild(new Coordinate2D(5,5), this));
-        buildings.add(new TowerPreBuild(new Coordinate2D(18,10), this));
-        buildings.add(new TowerPreBuild(new Coordinate2D(20,7), this));
-        buildings.add(new TowerPreBuild(new Coordinate2D(5,15), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(10, 10), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(5, 5), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(18, 10), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(20, 7), this));
+        buildings.add(new TowerPreBuild(new Coordinate2D(5, 15), this));
     }
 
-    public void openNewBuildDialog(TowerPreBuild tower) {
+    public void openNewBuildDialog(final TowerPreBuild tower) {
         if (newBuildDialogLayer == null || newBuildDialogLayer.getTowerPreBuild() != tower) {
             newBuildDialogLayer = new NewBuildDialogLayer(tower);
             newBuildDialogLayer.setListener(world.getPlayer());
         }
     }
 
-    public void openTowerDialog(Tower tower) {
+    public void openTowerDialog(final Tower tower) {
         if (towerDialogLayer == null || towerDialogLayer.getTower() != tower) {
             towerDialogLayer = new TowerDialogLayer(tower);
             towerDialogLayer.setListener(world.getPlayer());
@@ -62,7 +65,7 @@ public class TowersManager implements Updatable, Renderable, Inputable {
         towerDialogLayer = null;
     }
 
-    public void buildTower(TowerPreBuild preBuild) {
+    public void buildTower(final TowerPreBuild preBuild) {
         if (!buildings.contains(preBuild)) {
             throw new IllegalArgumentException("preBuild must be already added to the buildings set");
         }
@@ -70,7 +73,7 @@ public class TowersManager implements Updatable, Renderable, Inputable {
     }
 
     @Override
-    public void processInput(InputEvent inputEvent) {
+    public void processInput(final InputEvent inputEvent) {
         if (inputEvent.isConsumed()) {
             return;
         }
@@ -113,14 +116,14 @@ public class TowersManager implements Updatable, Renderable, Inputable {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         for (final Building building : buildings) {
             building.update(elapsed);
         }
 
         for (final TowerPreBuild preBuild : toBuild) {
             buildings.remove(preBuild);
-            Vector2D towerLocationBottomLeft = new Coordinate2D(
+            final Vector2D towerLocationBottomLeft = new Coordinate2D(
                     preBuild.getWorldTopLeft().getX(), preBuild.getWorldBottomRight().getY()
             );
             closeNewBuildDialog();

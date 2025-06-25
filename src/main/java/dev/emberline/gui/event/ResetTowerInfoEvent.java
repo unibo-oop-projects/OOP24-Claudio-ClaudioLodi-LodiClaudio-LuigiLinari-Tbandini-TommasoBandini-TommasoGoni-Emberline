@@ -8,7 +8,7 @@ public class ResetTowerInfoEvent extends GuiEvent {
     private final Tower tower;
     private final UpgradableInfo<?, ?> upgradableInfo;
 
-    public ResetTowerInfoEvent(Object source, Tower tower, UpgradableInfo<?, ?> upgradableInfo) {
+    public ResetTowerInfoEvent(final Object source, final Tower tower, final UpgradableInfo<?, ?> upgradableInfo) {
         super(source);
         this.tower = tower;
         this.upgradableInfo = upgradableInfo;

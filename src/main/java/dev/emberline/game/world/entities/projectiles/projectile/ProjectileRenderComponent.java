@@ -16,34 +16,34 @@ import javafx.scene.image.Image;
 
 public class ProjectileRenderComponent implements Renderable {
 
-    private static final double width = 1;
-    private static final double height = 1;
+    private static final double WIDTH = 1;
+    private static final double HEIGHT = 1;
 
     private final Projectile owner;
     private final ProjectileAnimation projectileAnimation;
 
-    public ProjectileRenderComponent(ProjectileInfo projInfo, EnchantmentInfo enchInfo, Projectile owner) {
+    public ProjectileRenderComponent(final ProjectileInfo projInfo, final EnchantmentInfo enchInfo, final Projectile owner) {
         this.owner = owner;
         this.projectileAnimation = new ProjectileAnimation(owner);
     }
 
     @Override
     public void render() {
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem cs = renderer.getWorldCoordinateSystem();
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
-        PositionAndRotation posAndRot = owner.getPositionAndRotation();
-        Vector2D position = posAndRot.position();
-        double rotation = posAndRot.rotation();
+        final PositionAndRotation posAndRot = owner.getPositionAndRotation();
+        final Vector2D position = posAndRot.position();
+        final double rotation = posAndRot.rotation();
 
-        double _width = width * cs.getScale();
-        double _height = height * cs.getScale();
+        final double screenWidth = WIDTH * cs.getScale();
+        final double screenHeight = HEIGHT * cs.getScale();
 
-        double positionScreenX = cs.toScreenX(position.getX());
-        double positionScreenY = cs.toScreenY(position.getY());
+        final double positionScreenX = cs.toScreenX(position.getX());
+        final double positionScreenY = cs.toScreenY(position.getY());
 
-        Image currentFrame = projectileAnimation.getImage();
+        final Image currentFrame = projectileAnimation.getImage();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             gc.save();
@@ -52,7 +52,7 @@ public class ProjectileRenderComponent implements Renderable {
             gc.rotate(rotation);
 
             // make so that the tip of the projectile hits
-            gc.drawImage(currentFrame, -_width/2, -_height/2, _width, _height);
+            gc.drawImage(currentFrame, -screenWidth / 2, -screenHeight / 2, screenWidth, screenHeight);
 
             gc.restore();
         }));

@@ -21,9 +21,9 @@ public interface EnchantmentEffect extends TowerStatsProvider {
     /**
      * Updates the effect applied to the specified enemy based on the elapsed time.
      *
-     * @param enemy  The enemy onto which this effect is applied.
-     * @param elapsedNs  The time elapsed since the last update, in nanoseconds. Used to
-     *                 determine the progression or impact of the effect over time.
+     * @param enemy     The enemy onto which this effect is applied.
+     * @param elapsedNs The time elapsed since the last update, in nanoseconds. Used to
+     *                  determine the progression or impact of the effect over time.
      */
     void updateEffect(IEnemy enemy, long elapsedNs);
 
@@ -35,7 +35,6 @@ public interface EnchantmentEffect extends TowerStatsProvider {
      * temporary modifications to the enemy are reverted.
      *
      * @param enemy The enemy on which the effect is currently applied.
-     *
      * @see #isExpired()
      */
     void endEffect(IEnemy enemy);
@@ -53,7 +52,7 @@ public interface EnchantmentEffect extends TowerStatsProvider {
      * Retrieves the appearance state of an enemy as determined by the effect.
      *
      * @return The {@link EnemyAnimation.EnemyAppearance} value representing the current visual state
-     *         or appearance of the enemy when the effect is applied.
+     * or appearance of the enemy when the effect is applied.
      */
     EnemyAnimation.EnemyAppearance getEnemyAppearance();
 }

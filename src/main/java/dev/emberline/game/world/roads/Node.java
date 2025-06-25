@@ -1,14 +1,15 @@
 package dev.emberline.game.world.roads;
 
+import dev.emberline.utility.Pair;
+import dev.emberline.utility.Vector2D;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import dev.emberline.utility.Pair;
-import dev.emberline.utility.Vector2D;
-
 class Node implements Serializable {
+
     private final Vector2D pos;
     /*
      * List of Nodes this Node is connected to with a given weight each.
@@ -19,7 +20,7 @@ class Node implements Serializable {
     private int cnt;
     private int currIdx;
 
-    public Node(Vector2D pos) {
+    public Node(final Vector2D pos) {
         this.pos = pos;
         this.neighbours = new ArrayList<>();
 
@@ -30,7 +31,7 @@ class Node implements Serializable {
         this.cnt = -1;
     }
 
-    public void addNeighbour(Node neighbour, Integer weight) {
+    public void addNeighbour(final Node neighbour, final Integer weight) {
         neighbours.add(new Pair<>(neighbour, weight));
     }
 

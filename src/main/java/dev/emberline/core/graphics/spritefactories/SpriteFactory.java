@@ -5,5 +5,6 @@ import dev.emberline.core.graphics.spritekeys.SpriteKey;
 
 public interface SpriteFactory<K extends SpriteKey> {
     Sprite loadSprite(K key);
+
     Class<K> getKeyType();
 }

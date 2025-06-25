@@ -14,37 +14,40 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class WorldRenderComponent implements Renderable, Updatable {
+
+    private final WorldBounds worldBounds;
+    private final MapAnimation mapAnimation;
+
     //world bounds
     private record Coordinate(
             @JsonProperty int x,
             @JsonProperty int y
-    ) {}
+    ) {
+    }
+
     private record WorldBounds(
             @JsonProperty Coordinate topLeftBound,
             @JsonProperty Coordinate bottomRightBound
-    ) {}
+    ) {
+    }
 
-    private final WorldBounds worldBounds;
-
-    private final MapAnimation mapAnimation;
-
-    WorldRenderComponent(IWaveManager waveManager) {
+    WorldRenderComponent(final IWaveManager waveManager) {
         worldBounds = ConfigLoader.loadConfig("/world/worldBounds.json", WorldBounds.class);
         this.mapAnimation = new MapAnimation(waveManager);
     }
 
     @Override
     public void render() {
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem cs = renderer.getWorldCoordinateSystem();
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
-        double mapScreenWidth = worldBounds.bottomRightBound.x * cs.getScale();
-        double mapScreenHeight = worldBounds.bottomRightBound.y * cs.getScale();
-        double mapScreenX = cs.toScreenX(worldBounds.topLeftBound.x);
-        double mapScreenY = cs.toScreenY(worldBounds.topLeftBound.y);
+        final double mapScreenWidth = worldBounds.bottomRightBound.x * cs.getScale();
+        final double mapScreenHeight = worldBounds.bottomRightBound.y * cs.getScale();
+        final double mapScreenX = cs.toScreenX(worldBounds.topLeftBound.x);
+        final double mapScreenY = cs.toScreenY(worldBounds.topLeftBound.y);
 
-        Image currentFrame = mapAnimation.getImage();
+        final Image currentFrame = mapAnimation.getImage();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
             gc.drawImage(currentFrame, mapScreenX, mapScreenY, mapScreenWidth, mapScreenHeight);
@@ -52,7 +55,7 @@ public class WorldRenderComponent implements Renderable, Updatable {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         mapAnimation.update(elapsed);
     }
 }

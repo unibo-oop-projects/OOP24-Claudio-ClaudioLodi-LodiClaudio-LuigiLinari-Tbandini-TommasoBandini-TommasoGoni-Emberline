@@ -6,7 +6,7 @@ public class AnimatedSprite implements Sprite {
     private final Image[] images;
     private final int frameTimeNs;
 
-    public AnimatedSprite(Image[] images, int frameTimeNs) {
+    public AnimatedSprite(final Image[] images, final int frameTimeNs) {
         if (images == null || images.length == 0) {
             throw new IllegalArgumentException("Image array cannot be null or empty");
         }
@@ -19,7 +19,7 @@ public class AnimatedSprite implements Sprite {
         return images[0];
     }
 
-    public Image image(int frameIndex) {
+    public Image image(final int frameIndex) {
         return images[frameIndex];
     }
 

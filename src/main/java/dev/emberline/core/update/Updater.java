@@ -6,11 +6,11 @@ public class Updater {
 
     private final Updatable root;
 
-    public Updater(Updatable root) {
+    public Updater(final Updatable root) {
         this.root = root;
     }
 
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         root.update(elapsed);
     }
 }

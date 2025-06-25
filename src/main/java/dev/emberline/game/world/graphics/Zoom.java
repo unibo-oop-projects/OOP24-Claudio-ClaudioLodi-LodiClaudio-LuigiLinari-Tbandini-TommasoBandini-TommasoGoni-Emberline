@@ -10,30 +10,35 @@ import dev.emberline.core.components.Renderable;
  * It requires a file with the proper indications to be used.
  */
 public class Zoom implements Renderable {
-    //zoom configuration
-    private record Translation(
-        @JsonProperty double fromX,
-        @JsonProperty double fromY,
-        @JsonProperty double toX,
-        @JsonProperty double toY
-    ) {}
-    private record Metadata(
-        @JsonProperty Translation topLeft,
-        @JsonProperty Translation bottomRight,
-        @JsonProperty double animationDurationSeconds,
-        @JsonProperty double animationDelaySeconds
-    ) {}
+
     private final Metadata metadata;
 
     private long accumulatorNs = 0;
     private long previousTimeNs = System.nanoTime();
 
-    public Zoom(String wavePath) {
+    //zoom configuration
+    private record Translation(
+            @JsonProperty double fromX,
+            @JsonProperty double fromY,
+            @JsonProperty double toX,
+            @JsonProperty double toY
+    ) {
+    }
+
+    private record Metadata(
+            @JsonProperty Translation topLeft,
+            @JsonProperty Translation bottomRight,
+            @JsonProperty double animationDurationSeconds,
+            @JsonProperty double animationDelaySeconds
+    ) {
+    }
+
+    public Zoom(final String wavePath) {
         metadata = ConfigLoader.loadConfig(wavePath + "cs.json", Metadata.class);
         startAnimation();
     }
 
-    private void updateCS(double regionX1, double regionY1, double regionX2, double regionY2) {
+    private void updateCS(final double regionX1, final double regionY1, final double regionX2, final double regionY2) {
         GameLoop.getInstance().getRenderer().getWorldCoordinateSystem().setRegion(regionX1, regionY1, regionX2, regionY2);
     }
 
@@ -48,10 +53,10 @@ public class Zoom implements Renderable {
 
     @Override
     public void render() {
-        long currentTimeNs = System.nanoTime();
+        final long currentTimeNs = System.nanoTime();
         accumulatorNs += currentTimeNs - previousTimeNs;
         previousTimeNs = currentTimeNs;
-        double t = Math.min((accumulatorNs/1e9) / metadata.animationDurationSeconds, 1.0);
+        final double t = Math.min(accumulatorNs / 1e9 / metadata.animationDurationSeconds, 1.0);
         if (accumulatorNs < 0) { // Animation isn't started yet
             updateCS(metadata.topLeft.fromX, metadata.topLeft.fromY, metadata.bottomRight.fromX, metadata.bottomRight.fromY);
             return;
@@ -59,7 +64,7 @@ public class Zoom implements Renderable {
         if (t >= 1) { // Animation is over
             return;
         }
-        double easedT = easeInOutExpo(t);
+        final double easedT = easeInOutExpo(t);
         updateCS(
                 lerp(metadata.topLeft.fromX, metadata.topLeft.toX, easedT),
                 lerp(metadata.topLeft.fromY, metadata.topLeft.toY, easedT),
@@ -68,11 +73,11 @@ public class Zoom implements Renderable {
         );
     }
 
-    private static double lerp(double a, double b, double t) {
+    private static double lerp(final double a, final double b, final double t) {
         return a + (b - a) * t;
     }
 
-    private static double easeInOutExpo(double x) {
+    private static double easeInOutExpo(final double x) {
         if (x <= 0 || x >= 1) {
             return Math.clamp(x, 0, 1);
         }

@@ -12,20 +12,27 @@ import javafx.scene.image.WritableImage;
 import java.util.Objects;
 
 public class SingleSpriteFactory implements SpriteFactory<SingleSpriteKey> {
+
+    private static final JsonNode CONFIGS_ROOT = ConfigLoader.loadNode("/sprites/singleSprites.json");
+
     private static class SpriteMetadata {
-        @JsonProperty String filename;
-        @JsonProperty int x;
-        @JsonProperty int y;
-        @JsonProperty int width;
-        @JsonProperty int height;
+        @JsonProperty
+        String filename;
+        @JsonProperty
+        int x;
+        @JsonProperty
+        int y;
+        @JsonProperty
+        int width;
+        @JsonProperty
+        int height;
     }
-    private static final JsonNode configsRoot = ConfigLoader.loadNode("/sprites/singleSprites.json");
 
     @Override
-    public Sprite loadSprite(SingleSpriteKey uiSpriteKey) {
-        JsonNode currentNode = configsRoot.get(uiSpriteKey.name());
-        SpriteMetadata spriteMetadata = ConfigLoader.loadConfig(currentNode, SpriteMetadata.class);
-        Image spriteAtlas = new Image(Objects.requireNonNull(SingleSpriteFactory.class.getResourceAsStream(spriteMetadata.filename)));
+    public Sprite loadSprite(final SingleSpriteKey uiSpriteKey) {
+        final JsonNode currentNode = CONFIGS_ROOT.get(uiSpriteKey.name());
+        final SpriteMetadata spriteMetadata = ConfigLoader.loadConfig(currentNode, SpriteMetadata.class);
+        final Image spriteAtlas = new Image(Objects.requireNonNull(SingleSpriteFactory.class.getResourceAsStream(spriteMetadata.filename)));
         return new SingleSprite(new WritableImage(spriteAtlas.getPixelReader(), spriteMetadata.x, spriteMetadata.y, spriteMetadata.width, spriteMetadata.height));
     }
 

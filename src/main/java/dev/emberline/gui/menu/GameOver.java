@@ -1,7 +1,6 @@
 package dev.emberline.gui.menu;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.graphics.SpriteLoader;
@@ -13,7 +12,6 @@ import dev.emberline.core.render.Renderer;
 import dev.emberline.game.GameState;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
-import dev.emberline.gui.event.CloseOptionsEvent;
 import dev.emberline.gui.event.SetMainMenuEvent;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -30,30 +28,33 @@ public class GameOver extends GuiLayer implements GameState {
         private static final double TITLE_X = (BG_WIDTH - TITLE_WIDTH) / 2;
         private static final double TITLE_Y = (BG_HEIGHT - TITLE_HEIGHT) / 2 - 3.5;
         // Start Button
-        private static final double scale_factor = 2.5;
-        private static final double BTN_START_HEIGHT = 1.5 * scale_factor;
-        private static final double BTN_START_WIDTH = 3.5 * scale_factor;
+        private static final double SCALE_FACTOR = 2.5;
+        private static final double BTN_START_HEIGHT = 1.5 * SCALE_FACTOR;
+        private static final double BTN_START_WIDTH = 3.5 * SCALE_FACTOR;
         private static final double BTN_START_X = (BG_WIDTH - BTN_START_WIDTH) / 2;
         private static final double BTN_START_Y = (BG_HEIGHT - BTN_START_HEIGHT) / 2;
         // GameOver Button
-        private static final double BTN_OPTIONS_HEIGHT = 1.5 * scale_factor;
-        private static final double BTN_OPTIONS_WIDTH = 3.5 * scale_factor;
+        private static final double BTN_OPTIONS_HEIGHT = 1.5 * SCALE_FACTOR;
+        private static final double BTN_OPTIONS_WIDTH = 3.5 * SCALE_FACTOR;
         private static final double BTN_OPTIONS_X = (BG_WIDTH - BTN_OPTIONS_WIDTH) / 2;
         private static final double BTN_OPTIONS_Y = BTN_START_Y + BTN_START_HEIGHT - 0.25;
     }
 
     // GameOver bounds
     private record Coordinate(
-        @JsonProperty int x,
-        @JsonProperty int y
-    ) {}
-    private record GameOverBounds(
-        @JsonProperty Coordinate topLeftBound,
-        @JsonProperty Coordinate bottomRightBound
-    ) {}
+            @JsonProperty int x,
+            @JsonProperty int y
+    ) {
+    }
 
-   private final GameOverBounds gameOverBounds;
-    
+    private record GameOverBounds(
+            @JsonProperty Coordinate topLeftBound,
+            @JsonProperty Coordinate bottomRightBound
+    ) {
+    }
+
+    private final GameOverBounds gameOverBounds;
+
     // TODO refactor these constructors 
     public GameOver() {
         this(ConfigLoader.loadConfig("/gui/gameOver/gameOverBounds.json", GameOverBounds.class));
@@ -61,14 +62,14 @@ public class GameOver extends GuiLayer implements GameState {
 
     // GameOver button
     private void addMainMenuButton() {
-        GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X,
-            Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH, 
-            Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.DEFAULT_SIGN_BUTTON).image());
+        final GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X,
+                Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH,
+                Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.DEFAULT_SIGN_BUTTON).image());
         optionsButton.setOnClick(() -> throwEvent(new SetMainMenuEvent(this)));
         super.buttons.add(optionsButton);
     }
 
-    private GameOver(GameOverBounds gameOverBounds) {
+    private GameOver(final GameOverBounds gameOverBounds) {
         super(gameOverBounds.topLeftBound.x, gameOverBounds.topLeftBound.y, gameOverBounds.bottomRightBound.x - gameOverBounds.topLeftBound.x, gameOverBounds.bottomRightBound.y - gameOverBounds.topLeftBound.y);
         this.gameOverBounds = gameOverBounds;
     }
@@ -76,19 +77,19 @@ public class GameOver extends GuiLayer implements GameState {
     @Override
     public void render() {
         // Render background
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem cs = renderer.getGuiCoordinateSystem();
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem cs = renderer.getGuiCoordinateSystem();
 
         addMainMenuButton();
 
-        double menuScreenWidth = gameOverBounds.bottomRightBound.x * cs.getScale();
-        double menuScreenHeight = gameOverBounds.bottomRightBound.y * cs.getScale();
-        double menuScreenX = cs.toScreenX(gameOverBounds.topLeftBound.x);
-        double menuScreenY = cs.toScreenY(gameOverBounds.topLeftBound.y);
+        final double menuScreenWidth = gameOverBounds.bottomRightBound.x * cs.getScale();
+        final double menuScreenHeight = gameOverBounds.bottomRightBound.y * cs.getScale();
+        final double menuScreenX = cs.toScreenX(gameOverBounds.topLeftBound.x);
+        final double menuScreenY = cs.toScreenY(gameOverBounds.topLeftBound.y);
 
-        Image gameOverBackground = SpriteLoader.loadSprite(SingleSpriteKey.GAME_OVER_BACKGROUND).image();
-        Image gameOverImage = SpriteLoader.loadSprite(SingleSpriteKey.GAME_OVER).image();
+        final Image gameOverBackground = SpriteLoader.loadSprite(SingleSpriteKey.GAME_OVER_BACKGROUND).image();
+        final Image gameOverImage = SpriteLoader.loadSprite(SingleSpriteKey.GAME_OVER).image();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
             gc.drawImage(gameOverBackground, menuScreenX, menuScreenY, menuScreenWidth, menuScreenHeight);
@@ -99,7 +100,7 @@ public class GameOver extends GuiLayer implements GameState {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
     }
-    
+
 }

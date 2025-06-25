@@ -16,7 +16,7 @@ public class MapAnimation implements Updatable {
     private long accumulatedTimeNs = 0;
     private int currentWaveIndex = -1;
 
-    public MapAnimation(IWaveManager waveManager) {
+    public MapAnimation(final IWaveManager waveManager) {
         this.waveManager = waveManager;
         updateAnimatedSprite();
     }
@@ -40,14 +40,16 @@ public class MapAnimation implements Updatable {
     }
 
     @Override
-    public void update(long elapsed) {
-        if (isAnimationOver()) return;
+    public void update(final long elapsed) {
+        if (isAnimationOver()) {
+            return;
+        }
 
         updateAnimatedSprite();
 
-        long frameTimeNs = animatedSprite.getFrameTimeNs();
+        final long frameTimeNs = animatedSprite.getFrameTimeNs();
         accumulatedTimeNs += elapsed;
-        while(!isAnimationOver() && accumulatedTimeNs >= frameTimeNs) {
+        while (!isAnimationOver() && accumulatedTimeNs >= frameTimeNs) {
             accumulatedTimeNs -= frameTimeNs;
             frameIndex++;
         }

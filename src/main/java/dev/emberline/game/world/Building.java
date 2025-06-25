@@ -12,27 +12,36 @@ import javafx.scene.input.MouseEvent;
 public abstract class Building implements Renderable, Updatable, Inputable {
 
     public abstract Vector2D getWorldTopLeft();
+
     public abstract Vector2D getWorldBottomRight();
+
     protected abstract void clicked();
 
     @Override
-    public void processInput(InputEvent inputEvent) {
-        if (inputEvent.isConsumed()) return;
-        if (!(inputEvent instanceof MouseEvent mouse)) return;
-        if (mouse.getEventType() != MouseEvent.MOUSE_CLICKED) return;
+    public void processInput(final InputEvent inputEvent) {
+        if (inputEvent.isConsumed()) {
+            return;
+        }
+        if (!(inputEvent instanceof final MouseEvent mouse)) {
+            return;
+        }
+        if (mouse.getEventType() != MouseEvent.MOUSE_CLICKED) {
+            return;
+        }
 
-        CoordinateSystem worldCS = GameLoop.getInstance().getRenderer().getWorldCoordinateSystem();
-        double worldX = worldCS.toWorldX(mouse.getX());
-        double worldY = worldCS.toWorldY(mouse.getY());
+        final CoordinateSystem worldCS = GameLoop.getInstance().getRenderer().getWorldCoordinateSystem();
+        final double worldX = worldCS.toWorldX(mouse.getX());
+        final double worldY = worldCS.toWorldY(mouse.getY());
         if (isInside(worldX, worldY)) {
             clicked();
             inputEvent.consume();
         }
     }
 
-    private boolean isInside(double worldX, double worldY) {
-        if (worldX < getWorldTopLeft().getX() || worldX > getWorldBottomRight().getX()) return false;
-        if (worldY < getWorldTopLeft().getY() || worldY > getWorldBottomRight().getY()) return false;
-        return true;
+    private boolean isInside(final double worldX, final double worldY) {
+        if (worldX < getWorldTopLeft().getX() || worldX > getWorldBottomRight().getX()) {
+            return false;
+        }
+        return worldY >= getWorldTopLeft().getY() && worldY <= getWorldBottomRight().getY();
     }
 }

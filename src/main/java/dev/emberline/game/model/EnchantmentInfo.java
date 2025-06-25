@@ -20,21 +20,27 @@ import java.util.Optional;
  *
  * @param type  The type of the enchantment.
  * @param level The level of the enchantment, which can be between 0 and {@link #MAX_LEVEL}.
- *
  * @see EnchantmentEffect
  */
-public record EnchantmentInfo(Type type, int level) implements TowerStatsProvider, UpgradableInfo<EnchantmentInfo.Type, EnchantmentInfo> {
+public record EnchantmentInfo(Type type,
+                              int level) implements TowerStatsProvider, UpgradableInfo<EnchantmentInfo.Type, EnchantmentInfo> {
 
     /**
      * Represents the type of enchantment in the game.
      * The type of enchantment influences its {@code EnchantmentEffect}.
      */
     public enum Type implements UpgradableInfo.InfoType {
-        /** The default enchantment type. It has no effect and cannot be upgraded. */
+        /**
+         * The default enchantment type. It has no effect and cannot be upgraded.
+         */
         BASE,
-        /** Represents a fire enchantment that deals a {@link BurnEffect}. */
+        /**
+         * Represents a fire enchantment that deals a {@link BurnEffect}.
+         */
         FIRE,
-        /** Represents an ice enchantment that deals a {@link SlowEffect}. */
+        /**
+         * Represents an ice enchantment that deals a {@link SlowEffect}.
+         */
         ICE
     }
 
@@ -48,11 +54,10 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
     /**
      * Constructs a new {@code EnchantmentInfo} object with validation of its parameters.
      *
-     * @param type the type of the enchantment. Must not be {@code null}.
+     * @param type  the type of the enchantment. Must not be {@code null}.
      * @param level the upgrade level of the enchantment.
      *              Must be in the range of 0 to {@code MAX_LEVEL}.
      *              For {@code Type.BASE}, the level must be 0 as it does not allow upgrades.
-     *
      * @throws IllegalArgumentException if parameters do not meet the specified constraints.
      */
     public EnchantmentInfo {
@@ -106,7 +111,7 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
      * {@inheritDoc}
      */
     @Override
-    public EnchantmentInfo getChangeType(Type newType) {
+    public EnchantmentInfo getChangeType(final Type newType) {
         if (canChangeType()) {
             return new EnchantmentInfo(newType, 0);
         }
@@ -121,20 +126,20 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
         return new EnchantmentInfo(Type.BASE, 0);
     }
 
-    private static class Metadata {
-        @JsonProperty("baseUpgradeCost")
-        private int BASE_UPGRADE_COST;
-        @JsonProperty("upgradeCosts")
-        private int[] UPGRADE_COSTS;
-        @JsonProperty("resetRefunds")
-        private int[] RESET_REFUNDS;
-        @JsonProperty("effectDuration")
-        private double[] EFFECT_DURATION;
-        @JsonProperty("fireDamagePerSecond")
-        private double[] FIRE_DAMAGE_PER_SECOND;
-        @JsonProperty("iceSlowingFactor")
-        private double[] ICE_SLOWING_FACTOR;
-    }
+    private record Metadata (
+        @JsonProperty
+        int baseUpgradeCost,
+        @JsonProperty
+        int[] upgradeCosts,
+        @JsonProperty
+        int[] resetRefunds,
+        @JsonProperty
+        double[] effectDuration,
+        @JsonProperty
+        double[] fireDamagePerSecond,
+        @JsonProperty
+        double[] iceSlowingFactor
+    ) {}
 
     private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/enchantmentInfoStats.json", Metadata.class);
 
@@ -143,8 +148,10 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
      */
     @Override
     public int getUpgradeCost() {
-        if (type == Type.BASE) return metadata.BASE_UPGRADE_COST;
-        return metadata.UPGRADE_COSTS[level];
+        if (type == Type.BASE) {
+            return metadata.baseUpgradeCost;
+        }
+        return metadata.upgradeCosts[level];
     }
 
     /**
@@ -152,8 +159,10 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
      */
     @Override
     public int getRefundValue() {
-        if (type == Type.BASE) return 0;
-        return metadata.RESET_REFUNDS[level];
+        if (type == Type.BASE) {
+            return 0;
+        }
+        return metadata.resetRefunds[level];
     }
 
     /**
@@ -163,13 +172,13 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
      * If an enchantment type is {@code BASE}, no effect is returned.
      *
      * @return An {@code Optional<EnchantmentEffect>} that contains the related effect if applicable,
-     *         or an empty {@code Optional} if no effect is associated with the enchantment.
+     * or an empty {@code Optional} if no effect is associated with the enchantment.
      */
     public Optional<EnchantmentEffect> getEffect() {
-        double duration = metadata.EFFECT_DURATION[level];
+        final double duration = metadata.effectDuration[level];
         return Optional.ofNullable(switch (type) {
-            case Type.ICE -> new SlowEffect(metadata.ICE_SLOWING_FACTOR[level], duration);
-            case Type.FIRE -> new BurnEffect(metadata.FIRE_DAMAGE_PER_SECOND[level], duration);
+            case Type.ICE -> new SlowEffect(metadata.iceSlowingFactor[level], duration);
+            case Type.FIRE -> new BurnEffect(metadata.fireDamagePerSecond[level], duration);
             case Type.BASE -> null;
         });
     }
@@ -179,7 +188,7 @@ public record EnchantmentInfo(Type type, int level) implements TowerStatsProvide
      */
     @Override
     public List<TowerStat> getTowerStats() {
-        List<TowerStat> towerStats = new ArrayList<>();
+        final List<TowerStat> towerStats = new ArrayList<>();
 
         // Optional effect
         getEffect().ifPresent(effect -> towerStats.addAll(effect.getTowerStats()));

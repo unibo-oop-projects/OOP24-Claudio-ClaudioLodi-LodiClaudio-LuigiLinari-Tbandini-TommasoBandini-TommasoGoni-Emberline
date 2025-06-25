@@ -15,7 +15,7 @@ import java.util.List;
  * @see dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation.EnemyAppearance#BURNING
  */
 public class BurnEffect implements EnchantmentEffect {
-    
+
     private final double damagePerSecond;
     private final double damagePerNs;
 
@@ -29,11 +29,11 @@ public class BurnEffect implements EnchantmentEffect {
      * Constructs a {@code BurnEffect} that applies burn damage to an enemy over a specified duration.
      *
      * @param damagePerSecond The amount of damage dealt every second, measured in hit points (hp).
-     * @param duration The total duration of the burn effect in seconds.
+     * @param duration        The total duration of the burn effect in seconds.
      */
-    public BurnEffect(double damagePerSecond, double duration) {
+    public BurnEffect(final double damagePerSecond, final double duration) {
         this.damagePerSecond = damagePerSecond;
-        this.damagePerNs = (damagePerSecond / 1_000_000_000);
+        this.damagePerNs = damagePerSecond / 1_000_000_000;
 
         this.duration = duration;
         this.durationNs = (long) (duration * 1_000_000_000);
@@ -43,7 +43,7 @@ public class BurnEffect implements EnchantmentEffect {
      * {@inheritDoc}
      */
     @Override
-    public void updateEffect(IEnemy enemy, long elapsedNs) {
+    public void updateEffect(final IEnemy enemy, final long elapsedNs) {
         if (isExpired) {
             return;
         }
@@ -59,7 +59,8 @@ public class BurnEffect implements EnchantmentEffect {
     /**
      * {@inheritDoc}
      */
-    public void endEffect(IEnemy enemy) {
+    @Override
+    public void endEffect(final IEnemy enemy) {
         // No specific end effect for burn; it naturally expires after the duration.
         isExpired = true;
     }

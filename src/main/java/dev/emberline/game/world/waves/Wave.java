@@ -1,17 +1,17 @@
 package dev.emberline.game.world.waves;
 
-import java.util.List;
-import java.util.Optional;
-
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
+import dev.emberline.game.world.World;
 import dev.emberline.game.world.graphics.Fog;
 import dev.emberline.game.world.graphics.Zoom;
-import dev.emberline.game.world.World;
 import dev.emberline.game.world.roads.Roads;
 import dev.emberline.game.world.spawnpoints.Spawnpoints;
 import dev.emberline.game.world.spawnpoints.Spawnpoints.EnemyToSpawn;
 import dev.emberline.utility.Vector2D;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The Wave class contains all the elements that characterize a single wave
@@ -29,10 +29,10 @@ public class Wave implements Updatable, Renderable {
     private long accumulatorNs = 0;
 
     /**
-     * @param world the world in which the wave is being played
+     * @param world             the world in which the wave is being played
      * @param waveDirectoryPath the path of the directory containing the wave files
      */
-    public Wave(World world, String waveDirectoryPath) {
+    public Wave(final World world, final String waveDirectoryPath) {
         this.world = world;
         this.roads = new Roads(waveDirectoryPath);
         this.spawnpoints = new Spawnpoints(waveDirectoryPath);
@@ -42,10 +42,11 @@ public class Wave implements Updatable, Renderable {
 
     /**
      * This method is supposed to be used by entities to find their path in the map.
+     *
      * @param pos is the current position of the entity
      * @return next node to go to
      */
-    public Optional<Vector2D> getNext(Vector2D pos) {
+    public Optional<Vector2D> getNext(final Vector2D pos) {
         return roads.getNextNode(pos);
     }
 
@@ -57,12 +58,12 @@ public class Wave implements Updatable, Renderable {
     }
 
     private void sendEnemies() {
-        List<EnemyToSpawn> enemiesToSpawn = spawnpoints.retrieveEnemiesToSpawnNanoseconds(accumulatorNs);
+        final List<EnemyToSpawn> enemiesToSpawn = spawnpoints.retrieveEnemiesToSpawnNanoseconds(accumulatorNs);
 
-        for (EnemyToSpawn enemyToSpawn : enemiesToSpawn) {
+        for (final EnemyToSpawn enemyToSpawn : enemiesToSpawn) {
             world.getEnemiesManager().addEnemy(
-                enemyToSpawn.spawnLocation(),
-                enemyToSpawn.enemyType()
+                    enemyToSpawn.spawnLocation(),
+                    enemyToSpawn.enemyType()
             );
         }
     }
@@ -72,11 +73,14 @@ public class Wave implements Updatable, Renderable {
      * at the current time @param elapsed
      */
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         accumulatorNs += elapsed;
         sendEnemies();
     }
 
+    /**
+     * Renders the fog and zoom
+     */
     @Override
     public void render() {
         if (!firstRender) {
@@ -89,7 +93,7 @@ public class Wave implements Updatable, Renderable {
         }
     }
 
-    public void startWaveAnimations() {
+    private void startWaveAnimations() {
         zoom.startAnimation();
         fog.startAnimation();
     }

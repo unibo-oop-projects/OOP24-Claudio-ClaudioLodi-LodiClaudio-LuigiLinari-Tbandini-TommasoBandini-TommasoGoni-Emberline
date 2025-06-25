@@ -1,44 +1,50 @@
 package dev.emberline.game.world.entities.enemies.enemy;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
 import dev.emberline.utility.Vector2D;
 
+import java.util.List;
+import java.util.Locale;
+
 public abstract class AbstractEnemy implements IEnemy {
 
+    private final EnemyUpdateComponent updateComponent;
+    private final EnemyRenderComponent renderComponent;
+
     protected static class Metadata {
-        @JsonProperty public double tileWidth;
-        @JsonProperty public double tileHeight;
-        @JsonProperty public double fullHealth;
-        @JsonProperty public double speed;
+        @JsonProperty
+        public double tileWidth;
+        @JsonProperty
+        public double tileHeight;
+        @JsonProperty
+        public double fullHealth;
+        @JsonProperty
+        public double speed;
     }
 
     public enum FacingDirection {
         UP, RIGHT, DOWN, LEFT;
 
         @JsonCreator
-        public static FacingDirection fromString(String direction) {
-            return FacingDirection.valueOf(direction.toUpperCase());
+        public static FacingDirection fromString(final String direction) {
+            return FacingDirection.valueOf(direction.toUpperCase(Locale.US));
         }
     }
 
-    private final EnemyUpdateComponent updateComponent;
-    private final EnemyRenderComponent renderComponent;
-
-    public AbstractEnemy(Vector2D spawnPoint, World world) {
+    public AbstractEnemy(final Vector2D spawnPoint, final World world) {
         this.updateComponent = new EnemyUpdateComponent(spawnPoint, world, this);
         this.renderComponent = new EnemyRenderComponent(this);
     }
 
     abstract protected Metadata getMetadata();
+
     abstract protected EnemyType getEnemyType();
 
+    @Override
     public double getWidth() {
         return getMetadata().tileWidth;
     }
@@ -48,6 +54,7 @@ public abstract class AbstractEnemy implements IEnemy {
         return updateComponent.getHealth();
     }
 
+    @Override
     public double getHeight() {
         return getMetadata().tileHeight;
     }
@@ -61,7 +68,7 @@ public abstract class AbstractEnemy implements IEnemy {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         updateComponent.update(elapsed);
     }
 
@@ -71,19 +78,19 @@ public abstract class AbstractEnemy implements IEnemy {
     }
 
     @Override
-    public void dealDamage(double damage) {
+    public void dealDamage(final double damage) {
         updateComponent.dealDamage(damage);
     }
 
     @Override
-    public void applyEffect(EnchantmentEffect effect) {
+    public void applyEffect(final EnchantmentEffect effect) {
         updateComponent.applyEffect(effect);
     }
 
     @Override
-    public void setSlowFactor(double slowFactor) {
+    public void setSlowFactor(final double slowFactor) {
         updateComponent.setSlowFactor(slowFactor);
-    };
+    }
 
     @Override
     public boolean isDead() {
@@ -101,7 +108,7 @@ public abstract class AbstractEnemy implements IEnemy {
      * That is described by a list of {@code UniformMotion}
      */
     @Override
-    public List<UniformMotion> getMotionUntil(long time) {
+    public List<UniformMotion> getMotionUntil(final long time) {
         return updateComponent.getMotionUntil(time);
     }
 

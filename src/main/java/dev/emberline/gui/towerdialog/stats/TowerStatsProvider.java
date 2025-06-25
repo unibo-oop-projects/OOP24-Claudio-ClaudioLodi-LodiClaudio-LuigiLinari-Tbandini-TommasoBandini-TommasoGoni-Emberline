@@ -11,5 +11,10 @@ import java.util.List;
  * of the tower's statistics in {@link dev.emberline.gui.towerdialog.TowerDialogLayer}.
  */
 public interface TowerStatsProvider {
+    /**
+     * Retrieves the list of tower statistics.
+     *
+     * @return a list of {@link TowerStat} objects representing the tower's stats.
+     */
     List<TowerStat> getTowerStats();
 }

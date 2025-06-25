@@ -1,7 +1,7 @@
 package dev.emberline.core;
 
 import dev.emberline.core.input.InputDispatcher;
-
+import dev.emberline.core.sounds.BackGroundMusic;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -19,26 +19,27 @@ public class EmberlineApp extends Application {
     private static final long MIN_WINDOW_WIDTH = 400;
     private static final long MIN_WINDOW_HEIGHT = 400;
     private GameLoop gameLoop;
+    private BackGroundMusic backGroundMusic;
 
     @Override
-    public void start(Stage stage) {
+    public void start(final Stage stage) {
         // The root node of the scene graph is a Pane.
         // A pane's parent will resize the pane within the pane's resizable range during layout
-        Pane root = new Pane();
+        final Pane root = new Pane();
         root.setBackground(Background.fill(Color.BLACK));
 
         // Canvas
-        Canvas canvas = new Canvas(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+        final Canvas canvas = new Canvas(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
         canvas.widthProperty().bind(root.widthProperty());
         canvas.heightProperty().bind(root.heightProperty());
         root.getChildren().add(canvas);
-        
+
         // Scene
-        Scene scene = new Scene(root);
+        final Scene scene = new Scene(root);
         stage.setScene(scene);
 
         // Routing of input events
-        EventHandler<InputEvent> eventHandler = InputDispatcher::sendInput;
+        final EventHandler<InputEvent> eventHandler = InputDispatcher::sendInput;
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
         scene.addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
         // MouseLocation events
@@ -58,13 +59,19 @@ public class EmberlineApp extends Application {
         GameLoop.init(stage, canvas);
         this.gameLoop = GameLoop.getInstance();
         this.gameLoop.start();
+        //loops musical track of the game
+        this.backGroundMusic = new BackGroundMusic();
+        this.backGroundMusic.start();
     }
 
-    /** Calling Platform.exit() is the preferred way to explicitly terminate a JavaFX Application.
-     *  Directly calling System.exit(int) is an acceptable alternative, but doesn't allow the Application stop() method to run.
+    /**
+     * Calling Platform.exit() is the preferred way to explicitly terminate a JavaFX Application.
+     * Directly calling System.exit(int) is an acceptable alternative, but doesn't allow the Application stop() method to run.
      */
     @Override
     public void stop() {
-        if (gameLoop != null) gameLoop.running.set(false);
+        if (gameLoop != null) {
+            gameLoop.running.set(false);
+        }
     }
 }

@@ -1,30 +1,31 @@
 package dev.emberline.core.input;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import dev.emberline.core.components.Inputable;
 import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 public class InputDispatcher {
 
     // This queue will be filled by JavaFX and polled by the Game Loop
-    private static final ConcurrentLinkedQueue<InputEvent> inputs = new ConcurrentLinkedQueue<>();
+    private static final Queue<InputEvent> inputs = new ConcurrentLinkedQueue<>();
     private final Inputable root;
 
-    public InputDispatcher(Inputable root) {
+    public InputDispatcher(final Inputable root) {
         this.root = root;
     }
 
-    public static void sendInput(InputEvent input) {
+    public static void sendInput(final InputEvent input) {
         // MouseLocation events
-        if (input instanceof MouseEvent mouseEvent) {
-            EventType<? extends MouseEvent> type = mouseEvent.getEventType();
+        if (input instanceof final MouseEvent mouseEvent) {
+            final EventType<? extends MouseEvent> type = mouseEvent.getEventType();
 
             if (type == MouseEvent.MOUSE_MOVED) {
-                MouseLocation.setMouseLocation(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+                MouseLocation.setLocation(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
                 mouseEvent.consume();
                 return;
             }
@@ -47,7 +48,7 @@ public class InputDispatcher {
     // Maybe other than having a non-static root, it may be passed as a parameter to this function
     public void dispatchInputs() {
         while (!inputs.isEmpty()) {
-            InputEvent inputEvent = inputs.poll();
+            final InputEvent inputEvent = inputs.poll();
 
             root.processInput(inputEvent);
         }

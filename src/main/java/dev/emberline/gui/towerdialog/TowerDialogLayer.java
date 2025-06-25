@@ -2,8 +2,8 @@ package dev.emberline.gui.towerdialog;
 
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.graphics.SpriteLoader;
-import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
+import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
@@ -34,6 +34,19 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TowerDialogLayer extends GuiLayer {
+    // The Tower linked to this dialog layer
+    private final Tower tower;
+    // The current state of what is displayed in the dialog
+    private EnchantmentInfo displayedEnchantment = null;
+    private ProjectileInfo displayedProjectile = null;
+    // Initial aim type is set to FIRST
+    private AimType displayedAimType = AimType.FIRST;
+    private AimType currentAimType = displayedAimType;
+    // Tower Stats Views
+    private List<TowerStatView> statsViews = null;
+    // Data to display on button hover
+    private final Map<GuiButton, TowerStatsProvider> hoverData = new HashMap<>();
+
     /**
      * Defines layout constants used for specifying GUI element dimensions.
      * The numbers are relative to the GUI coordinate system.
@@ -66,6 +79,7 @@ public class TowerDialogLayer extends GuiLayer {
             private static final double SV_TITLE_HEIGHT_FACTOR = 0.475; // title height relative to the height of the stat view
             private static final double SV_VALUE_WIDTH_FACTOR = 0.5; // value width relative to the title width
         }
+
         // Background
         private static final double BG_WIDTH = 9.2;
         private static final double BG_HEIGHT = 15.34;
@@ -76,6 +90,7 @@ public class TowerDialogLayer extends GuiLayer {
         private static final double TITLE_HEIGHT = 2 * 0.52;
         private static final double TITLE_X = BG_X + (BG_WIDTH - TITLE_WIDTH) / 2;
         private static final double TITLE_Y = BG_Y + 2;
+
         // Selectors
         private static class Selector {
             private static final double TOP_MARGIN = 0.2;
@@ -137,20 +152,7 @@ public class TowerDialogLayer extends GuiLayer {
         private static final ColorAdjust SELECTOR_TITLE = new ColorAdjust(0.15, 0.9, -0.6, 0);
     }
 
-    // The Tower linked to this dialog layer
-    private final Tower tower;
-    // The current state of what is displayed in the dialog
-    private EnchantmentInfo displayedEnchantment = null;
-    private ProjectileInfo displayedProjectile = null;
-    // Initial aim type is set to FIRST
-    private AimType displayedAimType = AimType.FIRST;
-    private AimType currentAimType = displayedAimType;
-    // Tower Stats Views
-    private List<TowerStatView> statsViews = null;
-    // Data to display on button hover
-    private final Map<GuiButton, TowerStatsProvider> hoverData = new HashMap<>();
-
-    public TowerDialogLayer(Tower tower) {
+    public TowerDialogLayer(final Tower tower) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         this.tower = tower;
         updateLayout();
@@ -184,14 +186,14 @@ public class TowerDialogLayer extends GuiLayer {
                 new ProjectileInfo.Type[]{ProjectileInfo.Type.SMALL, ProjectileInfo.Type.BIG},
                 Layout.Selector.TOTAL_HEIGHT
         );
-        for (GuiButton button : buttons) {
+        for (final GuiButton button : buttons) {
             button.setOnMouseEnter(this::refreshHoverData);
             button.setOnMouseLeave(this::refreshHoverData);
         }
     }
 
     private void addAimButton() {
-        GuiButton aimButton = new TextGuiButton(
+        final GuiButton aimButton = new TextGuiButton(
                 Layout.AimButton.BTN_X, Layout.AimButton.BTN_Y,
                 Layout.AimButton.BTN_WIDTH, Layout.AimButton.BTN_HEIGHT,
                 SpriteLoader.loadSprite(SingleSpriteKey.AIM_BUTTON).image(),
@@ -205,14 +207,14 @@ public class TowerDialogLayer extends GuiLayer {
         buttons.add(aimButton);
     }
 
-    private <T extends UpgradableInfo.InfoType, S extends UpgradableInfo<T, S>> void addSelectorButtons(UpgradableInfo<T,S> element, Image[] typeImages, T[] typeValues, double yOffset) {
+    private <T extends UpgradableInfo.InfoType, S extends UpgradableInfo<T, S>> void addSelectorButtons(final UpgradableInfo<T, S> element, final Image[] typeImages, final T[] typeValues, final double yOffset) {
         // if the current element can change type, we add the two type buttons
         if (element.canChangeType()) {
-            double[] x = {Layout.Selector.TYPE_BTN_X, Layout.Selector.TYPE_BTN_2_X};
-            double y = Layout.Selector.TYPE_BTN_Y + yOffset;
+            final double[] x = {Layout.Selector.TYPE_BTN_X, Layout.Selector.TYPE_BTN_2_X};
+            final double y = Layout.Selector.TYPE_BTN_Y + yOffset;
             for (int t = 0; t < typeValues.length; ++t) {
-                T typeValue = typeValues[t];
-                GuiButton button = new PricingGuiButton(
+                final T typeValue = typeValues[t];
+                final GuiButton button = new PricingGuiButton(
                         x[t], y, Layout.Selector.TYPE_BTN_WIDTH, Layout.Selector.TYPE_BTN_HEIGHT,
                         typeImages[t], -element.getUpgradeCost(), TextLayoutType.LEFT
                 );
@@ -237,7 +239,7 @@ public class TowerDialogLayer extends GuiLayer {
                         "MAX", TextLayoutType.CENTER
                 );
             }
-            GuiButton resetButton = new PricingGuiButton(
+            final GuiButton resetButton = new PricingGuiButton(
                     Layout.Selector.RESET_BTN_X, Layout.Selector.RESET_BTN_Y + yOffset,
                     Layout.Selector.RESET_BTN_WIDTH, Layout.Selector.RESET_BTN_HEIGHT,
                     SpriteLoader.loadSprite(SingleSpriteKey.CANCEL_BUTTON).image(),
@@ -245,17 +247,21 @@ public class TowerDialogLayer extends GuiLayer {
             );
             upgradeButton.setOnClick(() -> throwEvent(new UpgradeTowerInfoEvent(this, tower, element)));
             resetButton.setOnClick(() -> throwEvent(new ResetTowerInfoEvent(this, tower, element)));
-            if (element.canUpgrade()) hoverData.put(upgradeButton, (TowerStatsProvider) element.getUpgrade());
+            if (element.canUpgrade()) {
+                hoverData.put(upgradeButton, (TowerStatsProvider) element.getUpgrade());
+            }
             buttons.add(upgradeButton);
             buttons.add(resetButton);
         }
     }
 
     private void refreshHoverData() {
-        for (GuiButton button : buttons) {
-            TowerStatsProvider hoverStats = hoverData.get(button);
+        for (final GuiButton button : buttons) {
+            final TowerStatsProvider hoverStats = hoverData.get(button);
             if (button.isHovered()) {
-                if (hoverStats != null) rebuildStatsWithCompared(hoverStats);
+                if (hoverStats != null) {
+                    rebuildStatsWithCompared(hoverStats);
+                }
                 return;
             }
         }
@@ -264,19 +270,19 @@ public class TowerDialogLayer extends GuiLayer {
 
     @Override
     public void render() {
-        if (displayedEnchantment != tower.getEnchantmentInfo()) { 
+        if (displayedEnchantment != tower.getEnchantmentInfo()) {
             updateLayout();
         }
         if (displayedProjectile != tower.getProjectileInfo()) {
             updateLayout();
         }
-        if (displayedAimType != currentAimType) { 
+        if (displayedAimType != currentAimType) {
             updateLayout();
         }
 
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem guics = renderer.getGuiCoordinateSystem();
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem guics = renderer.getGuiCoordinateSystem();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             // Background
@@ -301,32 +307,34 @@ public class TowerDialogLayer extends GuiLayer {
                 .build();
     }
 
-    private void rebuildStatsWithCompared(TowerStatsProvider... comparedStatsProviders) {
-        TowerStatsViewsBuilder builder = new TowerStatsViewsBuilder();
+    private void rebuildStatsWithCompared(final TowerStatsProvider... comparedStatsProviders) {
+        final TowerStatsViewsBuilder builder = new TowerStatsViewsBuilder();
         builder.addStats(displayedEnchantment).addStats(displayedProjectile);
-        for (TowerStatsProvider comparedStats : comparedStatsProviders) builder.addComparedStats(comparedStats);
+        for (final TowerStatsProvider comparedStats : comparedStatsProviders) {
+            builder.addComparedStats(comparedStats);
+        }
         statsViews = builder.build();
     }
 
     // STATS DRAWING //
-    private static void drawStatView(TowerStatView statView, GraphicsContext gc, CoordinateSystem cs, double x, double y, double width, double height) {
+    private static void drawStatView(final TowerStatView statView, final GraphicsContext gc, final CoordinateSystem cs, final double x, final double y, final double width, final double height) {
         gc.save();
         // Title and value strings
-        String displayName = statView.getStat().type().getDisplayName();
-        double statValue = statView.getStat().value();
-        String statValueStr = new DecimalFormat("0.##").format(statValue);
+        final String displayName = statView.getStat().type().getDisplayName();
+        final double statValue = statView.getStat().value();
+        final String statValueStr = new DecimalFormat("0.##").format(statValue);
         // Value color effect
-        ColorAdjust valueColor = (statView.getType() == TowerStatView.Type.NEW) ? Colors.STAT_NEW_VALUE : Colors.STAT_VALUE;
+        final ColorAdjust valueColor = statView.getType() == TowerStatView.Type.NEW ? Colors.STAT_NEW_VALUE : Colors.STAT_VALUE;
         // Layout
-        double iconVMargin = width * Layout.Stats.SV_ICON_V_MARGIN_FACTOR;
-        double iconHMargin = iconVMargin * Layout.Stats.SV_ICON_H_MARGIN_FACTOR;
-        double iconSide = height - 2*iconVMargin;
-        double titleX = x + iconSide + iconHMargin;
-        double titleWidth = width - iconSide - iconHMargin;
-        double titleHeight = height * Layout.Stats.SV_TITLE_HEIGHT_FACTOR;
-        double valueY = y + titleHeight;
-        double valueWidth = titleWidth * Layout.Stats.SV_VALUE_WIDTH_FACTOR;
-        double valueHeight = height - titleHeight;
+        final double iconVMargin = width * Layout.Stats.SV_ICON_V_MARGIN_FACTOR;
+        final double iconHMargin = iconVMargin * Layout.Stats.SV_ICON_H_MARGIN_FACTOR;
+        final double iconSide = height - 2 * iconVMargin;
+        final double titleX = x + iconSide + iconHMargin;
+        final double titleWidth = width - iconSide - iconHMargin;
+        final double titleHeight = height * Layout.Stats.SV_TITLE_HEIGHT_FACTOR;
+        final double valueY = y + titleHeight;
+        final double valueWidth = titleWidth * Layout.Stats.SV_VALUE_WIDTH_FACTOR;
+        final double valueHeight = height - titleHeight;
         // Icon
         Renderer.drawImage(statView.getStat().type().getIcon(), gc, cs, x, y + iconVMargin, iconSide, iconSide);
         // Title
@@ -337,67 +345,77 @@ public class TowerDialogLayer extends GuiLayer {
         Renderer.drawText(statValueStr, gc, cs, titleX, valueY, valueWidth, valueHeight);
         // Comparison
         if (statView.getType() == TowerStatView.Type.COMPARED) {
-            double comparedValue = statView.getComparedStat().value();
-            String comparisonStr = new DecimalFormat("+0.##;-0.##").format(comparedValue - statValue);
+            final double comparedValue = statView.getComparedStat().value();
+            final String comparisonStr = new DecimalFormat("+0.##;-0.##").format(comparedValue - statValue);
             gc.setEffect(Colors.STAT_COMPARISON);
             Renderer.drawText(comparisonStr, gc, cs, titleX + valueWidth, valueY, titleWidth - valueWidth, valueHeight);
         }
         gc.restore();
     }
 
-    private static void drawStatsOverlay(List<TowerStatView> statsViews, GraphicsContext gc, CoordinateSystem cs) {
-        int nStatsViews = statsViews.size();
-        int statsRows = Math.max(Layout.Stats.ROWS, (int) Math.ceil((double) nStatsViews / Layout.Stats.COLUMNS));
-        double totVPadding = (statsRows - 1) * Layout.Stats.V_MARGIN;
-        double totHPadding = (Layout.Stats.COLUMNS - 1) * Layout.Stats.H_MARGIN;
-        double statHeight = (Layout.Stats.OVR_HEIGHT - totVPadding) / statsRows;
-        double statWidth = (Layout.Stats.OVR_WIDTH - totHPadding) / Layout.Stats.COLUMNS;
+    private static void drawStatsOverlay(final List<TowerStatView> statsViews, final GraphicsContext gc, final CoordinateSystem cs) {
+        final int nStatsViews = statsViews.size();
+        final int statsRows = Math.max(Layout.Stats.ROWS, (int) Math.ceil((double) nStatsViews / Layout.Stats.COLUMNS));
+        final double totVPadding = (statsRows - 1) * Layout.Stats.V_MARGIN;
+        final double totHPadding = (Layout.Stats.COLUMNS - 1) * Layout.Stats.H_MARGIN;
+        final double statHeight = (Layout.Stats.OVR_HEIGHT - totVPadding) / statsRows;
+        final double statWidth = (Layout.Stats.OVR_WIDTH - totHPadding) / Layout.Stats.COLUMNS;
 
         for (int i = 0; i < nStatsViews; i++) {
-            int row = i / Layout.Stats.COLUMNS;
-            int col = i % Layout.Stats.COLUMNS;
-            double x = Layout.Stats.OVR_X + col * (statWidth + Layout.Stats.H_MARGIN);
-            double y = Layout.Stats.OVR_Y + row * (statHeight + Layout.Stats.V_MARGIN);
+            final int row = i / Layout.Stats.COLUMNS;
+            final int col = i % Layout.Stats.COLUMNS;
+            final double x = Layout.Stats.OVR_X + col * (statWidth + Layout.Stats.H_MARGIN);
+            final double y = Layout.Stats.OVR_Y + row * (statHeight + Layout.Stats.V_MARGIN);
             drawStatView(statsViews.get(i), gc, cs, x, y, statWidth, statHeight);
         }
     }
 
     // SELECTORS DRAWING //
-    private static void drawSelector(GraphicsContext gc, CoordinateSystem cs, String title, UpgradableInfo<?, ?> info, double verticalOffset) {
+    private static void drawSelector(final GraphicsContext gc, final CoordinateSystem cs, final String title, final UpgradableInfo<?, ?> info, final double verticalOffset) {
         // Title
         gc.save();
         gc.setEffect(Colors.SELECTOR_TITLE);
         Renderer.drawText(title, gc, cs, Layout.Selector.X, Layout.Selector.NAME_Y + verticalOffset, Layout.Selector.NAME_WIDTH, Layout.Selector.NAME_HEIGHT);
         gc.restore();
         // Should we draw the selector?
-        if (info.canChangeType()) return;
+        if (info.canChangeType()) {
+            return;
+        }
         // Name icon
         Renderer.drawImage(getIcon(info), gc, cs, Layout.Selector.NAME_ICON_X, Layout.Selector.NAME_ICON_Y + verticalOffset, Layout.Selector.NAME_ICON_SIDE, Layout.Selector.NAME_ICON_SIDE);
         // Upgrade selector
-        double emptySpace = Layout.Selector.UPGRADE_WIDTH - Layout.Selector.LEVEL_MARKER_WIDTH * info.getMaxLevel();
+        final double emptySpace = Layout.Selector.UPGRADE_WIDTH - Layout.Selector.LEVEL_MARKER_WIDTH * info.getMaxLevel();
         for (int i = 0; i < info.getMaxLevel(); ++i) {
-            double x = Layout.Selector.UPGRADE_X + i * (emptySpace / (info.getMaxLevel() - 1) + Layout.Selector.LEVEL_MARKER_WIDTH);
-            double y = Layout.Selector.UPGRADE_Y + verticalOffset;
-            double width = Layout.Selector.LEVEL_MARKER_WIDTH;
-            double height = Layout.Selector.UPGRADE_HEIGHT;
-            Image sprite = (i < info.level()) ? SpriteLoader.loadSprite(SingleSpriteKey.FULL_UPGRADE_LEVEL).image() : SpriteLoader.loadSprite(SingleSpriteKey.EMPTY_UPGRADE_LEVEL).image();
+            final double x = Layout.Selector.UPGRADE_X + i * (emptySpace / (info.getMaxLevel() - 1) + Layout.Selector.LEVEL_MARKER_WIDTH);
+            final double y = Layout.Selector.UPGRADE_Y + verticalOffset;
+            final double width = Layout.Selector.LEVEL_MARKER_WIDTH;
+            final double height = Layout.Selector.UPGRADE_HEIGHT;
+            final Image sprite = i < info.level() ? SpriteLoader.loadSprite(SingleSpriteKey.FULL_UPGRADE_LEVEL).image() : SpriteLoader.loadSprite(SingleSpriteKey.EMPTY_UPGRADE_LEVEL).image();
             Renderer.drawImage(sprite, gc, cs, x, y, width, height);
         }
     }
 
     // Utility method to get the icon for the given UpgradableInfo, does not cover the BASE types.
     // If an icon cannot be found, an empty image is returned (the space character).
-    private static Image getIcon(UpgradableInfo<?, ?> info) {
-        Image empty = SpriteLoader.loadSprite(new StringSpriteKey(" ")).image();
+    private static Image getIcon(final UpgradableInfo<?, ?> info) {
+        final Image empty = SpriteLoader.loadSprite(new StringSpriteKey(" ")).image();
         return switch (info) {
-            case EnchantmentInfo e -> {
-                if (e.type() == EnchantmentInfo.Type.FIRE) yield SpriteLoader.loadSprite(SingleSpriteKey.FIRE_ICON).image();
-                if (e.type() == EnchantmentInfo.Type.ICE) yield SpriteLoader.loadSprite(SingleSpriteKey.ICE_ICON).image();
+            case final EnchantmentInfo e -> {
+                if (e.type() == EnchantmentInfo.Type.FIRE) {
+                    yield SpriteLoader.loadSprite(SingleSpriteKey.FIRE_ICON).image();
+                }
+                if (e.type() == EnchantmentInfo.Type.ICE) {
+                    yield SpriteLoader.loadSprite(SingleSpriteKey.ICE_ICON).image();
+                }
                 yield empty;
             }
-            case ProjectileInfo p -> {
-                if (p.type() == ProjectileInfo.Type.SMALL) yield SpriteLoader.loadSprite(SingleSpriteKey.SMALL_ICON).image();
-                if (p.type() == ProjectileInfo.Type.BIG) yield SpriteLoader.loadSprite(SingleSpriteKey.BIG_ICON).image();
+            case final ProjectileInfo p -> {
+                if (p.type() == ProjectileInfo.Type.SMALL) {
+                    yield SpriteLoader.loadSprite(SingleSpriteKey.SMALL_ICON).image();
+                }
+                if (p.type() == ProjectileInfo.Type.BIG) {
+                    yield SpriteLoader.loadSprite(SingleSpriteKey.BIG_ICON).image();
+                }
                 yield empty;
             }
             default -> empty;

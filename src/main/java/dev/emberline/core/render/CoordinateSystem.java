@@ -13,7 +13,7 @@ public class CoordinateSystem {
     // Screen Dimensions [SCREEN]
     private double screenWidth;
     private double screenHeight;
-    
+
     // Scaling factor
     private double scale;
 
@@ -22,11 +22,11 @@ public class CoordinateSystem {
     private double screenOriginY;
 
     // Package private; should only be constructed by Renderer
-    CoordinateSystem(double regionX1, double regionY1, double regionX2, double regionY2) {
+    CoordinateSystem(final double regionX1, final double regionY1, final double regionX2, final double regionY2) {
         setRegion(regionX1, regionY1, regionX2, regionY2);
     }
 
-    public synchronized void setRegion(double regionX1, double regionY1, double regionX2, double regionY2) {
+    public synchronized void setRegion(final double regionX1, final double regionY1, final double regionX2, final double regionY2) {
         this.regionX1 = regionX1;
         this.regionY1 = regionY1;
         this.regionX2 = regionX2;
@@ -34,16 +34,16 @@ public class CoordinateSystem {
     }
 
     // Package private method; should only be called by the renderer
-    void update(double screenWidth, double screenHeight) {
+    void update(final double screenWidth, final double screenHeight) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
-        double regionCenterX = getRegionCenterX();
-        double regionCenterY = getRegionCenterY();
+        final double regionCenterX = getRegionCenterX();
+        final double regionCenterY = getRegionCenterY();
 
         scale = Math.min(screenWidth / (regionX2 - regionX1), screenHeight / (regionY2 - regionY1));
-        double screenCenterX = screenWidth / 2;
-        double screenCenterY = screenHeight / 2;
+        final double screenCenterX = screenWidth / 2;
+        final double screenCenterY = screenHeight / 2;
 
         screenOriginX = regionCenterX - screenCenterX / scale;
         screenOriginY = regionCenterY - screenCenterY / scale;
@@ -52,7 +52,7 @@ public class CoordinateSystem {
     public synchronized double getRegionCenterX() {
         return (regionX1 + regionX2) / 2;
     }
-    
+
     public synchronized double getRegionCenterY() {
         return (regionY1 + regionY2) / 2;
     }
@@ -68,24 +68,24 @@ public class CoordinateSystem {
     public synchronized double getPlayableScreenWidth() {
         return (regionX2 - regionX1) * scale;
     }
-    
+
     public synchronized double getPlayableScreenHeight() {
         return (regionY2 - regionY1) * scale;
     }
 
-    public synchronized double toWorldX(double screenX) {
+    public synchronized double toWorldX(final double screenX) {
         return screenOriginX + screenX / scale;
     }
 
-    public synchronized double toWorldY(double screenY) {
+    public synchronized double toWorldY(final double screenY) {
         return screenOriginY + screenY / scale;
     }
 
-    public synchronized double toScreenX(double worldX) {
+    public synchronized double toScreenX(final double worldX) {
         return (worldX - screenOriginX) * scale;
     }
 
-    public synchronized double toScreenY(double worldY) {
+    public synchronized double toScreenY(final double worldY) {
         return (worldY - screenOriginY) * scale;
     }
 

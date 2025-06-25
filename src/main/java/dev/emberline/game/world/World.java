@@ -1,13 +1,13 @@
 package dev.emberline.game.world;
 
+import dev.emberline.game.GameState;
+import dev.emberline.game.world.buildings.TowersManager;
 import dev.emberline.game.world.entities.enemies.EnemiesManagerWithStats;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.entities.player.Player;
 import dev.emberline.game.world.entities.projectiles.ProjectilesManager;
 import dev.emberline.game.world.entities.projectiles.events.ProjectileHitListener;
 import dev.emberline.game.world.statistics.Statistics;
-import dev.emberline.game.GameState;
-import dev.emberline.game.world.buildings.TowersManager;
 import dev.emberline.game.world.waves.IWaveManager;
 import dev.emberline.game.world.waves.WaveManagerWithStats;
 import dev.emberline.gui.event.GuiEventListener;
@@ -31,14 +31,16 @@ public class World implements GameState, Serializable {
     private final Statistics statistics;
     // HitListener
     private final ProjectileHitListener projectileHitListener;
-    
+
+    private GuiEventListener listener;
+
     // Player
     private final Player player;
 
     private final Topbar topbar;
 
     public World() {
-        this.statistics = new Statistics(this);
+        this.statistics = new Statistics();
         this.towersManager = new TowersManager(this);
         this.enemiesManager = new EnemiesManagerWithStats(this);
         this.waveManager = new WaveManagerWithStats(this);
@@ -56,7 +58,7 @@ public class World implements GameState, Serializable {
     public Topbar getTopbar() {
         return topbar;
     }
-    
+
     public ProjectilesManager getProjectilesManager() {
         return projectilesManager;
     }
@@ -81,8 +83,12 @@ public class World implements GameState, Serializable {
         return statistics;
     }
 
+    public void setListener(final GuiEventListener listener) {
+        this.listener = listener;
+    }
+
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         projectilesManager.update(elapsed);
         towersManager.update(elapsed);
         waveManager.update(elapsed);
@@ -102,7 +108,7 @@ public class World implements GameState, Serializable {
     }
 
     @Override
-    public void processInput(InputEvent inputEvent) {
+    public void processInput(final InputEvent inputEvent) {
         towersManager.processInput(inputEvent);
     }
 }

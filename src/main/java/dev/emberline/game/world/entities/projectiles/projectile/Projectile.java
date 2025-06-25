@@ -9,19 +9,20 @@ import dev.emberline.game.world.entities.projectiles.FlightPathNotFound;
 import dev.emberline.utility.Vector2D;
 
 public class Projectile implements IProjectile {
-    
-    record PositionAndRotation(Vector2D position, Double rotation) {}
 
     private final ProjectileUpdateComponent updateComponent;
     private final ProjectileRenderComponent renderComponent;
 
-    public Projectile(Vector2D start, IEnemy target, ProjectileInfo projInfo, EnchantmentInfo enchInfo, World world) throws FlightPathNotFound {
+    record PositionAndRotation(Vector2D position, Double rotation) {
+    }
+
+    public Projectile(final Vector2D start, final IEnemy target, final ProjectileInfo projInfo, final EnchantmentInfo enchInfo, final World world) throws FlightPathNotFound {
         this.updateComponent = new ProjectileUpdateComponent(start, target, projInfo, enchInfo, world, this);
         this.renderComponent = new ProjectileRenderComponent(projInfo, enchInfo, this);
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         updateComponent.update(elapsed);
     }
 

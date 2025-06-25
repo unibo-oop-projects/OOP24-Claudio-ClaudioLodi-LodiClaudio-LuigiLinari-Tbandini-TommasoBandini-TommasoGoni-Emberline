@@ -1,57 +1,63 @@
 package dev.emberline.core.graphics.spritefactories;
 
-import java.util.Map;
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
-import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy.FacingDirection;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation.EnemyAppearance;
+import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+
 public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
     private static class Metadata {
-        @JsonProperty int width;
-        @JsonProperty int height;
-        @JsonProperty int frames;
-        @JsonProperty int frameTimeNs;
-        @JsonProperty Map<FacingDirection, Integer> direction;
-        @JsonProperty Map<EnemyAppearance, Integer> state;
+        @JsonProperty
+        int width;
+        @JsonProperty
+        int height;
+        @JsonProperty
+        int frames;
+        @JsonProperty
+        int frameTimeNs;
+        @JsonProperty
+        Map<FacingDirection, Integer> direction;
+        @JsonProperty
+        Map<EnemyAppearance, Integer> state;
     }
 
     @Override
-    public Sprite loadSprite(EnemySpriteKey key) {
-        EnemyType type = key.type();
-        FacingDirection direction = key.direction();
-        EnemyAppearance state = key.state();
+    public Sprite loadSprite(final EnemySpriteKey key) {
+        final EnemyType type = key.type();
+        final FacingDirection direction = key.direction();
+        final EnemyAppearance state = key.state();
 
-        String jsonPath = String.format("/sprites/enemyAssets/%s.json", type.name().toLowerCase());
-        Metadata metadata = ConfigLoader.loadConfig(jsonPath, Metadata.class);
-        
-        int xOffset = metadata.direction.get(direction);
-        int yOffset = metadata.state.get(state);
+        final String jsonPath = String.format("/sprites/enemyAssets/%s.json", type.name().toLowerCase(Locale.US));
+        final Metadata metadata = ConfigLoader.loadConfig(jsonPath, Metadata.class);
 
-        String enemyAtlasPath = String.format("/sprites/enemyAssets/%sAtlas.png", type.name().toLowerCase());
-        Image enemyAtals = getEnemyAtlas(enemyAtlasPath);
+        final int xOffset = metadata.direction.get(direction);
+        final int yOffset = metadata.state.get(state);
 
-        Image[] frames = new Image[metadata.frames];
+        final String enemyAtlasPath = String.format("/sprites/enemyAssets/%sAtlas.png", type.name().toLowerCase(Locale.US));
+        final Image enemyAtals = getEnemyAtlas(enemyAtlasPath);
+
+        final Image[] frames = new Image[metadata.frames];
         for (int i = 0; i < metadata.frames; ++i) {
-            int frameStep = metadata.width * metadata.direction.size();
-            int x = xOffset + i * frameStep;
-            int y = yOffset;
+            final int frameStep = metadata.width * metadata.direction.size();
+            final int x = xOffset + i * frameStep;
+            final int y = yOffset;
             frames[i] = new WritableImage(enemyAtals.getPixelReader(), x, y, metadata.width, metadata.height);
         }
 
         return new AnimatedSprite(frames, metadata.frameTimeNs);
     }
 
-    private static Image getEnemyAtlas(String enemyAtlasPath) {
+    private static Image getEnemyAtlas(final String enemyAtlasPath) {
         return new Image(Objects.requireNonNull(EnemySpriteFactory.class.getResourceAsStream(enemyAtlasPath)));
     }
 

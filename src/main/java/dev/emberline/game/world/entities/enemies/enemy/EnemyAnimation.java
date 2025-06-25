@@ -1,26 +1,15 @@
 package dev.emberline.game.world.entities.enemies.enemy;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import dev.emberline.core.components.Updatable;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
 import javafx.scene.image.Image;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Locale;
 
 public class EnemyAnimation implements Updatable {
-
-     public enum EnemyAppearance {
-        NORMAL, BURNING, FREEZING, DYING;
-    
-        @JsonCreator
-        public static EnemyAppearance fromString(String appearance) {
-            return EnemyAppearance.valueOf(appearance.toUpperCase());
-        }
-    }
 
     private final AbstractEnemy enemy;
     private AnimatedSprite animatedSprite;
@@ -33,7 +22,16 @@ public class EnemyAnimation implements Updatable {
     private boolean dyingAnimationFinished = false; // To track if the dying animation has finished
     private boolean isDying = false; // To track if the enemy is currently in a dying state
 
-    public EnemyAnimation(AbstractEnemy enemy) {
+    public enum EnemyAppearance {
+        NORMAL, BURNING, FREEZING, DYING;
+
+        @JsonCreator
+        public static EnemyAppearance fromString(final String appearance) {
+            return EnemyAppearance.valueOf(appearance.toUpperCase(Locale.US));
+        }
+    }
+
+    public EnemyAnimation(final AbstractEnemy enemy) {
         this.enemy = enemy;
         updateAnimatedSprite();
     }
@@ -44,8 +42,10 @@ public class EnemyAnimation implements Updatable {
      * @param enemyAppearance The new enemy appearance.
      * @return {@code true} if the appearance was changed, {@code false} otherwise.
      */
-    private boolean setEnemyAppearance(EnemyAppearance enemyAppearance) {
-        if (this.enemyAppearance == enemyAppearance) return false; // No change needed
+    private boolean setEnemyAppearance(final EnemyAppearance enemyAppearance) {
+        if (this.enemyAppearance == enemyAppearance) {
+            return false; // No change needed
+        }
         this.enemyAppearance = enemyAppearance;
         return true;
     }
@@ -56,8 +56,10 @@ public class EnemyAnimation implements Updatable {
      * @param facingDirection The new facing direction.
      * @return {@code true} if the direction was changed, {@code false} otherwise.
      */
-    private boolean setFacingDirection(AbstractEnemy.FacingDirection facingDirection) {
-        if (this.facingDirection == facingDirection) return false; // No change needed
+    private boolean setFacingDirection(final AbstractEnemy.FacingDirection facingDirection) {
+        if (this.facingDirection == facingDirection) {
+            return false; // No change needed
+        }
         this.facingDirection = facingDirection;
         return true;
     }
@@ -65,7 +67,9 @@ public class EnemyAnimation implements Updatable {
     private void updateAnimatedSprite() {
         boolean changed = setFacingDirection(enemy.getFacingDirection());
         changed |= setEnemyAppearance(enemy.getEnemyAppearance());
-        if (!changed) return; // No changes to the sprite, no need to update
+        if (!changed) {
+            return; // No changes to the sprite, no need to update
+        }
         this.animatedSprite = (AnimatedSprite) SpriteLoader.loadSprite(new EnemySpriteKey(enemy.getEnemyType(), facingDirection, enemyAppearance));
     }
 
@@ -78,8 +82,10 @@ public class EnemyAnimation implements Updatable {
     }
 
     @Override
-    public void update(long elapsed) {
-        if (dyingAnimationFinished) return;
+    public void update(final long elapsed) {
+        if (dyingAnimationFinished) {
+            return;
+        }
         updateAnimatedSprite();
 
         // Initialize death animation when the enemy starts dying.
@@ -89,11 +95,11 @@ public class EnemyAnimation implements Updatable {
             isDying = true;
         }
 
-        long frameTimeNs = (long) (animatedSprite.getFrameTimeNs() / enemy.getSlowFactor());
+        final long frameTimeNs = (long) (animatedSprite.getFrameTimeNs() / enemy.getSlowFactor());
         accumulatedTimeNs += elapsed;
-        while(accumulatedTimeNs >= frameTimeNs) {
+        while (accumulatedTimeNs >= frameTimeNs) {
             accumulatedTimeNs -= frameTimeNs;
-            frameIndex = (frameIndex+1) % animatedSprite.getFrameCount();
+            frameIndex = (frameIndex + 1) % animatedSprite.getFrameCount();
 
             // If the enemy is dying, we need to check if the animation has finished, do not loopback.
             if (isDying && frameIndex == animatedSprite.getFrameCount() - 1) {

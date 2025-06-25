@@ -21,17 +21,24 @@ import static dev.emberline.gui.towerdialog.stats.TowerStat.TowerStatType;
  * @param type  The type of the projectile.
  * @param level The level of the projectile, which can be between 0 and {@link #MAX_LEVEL}.
  */
-public record ProjectileInfo(Type type, int level) implements TowerStatsProvider, UpgradableInfo<ProjectileInfo.Type, ProjectileInfo> {
+public record ProjectileInfo(Type type,
+                             int level) implements TowerStatsProvider, UpgradableInfo<ProjectileInfo.Type, ProjectileInfo> {
     /**
      * Represents the type of projectile in the game, influencing the projectile's behavior, such as damage, speed,
      * firing rate, and other attributes.
      */
     public enum Type implements UpgradableInfo.InfoType {
-        /** The default projectile type. It has no special properties and cannot be upgraded. */
+        /**
+         * The default projectile type. It has no special properties and cannot be upgraded.
+         */
         BASE,
-        /** Represents a projectile with a higher firing rate but lower damage. */
+        /**
+         * Represents a projectile with a higher firing rate but lower damage.
+         */
         SMALL,
-        /** Represents a projectile with a lower firing rate but higher damage with an area of effect. */
+        /**
+         * Represents a projectile with a lower firing rate but higher damage with an area of effect.
+         */
         BIG
     }
 
@@ -45,11 +52,10 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
     /**
      * Constructs a new {@code ProjectileInfo} object with validation of its parameters.
      *
-     * @param type the type of the projectile. Must not be {@code null}.
+     * @param type  the type of the projectile. Must not be {@code null}.
      * @param level the upgrade level of the projectile.
      *              Must be in the range of 0 to {@code MAX_LEVEL}.
      *              For {@code Type.BASE}, the level must be 0 as it does not allow upgrades.
-     *
      * @throws IllegalArgumentException if parameters do not meet the specified constraints.
      */
     public ProjectileInfo {
@@ -103,7 +109,7 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
      * {@inheritDoc}
      */
     @Override
-    public ProjectileInfo getChangeType(Type newType) {
+    public ProjectileInfo getChangeType(final Type newType) {
         if (canChangeType()) {
             return new ProjectileInfo(newType, 0);
         }
@@ -118,46 +124,34 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
         return new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
     }
 
-    private static class Metadata {
-        @JsonProperty("baseUpgradeCost")
-        private int BASE_UPGRADE_COST;
-        @JsonProperty("upgradeCosts")
-        private int[] UPGRADE_COSTS;
-        @JsonProperty("resetRefunds")
-        private int[] RESET_REFUNDS;
-        @JsonProperty("baseFireRate")
-        private double BASE_FIRE_RATE;
-        @JsonProperty("fireRateSmall")
-        private double[] SMALL_FIRE_RATE;
-        @JsonProperty("fireRateBig")
-        private double[] BIG_FIRE_RATE;
-        @JsonProperty("baseDamage")
-        private double BASE_DAMAGE;
-        @JsonProperty("damageSmall")
-        private double[] SMALL_DAMAGE;
-        @JsonProperty("damageBig")
-        private double[] BIG_DAMAGE;
-        @JsonProperty("bigDamageArea")
-        private double[] BIG_DAMAGE_AREA;
-        @JsonProperty("towerRange")
-        private double[] TOWER_RANGE;
-        @JsonProperty("baseProjectileSpeed")
-        private double BASE_PROJECTILE_SPEED;
-        @JsonProperty("projectileSpeedSmall")
-        private double[] SMALL_PROJECTILE_SPEED;
-        @JsonProperty("projectileSpeedBig")
-        private double[] BIG_PROJECTILE_SPEED;
-    }
+    private record Metadata(
+            @JsonProperty int baseUpgradeCost,
+            @JsonProperty int[] upgradeCosts,
+            @JsonProperty int[] resetRefunds,
+            @JsonProperty double baseFireRate,
+            @JsonProperty double[] fireRateSmall,
+            @JsonProperty double[] fireRateBig,
+            @JsonProperty double baseDamage,
+            @JsonProperty double[] damageSmall,
+            @JsonProperty double[] damageBig,
+            @JsonProperty double[] bigDamageArea,
+            @JsonProperty double[] towerRange,
+            @JsonProperty double baseProjectileSpeed,
+            @JsonProperty double[] projectileSpeedSmall,
+            @JsonProperty double[] projectileSpeedBig
+    ) {}
 
-    private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/projectileInfoStats.json", Metadata.class);
+    private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/projectileInfoStats.json", Metadata.class);
 
     /**
      * {@inheritDoc}
      */
     @Override
     public int getUpgradeCost() {
-        if (type == Type.BASE) return metadata.BASE_UPGRADE_COST;
-        return metadata.UPGRADE_COSTS[level];
+        if (type == Type.BASE) {
+            return METADATA.baseUpgradeCost;
+        }
+        return METADATA.upgradeCosts[level];
     }
 
     /**
@@ -165,8 +159,10 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
      */
     @Override
     public int getRefundValue() {
-        if (type == Type.BASE) return 0;
-        return metadata.RESET_REFUNDS[level];
+        if (type == Type.BASE) {
+            return 0;
+        }
+        return METADATA.resetRefunds[level];
     }
 
     /**
@@ -177,9 +173,9 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
      */
     public double getFireRate() {
         return switch (type) {
-            case SMALL -> metadata.SMALL_FIRE_RATE[level];
-            case BIG -> metadata.BIG_FIRE_RATE[level];
-            case BASE -> metadata.BASE_FIRE_RATE;
+            case SMALL -> METADATA.fireRateSmall[level];
+            case BIG -> METADATA.fireRateBig[level];
+            case BASE -> METADATA.baseFireRate;
         };
     }
 
@@ -190,9 +186,9 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
      */
     public double getDamage() {
         return switch (type) {
-            case SMALL -> metadata.SMALL_DAMAGE[level];
-            case BIG -> metadata.BIG_DAMAGE[level];
-            case BASE -> metadata.BASE_DAMAGE;
+            case SMALL -> METADATA.damageSmall[level];
+            case BIG -> METADATA.damageBig[level];
+            case BASE -> METADATA.baseDamage;
         };
     }
 
@@ -202,10 +198,12 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
      * The damage area represents the radius within which the effect and the damage are applied.
      *
      * @return an Optional containing the damage area as a double value (radius in tiles) if the projectile type is BIG;
-     *         otherwise, an empty Optional.
+     * otherwise, an empty Optional.
      */
     public Optional<Double> getDamageArea() {
-        if (type == Type.BIG) return Optional.of(metadata.BIG_DAMAGE_AREA[level]);
+        if (type == Type.BIG) {
+            return Optional.of(METADATA.bigDamageArea[level]);
+        }
         return Optional.empty();
     }
 
@@ -216,7 +214,7 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
      * @return the tower range radius as a double value, measured in tiles.
      */
     public double getTowerRange() {
-        return metadata.TOWER_RANGE[level];
+        return METADATA.towerRange[level];
     }
 
     /**
@@ -226,9 +224,9 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
      */
     public double getProjectileSpeed() {
         return switch (type) {
-            case SMALL -> metadata.SMALL_PROJECTILE_SPEED[level];
-            case BIG -> metadata.BIG_PROJECTILE_SPEED[level];
-            case BASE -> metadata.BASE_PROJECTILE_SPEED;
+            case SMALL -> METADATA.projectileSpeedSmall[level];
+            case BIG -> METADATA.projectileSpeedBig[level];
+            case BASE -> METADATA.baseProjectileSpeed;
         };
     }
 
@@ -240,7 +238,7 @@ public record ProjectileInfo(Type type, int level) implements TowerStatsProvider
         // To add the optional damage area a resizable list is needed,
         // Arrays.asList() returns a fixed size list so we need to create
         // a new one with the elements of the fixed size list.
-        List<TowerStat> towerStats = new ArrayList<>(Arrays.asList(
+        final List<TowerStat> towerStats = new ArrayList<>(Arrays.asList(
                 new TowerStat(TowerStatType.FIRE_RATE, getFireRate()),
                 new TowerStat(TowerStatType.DAMAGE, getDamage()),
                 new TowerStat(TowerStatType.TOWER_RANGE, getTowerRange()),

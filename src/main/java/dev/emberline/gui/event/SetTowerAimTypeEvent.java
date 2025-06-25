@@ -13,7 +13,7 @@ public class SetTowerAimTypeEvent extends GuiEvent {
 
         private final String displayName;
 
-        AimType(String displayName) {
+        AimType(final String displayName) {
             this.displayName = displayName;
         }
 
@@ -26,7 +26,7 @@ public class SetTowerAimTypeEvent extends GuiEvent {
         }
     }
 
-    public SetTowerAimTypeEvent(Object source, AimType aimType) {
+    public SetTowerAimTypeEvent(final Object source, final AimType aimType) {
         super(source);
         this.aimType = aimType;
     }

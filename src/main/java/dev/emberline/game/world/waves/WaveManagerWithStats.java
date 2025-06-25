@@ -12,7 +12,7 @@ public class WaveManagerWithStats implements IWaveManager {
     private final IWaveManager waveManager;
     private final Statistics statistics;
 
-    public WaveManagerWithStats(World world) {
+    public WaveManagerWithStats(final World world) {
         waveManager = new WaveManager(world);
         statistics = world.getStatistics();
     }
@@ -30,15 +30,18 @@ public class WaveManagerWithStats implements IWaveManager {
     /**
      * Updates the Wavemanager.
      * Keeps record of the last wave reached.
+     *
      * @param elapsed
      */
     @Override
-    public void update(long elapsed) {
-        int nWavePreUpdate = getCurrentWaveIndex();
+    public void update(final long elapsed) {
+        final int nWavePreUpdate = getCurrentWaveIndex();
         waveManager.update(elapsed);
-        int nWavePostUpdate = getCurrentWaveIndex();
+        final int nWavePostUpdate = getCurrentWaveIndex();
 
-        if (nWavePostUpdate - nWavePreUpdate > 0)statistics.updateWavesSurvived();
+        if (nWavePostUpdate - nWavePreUpdate > 0) {
+            statistics.updateWavesSurvived();
+        }
     }
 
     @Override

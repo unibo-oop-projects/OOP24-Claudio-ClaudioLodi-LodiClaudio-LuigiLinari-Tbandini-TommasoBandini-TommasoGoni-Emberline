@@ -1,32 +1,32 @@
 {
-    "right": {
-        "textWidthRatio": 0.6,
-        "textHeightRatio": 0.35,
-        "textXOffset": 0.7,
-        "textYPosition": 0.5
-    },
-    "left": {
-        "textWidthRatio": 0.6,
-        "textHeightRatio": 0.35,
-        "textXOffset": 0.1,
-        "textYPosition": 0.5
-    },
-    "bottom": {
-        "textWidthRatio": 0.7,
-        "textHeightRatio": 0.35,
-        "textXOffset": 0.55,
-        "textYPosition": 0.8
-    },
-    "top": {
-        "textWidthRatio": 0.7,
-        "textHeightRatio": 0.35,
-        "textXOffset": 0.5,
-        "textYPosition": 0.2
-    },
-    "center": {
-        "textWidthRatio": 0.7,
-        "textHeightRatio": 0.35,
-        "textXOffset": 0.5,
-        "textYPosition": 0.5
-    }
+  "right": {
+    "textWidthRatio": 0.6,
+    "textHeightRatio": 0.35,
+    "textXOffset": 0.7,
+    "textYPosition": 0.5
+  },
+  "left": {
+    "textWidthRatio": 0.6,
+    "textHeightRatio": 0.35,
+    "textXOffset": 0.1,
+    "textYPosition": 0.5
+  },
+  "bottom": {
+    "textWidthRatio": 0.7,
+    "textHeightRatio": 0.35,
+    "textXOffset": 0.55,
+    "textYPosition": 0.8
+  },
+  "top": {
+    "textWidthRatio": 0.7,
+    "textHeightRatio": 0.35,
+    "textXOffset": 0.5,
+    "textYPosition": 0.2
+  },
+  "center": {
+    "textWidthRatio": 0.7,
+    "textHeightRatio": 0.35,
+    "textXOffset": 0.5,
+    "textYPosition": 0.5
+  }
 }

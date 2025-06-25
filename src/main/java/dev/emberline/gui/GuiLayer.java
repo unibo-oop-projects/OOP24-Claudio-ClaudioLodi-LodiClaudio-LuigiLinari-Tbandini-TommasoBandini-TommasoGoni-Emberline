@@ -18,29 +18,29 @@ public class GuiLayer implements Renderable, Inputable {
 
     protected double x, y, width, height;
 
-    protected GuiLayer(double x, double y, double width, double height) {
+    protected GuiLayer(final double x, final double y, final double width, final double height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
     }
 
-    public final void setListener(GuiEventListener listener) {
+    public final void setListener(final GuiEventListener listener) {
         this.listener = listener;
     }
 
-    protected final void throwEvent(GuiEvent event) {
+    protected final void throwEvent(final GuiEvent event) {
         if (listener != null) {
             listener.onGuiEvent(event);
         }
     }
 
     @Override
-    public final void processInput(InputEvent input) {
-        CoordinateSystem guiCS = GameLoop.getInstance().getRenderer().getGuiCoordinateSystem();
-        if (input instanceof MouseEvent mouse && mouse.getEventType() == MouseEvent.MOUSE_CLICKED) {
-            double guiX = guiCS.toWorldX(mouse.getX());
-            double guiY = guiCS.toWorldY(mouse.getY());
+    public final void processInput(final InputEvent input) {
+        final CoordinateSystem guiCS = GameLoop.getInstance().getRenderer().getGuiCoordinateSystem();
+        if (input instanceof final MouseEvent mouse && mouse.getEventType() == MouseEvent.MOUSE_CLICKED) {
+            final double guiX = guiCS.toWorldX(mouse.getX());
+            final double guiY = guiCS.toWorldY(mouse.getY());
 
             // Check if the mouse is within the bounds of this layer
             if (guiX < x || guiX > x + width || guiY < y || guiY > y + height) {
@@ -48,7 +48,7 @@ public class GuiLayer implements Renderable, Inputable {
             }
         }
 
-        for (GuiButton button : buttons) {
+        for (final GuiButton button : buttons) {
             button.processInput(input);
         }
 
@@ -57,7 +57,7 @@ public class GuiLayer implements Renderable, Inputable {
 
     @Override
     public void render() {
-        for (GuiButton button : buttons) {
+        for (final GuiButton button : buttons) {
             button.render();
         }
     }

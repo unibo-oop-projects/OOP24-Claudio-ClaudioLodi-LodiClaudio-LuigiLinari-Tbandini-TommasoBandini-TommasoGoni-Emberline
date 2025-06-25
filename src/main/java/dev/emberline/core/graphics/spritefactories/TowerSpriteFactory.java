@@ -14,33 +14,39 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
+
+    private static final Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/tower.json", Metadata.class);
+
     private static class Metadata {
-        @JsonProperty  String filename;
-        @JsonProperty int width;
-        @JsonProperty Map<ProjectileInfo.Type, Integer> height;
-        @JsonProperty Map<ProjectileInfo.Type, Integer> size;
-        @JsonProperty Map<EnchantmentInfo.Type, Integer> enchant;
+        @JsonProperty
+        String filename;
+        @JsonProperty
+        int width;
+        @JsonProperty
+        Map<ProjectileInfo.Type, Integer> height;
+        @JsonProperty
+        Map<ProjectileInfo.Type, Integer> size;
+        @JsonProperty
+        Map<EnchantmentInfo.Type, Integer> enchant;
     }
 
-    private static final Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/tower.json", Metadata.class);
-
     @Override
-    public Sprite loadSprite(TowerSpriteKey key) {
-        ProjectileInfo.Type size = key.size();
-        EnchantmentInfo.Type enchant = key.enchant();
+    public Sprite loadSprite(final TowerSpriteKey key) {
+        final ProjectileInfo.Type size = key.size();
+        final EnchantmentInfo.Type enchant = key.enchant();
 
-        int width = metadata.width;
-        int height = metadata.height.get(size);
-        int x = metadata.size.get(size);
-        int y = metadata.enchant.get(enchant) - height;
+        final int width = METADATA.width;
+        final int height = METADATA.height.get(size);
+        final int x = METADATA.size.get(size);
+        final int y = METADATA.enchant.get(enchant) - height;
 
-        Image towerAtlas = getTowerAtlas();
+        final Image towerAtlas = getTowerAtlas();
 
         return new SingleSprite(new WritableImage(towerAtlas.getPixelReader(), x, y, width, height));
     }
 
     private static Image getTowerAtlas() {
-        return new Image(Objects.requireNonNull(TowerSpriteFactory.class.getResourceAsStream(metadata.filename)));
+        return new Image(Objects.requireNonNull(TowerSpriteFactory.class.getResourceAsStream(METADATA.filename)));
     }
 
 

@@ -4,4 +4,5 @@ import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 
-public interface GameState extends Inputable, Updatable, Renderable {}
+public interface GameState extends Inputable, Updatable, Renderable {
+}

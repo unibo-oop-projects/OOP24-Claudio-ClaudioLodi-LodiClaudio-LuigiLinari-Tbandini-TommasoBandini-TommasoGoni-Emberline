@@ -11,9 +11,7 @@ import dev.emberline.game.world.buildings.towerPreBuild.TowerPreBuild;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.NewBuildEvent;
-
 import dev.emberline.gui.towerdialog.TextGuiButton.TextLayoutType;
-
 import javafx.scene.canvas.GraphicsContext;
 
 public class NewBuildDialogLayer extends GuiLayer {
@@ -35,7 +33,7 @@ public class NewBuildDialogLayer extends GuiLayer {
     private final TowerPreBuild tower;
     private final GuiButton buildButton;
 
-    public NewBuildDialogLayer(TowerPreBuild tower) {
+    public NewBuildDialogLayer(final TowerPreBuild tower) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         this.tower = tower;
         buildButton = addBuildButton();
@@ -58,9 +56,9 @@ public class NewBuildDialogLayer extends GuiLayer {
 
     @Override
     public void render() {
-        Renderer renderer = GameLoop.getInstance().getRenderer();
-        GraphicsContext gc = renderer.getGraphicsContext();
-        CoordinateSystem guics = renderer.getGuiCoordinateSystem();
+        final Renderer renderer = GameLoop.getInstance().getRenderer();
+        final GraphicsContext gc = renderer.getGraphicsContext();
+        final CoordinateSystem guics = renderer.getGuiCoordinateSystem();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI_HIGH, () -> {
             // Background

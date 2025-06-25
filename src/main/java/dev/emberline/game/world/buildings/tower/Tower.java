@@ -14,11 +14,7 @@ import java.util.Map;
 
 public class Tower extends Building implements TowerInfoProvider {
     private static String configsPath = "/sprites/towerAssets/tower.json";
-    private static class Metadata {
-        @JsonProperty double width;
-        @JsonProperty Map<ProjectileInfo.Type, Double> height;
-        @JsonProperty double firingYOffsetTiles;
-    }
+
     private static Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
 
     private final World world;
@@ -29,7 +25,16 @@ public class Tower extends Building implements TowerInfoProvider {
     private ProjectileInfo projectileInfo = new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
     private EnchantmentInfo enchantmentInfo = new EnchantmentInfo(EnchantmentInfo.Type.BASE, 0);
 
-    public Tower(Vector2D locationBottomLeft, World world) {
+    private static class Metadata {
+        @JsonProperty
+        double width;
+        @JsonProperty
+        Map<ProjectileInfo.Type, Double> height;
+        @JsonProperty
+        double firingYOffsetTiles;
+    }
+
+    public Tower(final Vector2D locationBottomLeft, final World world) {
         this.world = world;
         this.towerUpdateComponent = new TowerUpdateComponent(world, this);
         this.towerRenderComponent = new TowerRenderComponent(this);
@@ -63,7 +68,7 @@ public class Tower extends Building implements TowerInfoProvider {
     }
 
     @Override
-    public void update(long elapsed) {
+    public void update(final long elapsed) {
         towerUpdateComponent.update(elapsed);
     }
 
@@ -84,19 +89,19 @@ public class Tower extends Building implements TowerInfoProvider {
         return metadata.height.get(getProjectileInfo().type());
     }
 
-    public void setUpgradableInfo(UpgradableInfo<?,?> info) {
-        if (info instanceof ProjectileInfo infoCast) {
-           projectileInfo = infoCast;
-        } else if (info instanceof EnchantmentInfo infoCast) {
+    public void setUpgradableInfo(final UpgradableInfo<?, ?> info) {
+        if (info instanceof final ProjectileInfo infoCast) {
+            projectileInfo = infoCast;
+        } else if (info instanceof final EnchantmentInfo infoCast) {
             enchantmentInfo = infoCast;
         }
     }
 
-    public static void setConfigsPath(String configsPath) {
+    public static void setConfigsPath(final String configsPath) {
         Tower.configsPath = configsPath;
     }
-    
-    public static void setMetadata(Metadata metadata) {
+
+    public static void setMetadata(final Metadata metadata) {
         Tower.metadata = metadata;
     }
 }

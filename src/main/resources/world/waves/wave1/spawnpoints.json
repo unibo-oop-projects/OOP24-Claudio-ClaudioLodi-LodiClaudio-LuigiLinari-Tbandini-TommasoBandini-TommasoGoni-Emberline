@@ -6,12 +6,20 @@
       {
         "firstSpawnTimeNs": 0,
         "spawnIntervalNs": 1000000000,
-        "enemies": ["ogre", "ogre", "ogre"]
+        "enemies": [
+          "ogre",
+          "ogre",
+          "ogre"
+        ]
       },
       {
         "firstSpawnTimeNs": 3000000000,
         "spawnIntervalNs": 500000000,
-        "enemies": ["ogre", "ogre", "ogre"]
+        "enemies": [
+          "ogre",
+          "ogre",
+          "ogre"
+        ]
       }
     ]
   },
@@ -22,7 +30,10 @@
       {
         "firstSpawnTimeNs": 0,
         "spawnIntervalNs": 1000000000,
-        "enemies": ["ogre", "ogre"]
+        "enemies": [
+          "ogre",
+          "ogre"
+        ]
       }
     ]
   }

@@ -47,7 +47,7 @@ class ProjectileTest {
         );
         when(enemy.getHealth()).thenReturn(health);
         doAnswer(invocation -> {
-            double damage = invocation.getArgument(0);
+            final double damage = invocation.getArgument(0);
             health -= damage;
             return null;
         }).when(enemy).dealDamage(anyDouble());
@@ -59,23 +59,23 @@ class ProjectileTest {
 
     @Test
     void testHitAndDamageToEnemy() {
-        Vector2D start = new Coordinate2D(0, 0);
-        Projectile projectile;
+        final Vector2D start = new Coordinate2D(0, 0);
+        final Projectile projectile;
         try {
             projectile = new Projectile(
                     start, enemy,
                     projInfo, enchInfo,
                     world
             );
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException(e);
         }
 
-        double enemyHealthBefore = health;
+        final double enemyHealthBefore = health;
 
         long totalElapsed = 0;
         while (!projectile.hasHit() && totalElapsed < MAX_FLIGHT_TIME) {
-            long step = 1_000_000_000L;
+            final long step = 1_000_000_000L;
             totalElapsed += step;
             projectile.update(step);
         }

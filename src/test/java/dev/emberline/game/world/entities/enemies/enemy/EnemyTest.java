@@ -16,7 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 class EnemyTest {
 
@@ -35,7 +35,7 @@ class EnemyTest {
 
     private AbstractEnemy enemy;
 
-    private final Coordinate2D[] nodes = new Coordinate2D[] {
+    private final Coordinate2D[] nodes = new Coordinate2D[]{
             new Coordinate2D(0, 0),
             new Coordinate2D(0, 1),
             new Coordinate2D(2, 1),
@@ -62,10 +62,10 @@ class EnemyTest {
     @Test
     void testMovementWithoutSlowFactor() {
         for (int i = 0; i < nodes.length - 1; i++) {
-            long expectedTravelTime = (long) Math.ceil(nodes[i].distance(nodes[i + 1]) / (enemy.getSpeed() * enemy.getSlowFactor()));
+            final long expectedTravelTime = (long) Math.ceil(nodes[i].distance(nodes[i + 1]) / (enemy.getSpeed() * enemy.getSlowFactor()));
             enemy.update(expectedTravelTime);
 
-            Assertions.assertEquals(nodes[i + 1], enemy.getPosition().add(0, enemy.getHeight()/2));
+            Assertions.assertEquals(nodes[i + 1], enemy.getPosition().add(0, enemy.getHeight() / 2));
         }
     }
 
@@ -78,7 +78,7 @@ class EnemyTest {
     @Test
     void testDealingDamage() {
         double health = enemy.getHealth();
-        double damage = 10.0;
+        final double damage = 10.0;
         while (health > 0) {
             Assertions.assertTrue(enemy.getHealth() > 0);
 
@@ -90,8 +90,8 @@ class EnemyTest {
 
     @Test
     void testBurnEffectDamageOverTime() {
-        double initialHealth = enemy.getHealth();
-        BurnEffect burnEffect = new BurnEffect(5.0, 1);
+        final double initialHealth = enemy.getHealth();
+        final BurnEffect burnEffect = new BurnEffect(5.0, 1);
         enemy.applyEffect(burnEffect);
 
         enemy.update(1_000_000_000L);
@@ -102,7 +102,7 @@ class EnemyTest {
 
     @Test
     void testSlowEffectOverTime() {
-        SlowEffect slowEffect = new SlowEffect(0.5, 1);
+        final SlowEffect slowEffect = new SlowEffect(0.5, 1);
         enemy.applyEffect(slowEffect);
 
         enemy.update(1_000_000_000L);
