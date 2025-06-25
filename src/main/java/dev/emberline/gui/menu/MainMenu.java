@@ -17,6 +17,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class MainMenu extends GuiLayer implements GameState {
+
+    private final MenuBounds menuBounds;
+
     private static class Layout {
         // Background
         private static final double BG_WIDTH = 32;
@@ -57,8 +60,6 @@ public class MainMenu extends GuiLayer implements GameState {
             @JsonProperty Coordinate bottomRightBound
     ) {
     }
-
-    private final MenuBounds menuBounds;
 
     // TODO refactor this constructors 
     public MainMenu() {

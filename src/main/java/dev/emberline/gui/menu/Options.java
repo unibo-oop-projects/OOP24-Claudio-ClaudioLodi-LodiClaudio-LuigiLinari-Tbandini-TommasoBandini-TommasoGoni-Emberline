@@ -18,6 +18,8 @@ import javafx.scene.image.Image;
 
 public class Options extends GuiLayer implements GameState {
 
+    private final OptionsBounds optionsBounds;
+
     private static class Layout {
         // Background
         private static final double BG_WIDTH = 32;
@@ -47,8 +49,6 @@ public class Options extends GuiLayer implements GameState {
             @JsonProperty Coordinate bottomRightBound
     ) {
     }
-
-    private final OptionsBounds optionsBounds;
 
     // TODO refactor these constructors 
     public Options() {

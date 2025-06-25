@@ -14,6 +14,10 @@ import java.util.stream.Stream;
  * If a stat is being compared but has the same value as the original stat, it will be kept as a normal stat.
  */
 public final class TowerStatsViewsBuilder {
+
+    private final Map<TowerStatType, TowerStat> statsMap = new EnumMap<>(TowerStatType.class);
+    private final Map<TowerStatType, TowerStat> comparedStatsMap = new EnumMap<>(TowerStatType.class);
+
     /**
      * Represents a view of a single {@link TowerStat} for display in the GUI.
      * <p>
@@ -85,9 +89,6 @@ public final class TowerStatsViewsBuilder {
             return this.stat.type().compareTo(compared.stat.type());
         }
     }
-
-    private final Map<TowerStatType, TowerStat> statsMap = new EnumMap<>(TowerStatType.class);
-    private final Map<TowerStatType, TowerStat> comparedStatsMap = new EnumMap<>(TowerStatType.class);
 
     /**
      * Adds stats from the given provider to the builder.

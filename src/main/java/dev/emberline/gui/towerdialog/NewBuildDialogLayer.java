@@ -15,6 +15,9 @@ import dev.emberline.gui.towerdialog.TextGuiButton.TextLayoutType;
 import javafx.scene.canvas.GraphicsContext;
 
 public class NewBuildDialogLayer extends GuiLayer {
+    // The Tower pre build linked to this dialog layer
+    private final TowerPreBuild tower;
+    private final GuiButton buildButton;
 
     private static class Layout {
         // Background
@@ -28,10 +31,6 @@ public class NewBuildDialogLayer extends GuiLayer {
         private static final double BTN_X = BG_X + (BG_WIDTH - BTN_WIDTH) / 2;
         private static final double BTN_Y = BG_Y + BG_HEIGHT - BTN_HEIGHT - 0.5;
     }
-
-    // The Tower pre build linked to this dialog layer
-    private final TowerPreBuild tower;
-    private final GuiButton buildButton;
 
     public NewBuildDialogLayer(final TowerPreBuild tower) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);

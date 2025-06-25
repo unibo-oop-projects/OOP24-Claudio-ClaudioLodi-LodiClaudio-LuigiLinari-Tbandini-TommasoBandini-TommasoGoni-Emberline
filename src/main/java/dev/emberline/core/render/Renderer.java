@@ -36,6 +36,13 @@ public class Renderer {
     private final Queue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
     private long taskOrderingCounter = 0;
 
+    // drawtext centering height margin
+    private static final double CENTER_TEXT_H_MARGIN = 0.07;
+    // Minimum area in pixels before using uppercase
+    private static final double MIN_TEXT_AREA_PX_UPPERCASE = 500;
+    // Minimum text height in pixels before enabling image smoothing
+    private static final double MIN_TEXT_HEIGHT_PX_SMOOTH = 20;
+
     public Renderer(final Renderable root, final Canvas canvas) {
         this.root = root;
         this.canvas = canvas;
@@ -123,13 +130,6 @@ public class Renderer {
         x += (width - image.getWidth() * scalingFactor) / 2; // horizontal centering
         drawImage(image, gc, cs, x, y, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
     }
-
-    // drawtext centering height margin
-    private static final double CENTER_TEXT_H_MARGIN = 0.07;
-    // Minimum area in pixels before using uppercase
-    private static final double MIN_TEXT_AREA_PX_UPPERCASE = 500;
-    // Minimum text height in pixels before enabling image smoothing
-    private static final double MIN_TEXT_HEIGHT_PX_SMOOTH = 20;
 
     // Draw a string within the given rectangular area optimizing for readability
     public static void drawText(String text, final GraphicsContext gc, final CoordinateSystem cs, final double x, final double y, final double width, final double height) {

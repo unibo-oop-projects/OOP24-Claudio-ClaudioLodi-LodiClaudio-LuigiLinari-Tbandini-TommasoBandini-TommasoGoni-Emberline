@@ -55,6 +55,17 @@ public class TowerDialogLayer extends GuiLayer {
      * @see Renderer#getGuiCoordinateSystem()
      */
     private static class Layout {
+        // Background
+        private static final double BG_WIDTH = 9.2;
+        private static final double BG_HEIGHT = 15.34;
+        private static final double BG_X = Renderer.GUICS_WIDTH * 0.98 - BG_WIDTH;
+        private static final double BG_Y = 1.2;
+        // Title
+        private static final double TITLE_WIDTH = 8 * 0.77;
+        private static final double TITLE_HEIGHT = 2 * 0.52;
+        private static final double TITLE_X = BG_X + (BG_WIDTH - TITLE_WIDTH) / 2;
+        private static final double TITLE_Y = BG_Y + 2;
+
         // stats
         private static class Stats {
             // stats total area (with background image)
@@ -79,17 +90,6 @@ public class TowerDialogLayer extends GuiLayer {
             private static final double SV_TITLE_HEIGHT_FACTOR = 0.475; // title height relative to the height of the stat view
             private static final double SV_VALUE_WIDTH_FACTOR = 0.5; // value width relative to the title width
         }
-
-        // Background
-        private static final double BG_WIDTH = 9.2;
-        private static final double BG_HEIGHT = 15.34;
-        private static final double BG_X = Renderer.GUICS_WIDTH * 0.98 - BG_WIDTH;
-        private static final double BG_Y = 1.2;
-        // Title
-        private static final double TITLE_WIDTH = 8 * 0.77;
-        private static final double TITLE_HEIGHT = 2 * 0.52;
-        private static final double TITLE_X = BG_X + (BG_WIDTH - TITLE_WIDTH) / 2;
-        private static final double TITLE_Y = BG_Y + 2;
 
         // Selectors
         private static class Selector {

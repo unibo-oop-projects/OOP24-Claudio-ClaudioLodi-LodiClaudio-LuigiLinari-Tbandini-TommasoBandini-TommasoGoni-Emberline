@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 class ProjectileUpdateComponent implements Updatable {
 
     private static final long MAX_FLIGHT_TIME = 10_000_000_000L; // 10s
-    private final double VELOCITY_MAG;
+    private final double velocityMag;
 
     /// Parameters defining the parabolic motion (arc of a circle) with a scaling factor of 1
     private static final double START_THETA = 3.0 / 4 * Math.PI;
@@ -49,7 +49,7 @@ class ProjectileUpdateComponent implements Updatable {
 
     public ProjectileUpdateComponent(final Vector2D start, final IEnemy target,
                                      final ProjectileInfo projInfo, final EnchantmentInfo enchInfo, final World world, final Projectile owner) throws FlightPathNotFound {
-        this.VELOCITY_MAG = projInfo.getProjectileSpeed() / 1e9; // Converted to tile/ns
+        this.velocityMag = projInfo.getProjectileSpeed() / 1e9; // Converted to tile/ns
 
         final Vector2D prediction = enemyPrediction(start, target);
 
@@ -139,7 +139,7 @@ class ProjectileUpdateComponent implements Updatable {
 
             /// Solve quadratic
             // (l / v_proj) ^ 2
-            final double lvProjSq = UNIT_ARC_LENGTH / VELOCITY_MAG * (UNIT_ARC_LENGTH / VELOCITY_MAG);
+            final double lvProjSq = UNIT_ARC_LENGTH / velocityMag * (UNIT_ARC_LENGTH / velocityMag);
 
             final double a1 = lvProjSq * (vE.magnitude() * vE.magnitude());
             final double a = 1.0 - a1;
@@ -206,9 +206,9 @@ class ProjectileUpdateComponent implements Updatable {
         final double tranformationAngle = Math.toDegrees(Math.atan2(b1.getY(), b1.getX())); // I and II qudrant > 0, III and IV quadrant < 0
 
         final double radius = scalingFactor * UNIT_RADIUS;
-        final double angularVelocity = -(VELOCITY_MAG / radius);
+        final double angularVelocity = -(velocityMag / radius);
 
-        final long timeInAir = (long) (scalingFactor * UNIT_ARC_LENGTH / VELOCITY_MAG);
+        final long timeInAir = (long) (scalingFactor * UNIT_ARC_LENGTH / velocityMag);
         return new Trajectory(t -> {
             if (t > flightTime) {
                 t = flightTime;
@@ -219,7 +219,7 @@ class ProjectileUpdateComponent implements Updatable {
             // Compute the position on the scaled trajectory, rotate it and translate so that the starting point is cStart
             Vector2D pos = rotation.apply(r(theta, radius, START_THETA)).add(cStart);
 
-            final Vector2D tangentTraj = r_derivative(theta, radius, angularVelocity);
+            final Vector2D tangentTraj = rDerivative(theta, radius, angularVelocity);
             final double tangentTrajAngle = Math.toDegrees(Math.atan2(tangentTraj.getY(), tangentTraj.getX()));
             double angle;
             // abs > 90 => II and III quadrant, the angle needs to be reflected
@@ -251,12 +251,12 @@ class ProjectileUpdateComponent implements Updatable {
     /**
      * @param theta the angle along the circumference
      * @param radius the radius of the circumference
-     * @param theta_0 the starting angle
-     * @return the position vector on a circumference of radius {@code radius} at {@code theta}, translated so that {@code (cos(theta_0), sin(theta_0))} is in {@code (0, 0)}
+     * @param theta0 the starting angle
+     * @return the position vector on a circumference of radius {@code radius} at {@code theta}, translated so that {@code (cos(theta0), sin(theta0))} is in {@code (0, 0)}
      */
-    private Vector2D r(final double theta, final double radius, final double theta_0) {
-        final double x = radius * (Math.cos(theta) - Math.cos(theta_0));
-        final double y = radius * (Math.sin(theta) - Math.sin(theta_0));
+    private Vector2D r(final double theta, final double radius, final double theta0) {
+        final double x = radius * (Math.cos(theta) - Math.cos(theta0));
+        final double y = radius * (Math.sin(theta) - Math.sin(theta0));
         return new Coordinate2D(x, y);
     }
 
@@ -266,7 +266,7 @@ class ProjectileUpdateComponent implements Updatable {
      * @param w      angular velocity
      * @return vector tangent to the trajectory at {@code theta}
      */
-    private Vector2D r_derivative(final double theta, final double radius, final double w) {
+    private Vector2D rDerivative(final double theta, final double radius, final double w) {
         final double x = -radius * w * Math.sin(theta);
         final double y = radius * w * Math.cos(theta);
         return new Coordinate2D(x, y);

@@ -25,6 +25,8 @@ import java.util.Optional;
 public record EnchantmentInfo(Type type,
                               int level) implements TowerStatsProvider, UpgradableInfo<EnchantmentInfo.Type, EnchantmentInfo> {
 
+    private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/enchantmentInfoStats.json", Metadata.class);
+
     /**
      * Represents the type of enchantment in the game.
      * The type of enchantment influences its {@code EnchantmentEffect}.
@@ -140,8 +142,6 @@ public record EnchantmentInfo(Type type,
         @JsonProperty
         double[] iceSlowingFactor
     ) {}
-
-    private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/enchantmentInfoStats.json", Metadata.class);
 
     /**
      * {@inheritDoc}

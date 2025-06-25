@@ -18,6 +18,8 @@ import javafx.scene.image.Image;
 
 public class GameOver extends GuiLayer implements GameState {
 
+    private final GameOverBounds gameOverBounds;
+
     private static class Layout {
         // Background
         private static final double BG_WIDTH = 32;
@@ -52,8 +54,6 @@ public class GameOver extends GuiLayer implements GameState {
             @JsonProperty Coordinate bottomRightBound
     ) {
     }
-
-    private final GameOverBounds gameOverBounds;
 
     // TODO refactor these constructors 
     public GameOver() {
