@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class SpriteFactoryRegistry {
+final class SpriteFactoryRegistry {
     private final static List<SpriteFactory<?>> FACTORIES = Collections.synchronizedList(new ArrayList<>());
 
     private SpriteFactoryRegistry() {}

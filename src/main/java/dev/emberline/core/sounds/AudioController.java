@@ -96,7 +96,7 @@ public class AudioController implements EventListener {
     @EventHandler
     private void handleToggleMuteEvent(final ToggleMuteEvent event) {
         Platform.runLater(() -> {
-            mediaPlayer.setMute(event.getMuteState());
+            mediaPlayer.setMute(event.muteState());
         });
     }
 

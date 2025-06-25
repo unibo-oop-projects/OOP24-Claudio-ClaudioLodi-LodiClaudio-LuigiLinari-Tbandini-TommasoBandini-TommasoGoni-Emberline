@@ -61,7 +61,8 @@ public class NewBuildDialogLayer extends GuiLayer {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI_HIGH, () -> {
             // Background
-            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.NTDL_BACKGROUND).image(), gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
+            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.NTDL_BACKGROUND).image(),
+                    gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         }));
 
         if (buildButton != null) {

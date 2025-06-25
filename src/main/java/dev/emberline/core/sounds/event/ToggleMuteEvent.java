@@ -9,7 +9,7 @@ public class ToggleMuteEvent extends SoundEvent  {
         this.muteState = muteState;
     }
 
-    public boolean getMuteState() {
+    public boolean muteState() {
         return muteState;
     }
 }
