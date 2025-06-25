@@ -66,7 +66,6 @@ public class ProjectilesManager implements Updatable, Renderable {
      * that have hit their target are removed from the manager.
      *
      * @param elapsed the time elapsed since the last update in nanoseconds
-     * @see dev.emberline.game.world.entities.projectiles.projectile.ProjectileUpdateComponent#update(long)
      */
     @Override
     public void update(final long elapsed) {
@@ -84,8 +83,6 @@ public class ProjectilesManager implements Updatable, Renderable {
 
     /**
      * Renders all active projectiles in the manager.
-     *
-     * @see dev.emberline.game.world.entities.projectiles.projectile.ProjectileRenderComponent#render()
      */
     @Override
     public void render() {
