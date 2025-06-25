@@ -77,18 +77,16 @@ public class Player implements GuiEventListener {
         this.health -= 1;
     }
 
-    // TODO add spending gold for all methods below
-
     @Override
     public void onGuiEvent(GuiEvent event) {
-        if (event instanceof UpgradeTowerInfoEvent) {
-            handleUpgradeEvent((UpgradeTowerInfoEvent) event);
-        } else if (event instanceof ResetTowerInfoEvent) {
-            handleResetEvent((ResetTowerInfoEvent) event);
-        } else if (event instanceof SetTowerInfoEvent) {
-            handleSetEvent((SetTowerInfoEvent) event);
-        } else if (event instanceof NewBuildEvent) {
-            handleNewBuildEvent((NewBuildEvent) event);
+        if (event instanceof UpgradeTowerInfoEvent upgradeEvent && spendGold(upgradeEvent.getUpgradableInfo().getUpgradeCost())) {
+            handleUpgradeEvent(upgradeEvent);
+        } else if (event instanceof ResetTowerInfoEvent resetEvent) {
+            handleResetEvent(resetEvent);
+        } else if (event instanceof SetTowerInfoEvent setTowerEvent) {
+            handleSetEvent(setTowerEvent);
+        } else if (event instanceof NewBuildEvent newBuildEvent && spendGold(newBuildEvent.getTowerPreBuild().getNewBuildCost())) {
+            handleNewBuildEvent(newBuildEvent);
         }
     }
 
@@ -104,6 +102,7 @@ public class Player implements GuiEventListener {
 
     private void handleResetEvent(ResetTowerInfoEvent event) {
         UpgradableInfo<?,?> info = event.getUpgradableInfo();
+        earnGold(event.getUpgradableInfo().getRefundValue());
         event.getTower().setUpgradableInfo(info.getDefault());
     }
 

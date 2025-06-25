@@ -19,10 +19,11 @@ public class TowerPreBuild extends Building {
 
     private static String configsPath = "/sprites/towerAssets/towerPreBuild.json";
     private static class Metadata {
-        @JsonProperty double width;
-        @JsonProperty double height;
+        @JsonProperty double worldDimensionWidth;
+        @JsonProperty double worldDimensionHeight;
+        @JsonProperty int newBuildCost;
     }
-    private static Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
+    private static Metadata metadata = ConfigLoader.loadConfig(configsPath, Metadata.class);
 
     private final Vector2D locationBottomLeft;
     private final TowersManager towersManager;
@@ -34,12 +35,16 @@ public class TowerPreBuild extends Building {
 
     @Override
     public Vector2D getWorldTopLeft() {
-        return locationBottomLeft.subtract(0, metadata.height);
+        return locationBottomLeft.subtract(0, metadata.worldDimensionHeight);
     }
 
     @Override
     public Vector2D getWorldBottomRight() {
-        return locationBottomLeft.add(metadata.width, 0);
+        return locationBottomLeft.add(metadata.worldDimensionWidth, 0);
+    }
+
+    public int getNewBuildCost() {
+        return metadata.newBuildCost;
     }
 
     @Override
@@ -58,8 +63,8 @@ public class TowerPreBuild extends Building {
 
         double topLeftScreenX = cs.toScreenX(getWorldTopLeft().getX());
         double topLeftScreenY = cs.toScreenY(getWorldTopLeft().getY());
-        double screenWidth = cs.getScale() * metadata.width;
-        double screenHeight = cs.getScale() * metadata.height;
+        double screenWidth = cs.getScale() * metadata.worldDimensionWidth;
+        double screenHeight = cs.getScale() * metadata.worldDimensionHeight;
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BUILDINGS, () -> {
             gc.drawImage(image, topLeftScreenX, topLeftScreenY, screenWidth, screenHeight);
