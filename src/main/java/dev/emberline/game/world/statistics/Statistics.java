@@ -15,7 +15,6 @@ public class Statistics implements Updatable, Serializable {
     private int wavesSurvived;
     private long timeInGame;
     private double totalDamage;
-    private double dps;
 
     private static final long UNIT_OF_TIME = 1_000_000_000;
 
@@ -52,15 +51,6 @@ public class Statistics implements Updatable, Serializable {
     }
 
     /**
-     * Updates the dps by dividing total damage dealt by total time passed (in seconds).
-     */
-    private void updateDPS() {
-        if (timeInGame > 0) {
-            dps = totalDamage / ((double) timeInGame / UNIT_OF_TIME);
-        }
-    }
-
-    /**
      * @return the number of enemies killed
      */
     public int getEnemiesKilled() {
@@ -82,17 +72,15 @@ public class Statistics implements Updatable, Serializable {
     }
 
     /**
-     * @return average damage per second,
-     * dealt by the towers to the enemies.
+     * @return total damage dealt by towers to enemies
      */
-    public double getDPS() {
-        return this.dps;
+    public double getTotalDamage() {
+        return this.totalDamage;
     }
 
     private void printToTerminal() {
         System.out.println(enemiesKilled);
         System.out.println(wavesSurvived);
-        System.out.println(dps);
         System.out.println(timeInGame);
     }
 
@@ -105,7 +93,6 @@ public class Statistics implements Updatable, Serializable {
     public void update(final long elapsed) {
         updateTimeInGame(elapsed);
         //updatePlayerHealth();
-        updateDPS();
         //printToTerminal();
     }
 }
