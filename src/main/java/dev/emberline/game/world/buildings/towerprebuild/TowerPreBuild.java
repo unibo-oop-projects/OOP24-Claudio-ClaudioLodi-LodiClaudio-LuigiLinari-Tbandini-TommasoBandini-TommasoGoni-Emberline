@@ -1,4 +1,4 @@
-package dev.emberline.game.world.buildings.towerPreBuild;
+package dev.emberline.game.world.buildings.towerprebuild;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;

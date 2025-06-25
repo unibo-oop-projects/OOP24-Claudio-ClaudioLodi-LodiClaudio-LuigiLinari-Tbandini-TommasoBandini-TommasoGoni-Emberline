@@ -137,7 +137,7 @@ public class World implements GameState, Serializable {
     /**
      * Renders the world by calling the render methods of
      * all the visual elements inside it.
-     * @see Renderable#render()
+     * @see dev.emberline.core.components.Renderable#render()
      */
     @Override
     public void render() {
@@ -161,8 +161,11 @@ public class World implements GameState, Serializable {
         topbar.processInput(inputEvent);
         towersManager.processInput(inputEvent);
 
-        if (inputEvent instanceof final KeyEvent keyEvent && keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
-            if(keyEvent.getCode() == KeyCode.ESCAPE) {
+        if (
+            inputEvent instanceof final KeyEvent keyEvent
+            && keyEvent.getEventType() == KeyEvent.KEY_PRESSED
+            && keyEvent.getCode() == KeyCode.ESCAPE
+        ) {
                 EventDispatcher.getInstance().dispatchEvent(new OpenOptionsEvent(this));
             }
         }

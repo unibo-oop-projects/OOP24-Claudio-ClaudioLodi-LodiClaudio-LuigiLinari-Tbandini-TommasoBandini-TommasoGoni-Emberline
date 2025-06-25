@@ -16,8 +16,6 @@ public class Statistics implements Updatable, Serializable {
     private long timeInGame;
     private double totalDamage;
 
-    private static final long UNIT_OF_TIME = 1_000_000_000;
-
     /**
      * Sums the enemies that died in the current update
      * to all the other enemies already dead.
