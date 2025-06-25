@@ -15,11 +15,11 @@ import dev.emberline.utility.Vector2D;
  */
 public class Projectile implements IProjectile {
 
-    record PositionAndRotation(Vector2D position, Double rotation) {
-    }
-
     private final ProjectileUpdateComponent updateComponent;
     private final ProjectileRenderComponent renderComponent;
+
+    record PositionAndRotation(Vector2D position, Double rotation) {
+    }
 
     /**
      * Creates a new Projectile instance with the specified parameters.

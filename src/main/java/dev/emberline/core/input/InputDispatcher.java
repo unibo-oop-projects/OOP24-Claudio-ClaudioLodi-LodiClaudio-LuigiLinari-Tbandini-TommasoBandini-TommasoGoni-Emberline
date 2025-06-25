@@ -6,6 +6,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -19,7 +20,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class InputDispatcher {
 
     // This queue will be filled by JavaFX and polled by the Game Loop
-    private static final ConcurrentLinkedQueue<InputEvent> inputs = new ConcurrentLinkedQueue<>();
+    private static final Queue<InputEvent> inputs = new ConcurrentLinkedQueue<>();
     private final Inputable root;
 
     /**
@@ -48,7 +49,7 @@ public class InputDispatcher {
             final EventType<? extends MouseEvent> type = mouseEvent.getEventType();
 
             if (type == MouseEvent.MOUSE_MOVED) {
-                MouseLocation.setMouseLocation(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+                MouseLocation.setLocation(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
                 mouseEvent.consume();
                 return;
             }

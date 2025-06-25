@@ -154,7 +154,7 @@ public interface Vector2D {
      * @param y
      * @return
      */
-    dev.emberline.utility.Vector2D directionTo(double x, double y);
+    Vector2D directionTo(double x, double y);
 
     /**
      * Return the unit vector representing the direction of displacement
@@ -163,7 +163,7 @@ public interface Vector2D {
      * @param vector
      * @return
      */
-    dev.emberline.utility.Vector2D directionTo(dev.emberline.utility.Vector2D vector);
+    Vector2D directionTo(Vector2D vector);
 
     /**
      * Indicates whether some other object is "equal to" this one.

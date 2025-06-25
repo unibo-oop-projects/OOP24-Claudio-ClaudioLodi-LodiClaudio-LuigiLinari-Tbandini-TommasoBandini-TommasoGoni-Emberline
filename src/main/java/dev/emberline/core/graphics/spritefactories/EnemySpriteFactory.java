@@ -11,6 +11,7 @@ import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -36,13 +37,13 @@ public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
         final FacingDirection direction = key.direction();
         final EnemyAppearance state = key.state();
 
-        final String jsonPath = String.format("/sprites/enemyAssets/%s.json", type.name().toLowerCase());
+        final String jsonPath = String.format("/sprites/enemyAssets/%s.json", type.name().toLowerCase(Locale.US));
         final Metadata metadata = ConfigLoader.loadConfig(jsonPath, Metadata.class);
 
         final int xOffset = metadata.direction.get(direction);
         final int yOffset = metadata.state.get(state);
 
-        final String enemyAtlasPath = String.format("/sprites/enemyAssets/%sAtlas.png", type.name().toLowerCase());
+        final String enemyAtlasPath = String.format("/sprites/enemyAssets/%sAtlas.png", type.name().toLowerCase(Locale.US));
         final Image enemyAtals = getEnemyAtlas(enemyAtlasPath);
 
         final Image[] frames = new Image[metadata.frames];

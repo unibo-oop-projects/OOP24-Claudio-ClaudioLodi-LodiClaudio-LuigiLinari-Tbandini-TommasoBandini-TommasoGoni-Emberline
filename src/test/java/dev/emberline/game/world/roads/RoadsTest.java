@@ -14,54 +14,54 @@ class RoadsTest {
 
     @Test
     void testGetNextNodeDifferentWeights() {
-        final Vector2D zero_zero = new Coordinate2D(0.5, 0.5);
-        final Vector2D one_zero = new Coordinate2D(1.5, 0.5);
-        final Vector2D zero_one = new Coordinate2D(0.5, 1.5);
+        final Vector2D zeroZero = new Coordinate2D(0.5, 0.5);
+        final Vector2D oneZero = new Coordinate2D(1.5, 0.5);
+        final Vector2D zeroOne = new Coordinate2D(0.5, 1.5);
         Optional<Vector2D> next;
 
-        next = roads.getNextNode(zero_zero);
+        next = roads.getNextNode(zeroZero);
         Assertions.assertTrue(next.isPresent());
-        Assertions.assertEquals(next.get(), one_zero);
+        Assertions.assertEquals(next.get(), oneZero);
 
-        next = roads.getNextNode(zero_zero);
+        next = roads.getNextNode(zeroZero);
         Assertions.assertTrue(next.isPresent());
-        Assertions.assertEquals(next.get(), zero_one);
+        Assertions.assertEquals(next.get(), zeroOne);
 
-        next = roads.getNextNode(zero_zero);
+        next = roads.getNextNode(zeroZero);
         Assertions.assertTrue(next.isPresent());
-        Assertions.assertEquals(next.get(), zero_one);
+        Assertions.assertEquals(next.get(), zeroOne);
 
-        next = roads.getNextNode(zero_zero);
+        next = roads.getNextNode(zeroZero);
         Assertions.assertTrue(next.isPresent());
-        Assertions.assertEquals(next.get(), one_zero);
+        Assertions.assertEquals(next.get(), oneZero);
     }
 
     @Test
     void testGetNextNodeWithZeroWeight() {
-        final Vector2D one_one = new Coordinate2D(1.5, 1.5);
-        final Vector2D two_one = new Coordinate2D(2.5, 1.5);
-        final Vector2D one_two = new Coordinate2D(1.5, 2.5);
+        final Vector2D oneOne = new Coordinate2D(1.5, 1.5);
+        final Vector2D twoOne = new Coordinate2D(2.5, 1.5);
+        final Vector2D oneTwo = new Coordinate2D(1.5, 2.5);
         Optional<Vector2D> next;
 
-        next = roads.getNextNode(one_one);
+        next = roads.getNextNode(oneOne);
         Assertions.assertTrue(next.isPresent());
-        Assertions.assertEquals(next.get(), two_one);
+        Assertions.assertEquals(next.get(), twoOne);
 
-        next = roads.getNextNode(one_one);
+        next = roads.getNextNode(oneOne);
         Assertions.assertTrue(next.isPresent());
-        Assertions.assertEquals(next.get(), two_one);
+        Assertions.assertEquals(next.get(), twoOne);
     }
 
     @Test
     void testGetNextLastNodeGivesEmpty() {
-        final Vector2D one_zero = new Coordinate2D(1.5, 0.5);
-        final Vector2D zero_one = new Coordinate2D(0.5, 1.5);
-        final Vector2D two_one = new Coordinate2D(2.5, 1.5);
-        final Vector2D one_two = new Coordinate2D(1.5, 2.5);
+        final Vector2D oneZero = new Coordinate2D(1.5, 0.5);
+        final Vector2D zeroOne = new Coordinate2D(0.5, 1.5);
+        final Vector2D twoOne = new Coordinate2D(2.5, 1.5);
+        final Vector2D oneTwo = new Coordinate2D(1.5, 2.5);
 
-        Assertions.assertFalse(roads.getNextNode(one_zero).isPresent());
-        Assertions.assertFalse(roads.getNextNode(zero_one).isPresent());
-        Assertions.assertFalse(roads.getNextNode(two_one).isPresent());
-        Assertions.assertFalse(roads.getNextNode(one_two).isPresent());
+        Assertions.assertFalse(roads.getNextNode(oneZero).isPresent());
+        Assertions.assertFalse(roads.getNextNode(zeroOne).isPresent());
+        Assertions.assertFalse(roads.getNextNode(twoOne).isPresent());
+        Assertions.assertFalse(roads.getNextNode(oneTwo).isPresent());
     }
 }

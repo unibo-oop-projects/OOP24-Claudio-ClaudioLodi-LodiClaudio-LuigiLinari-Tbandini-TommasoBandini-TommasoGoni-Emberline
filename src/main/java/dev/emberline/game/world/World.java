@@ -12,6 +12,7 @@ import dev.emberline.game.world.statistics.Statistics;
 import dev.emberline.game.world.waves.IWaveManager;
 import dev.emberline.game.world.waves.WaveManagerWithStats;
 import dev.emberline.gui.event.GuiEventListener;
+import dev.emberline.gui.topbar.Topbar;
 import javafx.scene.input.InputEvent;
 
 import java.io.Serializable;
@@ -46,12 +47,14 @@ public class World implements GameState, Serializable {
     // Player
     private final Player player;
 
+    private final Topbar topbar;
+
     /**
      * Creates a new instance of the World class and initializes the
      * various elements inside it.
      */
     public World() {
-        this.statistics = new Statistics(this);
+        this.statistics = new Statistics();
         this.towersManager = new TowersManager(this);
         this.enemiesManager = new EnemiesManagerWithStats(this);
         this.waveManager = new WaveManagerWithStats(this);
@@ -59,6 +62,7 @@ public class World implements GameState, Serializable {
         this.projectileHitListener = new ProjectileHitListener(enemiesManager);
         this.player = new Player(this);
         this.worldRenderComponent = new WorldRenderComponent(waveManager);
+        this.topbar = new Topbar(this);
     }
 
     /**
@@ -66,6 +70,10 @@ public class World implements GameState, Serializable {
      */
     public Player getPlayer() {
         return player;
+    }
+
+    public Topbar getTopbar() {
+        return topbar;
     }
 
     /**
@@ -147,6 +155,7 @@ public class World implements GameState, Serializable {
         projectilesManager.render();
         worldRenderComponent.render();
         waveManager.render();
+        topbar.render();
     }
 
     /**

@@ -11,6 +11,8 @@ import java.util.Objects;
 
 public class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
 
+    private final static Metadata METADATA = ConfigLoader.loadConfig("/world/waves/map.json", Metadata.class);
+
     private static class Waves {
         @JsonProperty
         String wave;
@@ -31,24 +33,22 @@ public class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
         Waves[] waves;
     }
 
-    private final static Metadata metadata = ConfigLoader.loadConfig("/world/waves/map.json", Metadata.class);
-
     @Override
     public Sprite loadSprite(final MapSpriteKey key) {
         final String wave = String.valueOf(key.waveNumber());
-        final int frameNumber = metadata.waves[key.waveNumber()].frames;
+        final int frameNumber = METADATA.waves[key.waveNumber()].frames;
         final Image[] frames = new Image[frameNumber];
 
         for (int i = 0; i < frameNumber; i++) {
             frames[i] = getMapAtlas(wave, String.valueOf(i));
         }
-        return new AnimatedSprite(frames, metadata.frameTimeNs);
+        return new AnimatedSprite(frames, METADATA.frameTimeNs);
     }
 
     private static Image getMapAtlas(final String wave, final String frame) {
         return new Image(Objects.requireNonNull(
                 MapSpriteFactory.class.getResourceAsStream(
-                        metadata.wavesFolder + wave + metadata.mapFolder + frame + metadata.mapFile
+                        METADATA.wavesFolder + wave + METADATA.mapFolder + frame + METADATA.mapFile
                 )));
     }
 

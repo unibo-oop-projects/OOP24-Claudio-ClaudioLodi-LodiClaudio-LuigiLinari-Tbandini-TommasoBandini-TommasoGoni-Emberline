@@ -16,31 +16,33 @@ import java.util.Queue;
  */
 public class Spawnpoints {
 
-    private final Spawnpoint[] spawnpoints;
+    private final Spawnpoint[] rawSpawnpoints;
     private final Queue<EnemyToSpawn> spawnQueue = new PriorityQueue<>();
 
     private static final String SPAWNPOINT_CONFIG_FILENAME = "spawnpoints.json";
-    // Single spawnpoint configuration
-    private static final class SpawnSequence {
-        @JsonProperty
-        long firstSpawnTimeNs;
-        @JsonProperty
-        long spawnIntervalNs;
-        @JsonProperty
-        EnemyType[] enemies;
-    }
 
-    private static final class Spawnpoint {
-        @JsonProperty("x")
-        private double x;
-        @JsonProperty("y")
-        private double y;
-        @JsonProperty("spawnSequences")
-        private SpawnSequence[] spawnSequences;
-    }
+    // Single spawnpoint configuration
+    private record SpawnSequence (
+        @JsonProperty
+        long firstSpawnTimeNs,
+        @JsonProperty
+        long spawnIntervalNs,
+        @JsonProperty
+        EnemyType[] enemies
+    ) {}
+
+    private record Spawnpoint (
+        @JsonProperty
+        double x,
+        @JsonProperty
+        double y,
+        @JsonProperty
+        SpawnSequence[] spawnSequences
+    ) {}
 
     /**
      * Single enemy identified by these 3 parameters:
+     *
      * @param spawnTimeNs
      * @param spawnLocation
      * @param enemyType
@@ -72,12 +74,12 @@ public class Spawnpoints {
      * @param wavePath the path of the directory containing the wave files
      */
     public Spawnpoints(final String wavePath) {
-        spawnpoints = ConfigLoader.loadConfig(wavePath + SPAWNPOINT_CONFIG_FILENAME, Spawnpoint[].class);
+        rawSpawnpoints = ConfigLoader.loadConfig(wavePath + SPAWNPOINT_CONFIG_FILENAME, Spawnpoint[].class);
         populateSpawnQueue();
     }
 
     private void populateSpawnQueue() {
-        for (final Spawnpoint spawnpoint : spawnpoints) {
+        for (final Spawnpoint spawnpoint : rawSpawnpoints) {
             //adding (0.5, 0.5) to use the center of the tile's coordinates.
             final Vector2D spawnLocation = new Coordinate2D(spawnpoint.x, spawnpoint.y).add(0.5, 0.5);
             for (final SpawnSequence sequence : spawnpoint.spawnSequences) {
@@ -99,6 +101,7 @@ public class Spawnpoints {
 
     /**
      * Returns the list of enemies to spawn at and before the current time.
+     *
      * @param timeNs time in nanoseconds
      * @return list of enemies
      */

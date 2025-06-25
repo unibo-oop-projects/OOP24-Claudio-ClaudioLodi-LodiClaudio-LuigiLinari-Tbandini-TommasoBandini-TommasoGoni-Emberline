@@ -7,12 +7,25 @@ import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
 import javafx.scene.image.Image;
 
+import java.util.Locale;
+
 /**
  * The EnemyAnimation class is responsible for managing the visual representation
  * of an enemy in the game. This includes handling animations and updating the
  * sprite based on the enemy's state, appearance, and facing direction.
  */
 public class EnemyAnimation implements Updatable {
+
+    private final AbstractEnemy enemy;
+    private AnimatedSprite animatedSprite;
+    private EnemyAppearance enemyAppearance = EnemyAppearance.NORMAL;
+    private AbstractEnemy.FacingDirection facingDirection = AbstractEnemy.FacingDirection.RIGHT;
+
+    private int frameIndex = 0;
+    private long accumulatedTimeNs = 0;
+
+    private boolean dyingAnimationFinished = false; // To track if the dying animation has finished
+    private boolean isDying = false; // To track if the enemy is currently in a dying state
 
     /**
      * This enumeration defines different visual states that an enemy can have,
@@ -27,20 +40,9 @@ public class EnemyAnimation implements Updatable {
 
         @JsonCreator
         public static EnemyAppearance fromString(final String appearance) {
-            return EnemyAppearance.valueOf(appearance.toUpperCase());
+            return EnemyAppearance.valueOf(appearance.toUpperCase(Locale.US));
         }
     }
-
-    private final AbstractEnemy enemy;
-    private AnimatedSprite animatedSprite;
-    private EnemyAppearance enemyAppearance = EnemyAppearance.NORMAL;
-    private AbstractEnemy.FacingDirection facingDirection = AbstractEnemy.FacingDirection.RIGHT;
-
-    private int frameIndex = 0;
-    private long accumulatedTimeNs = 0;
-
-    private boolean dyingAnimationFinished = false; // To track if the dying animation has finished
-    private boolean isDying = false; // To track if the enemy is currently in a dying state
 
     /**
      * Constructs an instance of the {@link EnemyAnimation} class.

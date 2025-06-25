@@ -16,19 +16,21 @@ public class WaveManager implements IWaveManager {
     private int currentWaveIndex = 0;
 
     private static final String WAVES_CONFIG_PATH = "/world/waves/waves.json";
-    private final static WavesConfig wavesConfig = ConfigLoader.loadConfig(WAVES_CONFIG_PATH, WavesConfig.class);
+    private static final WavesConfig WAVES_CONFIG = ConfigLoader.loadConfig(WAVES_CONFIG_PATH, WavesConfig.class);
+
     // Loading waves from resources
     private static class WavesConfig {
         @JsonProperty
         String[] wavePaths;
     }
+
     /**
      * Creates a new instance of {@code WaveManager}
      *
      * @param world is the reference to the World
      */
     public WaveManager(final World world) {
-        for (final String wavePath : wavesConfig.wavePaths) {
+        for (final String wavePath : WAVES_CONFIG.wavePaths) {
             if (wavePath == null || wavePath.isEmpty()) {
                 throw new IllegalArgumentException("Wave path cannot be null or empty");
             }

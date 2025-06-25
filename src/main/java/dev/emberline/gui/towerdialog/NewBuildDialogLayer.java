@@ -21,7 +21,7 @@ public class NewBuildDialogLayer extends GuiLayer {
         private static final double BG_WIDTH = 9.2;
         private static final double BG_HEIGHT = 5.84;
         private static final double BG_X = Renderer.GUICS_WIDTH * 0.98 - BG_WIDTH;
-        private static final double BG_Y = 0;
+        private static final double BG_Y = 1.2;
         // Button
         private static final double BTN_HEIGHT = 1.8;
         private static final double BTN_WIDTH = 3.55;
@@ -32,7 +32,6 @@ public class NewBuildDialogLayer extends GuiLayer {
     // The Tower pre build linked to this dialog layer
     private final TowerPreBuild tower;
     private final GuiButton buildButton;
-    private final int newBuildCost = 50; // Example cost, can be replaced with actual logic to get the cost
 
     public NewBuildDialogLayer(final TowerPreBuild tower) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
@@ -48,10 +47,10 @@ public class NewBuildDialogLayer extends GuiLayer {
 
     private GuiButton addBuildButton() {
         return new PricingGuiButton(
-                Layout.BTN_X, Layout.BTN_Y,
-                Layout.BTN_WIDTH, Layout.BTN_HEIGHT,
-                SpriteLoader.loadSprite(SingleSpriteKey.GENERIC_BUTTON).image(),
-                -newBuildCost, TextLayoutType.CENTER
+            Layout.BTN_X, Layout.BTN_Y,
+            Layout.BTN_WIDTH, Layout.BTN_HEIGHT,
+            SpriteLoader.loadSprite(SingleSpriteKey.GENERIC_BUTTON).image(),
+            -tower.getNewBuildCost(), TextLayoutType.CENTER
         );
     }
 

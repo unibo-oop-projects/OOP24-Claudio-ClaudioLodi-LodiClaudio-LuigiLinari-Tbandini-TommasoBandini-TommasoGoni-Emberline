@@ -8,12 +8,16 @@ import dev.emberline.game.world.World;
 import dev.emberline.utility.Vector2D;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Represents an abstract implementation of an enemy in the game, defining
  * common properties and behaviors that all specific enemy types must implement.
  */
 public abstract class AbstractEnemy implements IEnemy {
+
+    private final EnemyUpdateComponent updateComponent;
+    private final EnemyRenderComponent renderComponent;
 
     /**
      * Represents metadata for an enemy in the game. This class encapsulates
@@ -44,12 +48,9 @@ public abstract class AbstractEnemy implements IEnemy {
 
         @JsonCreator
         public static FacingDirection fromString(final String direction) {
-            return FacingDirection.valueOf(direction.toUpperCase());
+            return FacingDirection.valueOf(direction.toUpperCase(Locale.US));
         }
     }
-
-    private final EnemyUpdateComponent updateComponent;
-    private final EnemyRenderComponent renderComponent;
 
     public AbstractEnemy(final Vector2D spawnPoint, final World world) {
         this.updateComponent = new EnemyUpdateComponent(spawnPoint, world, this);

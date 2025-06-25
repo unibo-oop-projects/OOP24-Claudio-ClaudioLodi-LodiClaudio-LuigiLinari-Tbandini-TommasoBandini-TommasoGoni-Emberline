@@ -80,8 +80,7 @@ public class EnemiesManager implements IEnemiesManager {
         for (final IEnemy enemy : spatialHashGrid) {
             if (enemy.isDead()) {
                 toRemove.add(enemy);
-            }
-            else {
+            } else {
                 enemy.update(elapsed);
                 toUpdate.add(enemy);
             }

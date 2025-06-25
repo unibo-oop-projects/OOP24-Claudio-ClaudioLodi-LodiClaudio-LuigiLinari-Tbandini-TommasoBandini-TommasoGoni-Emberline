@@ -43,8 +43,8 @@ class ProjectileRenderComponent implements Renderable {
         final Vector2D position = posAndRot.position();
         final double rotation = posAndRot.rotation();
 
-        final double _width = WIDTH * cs.getScale();
-        final double _height = HEIGHT * cs.getScale();
+        final double screenWidth = WIDTH * cs.getScale();
+        final double screenHeight = HEIGHT * cs.getScale();
 
         final double positionScreenX = cs.toScreenX(position.getX());
         final double positionScreenY = cs.toScreenY(position.getY());
@@ -58,7 +58,7 @@ class ProjectileRenderComponent implements Renderable {
             gc.rotate(rotation);
 
             // make so that the tip of the projectile hits
-            gc.drawImage(currentFrame, -_width / 2, -_height / 2, _width, _height);
+            gc.drawImage(currentFrame, -screenWidth / 2, -screenHeight / 2, screenWidth, screenHeight);
 
             gc.restore();
         }));

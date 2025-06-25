@@ -58,6 +58,13 @@ import javafx.scene.canvas.GraphicsContext;
  * </ul>
  */
 public class Fog implements Renderable {
+
+    private static final int FOG_SIDE_LENGTH = 2;
+    private final Metadata metadata;
+
+    private long accumulatorNs = 0;
+    private long previousTimeNs = System.nanoTime();
+
     private record Translation(
             @JsonProperty double fromX,
             @JsonProperty double fromY,
@@ -76,12 +83,6 @@ public class Fog implements Renderable {
             @JsonProperty double animationDelaySeconds
     ) {
     }
-
-    private static final int FOG_SIDE_LENGTH = 2;
-    private final Metadata metadata;
-
-    private long accumulatorNs = 0;
-    private long previousTimeNs = System.nanoTime();
 
     /**
      * Constructs a Fog instance by loading the metadata configuration file and

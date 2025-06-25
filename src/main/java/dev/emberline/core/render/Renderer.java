@@ -8,7 +8,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.util.Locale;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -31,7 +33,7 @@ public class Renderer {
     private final CoordinateSystem guiCoordinateSystem = new CoordinateSystem(0, 0, GUICS_WIDTH, GUICS_HEIGHT);
 
     // Rendering queue
-    private final PriorityBlockingQueue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
+    private final Queue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
     private long taskOrderingCounter = 0;
 
     public Renderer(final Renderable root, final Canvas canvas) {
@@ -135,7 +137,7 @@ public class Renderer {
         final double areaInPixels = width * height * cs.getScale() * cs.getScale();
         // Convert to uppercase if the area is too small
         if (areaInPixels < MIN_TEXT_AREA_PX_UPPERCASE) {
-            text = text.toUpperCase();
+            text = text.toUpperCase(Locale.US);
         }
         // Use image smoothing if the area is too small
         if (height * cs.getScale() < MIN_TEXT_HEIGHT_PX_SMOOTH) {
@@ -145,8 +147,7 @@ public class Renderer {
         final Image image = SpriteLoader.loadSprite(new StringSpriteKey(text)).image();
         if (width / image.getWidth() < height / image.getHeight()) {
             drawImage(image, gc, cs, x, y + height * CENTER_TEXT_H_MARGIN, width, height * (1 - 2 * CENTER_TEXT_H_MARGIN));
-        }
-        else {
+        } else {
             drawImageFit(image, gc, cs, x, y, width, height);
         }
         gc.setImageSmoothing(gcImageSmoothing);

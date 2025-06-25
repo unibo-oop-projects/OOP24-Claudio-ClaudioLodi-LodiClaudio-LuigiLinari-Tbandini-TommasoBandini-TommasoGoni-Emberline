@@ -34,6 +34,19 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TowerDialogLayer extends GuiLayer {
+    // The Tower linked to this dialog layer
+    private final Tower tower;
+    // The current state of what is displayed in the dialog
+    private EnchantmentInfo displayedEnchantment = null;
+    private ProjectileInfo displayedProjectile = null;
+    // Initial aim type is set to FIRST
+    private AimType displayedAimType = AimType.FIRST;
+    private AimType currentAimType = displayedAimType;
+    // Tower Stats Views
+    private List<TowerStatView> statsViews = null;
+    // Data to display on button hover
+    private final Map<GuiButton, TowerStatsProvider> hoverData = new HashMap<>();
+
     /**
      * Defines layout constants used for specifying GUI element dimensions.
      * The numbers are relative to the GUI coordinate system.
@@ -71,7 +84,7 @@ public class TowerDialogLayer extends GuiLayer {
         private static final double BG_WIDTH = 9.2;
         private static final double BG_HEIGHT = 15.34;
         private static final double BG_X = Renderer.GUICS_WIDTH * 0.98 - BG_WIDTH;
-        private static final double BG_Y = 0;
+        private static final double BG_Y = 1.2;
         // Title
         private static final double TITLE_WIDTH = 8 * 0.77;
         private static final double TITLE_HEIGHT = 2 * 0.52;
@@ -138,19 +151,6 @@ public class TowerDialogLayer extends GuiLayer {
         private static final ColorAdjust STAT_NEW_VALUE = new ColorAdjust(0.9444, 1, -0.3, 0);
         private static final ColorAdjust SELECTOR_TITLE = new ColorAdjust(0.15, 0.9, -0.6, 0);
     }
-
-    // The Tower linked to this dialog layer
-    private final Tower tower;
-    // The current state of what is displayed in the dialog
-    private EnchantmentInfo displayedEnchantment = null;
-    private ProjectileInfo displayedProjectile = null;
-    // Initial aim type is set to FIRST
-    private AimType displayedAimType = AimType.FIRST;
-    private AimType currentAimType = displayedAimType;
-    // Tower Stats Views
-    private List<TowerStatView> statsViews = null;
-    // Data to display on button hover
-    private final Map<GuiButton, TowerStatsProvider> hoverData = new HashMap<>();
 
     public TowerDialogLayer(final Tower tower) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
@@ -222,8 +222,7 @@ public class TowerDialogLayer extends GuiLayer {
                 hoverData.put(button, (TowerStatsProvider) element.getChangeType(typeValue));
                 buttons.add(button);
             }
-        }
-        else { // otherwise, we add the upgrade and reset button
+        } else { // otherwise, we add the upgrade and reset button
             GuiButton upgradeButton = new PricingGuiButton(
                     Layout.Selector.UPGRADE_BTN_X, Layout.Selector.UPGRADE_BTN_Y + yOffset,
                     Layout.Selector.UPGRADE_BTN_SIDE, Layout.Selector.UPGRADE_BTN_SIDE,

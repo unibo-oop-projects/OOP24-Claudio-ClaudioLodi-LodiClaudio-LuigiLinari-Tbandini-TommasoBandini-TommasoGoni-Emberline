@@ -124,38 +124,24 @@ public record ProjectileInfo(Type type,
         return new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
     }
 
-    private static class Metadata {
-        @JsonProperty("baseUpgradeCost")
-        private int BASE_UPGRADE_COST;
-        @JsonProperty("upgradeCosts")
-        private int[] UPGRADE_COSTS;
-        @JsonProperty("resetRefunds")
-        private int[] RESET_REFUNDS;
-        @JsonProperty("baseFireRate")
-        private double BASE_FIRE_RATE;
-        @JsonProperty("fireRateSmall")
-        private double[] SMALL_FIRE_RATE;
-        @JsonProperty("fireRateBig")
-        private double[] BIG_FIRE_RATE;
-        @JsonProperty("baseDamage")
-        private double BASE_DAMAGE;
-        @JsonProperty("damageSmall")
-        private double[] SMALL_DAMAGE;
-        @JsonProperty("damageBig")
-        private double[] BIG_DAMAGE;
-        @JsonProperty("bigDamageArea")
-        private double[] BIG_DAMAGE_AREA;
-        @JsonProperty("towerRange")
-        private double[] TOWER_RANGE;
-        @JsonProperty("baseProjectileSpeed")
-        private double BASE_PROJECTILE_SPEED;
-        @JsonProperty("projectileSpeedSmall")
-        private double[] SMALL_PROJECTILE_SPEED;
-        @JsonProperty("projectileSpeedBig")
-        private double[] BIG_PROJECTILE_SPEED;
-    }
+    private record Metadata(
+            @JsonProperty int baseUpgradeCost,
+            @JsonProperty int[] upgradeCosts,
+            @JsonProperty int[] resetRefunds,
+            @JsonProperty double baseFireRate,
+            @JsonProperty double[] fireRateSmall,
+            @JsonProperty double[] fireRateBig,
+            @JsonProperty double baseDamage,
+            @JsonProperty double[] damageSmall,
+            @JsonProperty double[] damageBig,
+            @JsonProperty double[] bigDamageArea,
+            @JsonProperty double[] towerRange,
+            @JsonProperty double baseProjectileSpeed,
+            @JsonProperty double[] projectileSpeedSmall,
+            @JsonProperty double[] projectileSpeedBig
+    ) {}
 
-    private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/projectileInfoStats.json", Metadata.class);
+    private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/projectileInfoStats.json", Metadata.class);
 
     /**
      * {@inheritDoc}
@@ -163,9 +149,9 @@ public record ProjectileInfo(Type type,
     @Override
     public int getUpgradeCost() {
         if (type == Type.BASE) {
-            return metadata.BASE_UPGRADE_COST;
+            return METADATA.baseUpgradeCost;
         }
-        return metadata.UPGRADE_COSTS[level];
+        return METADATA.upgradeCosts[level];
     }
 
     /**
@@ -176,7 +162,7 @@ public record ProjectileInfo(Type type,
         if (type == Type.BASE) {
             return 0;
         }
-        return metadata.RESET_REFUNDS[level];
+        return METADATA.resetRefunds[level];
     }
 
     /**
@@ -187,9 +173,9 @@ public record ProjectileInfo(Type type,
      */
     public double getFireRate() {
         return switch (type) {
-            case SMALL -> metadata.SMALL_FIRE_RATE[level];
-            case BIG -> metadata.BIG_FIRE_RATE[level];
-            case BASE -> metadata.BASE_FIRE_RATE;
+            case SMALL -> METADATA.fireRateSmall[level];
+            case BIG -> METADATA.fireRateBig[level];
+            case BASE -> METADATA.baseFireRate;
         };
     }
 
@@ -200,9 +186,9 @@ public record ProjectileInfo(Type type,
      */
     public double getDamage() {
         return switch (type) {
-            case SMALL -> metadata.SMALL_DAMAGE[level];
-            case BIG -> metadata.BIG_DAMAGE[level];
-            case BASE -> metadata.BASE_DAMAGE;
+            case SMALL -> METADATA.damageSmall[level];
+            case BIG -> METADATA.damageBig[level];
+            case BASE -> METADATA.baseDamage;
         };
     }
 
@@ -216,7 +202,7 @@ public record ProjectileInfo(Type type,
      */
     public Optional<Double> getDamageArea() {
         if (type == Type.BIG) {
-            return Optional.of(metadata.BIG_DAMAGE_AREA[level]);
+            return Optional.of(METADATA.bigDamageArea[level]);
         }
         return Optional.empty();
     }
@@ -228,7 +214,7 @@ public record ProjectileInfo(Type type,
      * @return the tower range radius as a double value, measured in tiles.
      */
     public double getTowerRange() {
-        return metadata.TOWER_RANGE[level];
+        return METADATA.towerRange[level];
     }
 
     /**
@@ -238,9 +224,9 @@ public record ProjectileInfo(Type type,
      */
     public double getProjectileSpeed() {
         return switch (type) {
-            case SMALL -> metadata.SMALL_PROJECTILE_SPEED[level];
-            case BIG -> metadata.BIG_PROJECTILE_SPEED[level];
-            case BASE -> metadata.BASE_PROJECTILE_SPEED;
+            case SMALL -> METADATA.projectileSpeedSmall[level];
+            case BIG -> METADATA.projectileSpeedBig[level];
+            case BASE -> METADATA.baseProjectileSpeed;
         };
     }
 

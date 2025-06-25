@@ -16,6 +16,11 @@ import java.util.Map;
 import java.util.Objects;
 
 public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
+
+    private final static Metadata METADATA = ConfigLoader.loadConfig("/font/font.json", Metadata.class);
+
+    private final static Map<Character, Image> CHAR_CACHE = Collections.synchronizedMap(new HashMap<>());
+
     private static class Metadata {
         @JsonProperty
         String filename;
@@ -31,10 +36,6 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
         String charOrder;
     }
 
-    private final static Metadata metadata = ConfigLoader.loadConfig("/font/font.json", Metadata.class);
-
-    private final static Map<Character, Image> CHAR_CACHE = Collections.synchronizedMap(new HashMap<>());
-
     @Override
     public Sprite loadSprite(final StringSpriteKey key) {
         return new SingleSprite(getStringImage(key.string()));
@@ -45,20 +46,20 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
             return getCharImage(' '); // If the character is null, return a space character
         }
 
-        final int charWidth = metadata.atlasWidth / metadata.columns; // Width of a character in pixels
-        final int charHeight = metadata.atlasHeight / metadata.rows; // Height of a character in pixels
+        final int charWidth = METADATA.atlasWidth / METADATA.columns; // Width of a character in pixels
+        final int charHeight = METADATA.atlasHeight / METADATA.rows; // Height of a character in pixels
 
         final Image result = CHAR_CACHE.computeIfAbsent(c, key -> {
             final Image atlas = getCharAtlas();
-            final PixelReader atlasReader = atlas.getPixelReader();
 
             // Locating the character in the atlas
-            final int charIndex = metadata.charOrder.indexOf(c);
+            final int charIndex = METADATA.charOrder.indexOf(c);
             if (charIndex == -1) {
                 return null; // Character not found
             }
-            int charX = charIndex % metadata.columns * charWidth; //pixel coordinate of the char inside the atlas
-            final int charY = charIndex / metadata.columns * charHeight;
+            int charX = charIndex % METADATA.columns * charWidth; //pixel coordinate of the char inside the atlas
+            final int charY = charIndex / METADATA.columns * charHeight;
+            final PixelReader atlasReader = atlas.getPixelReader();
 
             // Truncate left and right columns of only transparent pixels (ignoring the space character)
             if (c == ' ') {
@@ -71,7 +72,7 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
             boolean transparent = true;
             for (int x = charX; x < charX + mutableCharWidth && transparent; x++, transparentColumns++) {
                 for (int y = charY; y < charY + charHeight; y++) {
-                    transparent = !(atlasReader.getColor(x, y).getOpacity() > 0) && transparent;
+                    transparent = atlasReader.getColor(x, y).getOpacity() <= 0d && transparent;
                 }
             }
             if (transparentColumns == mutableCharWidth) {
@@ -84,7 +85,7 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
             transparent = true;
             for (int x = charX + mutableCharWidth - 1; x >= charX && transparent; x--, transparentColumns++) {
                 for (int y = charY; y < charY + charHeight; y++) {
-                    transparent = !(atlasReader.getColor(x, y).getOpacity() > 0) && transparent;
+                    transparent = atlasReader.getColor(x, y).getOpacity() <= 0d && transparent;
                 }
             }
             if (transparentColumns == mutableCharWidth) {
@@ -103,7 +104,7 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
     }
 
     private static Image getStringImage(final String string) {
-        final int charHeight = metadata.atlasHeight / metadata.rows;
+        final int charHeight = METADATA.atlasHeight / METADATA.rows;
 
         // If the string is null or empty, return a space character
         if (string == null || string.isEmpty()) {
@@ -135,7 +136,7 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
     }
 
     private static Image getCharAtlas() {
-        return new Image(Objects.requireNonNull(StringSpriteFactory.class.getResourceAsStream(metadata.filename)));
+        return new Image(Objects.requireNonNull(StringSpriteFactory.class.getResourceAsStream(METADATA.filename)));
     }
 
     @Override

@@ -13,9 +13,6 @@ import java.util.*;
  */
 public class SpatialHashGrid implements Iterable<IEnemy> {
 
-    private record CellIdx(int x, int y) {
-    }
-
     private static final int CELL_SIZE = 1;
 
     private final int x_min, y_min;
@@ -28,6 +25,9 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     private final Map<IEnemy, CellIdx> enemyCell = new HashMap<>();
 
     private int size = 0;
+
+    private record CellIdx(int x, int y) {
+    }
 
     /**
      * Constructs a SpatialHashGrid given the bounds (inclusive) of the space the data structure must keep track.

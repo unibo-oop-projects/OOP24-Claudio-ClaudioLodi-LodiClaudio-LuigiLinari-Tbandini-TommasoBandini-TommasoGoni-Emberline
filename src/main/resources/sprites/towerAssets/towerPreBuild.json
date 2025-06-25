@@ -1,6 +1,5 @@
 {
-  "worldDimensions": {
-    "width": 2,
-    "height": 2
-  }
+  "worldDimensionWidth": 2,
+  "worldDimensionHeight": 2,
+  "newBuildCost": 50
 }

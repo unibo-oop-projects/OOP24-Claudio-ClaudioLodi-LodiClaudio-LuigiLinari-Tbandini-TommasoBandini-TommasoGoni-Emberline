@@ -12,6 +12,8 @@ import dev.emberline.core.render.Renderer;
 import dev.emberline.gui.GuiButton;
 import javafx.scene.image.Image;
 
+import java.util.Locale;
+
 public class TextGuiButton extends GuiButton {
     private final String labelText;
     private final TextLayout textLayout;
@@ -37,7 +39,7 @@ public class TextGuiButton extends GuiButton {
 
     public static TextLayout loadLayout(final TextLayoutType type) {
         final JsonNode root = ConfigLoader.loadNode("/sprites/ui/buttonTextLayout.json");
-        final JsonNode sublayout = root.get(type.name().toLowerCase());
+        final JsonNode sublayout = root.get(type.name().toLowerCase(Locale.US));
         return ConfigLoader.loadConfig(sublayout, TextLayout.class);
     }
 

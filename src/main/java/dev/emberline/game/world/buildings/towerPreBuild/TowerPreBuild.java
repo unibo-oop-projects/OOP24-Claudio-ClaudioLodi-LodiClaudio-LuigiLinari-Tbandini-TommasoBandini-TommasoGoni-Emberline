@@ -29,13 +29,11 @@ public class TowerPreBuild extends Building {
     private static final String CONFIGS_PATH = "/sprites/towerAssets/towerPreBuild.json";
 
     private static class Metadata {
-        @JsonProperty
-        double width;
-        @JsonProperty
-        double height;
+        @JsonProperty double worldDimensionWidth;
+        @JsonProperty double worldDimensionHeight;
+        @JsonProperty int newBuildCost;
     }
-
-    private static final Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(CONFIGS_PATH).get("worldDimensions"), Metadata.class);
+    private static Metadata metadata = ConfigLoader.loadConfig(CONFIGS_PATH, Metadata.class);
 
     private final Vector2D locationBottomLeft;
     private final TowersManager towersManager;
@@ -56,7 +54,7 @@ public class TowerPreBuild extends Building {
      */
     @Override
     public Vector2D getWorldTopLeft() {
-        return locationBottomLeft.subtract(0, metadata.height);
+        return locationBottomLeft.subtract(0, metadata.worldDimensionHeight);
     }
 
     /**
@@ -64,7 +62,11 @@ public class TowerPreBuild extends Building {
      */
     @Override
     public Vector2D getWorldBottomRight() {
-        return locationBottomLeft.add(metadata.width, 0);
+        return locationBottomLeft.add(metadata.worldDimensionWidth, 0);
+    }
+
+    public int getNewBuildCost() {
+        return metadata.newBuildCost;
     }
 
     /**
@@ -89,8 +91,8 @@ public class TowerPreBuild extends Building {
 
         final double topLeftScreenX = cs.toScreenX(getWorldTopLeft().getX());
         final double topLeftScreenY = cs.toScreenY(getWorldTopLeft().getY());
-        final double screenWidth = cs.getScale() * metadata.width;
-        final double screenHeight = cs.getScale() * metadata.height;
+        final double screenWidth = cs.getScale() * metadata.worldDimensionWidth;
+        final double screenHeight = cs.getScale() * metadata.worldDimensionHeight;
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BUILDINGS, () -> {
             gc.drawImage(image, topLeftScreenX, topLeftScreenY, screenWidth, screenHeight);

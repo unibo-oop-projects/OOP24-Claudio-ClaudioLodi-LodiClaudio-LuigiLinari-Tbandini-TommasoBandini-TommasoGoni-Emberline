@@ -84,8 +84,7 @@ class EnemyUpdateComponent implements Updatable {
     private void walk(final long elapsed) {
         if (activeEffect.isExpired()) {
             clearEffect();
-        }
-        else {
+        } else {
             activeEffect.updateEffect(enemy, elapsed);
         }
         move(elapsed);
