@@ -10,7 +10,6 @@ import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
-import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.buildings.tower.Tower;
 import dev.emberline.gui.GuiButton;
@@ -71,7 +70,7 @@ public class TowerDialogLayer extends GuiLayer {
         private static final double BG_WIDTH = 9.2;
         private static final double BG_HEIGHT = 15.34;
         private static final double BG_X = Renderer.GUICS_WIDTH * 0.98 - BG_WIDTH;
-        private static final double BG_Y = 0;
+        private static final double BG_Y = 1.2;
         // Title
         private static final double TITLE_WIDTH = 8 * 0.77;
         private static final double TITLE_HEIGHT = 2 * 0.52;
