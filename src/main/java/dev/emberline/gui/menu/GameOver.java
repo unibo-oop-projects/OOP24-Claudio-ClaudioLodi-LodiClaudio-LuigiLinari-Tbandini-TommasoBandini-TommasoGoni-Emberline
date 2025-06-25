@@ -20,10 +20,15 @@ import javafx.scene.image.Image;
 
 public class GameOver extends GuiLayer implements GameState {
 
-     private static class Layout {
+    private static class Layout {
         // Background
         private static final double BG_WIDTH = 32;
         private static final double BG_HEIGHT = 18;
+        // Title
+        private static final double TITLE_WIDTH = 17;
+        private static final double TITLE_HEIGHT = 5;
+        private static final double TITLE_X = (BG_WIDTH - TITLE_WIDTH) / 2;
+        private static final double TITLE_Y = (BG_HEIGHT - TITLE_HEIGHT) / 2 - 3.5;
         // Start Button
         private static final double scale_factor = 2.5;
         private static final double BTN_START_HEIGHT = 1.5 * scale_factor;
@@ -82,10 +87,12 @@ public class GameOver extends GuiLayer implements GameState {
         double menuScreenX = cs.toScreenX(gameOverBounds.topLeftBound.x);
         double menuScreenY = cs.toScreenY(gameOverBounds.topLeftBound.y);
 
-        Image menuBackground = SpriteLoader.loadSprite(SingleSpriteKey.MENU_BACKGROUND).image();
+        Image gameOverBackground = SpriteLoader.loadSprite(SingleSpriteKey.GAME_OVER_BACKGROUND).image();
+        Image gameOverImage = SpriteLoader.loadSprite(SingleSpriteKey.GAME_OVER).image();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
-            gc.drawImage(menuBackground, menuScreenX, menuScreenY, menuScreenWidth, menuScreenHeight);
+            gc.drawImage(gameOverBackground, menuScreenX, menuScreenY, menuScreenWidth, menuScreenHeight);
+            gc.drawImage(gameOverImage, cs.toScreenX(Layout.TITLE_X), cs.toScreenY(Layout.TITLE_Y), Layout.TITLE_WIDTH * cs.getScale(), Layout.TITLE_HEIGHT * cs.getScale());
         }));
 
         super.render();
