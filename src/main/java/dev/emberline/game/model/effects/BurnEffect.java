@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class BurnEffect implements EnchantmentEffect {
 
-    public static final int secondInNs = 1_000_000_000;
+    private static final int secondInNs = 1_000_000_000;
 
     private final double damagePerSecond;
     private final double damagePerNs;

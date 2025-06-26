@@ -104,6 +104,8 @@ public class Options extends GuiLayer implements GameState {
      * data loaded from a predefined JSON resource file. The configuration provides
      * the bounds necessary for setting up the {@code Options} screen in the GUI.
      *
+     * @param showMenuButton a boolean representing whether the options menu should or should not
+     *                       have a menu button
      * @throws RuntimeException if the configuration file cannot be loaded or parsed.
      * @see Options
      */
