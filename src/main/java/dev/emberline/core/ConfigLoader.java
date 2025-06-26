@@ -22,6 +22,8 @@ public class ConfigLoader {
             .registerModule(new ParameterNamesModule())
             .findAndRegisterModules();
 
+    private ConfigLoader() {}
+
     /**
      * Loads a JSON node from a given resource path.
      * The method reads the content of the file located at the specified resource path

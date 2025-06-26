@@ -14,6 +14,10 @@ import java.util.stream.Stream;
  * If a stat is being compared but has the same value as the original stat, it will be kept as a normal stat.
  */
 public final class TowerStatsViewsBuilder {
+
+    private final Map<TowerStatType, TowerStat> statsMap = new EnumMap<>(TowerStatType.class);
+    private final Map<TowerStatType, TowerStat> comparedStatsMap = new EnumMap<>(TowerStatType.class);
+
     /**
      * Represents a view of a single {@link TowerStat} for display in the GUI.
      * <p>
@@ -29,7 +33,7 @@ public final class TowerStatsViewsBuilder {
      * This class is immutable and comparable by the type of the stat it represents.
      */
     public static final class TowerStatView implements Comparable<TowerStatView> {
-        public enum Type {NORMAL, COMPARED, NEW}
+        public enum Type { NORMAL, COMPARED, NEW }
 
         private final TowerStat stat;
         private final TowerStat comparedStat;
@@ -86,9 +90,6 @@ public final class TowerStatsViewsBuilder {
         }
     }
 
-    private final Map<TowerStatType, TowerStat> statsMap = new EnumMap<>(TowerStatType.class);
-    private final Map<TowerStatType, TowerStat> comparedStatsMap = new EnumMap<>(TowerStatType.class);
-
     /**
      * Adds stats from the given provider to the builder.
      *
@@ -124,13 +125,16 @@ public final class TowerStatsViewsBuilder {
     public List<TowerStatView> build() {
         final List<TowerStatView> views = new ArrayList<>();
 
-        // Add NORMAL stat views (stats that are in the stat map but not in the compared stats map or are in both but have the same value)
+        // Add NORMAL stat views
+        // (stats that are in the stat map but not in the compared stats map or are in both but have the same value)
         final Stream<TowerStatView> normalStatViews = statsMap.values().stream()
-                .filter(stat -> !comparedStatsMap.containsKey(stat.type()) || stat.value() == comparedStatsMap.get(stat.type()).value())
+                .filter(stat -> !comparedStatsMap.containsKey(stat.type())
+                        || stat.value() == comparedStatsMap.get(stat.type()).value())
                 .map(stat -> new TowerStatView(stat, TowerStatView.Type.NORMAL));
         // Add COMPARED stat views (stats that are in both maps but have different values)
         final Stream<TowerStatView> comparedStatViews = statsMap.values().stream()
-                .filter(stat -> comparedStatsMap.containsKey(stat.type()) && stat.value() != comparedStatsMap.get(stat.type()).value())
+                .filter(stat -> comparedStatsMap.containsKey(stat.type())
+                        && stat.value() != comparedStatsMap.get(stat.type()).value())
                 .map(stat -> new TowerStatView(stat, comparedStatsMap.get(stat.type())));
         // Add NEW stat views (compared stats that are not in the stats map)
         final Stream<TowerStatView> newStatViews = comparedStatsMap.values().stream()

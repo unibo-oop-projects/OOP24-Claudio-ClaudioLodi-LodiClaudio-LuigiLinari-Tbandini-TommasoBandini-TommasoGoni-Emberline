@@ -15,8 +15,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
 
     private static final int CELL_SIZE = 1;
 
-    private final int x_min, y_min;
-    private final int x_max, y_max;
+    private final int xMin, yMin;
+    private final int xMax, yMax;
 
     private final int cols;
     private final int rows;
@@ -32,19 +32,19 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     /**
      * Constructs a SpatialHashGrid given the bounds (inclusive) of the space the data structure must keep track.
      *
-     * @param x_min the minimum x-coordinate of the grid's boundary
-     * @param y_min the minimum y-coordinate of the grid's boundary
-     * @param x_max the maximum x-coordinate of the grid's boundary
-     * @param y_max the maximum y-coordinate of the grid's boundary
+     * @param xMin the minimum x-coordinate of the grid's boundary
+     * @param yMin the minimum y-coordinate of the grid's boundary
+     * @param xMax the maximum x-coordinate of the grid's boundary
+     * @param yMax the maximum y-coordinate of the grid's boundary
      */
-    public SpatialHashGrid(final int x_min, final int y_min, final int x_max, final int y_max) {
-        this.cols = (int) Math.ceil((double) (x_max - x_min) / CELL_SIZE) + 1;
-        this.rows = (int) Math.ceil((double) (y_max - y_min) / CELL_SIZE) + 1;
+    public SpatialHashGrid(final int xMin, final int yMin, final int xMax, final int yMax) {
+        this.cols = (int) Math.ceil((double) (xMax - xMin) / CELL_SIZE) + 1;
+        this.rows = (int) Math.ceil((double) (yMax - yMin) / CELL_SIZE) + 1;
 
-        this.x_min = x_min;
-        this.y_min = y_min;
-        this.x_max = x_max;
-        this.y_max = y_max;
+        this.xMin = xMin;
+        this.yMin = yMin;
+        this.xMax = xMax;
+        this.yMax = yMax;
 
         this.spatialHashGrid = new ArrayList<>();
         for (int x = 0; x < cols; x++) {
@@ -66,8 +66,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
      */
     public void add(final IEnemy enemy) {
         final Vector2D enemyLocation = enemy.getPosition();
-        if (enemyLocation.getX() < x_min || enemyLocation.getX() > x_max ||
-                enemyLocation.getY() < y_min || enemyLocation.getY() > y_max) {
+        if (enemyLocation.getX() < xMin || enemyLocation.getX() > xMax ||
+                enemyLocation.getY() < yMin || enemyLocation.getY() > yMax) {
             throw new IllegalStateException("Enemy is outside the bounds of the spatial hash grid");
         }
 
@@ -195,8 +195,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     }
 
     private CellIdx getCellIdx(final Vector2D location) {
-        final int x = (int) Math.floor((location.getX() - x_min) / CELL_SIZE);
-        final int y = (int) Math.floor((location.getY() - y_min) / CELL_SIZE);
+        final int x = (int) Math.floor((location.getX() - xMin) / CELL_SIZE);
+        final int y = (int) Math.floor((location.getY() - yMin) / CELL_SIZE);
 
         return new CellIdx(x, y);
     }

@@ -18,7 +18,7 @@ import java.util.Objects;
  * from a pre-configured JSON resource file and uses that data to construct the sprite
  * based on its defined properties.
  */
-public class SingleSpriteFactory implements SpriteFactory<SingleSpriteKey> {
+public final class SingleSpriteFactory implements SpriteFactory<SingleSpriteKey> {
 
     private static final JsonNode CONFIGS_ROOT = ConfigLoader.loadNode("/sprites/singleSprites.json");
 

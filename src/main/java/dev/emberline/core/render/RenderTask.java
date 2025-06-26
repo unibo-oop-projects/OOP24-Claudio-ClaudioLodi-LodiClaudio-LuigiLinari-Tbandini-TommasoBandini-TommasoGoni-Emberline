@@ -64,7 +64,8 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
     /**
      * Compares this object with the specified object for order.
      *
-     * @return Returns a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object.
+     * @return Returns a negative integer, zero, or a positive integer
+     * as this object is less than, equal to, or greater than the specified object.
      */
     @Override
     public int compareTo(final RenderTask t1) {

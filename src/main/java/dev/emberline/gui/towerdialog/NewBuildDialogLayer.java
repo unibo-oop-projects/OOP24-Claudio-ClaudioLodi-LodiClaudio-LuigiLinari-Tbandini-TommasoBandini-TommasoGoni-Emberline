@@ -7,7 +7,7 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
-import dev.emberline.game.world.buildings.towerPreBuild.TowerPreBuild;
+import dev.emberline.game.world.buildings.towerprebuild.TowerPreBuild;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.NewBuildEvent;
@@ -25,6 +25,9 @@ import javafx.scene.canvas.GraphicsContext;
  * and dispatches a build event when the button is clicked.
  */
 public class NewBuildDialogLayer extends GuiLayer {
+    // The Tower pre build linked to this dialog layer
+    private final TowerPreBuild tower;
+    private final GuiButton buildButton;
 
     private static class Layout {
         // Background
@@ -38,10 +41,6 @@ public class NewBuildDialogLayer extends GuiLayer {
         private static final double BTN_X = BG_X + (BG_WIDTH - BTN_WIDTH) / 2;
         private static final double BTN_Y = BG_Y + BG_HEIGHT - BTN_HEIGHT - 0.5;
     }
-
-    // The Tower pre build linked to this dialog layer
-    private final TowerPreBuild tower;
-    private final GuiButton buildButton;
 
     /**
      * Constructs a new instance of {@code NewBuildDialogLayer} linked to a specific
@@ -87,7 +86,8 @@ public class NewBuildDialogLayer extends GuiLayer {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI_HIGH, () -> {
             // Background
-            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.NTDL_BACKGROUND).image(), gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
+            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.NTDL_BACKGROUND).image(),
+                    gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         }));
 
         if (buildButton != null) {

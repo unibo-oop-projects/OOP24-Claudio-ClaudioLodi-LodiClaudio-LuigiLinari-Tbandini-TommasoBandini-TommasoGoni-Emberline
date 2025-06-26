@@ -19,7 +19,7 @@ import java.util.Objects;
  * The projectile sprite atlas is a single image containing all sprite frames,
  * and the individual frames are extracted during sprite creation based on metadata values.
  */
-public class ProjectileSpriteFactory implements SpriteFactory<ProjectileSpriteKey> {
+public final class ProjectileSpriteFactory implements SpriteFactory<ProjectileSpriteKey> {
 
     private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/projectile.json", Metadata.class);
 

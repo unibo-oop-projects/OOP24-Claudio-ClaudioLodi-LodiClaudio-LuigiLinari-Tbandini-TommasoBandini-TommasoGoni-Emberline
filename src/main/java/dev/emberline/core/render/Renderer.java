@@ -59,6 +59,13 @@ public class Renderer {
     private final Queue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
     private long taskOrderingCounter = 0;
 
+    // drawtext centering height margin
+    private static final double CENTER_TEXT_H_MARGIN = 0.07;
+    // Minimum area in pixels before using uppercase
+    private static final double MIN_TEXT_AREA_PX_UPPERCASE = 500;
+    // Minimum text height in pixels before enabling image smoothing
+    private static final double MIN_TEXT_HEIGHT_PX_SMOOTH = 20;
+
     /**
      * Constructs a Renderer instance.
      *
@@ -218,15 +225,6 @@ public class Renderer {
         drawImage(image, gc, cs, x, y, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
     }
 
-    // drawtext centering height margin
-    private static final double CENTER_TEXT_H_MARGIN = 0.07;
-    // Minimum area in pixels before using uppercase
-    private static final double MIN_TEXT_AREA_PX_UPPERCASE = 500;
-    // Minimum text height in pixels before enabling image smoothing
-    private static final double MIN_TEXT_HEIGHT_PX_SMOOTH = 20;
-
-    // Draw a string within the given rectangular area optimizing for readability
-
     /**
      * Draws a text string onto the specified {@code GraphicsContext} within the given rectangular
      * area optimizing for readability.
@@ -239,7 +237,10 @@ public class Renderer {
      * @param width  the width of the area available for rendering the text in the coordinate system
      * @param height the height of the area available for rendering the text in the coordinate system
      */
-    public static void drawText(String text, final GraphicsContext gc, final CoordinateSystem cs, final double x, final double y, final double width, final double height) {
+    public static void drawText(
+            String text, final GraphicsContext gc, final CoordinateSystem cs,
+            final double x, final double y, final double width, final double height
+    ) {
         final boolean gcImageSmoothing = gc.isImageSmoothing();
         final double areaInPixels = width * height * cs.getScale() * cs.getScale();
         // Convert to uppercase if the area is too small
@@ -271,7 +272,10 @@ public class Renderer {
      * @param width  the width of the rectangle in the coordinate system
      * @param height the height of the rectangle in the coordinate system
      */
-    public static void fillRect(final GraphicsContext gc, final CoordinateSystem cs, final double x, final double y, final double width, final double height) {
+    public static void fillRect(
+            final GraphicsContext gc, final CoordinateSystem cs, final double x,
+            final double y, final double width, final double height
+    ) {
         gc.fillRect(cs.toScreenX(x), cs.toScreenY(y), cs.getScale() * width, cs.getScale() * height);
     }
 

@@ -2,6 +2,10 @@ package dev.emberline.game.world.entities.projectiles;
 
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
+import dev.emberline.core.event.EventDispatcher;
+import dev.emberline.core.sounds.AudioController;
+import dev.emberline.core.sounds.event.SfxSoundEvent;
+import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.world.World;
@@ -76,6 +80,7 @@ public class ProjectilesManager implements Updatable, Renderable {
 
             currProjectile.update(elapsed);
             if (currProjectile.hasHit()) {
+                AudioController.requestSfxSound(this, SoundType.PROJECTILE_LANDED);
                 it.remove();
             }
         }

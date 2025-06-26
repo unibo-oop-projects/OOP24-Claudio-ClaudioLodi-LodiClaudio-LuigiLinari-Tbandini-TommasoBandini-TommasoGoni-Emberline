@@ -19,7 +19,7 @@ public class EventDispatcher {
             }
         }
         
-        private EventHandlerMethod(Method method) {
+        private EventHandlerMethod(final Method method) {
             this(method.getParameterTypes()[0].asSubclass(EventObject.class), method);
         }
     }
@@ -37,11 +37,11 @@ public class EventDispatcher {
     /**
      * TODO
      */
-    public void registerListener(EventListener listener) {
+    public void registerListener(final EventListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("Listener cannot be null");
         }
-        for (Method method : getEventHandlerMethods(listener)) {
+        for (final Method method : getEventHandlerMethods(listener)) {
             eventHandlers.computeIfAbsent(new EventHandlerMethod(method), k -> new ArrayList<>()).add(listener);
         }
     }
@@ -49,13 +49,13 @@ public class EventDispatcher {
     /**
      * TODO
      */
-    public void unregisterListener(EventListener listener) {
+    public void unregisterListener(final EventListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("Listener cannot be null");
         }
-        for (Method method : getEventHandlerMethods(listener)) {
-            EventHandlerMethod handlerMethod = new EventHandlerMethod(method);
-            List<EventListener> listeners = eventHandlers.get(handlerMethod);
+        for (final Method method : getEventHandlerMethods(listener)) {
+            final EventHandlerMethod handlerMethod = new EventHandlerMethod(method);
+            final List<EventListener> listeners = eventHandlers.get(handlerMethod);
             if (listeners != null) {
                 listeners.remove(listener);
                 if (listeners.isEmpty()) {
@@ -74,22 +74,22 @@ public class EventDispatcher {
      *              or one of its subclasses
      * @throws IllegalArgumentException if the event parameter is {@code null}
      */
-    public void dispatchEvent(EventObject event) {
+    public void dispatchEvent(final EventObject event) {
         if (event == null) {
             throw new IllegalArgumentException("Event cannot be null");
         }
 
-        for (var entry : eventHandlers.entrySet()) {
+        for (final var entry : eventHandlers.entrySet()) {
             if (!entry.getKey().eventType.isAssignableFrom(event.getClass())) {
                 continue;
             }
-            Method method = entry.getKey().method;
+            final Method method = entry.getKey().method;
             method.setAccessible(true);
-            List<EventListener> listeners = entry.getValue();
+            final List<EventListener> listeners = entry.getValue();
             listeners.forEach(listener -> {
                 try {
                     method.invoke(listener, event);
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     throw new RuntimeException("Failed to invoke event handler method: " + method.getName(), e);
                 }
             });
@@ -101,7 +101,7 @@ public class EventDispatcher {
      * @param listener the event listener from which to retrieve event handler methods
      * @return an array of valid event handler methods
      */
-    private Method[] getEventHandlerMethods(EventListener listener) {
+    private Method[] getEventHandlerMethods(final EventListener listener) {
         return Arrays.stream(listener.getClass().getDeclaredMethods())
                 .filter(this::isEventHandlerMethod)
                 .toArray(Method[]::new);
@@ -115,7 +115,7 @@ public class EventDispatcher {
      * @param method the method to check for event handler validity
      * @return {@code true} if the method is a valid event handler, {@code false} otherwise
      */
-    private boolean isEventHandlerMethod(Method method) {
+    private boolean isEventHandlerMethod(final Method method) {
         if (!method.isAnnotationPresent(EventHandler.class)) {
             return false;
         }
@@ -138,8 +138,8 @@ public class EventDispatcher {
      * @throws InvalidEventHandlerException if the method does not comply with the expected
      *                                      signature for event handlers
      */
-    private void validateEventHandler(Method method) {
-        Class<?>[] parameterTypes = method.getParameterTypes();
+    private void validateEventHandler(final Method method) {
+        final Class<?>[] parameterTypes = method.getParameterTypes();
         if (parameterTypes.length != 1) {
             throw new InvalidEventHandlerException("Event handler methods must have exactly one parameter, but found: " + parameterTypes.length);
         }

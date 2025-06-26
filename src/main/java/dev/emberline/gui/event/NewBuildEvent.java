@@ -1,6 +1,6 @@
 package dev.emberline.gui.event;
 
-import dev.emberline.game.world.buildings.towerPreBuild.TowerPreBuild;
+import dev.emberline.game.world.buildings.towerprebuild.TowerPreBuild;
 
 /**
  * Represents an event triggered to initiate the construction of a new tower.

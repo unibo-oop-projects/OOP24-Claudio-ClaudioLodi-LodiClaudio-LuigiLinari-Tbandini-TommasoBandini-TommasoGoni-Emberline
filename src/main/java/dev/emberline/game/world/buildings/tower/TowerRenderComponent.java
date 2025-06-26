@@ -22,15 +22,15 @@ class TowerRenderComponent implements Renderable {
     private final Tower tower;
     private final long creationTimeNs = System.nanoTime();
 
-    private static final JsonNode configsNode = ConfigLoader.loadNode("/sprites/towerAssets/crystal.json");
+    private static final JsonNode CONFIGS_NODE = ConfigLoader.loadNode("/sprites/towerAssets/crystal.json");
 
     private static class Metadata {
-        private static final double CRYSTAL_WIDTH = configsNode.get("worldDimensions").get("width").asDouble();
-        private static final double CRYSTAL_HEIGHT = configsNode.get("worldDimensions").get("width").asDouble();
-        private static final double CRYSTAL_SWING_PERIOD_NS = configsNode.get("swingPeriodNs").asDouble();
-        private static final double CRYSTAL_SWING_AMPLITUDE = configsNode.get("swingAmplitude").asDouble();
-        private static final double CRYSTAL_TRANSPARENCY = configsNode.get("transparency").asDouble();
-        private static final double CRYSTAL_BLOOM_THRESHOLD = configsNode.get("bloomThreshold").asDouble();
+        private static final double CRYSTAL_WIDTH = CONFIGS_NODE.get("worldDimensions").get("width").asDouble();
+        private static final double CRYSTAL_HEIGHT = CONFIGS_NODE.get("worldDimensions").get("width").asDouble();
+        private static final double CRYSTAL_SWING_PERIOD_NS = CONFIGS_NODE.get("swingPeriodNs").asDouble();
+        private static final double CRYSTAL_SWING_AMPLITUDE = CONFIGS_NODE.get("swingAmplitude").asDouble();
+        private static final double CRYSTAL_TRANSPARENCY = CONFIGS_NODE.get("transparency").asDouble();
+        private static final double CRYSTAL_BLOOM_THRESHOLD = CONFIGS_NODE.get("bloomThreshold").asDouble();
     }
 
     TowerRenderComponent(final Tower tower) {

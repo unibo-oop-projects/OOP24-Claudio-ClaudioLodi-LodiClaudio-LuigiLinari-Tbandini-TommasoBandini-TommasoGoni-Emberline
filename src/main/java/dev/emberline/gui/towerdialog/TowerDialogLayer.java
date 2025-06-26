@@ -60,13 +60,24 @@ public class TowerDialogLayer extends GuiLayer {
      * @see dev.emberline.core.render.CoordinateSystem
      * @see Renderer#getGuiCoordinateSystem()
      */
-    private static class Layout {
+    private static final class Layout {
+        // Background
+        private static final double BG_WIDTH = 9.2;
+        private static final double BG_HEIGHT = 15.34;
+        private static final double BG_X = Renderer.GUICS_WIDTH * 0.98 - BG_WIDTH;
+        private static final double BG_Y = 1.2;
+        // Title
+        private static final double TITLE_WIDTH = 8 * 0.77;
+        private static final double TITLE_HEIGHT = 2 * 0.52;
+        private static final double TITLE_X = BG_X + (BG_WIDTH - TITLE_WIDTH) / 2;
+        private static final double TITLE_Y = BG_Y + 2;
+
         // stats
-        private static class Stats {
+        private static final class Stats {
             // stats total area (with background image)
             private static final double WIDTH = 79. / 10.4;
             private static final double HEIGHT = 51. / 9.5;
-            private static final double X = Layout.BG_X + (BG_WIDTH - WIDTH) / 2;
+            private static final double X = BG_X + (BG_WIDTH - WIDTH) / 2;
             private static final double Y = TITLE_Y + TITLE_HEIGHT + BG_HEIGHT * 0.008;
             // stats effective overlay area
             private static final double OVR_WIDTH = WIDTH * 0.9;
@@ -86,25 +97,15 @@ public class TowerDialogLayer extends GuiLayer {
             private static final double SV_VALUE_WIDTH_FACTOR = 0.5; // value width relative to the title width
         }
 
-        // Background
-        private static final double BG_WIDTH = 9.2;
-        private static final double BG_HEIGHT = 15.34;
-        private static final double BG_X = Renderer.GUICS_WIDTH * 0.98 - BG_WIDTH;
-        private static final double BG_Y = 1.2;
-        // Title
-        private static final double TITLE_WIDTH = 8 * 0.77;
-        private static final double TITLE_HEIGHT = 2 * 0.52;
-        private static final double TITLE_X = BG_X + (BG_WIDTH - TITLE_WIDTH) / 2;
-        private static final double TITLE_Y = BG_Y + 2;
-
         // Selectors
-        private static class Selector {
+        private static final class Selector {
             private static final double TOP_MARGIN = 0.2;
             private static final double INNER_MARGIN = 0.1;
             private static final double WIDTH = 7.3;
             private static final double HEIGHT = 2;
             private static final double NAME_HEIGHT = 0.5;
-            private static final double NAME_Y = Stats.Y + Stats.HEIGHT + AimButton.BTN_HEIGHT + TOP_MARGIN + AimButton.TOP_MARGIN;
+            private static final double NAME_Y = Stats.Y + Stats.HEIGHT
+                                        + AimButton.BTN_HEIGHT + TOP_MARGIN + AimButton.TOP_MARGIN;
             private static final double X = Stats.X + (Stats.WIDTH - WIDTH) / 2;
             private static final double Y = NAME_Y + NAME_HEIGHT + INNER_MARGIN;
             private static final double NAME_ICON_SIDE = NAME_HEIGHT * 1.7;
@@ -121,7 +122,8 @@ public class TowerDialogLayer extends GuiLayer {
             private static final double RESET_BTN_HEIGHT = UPGRADE_BTN_SIDE;
             private static final double RESET_BTN_X = X + WIDTH - RESET_BTN_WIDTH;
             private static final double RESET_BTN_Y = Y + (HEIGHT - RESET_BTN_HEIGHT) / 2;
-            private static final double UPGRADE_WIDTH = WIDTH - UPGRADE_BTN_MARGIN - UPGRADE_BTN_SIDE - RESET_BTN_WIDTH - RESET_BTN_MARGIN;
+            private static final double UPGRADE_WIDTH = WIDTH - UPGRADE_BTN_MARGIN - UPGRADE_BTN_SIDE
+                                        - RESET_BTN_WIDTH - RESET_BTN_MARGIN;
             private static final double UPGRADE_HEIGHT = HEIGHT - 2 * INNER_MARGIN;
             private static final double UPGRADE_X = UPGRADE_BTN_X + UPGRADE_BTN_SIDE + UPGRADE_BTN_MARGIN;
             private static final double UPGRADE_Y = Y + (HEIGHT - UPGRADE_HEIGHT) / 2;
@@ -133,7 +135,7 @@ public class TowerDialogLayer extends GuiLayer {
             private static final double TYPE_BTN_2_X = TYPE_BTN_X + TYPE_BTN_WIDTH + INNER_MARGIN;
         }
 
-        private static class AimButton {
+        private static final class AimButton {
             private static final double TOP_MARGIN = -0.2;
             private static final double BTN_WIDTH = 4;
             private static final double BTN_HEIGHT = 1;
@@ -147,7 +149,7 @@ public class TowerDialogLayer extends GuiLayer {
      * The colors are defined using the {@link ColorAdjust} class, which allows adjusting the hue, saturation,
      * brightness, and contrast of the color.
      */
-    private static class Colors {
+    private static final class Colors {
         // To convert hue from 0-360 degrees to jfx range (-1 to 1):
         //hue = (hue > 180 ? hue - 360 : hue) / 180;
         //gc.setEffect(new ColorAdjust(hue,saturation,brightness,contrast));
@@ -193,13 +195,15 @@ public class TowerDialogLayer extends GuiLayer {
         addAimButton();
         addSelectorButtons(
                 displayedEnchantment,
-                new Image[]{SpriteLoader.loadSprite(SingleSpriteKey.ICE_BUTTON).image(), SpriteLoader.loadSprite(SingleSpriteKey.FIRE_BUTTON).image()},
+                new Image[]{SpriteLoader.loadSprite(SingleSpriteKey.ICE_BUTTON).image(),
+                            SpriteLoader.loadSprite(SingleSpriteKey.FIRE_BUTTON).image()},
                 new EnchantmentInfo.Type[]{EnchantmentInfo.Type.ICE, EnchantmentInfo.Type.FIRE},
                 0
         );
         addSelectorButtons(
                 displayedProjectile,
-                new Image[]{SpriteLoader.loadSprite(SingleSpriteKey.SMALL_BUTTON).image(), SpriteLoader.loadSprite(SingleSpriteKey.BIG_BUTTON).image()},
+                new Image[]{SpriteLoader.loadSprite(SingleSpriteKey.SMALL_BUTTON).image(),
+                            SpriteLoader.loadSprite(SingleSpriteKey.BIG_BUTTON).image()},
                 new ProjectileInfo.Type[]{ProjectileInfo.Type.SMALL, ProjectileInfo.Type.BIG},
                 Layout.Selector.TOTAL_HEIGHT
         );
@@ -224,7 +228,9 @@ public class TowerDialogLayer extends GuiLayer {
         buttons.add(aimButton);
     }
 
-    private <T extends UpgradableInfo.InfoType, S extends UpgradableInfo<T, S>> void addSelectorButtons(final UpgradableInfo<T, S> element, final Image[] typeImages, final T[] typeValues, final double yOffset) {
+    private <T extends UpgradableInfo.InfoType, S extends UpgradableInfo<T, S>> void addSelectorButtons(
+            final UpgradableInfo<T, S> element, final Image[] typeImages, final T[] typeValues, final double yOffset
+    ) {
         // if the current element can change type, we add the two type buttons
         if (element.canChangeType()) {
             final double[] x = {Layout.Selector.TYPE_BTN_X, Layout.Selector.TYPE_BTN_2_X};
@@ -306,9 +312,11 @@ public class TowerDialogLayer extends GuiLayer {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             // Background
-            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.TDL_BACKGROUND).image(), gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
+            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.TDL_BACKGROUND).image(),
+                                gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
             // Stats Background
-            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.STATS_BACKGROUND).image(), gc, guics, Layout.Stats.X, Layout.Stats.Y, Layout.Stats.WIDTH, Layout.Stats.HEIGHT);
+            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.STATS_BACKGROUND).image(),
+                                gc, guics, Layout.Stats.X, Layout.Stats.Y, Layout.Stats.WIDTH, Layout.Stats.HEIGHT);
             // Stats Overlay
             drawStatsOverlay(statsViews, gc, guics);
 
@@ -337,7 +345,10 @@ public class TowerDialogLayer extends GuiLayer {
     }
 
     // STATS DRAWING //
-    private static void drawStatView(final TowerStatView statView, final GraphicsContext gc, final CoordinateSystem cs, final double x, final double y, final double width, final double height) {
+    private static void drawStatView(
+            final TowerStatView statView, final GraphicsContext gc, final CoordinateSystem cs,
+            final double x, final double y, final double width, final double height
+    ) {
         gc.save();
         // Title and value strings
         final String displayName = statView.getStat().type().getDisplayName();
@@ -368,12 +379,16 @@ public class TowerDialogLayer extends GuiLayer {
             final double comparedValue = statView.getComparedStat().value();
             final String comparisonStr = new DecimalFormat("+0.##;-0.##").format(comparedValue - statValue);
             gc.setEffect(Colors.STAT_COMPARISON);
-            Renderer.drawText(comparisonStr, gc, cs, titleX + valueWidth, valueY, titleWidth - valueWidth, valueHeight);
+            Renderer.drawText(comparisonStr, gc, cs,
+                    titleX + valueWidth, valueY, titleWidth - valueWidth, valueHeight);
         }
         gc.restore();
     }
 
-    private static void drawStatsOverlay(final List<TowerStatView> statsViews, final GraphicsContext gc, final CoordinateSystem cs) {
+    private static void drawStatsOverlay(
+            final List<TowerStatView> statsViews,
+            final GraphicsContext gc, final CoordinateSystem cs
+    ) {
         final int nStatsViews = statsViews.size();
         final int statsRows = Math.max(Layout.Stats.ROWS, (int) Math.ceil((double) nStatsViews / Layout.Stats.COLUMNS));
         final double totVPadding = (statsRows - 1) * Layout.Stats.V_MARGIN;
@@ -391,26 +406,34 @@ public class TowerDialogLayer extends GuiLayer {
     }
 
     // SELECTORS DRAWING //
-    private static void drawSelector(final GraphicsContext gc, final CoordinateSystem cs, final String title, final UpgradableInfo<?, ?> info, final double verticalOffset) {
+    private static void drawSelector(
+            final GraphicsContext gc, final CoordinateSystem cs, final String title,
+            final UpgradableInfo<?, ?> info, final double verticalOffset
+    ) {
         // Title
         gc.save();
         gc.setEffect(Colors.SELECTOR_TITLE);
-        Renderer.drawText(title, gc, cs, Layout.Selector.X, Layout.Selector.NAME_Y + verticalOffset, Layout.Selector.NAME_WIDTH, Layout.Selector.NAME_HEIGHT);
+        Renderer.drawText(title, gc, cs, Layout.Selector.X, Layout.Selector.NAME_Y + verticalOffset,
+                Layout.Selector.NAME_WIDTH, Layout.Selector.NAME_HEIGHT);
         gc.restore();
         // Should we draw the selector?
         if (info.canChangeType()) {
             return;
         }
         // Name icon
-        Renderer.drawImage(getIcon(info), gc, cs, Layout.Selector.NAME_ICON_X, Layout.Selector.NAME_ICON_Y + verticalOffset, Layout.Selector.NAME_ICON_SIDE, Layout.Selector.NAME_ICON_SIDE);
+        Renderer.drawImage(getIcon(info), gc, cs, Layout.Selector.NAME_ICON_X,
+                Layout.Selector.NAME_ICON_Y + verticalOffset,
+                Layout.Selector.NAME_ICON_SIDE, Layout.Selector.NAME_ICON_SIDE);
         // Upgrade selector
         final double emptySpace = Layout.Selector.UPGRADE_WIDTH - Layout.Selector.LEVEL_MARKER_WIDTH * info.getMaxLevel();
         for (int i = 0; i < info.getMaxLevel(); ++i) {
-            final double x = Layout.Selector.UPGRADE_X + i * (emptySpace / (info.getMaxLevel() - 1) + Layout.Selector.LEVEL_MARKER_WIDTH);
+            final double x = Layout.Selector.UPGRADE_X
+                    + i * (emptySpace / (info.getMaxLevel() - 1) + Layout.Selector.LEVEL_MARKER_WIDTH);
             final double y = Layout.Selector.UPGRADE_Y + verticalOffset;
             final double width = Layout.Selector.LEVEL_MARKER_WIDTH;
             final double height = Layout.Selector.UPGRADE_HEIGHT;
-            final Image sprite = i < info.level() ? SpriteLoader.loadSprite(SingleSpriteKey.FULL_UPGRADE_LEVEL).image() : SpriteLoader.loadSprite(SingleSpriteKey.EMPTY_UPGRADE_LEVEL).image();
+            final Image sprite = i < info.level() ? SpriteLoader.loadSprite(SingleSpriteKey.FULL_UPGRADE_LEVEL).image()
+                    : SpriteLoader.loadSprite(SingleSpriteKey.EMPTY_UPGRADE_LEVEL).image();
             Renderer.drawImage(sprite, gc, cs, x, y, width, height);
         }
     }

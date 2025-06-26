@@ -4,7 +4,6 @@ import java.util.EventListener;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
-import dev.emberline.core.GameLoop;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.event.EventHandler;
 import dev.emberline.game.model.EnchantmentInfo;
@@ -19,13 +18,13 @@ public class Player implements EventListener {
     private int gold;
     private final World world;
 
+    Metadata metadata = ConfigLoader.loadConfig("/world/player.json", Metadata.class);
+
     private record Metadata(
             @JsonProperty int health,
             @JsonProperty int gold
     ) {
     }
-
-    Metadata metadata = ConfigLoader.loadConfig("/world/player.json", Metadata.class);
 
     public Player(final World world) {
         this.health = metadata.health;

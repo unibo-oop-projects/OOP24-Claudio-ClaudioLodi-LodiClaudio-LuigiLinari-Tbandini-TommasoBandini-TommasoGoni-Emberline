@@ -15,7 +15,7 @@ import java.util.Objects;
  * The map sprite atlas is a single image containing all sprite frames,
  * and the individual frames are extracted during sprite creation based on metadata values.
  */
-public class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
+public final class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
 
     private final static Metadata METADATA = ConfigLoader.loadConfig("/world/waves/map.json", Metadata.class);
 

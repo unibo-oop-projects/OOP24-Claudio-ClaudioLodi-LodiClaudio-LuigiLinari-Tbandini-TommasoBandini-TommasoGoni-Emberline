@@ -25,7 +25,11 @@ public class PricingGuiButton extends TextGuiButton {
      * @param layoutType the layout type for positioning the text on the button (e.g. CENTER, LEFT).
      * @see PricingGuiButton
      */
-    public PricingGuiButton(final double x, final double y, final double width, final double height, final Image normalSprite, final Image hoverSprite, final double price, final TextLayoutType layoutType) {
+    public PricingGuiButton(
+            final double x, final double y, final double width,
+            final double height, final Image normalSprite,
+            final Image hoverSprite, final double price, final TextLayoutType layoutType
+    ) {
         super(x, y, width, height, normalSprite, hoverSprite, formatPrice(price), layoutType);
     }
 
@@ -43,11 +47,17 @@ public class PricingGuiButton extends TextGuiButton {
      * @param layoutType the layout type for positioning the text on the button (e.g. CENTER, LEFT).
      * @see PricingGuiButton
      */
-    public PricingGuiButton(final double x, final double y, final double width, final double height, final Image normalSprite, final double price, final TextLayoutType layoutType) {
+    public PricingGuiButton(
+            final double x, final double y, final double width,
+            final double height, final Image normalSprite,
+            final double price, final TextLayoutType layoutType
+    ) {
         super(x, y, width, height, normalSprite, formatPrice(price), layoutType);
     }
 
     private static String formatPrice(final double price) {
-        return new DecimalFormat("+0.##;0.##", DecimalFormatSymbols.getInstance()).format(price) + "$"; // Negative prices won't show a sign, positive prices will show a plus sign
+        // Negative prices won't show a sign, positive prices will show a plus sign
+        return new DecimalFormat("+0.##;0.##",
+                DecimalFormatSymbols.getInstance()).format(price) + "$";
     }
 }

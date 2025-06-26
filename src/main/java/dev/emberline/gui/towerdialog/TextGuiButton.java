@@ -23,7 +23,7 @@ public class TextGuiButton extends GuiButton {
     private final String labelText;
     private final TextLayout textLayout;
 
-    private static class TextLayout {
+    private static final class TextLayout {
         @JsonProperty
         double textWidthRatio;
         @JsonProperty
@@ -86,7 +86,10 @@ public class TextGuiButton extends GuiButton {
      * @param textLayout  The {@link TextLayoutType} determining the positioning of the label text.
      * @see TextGuiButton
      */
-    public TextGuiButton(final double x, final double y, final double width, final double height, final Image normalSprite, final Image hoverSprite, final String labelText, final TextLayoutType textLayout) {
+    public TextGuiButton(
+            final double x, final double y, final double width, final double height,
+            final Image normalSprite, final Image hoverSprite, final String labelText, final TextLayoutType textLayout
+    ) {
         super(x, y, width, height, normalSprite, hoverSprite);
         this.labelText = labelText;
         this.textLayout = loadLayout(textLayout);
@@ -105,7 +108,10 @@ public class TextGuiButton extends GuiButton {
      * @param textLayout  The {@link TextLayoutType} determining the positioning of the label text.
      * @see TextGuiButton
      */
-    public TextGuiButton(final double x, final double y, final double width, final double height, final Image normalSprite, final String labelText, final TextLayoutType textLayout) {
+    public TextGuiButton(
+            final double x, final double y, final double width, final double height,
+            final Image normalSprite, final String labelText, final TextLayoutType textLayout
+    ) {
         super(x, y, width, height, normalSprite);
         this.labelText = labelText;
         this.textLayout = loadLayout(textLayout);
@@ -133,7 +139,8 @@ public class TextGuiButton extends GuiButton {
         final double textX = this.x + (this.width - textWidth) * textLayout.textXOffset;
         final double textY = this.y + (this.height - textHeight) * textLayout.textYPosition;
 
-        Renderer.drawImageFitCenter(textImage, renderer.getGraphicsContext(), renderer.getGuiCoordinateSystem(), textX, textY, textWidth, textHeight);
+        Renderer.drawImageFitCenter(textImage, renderer.getGraphicsContext(),
+                                    renderer.getGuiCoordinateSystem(), textX, textY, textWidth, textHeight);
     }
 
 }

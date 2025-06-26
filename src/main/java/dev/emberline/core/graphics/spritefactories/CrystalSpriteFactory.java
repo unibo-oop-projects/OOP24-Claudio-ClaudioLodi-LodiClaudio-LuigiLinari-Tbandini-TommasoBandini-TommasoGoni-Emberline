@@ -20,7 +20,7 @@ import java.util.Objects;
  * The crystal sprite atlas is a single image containing all sprite frames,
  * and the individual frames are extracted during sprite creation based on metadata values.
  */
-public class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKey> {
+public final class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKey> {
 
     private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/crystal.json", Metadata.class);
 

@@ -18,8 +18,10 @@ import java.util.Map;
  * Since the loading and retrival of sprites is done both on the Game Loop thread and the JavaFX application thread,
  * a synchronizedMap is used for mutual exclusive access to the sprite cache.
  */
-public class SpriteLoader {
+public final class SpriteLoader {
     private final static Map<SpriteKey, Sprite> SPRITE_CACHE = Collections.synchronizedMap(new HashMap<>());
+
+    private SpriteLoader() { }
 
     /**
      * Loads a {@link Sprite} corresponding to the provided {@link SpriteKey}. If the sprite

@@ -20,7 +20,7 @@ import java.util.Objects;
  * The tower sprite atlas is a single image containing all possible towers,
  * and the specific ones are extracted during sprite creation based on metadata values.
  */
-public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
+public final class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
 
     private static final Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/tower.json", Metadata.class);
 

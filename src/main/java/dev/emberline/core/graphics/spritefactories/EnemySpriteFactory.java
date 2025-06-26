@@ -20,7 +20,7 @@ import java.util.Objects;
  * The enemy sprite atlas is a single image containing all sprite frames,
  * and the individual frames are extracted during sprite creation based on metadata values.
  */
-public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
+public final class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
     private static class Metadata {
         @JsonProperty
         int width;

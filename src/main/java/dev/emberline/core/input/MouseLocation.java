@@ -6,13 +6,14 @@ import javafx.geometry.Point2D;
  * The MouseLocation class provides a utility to track the state and position of the mouse pointer.
  * It stores whether the mouse is currently inside the window and captures its current coordinates.
  */
-public class MouseLocation {
-    private static boolean inside = true;
+public final class MouseLocation {
+    private static boolean mouseInside = true;
     private static Point2D location = new Point2D(0d, 0d);
 
+    private MouseLocation() { }
     // Package private method
-    static void setIsMouseInside(final boolean mouseInside) {
-        MouseLocation.inside = mouseInside;
+    static void setIsMouseInside(final boolean inside) {
+        mouseInside = inside;
     }
 
     // Package private method
@@ -25,8 +26,8 @@ public class MouseLocation {
      *
      * @return true if the mouse is inside, false otherwise.
      */
-    public static boolean isInside() {
-        return MouseLocation.inside;
+    public static boolean isMouseInside() {
+        return mouseInside;
     }
 
     /**
@@ -35,7 +36,7 @@ public class MouseLocation {
      * @return the current mouse location stored as a Point2D object
      */
     public static Point2D getLocation() {
-        return MouseLocation.location;
+        return location;
     }
 
     /**
@@ -44,7 +45,7 @@ public class MouseLocation {
      * @return the x-coordinate of the mouse location as a double
      */
     public static double getX() {
-        return MouseLocation.location.getX();
+        return location.getX();
     }
 
     /**
@@ -53,6 +54,6 @@ public class MouseLocation {
      * @return the y-coordinate of the mouse position as a double.
      */
     public static double getY() {
-        return MouseLocation.location.getY();
+        return location.getY();
     }
 }
