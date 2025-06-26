@@ -3,6 +3,7 @@ package dev.emberline.game.world.entities.enemies;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -11,7 +12,7 @@ import java.util.*;
  * It divides the space into a grid of cells and assigns objects to cells based on
  * their positions.
  */
-public class SpatialHashGrid implements Iterable<IEnemy> {
+public class SpatialHashGrid implements Iterable<IEnemy>, Serializable {
 
     private static final int CELL_SIZE = 1;
 

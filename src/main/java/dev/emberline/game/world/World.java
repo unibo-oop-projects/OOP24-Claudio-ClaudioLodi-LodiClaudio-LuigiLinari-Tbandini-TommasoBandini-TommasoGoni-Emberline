@@ -1,6 +1,5 @@
 package dev.emberline.game.world;
 
-import dev.emberline.core.components.Renderable;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.game.GameState;
 import dev.emberline.game.world.buildings.TowersManager;

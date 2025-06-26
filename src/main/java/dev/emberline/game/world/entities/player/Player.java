@@ -1,5 +1,6 @@
 package dev.emberline.game.world.entities.player;
 
+import java.io.Serializable;
 import java.util.EventListener;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +14,7 @@ import dev.emberline.game.world.World;
 import dev.emberline.gui.event.*;
 
 
-public class Player implements EventListener {
+public class Player implements EventListener, Serializable {
     private int health;
     private int gold;
     private final World world;
