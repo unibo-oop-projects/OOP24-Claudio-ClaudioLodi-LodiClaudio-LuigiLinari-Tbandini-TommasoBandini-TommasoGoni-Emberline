@@ -55,6 +55,7 @@ class EnemyTest {
             when(wave.getNext(nodes[i])).thenReturn(Optional.of(nodes[i + 1]));
         }
         assert nodes.length > 0;
+        when(wave.getNext(nodes[nodes.length - 1])).thenReturn(Optional.empty());
 
         enemy = new Ogre(nodes[0], world);
     }
