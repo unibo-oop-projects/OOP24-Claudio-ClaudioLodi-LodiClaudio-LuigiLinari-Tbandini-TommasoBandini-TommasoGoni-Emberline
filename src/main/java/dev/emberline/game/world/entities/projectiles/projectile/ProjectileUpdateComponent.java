@@ -144,7 +144,7 @@ class ProjectileUpdateComponent implements Updatable {
             // (l / v_proj) ^ 2
             final double lvProjSq = UNIT_ARC_LENGTH / velocityMag * UNIT_ARC_LENGTH / velocityMag;
 
-            final double a1 = lvProjSq * (vE.magnitude() * vE.magnitude());
+            final double a1 = lvProjSq * vE.magnitude() * vE.magnitude();
             final double a = 1.0 - a1;
 
             final double b1 = 2 * t0;

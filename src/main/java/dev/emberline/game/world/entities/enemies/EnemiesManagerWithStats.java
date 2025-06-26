@@ -16,7 +16,6 @@ public class EnemiesManagerWithStats implements IEnemiesManager {
 
     private final EnemiesManager enemiesManager;
     private final Statistics statistics;
-    private int deadEnemies;
 
     /**
      * Constructs an {@code EnemiesManagerWithStats} instance wrapping {@code EnemiesManager},
@@ -73,7 +72,7 @@ public class EnemiesManagerWithStats implements IEnemiesManager {
         enemiesManager.update(elapsed);
 
         final int alivePostUpdate = enemiesManager.getAliveEnemiesNumber();
-        deadEnemies = alivePreUpdate - alivePostUpdate;
-        statistics.updateEnemiesKilled(deadEnemies);
+
+        statistics.updateEnemiesKilled(alivePreUpdate - alivePostUpdate);
     }
 }
