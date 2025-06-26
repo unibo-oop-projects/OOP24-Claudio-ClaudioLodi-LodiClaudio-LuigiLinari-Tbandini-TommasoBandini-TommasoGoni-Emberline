@@ -40,6 +40,14 @@ public final class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
     }
 
     /**
+     * Constructs a new {@code MapSpriteFactory} instance.
+     * @see MapSpriteFactory
+     */
+    public MapSpriteFactory() {
+
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

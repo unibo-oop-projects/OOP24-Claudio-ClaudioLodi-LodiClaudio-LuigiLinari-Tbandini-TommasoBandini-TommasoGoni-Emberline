@@ -47,6 +47,14 @@ public final class StringSpriteFactory implements SpriteFactory<StringSpriteKey>
     }
 
     /**
+     * Constructs a new instance of {@code StringSpriteFactory}.
+     * @see StringSpriteFactory
+     */
+    public StringSpriteFactory() {
+
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

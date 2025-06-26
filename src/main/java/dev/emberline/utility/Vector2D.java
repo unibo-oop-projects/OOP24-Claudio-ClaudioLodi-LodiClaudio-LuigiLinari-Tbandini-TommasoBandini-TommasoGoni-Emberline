@@ -1,5 +1,11 @@
 package dev.emberline.utility;
 
+/**
+ * The {@code Vector2D} interface represents a two-dimensional vector or
+ * point in a Cartesian coordinate system. It provides methods for
+ * performing various operations such as addition, subtraction,
+ * normalization, and scalar products on vectors.
+ */
 public interface Vector2D {
 
     /**

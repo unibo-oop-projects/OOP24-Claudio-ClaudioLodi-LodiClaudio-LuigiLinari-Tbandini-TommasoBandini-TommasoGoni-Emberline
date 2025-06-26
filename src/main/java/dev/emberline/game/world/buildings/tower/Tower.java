@@ -117,6 +117,21 @@ public class Tower extends Building implements TowerInfoProvider {
         towerRenderComponent.render();
     }
 
+    /**
+     * Sets the upgradable information for this tower. This method determines whether the provided info
+     * is a projectile-related upgrade or an enchantment-related upgrade and assigns it to the corresponding field.
+     *
+     * @param info the upgradable information to be assigned. This must be an instance of either
+     *             {@code ProjectileInfo} or {@code EnchantmentInfo}.
+     */
+    public void setUpgradableInfo(final UpgradableInfo<?, ?> info) {
+        if (info instanceof final ProjectileInfo infoCast) {
+            projectileInfo = infoCast;
+        } else if (info instanceof final EnchantmentInfo infoCast) {
+            enchantmentInfo = infoCast;
+        }
+    }
+
     Vector2D firingWorldCenterLocation() {
         return getWorldTopLeft().add(getWorldWidth() / 2, metadata.firingYOffsetTiles);
     }
@@ -127,21 +142,5 @@ public class Tower extends Building implements TowerInfoProvider {
 
     double getWorldHeight() {
         return metadata.height.get(getProjectileInfo().type());
-    }
-
-    public void setUpgradableInfo(final UpgradableInfo<?, ?> info) {
-        if (info instanceof final ProjectileInfo infoCast) {
-            projectileInfo = infoCast;
-        } else if (info instanceof final EnchantmentInfo infoCast) {
-            enchantmentInfo = infoCast;
-        }
-    }
-
-    public static void setConfigsPath(final String configsPath) {
-        Tower.configsPath = configsPath;
-    }
-
-    public static void setMetadata(final Metadata metadata) {
-        Tower.metadata = metadata;
     }
 }

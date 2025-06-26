@@ -18,6 +18,15 @@ import java.util.List;
  * This effect will never expire, even if {@link #endEffect(IEnemy)} is called.
  */
 public class DummyEffect implements EnchantmentEffect {
+
+    /**
+     * Constructs a {@code DummyEffect} instance.
+     * @see DummyEffect
+     */
+    public DummyEffect() {
+
+    }
+
     /**
      * {@inheritDoc}
      */

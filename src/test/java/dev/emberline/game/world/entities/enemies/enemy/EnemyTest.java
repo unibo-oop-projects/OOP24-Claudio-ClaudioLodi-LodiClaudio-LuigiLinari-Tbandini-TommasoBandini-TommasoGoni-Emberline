@@ -63,7 +63,8 @@ class EnemyTest {
     @Test
     void testMovementWithoutSlowFactor() {
         for (int i = 0; i < nodes.length - 1; i++) {
-            final long expectedTravelTime = (long) Math.ceil(nodes[i].distance(nodes[i + 1]) / (enemy.getSpeed() * enemy.getSlowFactor()));
+            final long expectedTravelTime = (long) Math.ceil(nodes[i].distance(nodes[i + 1]) /
+                                                            (enemy.getSpeed() * enemy.getSlowFactor()));
             enemy.update(expectedTravelTime);
 
             Assertions.assertEquals(nodes[i + 1], enemy.getPosition().add(0, enemy.getHeight() / 2));
@@ -72,7 +73,8 @@ class EnemyTest {
 
     @Test
     void testMovementWithSlowFactor() {
-        enemy.setSlowFactor(0.5);
+        double slowFactor = 0.5;
+        enemy.setSlowFactor(slowFactor);
         testMovementWithoutSlowFactor();
     }
 
@@ -91,22 +93,26 @@ class EnemyTest {
 
     @Test
     void testBurnEffectDamageOverTime() {
+        double dps = 5.0, duration = 1;
         final double initialHealth = enemy.getHealth();
-        final BurnEffect burnEffect = new BurnEffect(5.0, 1);
+        final BurnEffect burnEffect = new BurnEffect(dps, duration);
         enemy.applyEffect(burnEffect);
 
-        enemy.update(1_000_000_000L);
+        long oneSecondNs = 1_000_000_000L;
+        enemy.update(oneSecondNs);
 
         Assertions.assertTrue(burnEffect.isExpired());
-        Assertions.assertEquals(enemy.getHealth(), initialHealth - 5.0);
+        Assertions.assertEquals(enemy.getHealth(), initialHealth - dps);
     }
 
     @Test
     void testSlowEffectOverTime() {
-        final SlowEffect slowEffect = new SlowEffect(0.5, 1);
+        double slowFactor = 0.5, duration = 1;
+        final SlowEffect slowEffect = new SlowEffect(slowFactor, duration);
         enemy.applyEffect(slowEffect);
 
-        enemy.update(1_000_000_000L);
+        long oneSecondNs = 1_000_000_000L;
+        enemy.update(oneSecondNs);
         Assertions.assertTrue(slowEffect.isExpired());
     }
 }

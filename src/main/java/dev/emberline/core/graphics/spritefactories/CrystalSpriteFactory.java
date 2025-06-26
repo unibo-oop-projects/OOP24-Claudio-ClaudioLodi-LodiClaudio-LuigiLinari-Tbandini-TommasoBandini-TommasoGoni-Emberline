@@ -40,6 +40,14 @@ public final class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKe
     }
 
     /**
+     * Constructs a new {@code CrystalSpriteFactory} instance.
+     * @see CrystalSpriteFactory
+     */
+    public CrystalSpriteFactory() {
+
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -23,28 +23,14 @@ public abstract class AbstractEnemy implements IEnemy {
      * Represents metadata for an enemy in the game. This class encapsulates
      * configuration and physical properties that define an enemy's behavior
      * and appearance, such as dimensions, health, and movement speed.
+     *
+     * @param tileWidth the width of the enemy in world space
+     * @param tileHeight the height of the enemy in world space
+     * @param fullHealth the full health value of the enemy
+     * @param speed the speed of the enemy in tile/ns
      */
-    protected static class Metadata {
-        /**
-         * Represents the width in the game world for an enemy entity.
-         */
-        @JsonProperty
-        public double tileWidth;
-        /**
-         * Represents the height in the game world for an enemy entity.
-         */
-        @JsonProperty
-        public double tileHeight;
-        /**
-         * Represents the full health of the enemy entity.
-         */
-        @JsonProperty
-        public double fullHealth;
-        /**
-         * Represents the normal speed of the enemy entity in tile/ns.
-         */
-        @JsonProperty
-        public double speed;
+    protected record Metadata(@JsonProperty double tileWidth, @JsonProperty double tileHeight,
+                              @JsonProperty double fullHealth, @JsonProperty double speed) {
     }
 
     /**

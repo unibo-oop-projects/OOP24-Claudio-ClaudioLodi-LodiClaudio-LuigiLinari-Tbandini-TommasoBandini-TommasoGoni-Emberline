@@ -17,6 +17,14 @@ public class Statistics implements Updatable, Serializable {
     private double totalDamage;
 
     /**
+     * Constructs an instance of the {@code Statistics} class.
+     * @see Statistics
+     */
+    public Statistics() {
+
+    }
+
+    /**
      * Sums the enemies that died in the current update
      * to all the other enemies already dead.
      *
@@ -75,6 +83,7 @@ public class Statistics implements Updatable, Serializable {
     }
 
     /**
+     * Returns total damage dealt by towers to enemies
      * @return total damage dealt by towers to enemies
      */
     public double getTotalDamage() {

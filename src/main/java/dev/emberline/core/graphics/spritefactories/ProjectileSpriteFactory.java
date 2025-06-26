@@ -41,6 +41,14 @@ public final class ProjectileSpriteFactory implements SpriteFactory<ProjectileSp
     }
 
     /**
+     * Constructs a new {@code ProjectileSpriteFactory} instance.
+     * @see ProjectileSpriteFactory
+     */
+    public ProjectileSpriteFactory() {
+
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

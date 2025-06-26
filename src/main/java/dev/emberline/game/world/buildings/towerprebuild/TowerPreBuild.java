@@ -66,6 +66,11 @@ public class TowerPreBuild extends Building {
         return locationBottomLeft.add(metadata.worldDimensionWidth, 0);
     }
 
+    /**
+     * Retrieves the cost associated with constructing a new build for the tower.
+     *
+     * @return the cost of building a new tower as an integer
+     */
     public int getNewBuildCost() {
         return metadata.newBuildCost;
     }

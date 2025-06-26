@@ -29,8 +29,10 @@ public class Wave implements Updatable, Renderable {
     private long accumulatorNs;
 
     /**
+     * Creates a new {@code Wave} object with the provided {@link World} and the waveDirectoryPath.
      * @param world             the world in which the wave is being played
      * @param waveDirectoryPath the path of the directory containing the wave files
+     * @see Wave
      */
     public Wave(final World world, final String waveDirectoryPath) {
         this.world = world;
@@ -51,6 +53,7 @@ public class Wave implements Updatable, Renderable {
     }
 
     /**
+     * Returns true if the wave is over
      * @return true if the wave is over
      */
     public boolean isOver() {

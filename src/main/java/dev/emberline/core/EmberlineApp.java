@@ -29,6 +29,17 @@ public class EmberlineApp extends Application {
     private AudioController audioController;
 
     /**
+     * Constructs a new instance of the {@code EmberlineApp} class.
+     * This method will be called by the JavaFX runtime whenever {@code EmberlineApp}
+     * is launched.
+     * @see EmberlineApp
+     * @see Application
+     */
+    public EmberlineApp() {
+
+    }
+
+    /**
      * The entry point for the JavaFX application. This method is called after the
      * JavaFX system is initialized and sets up the primary stage for the application.
      * It includes initializing the scene graph, creating a canvas for rendering, configuring

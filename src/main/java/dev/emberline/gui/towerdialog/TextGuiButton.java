@@ -38,7 +38,7 @@ public class TextGuiButton extends GuiButton {
      * Enumerates the possible layout types for positioning text within a graphical user interface button.
      * The text layout determines where the label text should be rendered relative to the button boundaries.
      * <p>
-     * Each layout type corresponds to a specific predefined position:
+     * Each layout type corresponds to a specific predefined alignment:
      * <ul>
      * <li>LEFT: Aligns the text to the left side of the button.</li>
      * <li>RIGHT: Aligns the text to the right side of the button.</li>
@@ -48,10 +48,30 @@ public class TextGuiButton extends GuiButton {
      * </ul>
      */
     public enum TextLayoutType {
+        /**
+         * Specifies a text alignment option where the text content
+         * is positioned on the left side relative to its container.
+         */
         LEFT,
+        /**
+         * Specifies a text alignment option where the text content
+         * is positioned on the right side relative to its container.
+         */
         RIGHT,
+        /**
+         * Specifies a text alignment option where the text content
+         * is positioned on the top side relative to its container.
+         */
         TOP,
+        /**
+         * Specifies a text alignment option where the text content
+         * is positioned on the bottom side relative to its container.
+         */
         BOTTOM,
+        /**
+         * Specifies a text alignment option where the text content
+         * is centered in its container.
+         */
         CENTER
     }
 

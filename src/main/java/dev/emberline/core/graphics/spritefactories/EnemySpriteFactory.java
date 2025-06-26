@@ -37,6 +37,14 @@ public final class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
     }
 
     /**
+     * Constructs a new {@code EnemySpriteFactory} instance.
+     * @see EnemySpriteFactory
+     */
+    public EnemySpriteFactory() {
+
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

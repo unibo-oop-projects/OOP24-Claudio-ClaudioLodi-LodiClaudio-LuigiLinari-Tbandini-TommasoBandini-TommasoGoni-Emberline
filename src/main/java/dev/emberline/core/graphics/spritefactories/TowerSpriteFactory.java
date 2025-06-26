@@ -38,6 +38,14 @@ public final class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
     }
 
     /**
+     * Constructs a new {@code TowerSpriteFactory} instance.
+     * @see TowerSpriteFactory
+     */
+    public TowerSpriteFactory() {
+
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

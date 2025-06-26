@@ -36,6 +36,14 @@ public final class SingleSpriteFactory implements SpriteFactory<SingleSpriteKey>
     }
 
     /**
+     * Constructs a new instance of the {@code SingleSpriteFactory}.
+     * @see SingleSpriteFactory
+     */
+    public SingleSpriteFactory() {
+
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

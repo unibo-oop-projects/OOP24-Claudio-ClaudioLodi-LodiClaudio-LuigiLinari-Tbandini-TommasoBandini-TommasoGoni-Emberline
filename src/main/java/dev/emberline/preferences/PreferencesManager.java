@@ -28,10 +28,10 @@ public final class PreferencesManager {
     }
 
     public static void setDoublePreference(final PreferenceKey key, final Double value) {
-        setDoublePreference(key, value);
+//        setDoublePreference(key, value);
     }
 
     public static void setBooleanPreference(final PreferenceKey key, final Boolean value) {
-        setBooleanPreference(key, value);
+//        setBooleanPreference(key, value);
     }
 }

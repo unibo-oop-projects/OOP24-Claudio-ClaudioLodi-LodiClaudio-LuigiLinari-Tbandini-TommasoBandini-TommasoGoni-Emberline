@@ -18,6 +18,13 @@ import javafx.scene.input.MouseEvent;
 public abstract class Building implements Renderable, Updatable, Inputable {
 
     /**
+     * Protected constructor for the {@code Building} class.
+     */
+    protected Building() {
+
+    }
+
+    /**
      * Returns the top-left corner of the building's bounding box in the world
      * coordinate system.
      *

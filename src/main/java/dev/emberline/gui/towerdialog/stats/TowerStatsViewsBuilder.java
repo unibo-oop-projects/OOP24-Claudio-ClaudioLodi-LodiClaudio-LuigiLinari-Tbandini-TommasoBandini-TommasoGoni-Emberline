@@ -33,7 +33,35 @@ public final class TowerStatsViewsBuilder {
      * This class is immutable and comparable by the type of the stat it represents.
      */
     public static final class TowerStatView implements Comparable<TowerStatView> {
-        public enum Type { NORMAL, COMPARED, NEW }
+        /**
+         * The type of {@code TowerStatView}, can be in one of three {@link Type states}:
+         * <ul>
+         *   <li><b>NORMAL:</b> A stat that is not being compared to another stat, or is being compared but has the same value.</li>
+         *   <li><b>COMPARED:</b> A stat that is being compared to another stat of the same type and has a different value
+         *       (for example, damage is 100 but compared to 200 will show +100).</li>
+         *   <li><b>NEW:</b> A stat that is being compared but has no corresponding stat to be compared to
+         *       (for example, an effect is being compared but is actually a new stat that wasn't already present in the tower).</li>
+         * </ul>
+         */
+        public enum Type {
+            /**
+             * Represents the "NORMAL" state of a {@link TowerStatView} type: a stat that is not being
+             * compared to another stat, or is being compared but has the same value.
+             */
+            NORMAL,
+            /**
+             * Represents the "COMPARED" state of a {@link TowerStatView} type: a stat that is being compared to another
+             * stat of the same type and has a different value (for example, damage is 100 but compared to 200
+             * will show +100).
+             */
+            COMPARED,
+            /**
+             * Represents the "NEW" state of a {@link TowerStatView} type: a stat that is being compared but has no
+             * corresponding stat to be compared to (for example, an effect is being compared but is actually
+             * a new stat that wasn't already present in the tower).
+             */
+            NEW
+        }
 
         private final TowerStat stat;
         private final TowerStat comparedStat;
@@ -88,6 +116,14 @@ public final class TowerStatsViewsBuilder {
         public int compareTo(final TowerStatView compared) {
             return this.stat.type().compareTo(compared.stat.type());
         }
+    }
+
+    /**
+     * Creates a new instance of the {@code TowerStatsViewsBuilder}.
+     * @see TowerStatsViewsBuilder
+     */
+    public TowerStatsViewsBuilder() {
+
     }
 
     /**

@@ -120,6 +120,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
 
     /**
      * Removes all the specified {@code IEnemy} instances from the spatial hash grid.
+     *
+     * @param enemies the collection of {@code IEnemy} to be removed from the spatial hash grid.
      * @see SpatialHashGrid#remove(IEnemy)
      */
     public void removeAll(final Collection<IEnemy> enemies) {
@@ -131,6 +133,7 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     /**
      * Updates all the specified {@code IEnemy} instances from the spatial hash grid.
      *
+     * @param enemies the collection of {@code IEnemy} to be updated from the spatial hash grid.
      * @see SpatialHashGrid#update(IEnemy)
      */
     public void updateAll(final Collection<IEnemy> enemies) {
@@ -140,7 +143,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     }
 
     /**
-     * @return an {@code Iterator<IEnemy>} over the enemies currently stored in the spatial hash grid
+     * Retruns an {@code Iterator<IEnemy>} over the enemies currently stored in the spatial hash grid.
+     * @return an {@code Iterator<IEnemy>} over the enemies currently stored in the spatial hash grid.
      */
     @Override
     public Iterator<IEnemy> iterator() {
@@ -148,7 +152,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     }
 
     /**
-     * @return the number of elements currently stored in the spatial hash grid
+     * Returns the number of elements currently stored in the spatial hash grid.
+     * @return the number of elements currently stored in the spatial hash grid.
      */
     public int size() {
         return size;
