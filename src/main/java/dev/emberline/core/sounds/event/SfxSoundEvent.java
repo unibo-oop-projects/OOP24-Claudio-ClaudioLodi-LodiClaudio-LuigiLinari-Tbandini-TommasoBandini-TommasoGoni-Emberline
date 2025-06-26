@@ -12,7 +12,7 @@ public class SfxSoundEvent extends SoundEvent {
         OPEN_DIALOG_CHAINS
     }
 
-    public SfxSoundEvent(final Object source, SoundType soundType) {
+    public SfxSoundEvent(final Object source, final SoundType soundType) {
         super(source);
         this.soundType = soundType;
     }

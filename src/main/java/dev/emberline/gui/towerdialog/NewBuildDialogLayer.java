@@ -7,14 +7,27 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
-import dev.emberline.game.world.buildings.towerPreBuild.TowerPreBuild;
+import dev.emberline.game.world.buildings.towerprebuild.TowerPreBuild;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.NewBuildEvent;
 import dev.emberline.gui.towerdialog.TextGuiButton.TextLayoutType;
 import javafx.scene.canvas.GraphicsContext;
 
+/**
+ * Represents a dialog layer in the graphical user interface for initiating
+ * the construction of a new tower. This dialog provides a build button to trigger
+ * the construction process.
+ * <p>
+ * The {@code NewBuildDialogLayer} is linked to a specific {@code TowerPreBuild}
+ * instance, which holds the necessary information related to the tower being
+ * constructed. The dialog layer renders the background and the build button,
+ * and dispatches a build event when the button is clicked.
+ */
 public class NewBuildDialogLayer extends GuiLayer {
+    // The Tower pre build linked to this dialog layer
+    private final TowerPreBuild tower;
+    private final GuiButton buildButton;
 
     private static class Layout {
         // Background
@@ -29,10 +42,13 @@ public class NewBuildDialogLayer extends GuiLayer {
         private static final double BTN_Y = BG_Y + BG_HEIGHT - BTN_HEIGHT - 0.5;
     }
 
-    // The Tower pre build linked to this dialog layer
-    private final TowerPreBuild tower;
-    private final GuiButton buildButton;
-
+    /**
+     * Constructs a new instance of {@code NewBuildDialogLayer} linked to a specific
+     * {@code TowerPreBuild}.
+     *
+     * @param tower the {@code TowerPreBuild} instance associated with this dialog layer
+     * @see NewBuildDialogLayer
+     */
     public NewBuildDialogLayer(final TowerPreBuild tower) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         this.tower = tower;
@@ -41,6 +57,11 @@ public class NewBuildDialogLayer extends GuiLayer {
         super.buttons.add(buildButton);
     }
 
+    /**
+     * Returns the associated {@code TowerPreBuild} object linked to this dialog layer.
+     *
+     * @return the associated {@code TowerPreBuild} object linked to this dialog layer.
+     */
     public TowerPreBuild getTowerPreBuild() {
         return tower;
     }
@@ -54,6 +75,9 @@ public class NewBuildDialogLayer extends GuiLayer {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void render() {
         final Renderer renderer = GameLoop.getInstance().getRenderer();
@@ -62,7 +86,8 @@ public class NewBuildDialogLayer extends GuiLayer {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI_HIGH, () -> {
             // Background
-            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.NTDL_BACKGROUND).image(), gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
+            Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.NTDL_BACKGROUND).image(),
+                    gc, guics, Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         }));
 
         if (buildButton != null) {

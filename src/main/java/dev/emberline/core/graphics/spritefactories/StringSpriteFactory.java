@@ -15,7 +15,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
+/**
+ * An implementation of {@link SpriteFactory} that generates sprites from strings.
+ * This factory is responsible for creating {@link Sprite} instances containing images
+ * of string representations. The images are built using a character atlas and can
+ * dynamically remove transparent pixels to optimize sprite display.
+ * <p>
+ * This class supports loading and caching character images for efficient rendering.
+ * <p>
+ * If a character image is unavailable, a default space character image is used.
+ */
+public final class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
 
     private final static Metadata METADATA = ConfigLoader.loadConfig("/font/font.json", Metadata.class);
 
@@ -36,11 +46,24 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
         String charOrder;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Sprite loadSprite(final StringSpriteKey key) {
         return new SingleSprite(getStringImage(key.string()));
     }
 
+    /**
+     * Generates and returns an image for the specified character by retrieving it from the character atlas and trimming
+     * unnecessary transparent pixels. If the character is not found or is transparent, a default image for a space
+     * character is returned and cached.
+     *
+     * @param c the character for which the corresponding image is to be created. If null is provided, the method
+     *          will process it as a space character.
+     * @return the image representing the specified character with trimmed transparent pixels. Returns an image of a space
+     *         character if the input is null, not found, or fully transparent.
+     */
     public static Image getCharImage(final Character c) {
         if (c == null) {
             return getCharImage(' '); // If the character is null, return a space character
@@ -50,8 +73,6 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
         final int charHeight = METADATA.atlasHeight / METADATA.rows; // Height of a character in pixels
 
         final Image result = CHAR_CACHE.computeIfAbsent(c, key -> {
-            final Image atlas = getCharAtlas();
-
             // Locating the character in the atlas
             final int charIndex = METADATA.charOrder.indexOf(c);
             if (charIndex == -1) {
@@ -59,6 +80,7 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
             }
             int charX = charIndex % METADATA.columns * charWidth; //pixel coordinate of the char inside the atlas
             final int charY = charIndex / METADATA.columns * charHeight;
+            final Image atlas = getCharAtlas();
             final PixelReader atlasReader = atlas.getPixelReader();
 
             // Truncate left and right columns of only transparent pixels (ignoring the space character)
@@ -139,6 +161,9 @@ public class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
         return new Image(Objects.requireNonNull(StringSpriteFactory.class.getResourceAsStream(METADATA.filename)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<StringSpriteKey> getKeyType() {
         return StringSpriteKey.class;

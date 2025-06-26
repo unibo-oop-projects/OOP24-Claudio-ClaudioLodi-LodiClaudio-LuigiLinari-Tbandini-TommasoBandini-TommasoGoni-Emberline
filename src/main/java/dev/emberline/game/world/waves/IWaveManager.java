@@ -11,11 +11,13 @@ import java.io.Serializable;
 public interface IWaveManager extends Updatable, Renderable, Serializable {
 
     /**
+     * Returns the current {@code Wave}
      * @return the current {@code Wave}
      */
     Wave getWave();
 
     /**
+     * Returns the number of the current wave
      * @return the number of the current wave
      */
     int getCurrentWaveIndex();

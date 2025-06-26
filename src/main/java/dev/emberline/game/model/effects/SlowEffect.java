@@ -16,6 +16,8 @@ import java.util.List;
  */
 public class SlowEffect implements EnchantmentEffect {
 
+    public static final int secondInNs = 1_000_000_000;
+
     private final double duration;
     private final double slowingFactor;
 
@@ -33,7 +35,7 @@ public class SlowEffect implements EnchantmentEffect {
     public SlowEffect(final double slowingFactor, final double duration) {
         this.slowingFactor = slowingFactor;
         this.duration = duration;
-        this.durationNs = (long) (duration * 1_000_000_000);
+        this.durationNs = (long) (duration * secondInNs);
     }
 
     /**

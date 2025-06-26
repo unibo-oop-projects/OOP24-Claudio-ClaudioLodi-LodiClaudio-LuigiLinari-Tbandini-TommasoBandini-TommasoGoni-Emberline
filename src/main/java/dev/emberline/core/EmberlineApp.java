@@ -14,6 +14,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * The {@code EmberlineApp} class serves as the main entry point for the Emberline JavaFX
+ * application. It initializes the application's graphical components, directs where input events
+ * should be dispatched and starts the game loop.
+ * <p>
+ * Once the application is required to stop, this class is responsible for notifying the game loop thread.
+ */
 public class EmberlineApp extends Application {
 
     private static final long MIN_WINDOW_WIDTH = 400;
@@ -21,6 +28,16 @@ public class EmberlineApp extends Application {
     private GameLoop gameLoop;
     private AudioController audioController;
 
+    /**
+     * The entry point for the JavaFX application. This method is called after the
+     * JavaFX system is initialized and sets up the primary stage for the application.
+     * It includes initializing the scene graph, creating a canvas for rendering, configuring
+     * event routing for input handling, and starting the game loop.
+     *
+     * @param stage the primary stage for this application, provided by the JavaFX runtime. This stage
+     *              is configured with a scene, event handlers, and other settings such as title,
+     *              dimensions, and maximized state.
+     */
     @Override
     public void start(final Stage stage) {
         // The root node of the scene graph is a Pane.

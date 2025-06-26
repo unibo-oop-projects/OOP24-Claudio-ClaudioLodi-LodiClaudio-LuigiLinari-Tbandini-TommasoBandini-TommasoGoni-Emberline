@@ -34,6 +34,7 @@ public class ProjectileHitEvent {
     }
 
     /**
+     * Returns the landing location as a {@code Vector2D} object
      * @return the landing location as a {@code Vector2D} object
      */
     public Vector2D getLandingLocation() {
@@ -41,6 +42,7 @@ public class ProjectileHitEvent {
     }
 
     /**
+     * Returns the damage value as a {@code double}
      * @return the damage value as a {@code double}
      */
     public double getDamage() {
@@ -50,6 +52,8 @@ public class ProjectileHitEvent {
     /**
      * Retrieves the optional damage area affected by the projectile.
      * The damage area, if present, specifies the radius within which entities
+     *
+     * @return the optional damage area affected by the projectile.
      **/
     public Optional<Double> getDamageArea() {
         return damageArea;

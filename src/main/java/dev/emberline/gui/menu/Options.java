@@ -22,6 +22,16 @@ import dev.emberline.preferences.PreferencesManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/**
+ * Represents the "Options" menu in the game, providing functionality for rendering
+ * and interacting with the options interface of the GUI layer. This class controls
+ * the layout of buttons and the display of the background for the options menu.
+ * <p>
+ * The class extends the {@link GuiLayer} to manage its graphical elements
+ * and interactions within a defined layer, while implementing the {@link GameState}.
+ * <p>
+ * It is responsible to throw change of option related events.
+ */
 public class Options extends GuiLayer implements GameState {
     private final OptionsBounds bounds;
     private final boolean showMenuButton;
@@ -89,6 +99,14 @@ public class Options extends GuiLayer implements GameState {
     ) {
     }
 
+    /**
+     * Constructs an {@code Options} object by initializing it with the configuration
+     * data loaded from a predefined JSON resource file. The configuration provides
+     * the bounds necessary for setting up the {@code Options} screen in the GUI.
+     *
+     * @throws RuntimeException if the configuration file cannot be loaded or parsed.
+     * @see Options
+     */
     public Options(final boolean showMenuButton) {
         this(ConfigLoader.loadConfig("/gui/options/optionsBounds.json", OptionsBounds.class), showMenuButton);
     }
@@ -109,10 +127,10 @@ public class Options extends GuiLayer implements GameState {
         addSfxVolumeControl();
         addSfxCheckbox();
         addFullScreenCheckbox();
-        
+
         // Add navigation buttons
         addCloseOptionsButton();
-        
+
         if (showMenuButton) {
             addMenuOptionsButton();
         }
@@ -130,20 +148,20 @@ public class Options extends GuiLayer implements GameState {
         });
         super.buttons.add(musicVolumeControl);
     }
-    
+
     // Music checkbox
     private void addMusicCheckbox() {
-        
+
     }
-    
+
     // SFX volume control
     private void addSfxVolumeControl() {
-        
+
     }
 
     // SFX checkbox
     private void addSfxCheckbox() {
-        
+
     }
 
     // Full screen checkbox
@@ -169,6 +187,9 @@ public class Options extends GuiLayer implements GameState {
         super.buttons.add(menuButton);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void render() {
         // Render background
@@ -194,6 +215,9 @@ public class Options extends GuiLayer implements GameState {
         super.render();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update(final long elapsed) {
     }

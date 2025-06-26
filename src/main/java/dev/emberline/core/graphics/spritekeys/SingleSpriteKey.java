@@ -1,5 +1,11 @@
 package dev.emberline.core.graphics.spritekeys;
 
+/**
+ * An enumeration of unique keys used for identifying and caching single sprite assets.
+ * <p>
+ * Using an enum ensures that the {@code hashCode()} and {@code equals(Object)} methods
+ * are correctly implemented, making it suitable as a key in a hashing mechanism.
+ */
 public enum SingleSpriteKey implements SpriteKey {
     STATS_BACKGROUND,
     NTDL_BACKGROUND,

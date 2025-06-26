@@ -15,6 +15,16 @@ import dev.emberline.gui.menu.Options;
 import javafx.application.Platform;
 import javafx.scene.input.InputEvent;
 
+/**
+ * The GameRoot class serves as the central node for managing the game states and
+ * their transitions. It implements the Inputable, Updatable, Renderable, and
+ * EventListener interfaces to handle input events, game updates, rendering processes,
+ * and event dispatching.
+ * <p>
+ * This class acts as the entry point that connects the main states of the game,
+ * including the main menu, world (gameplay), option's menu, and game over screen.
+ * The GameRoot listens for specific events to transition between these states.
+ */
 public class GameRoot implements Inputable, Updatable, Renderable, EventListener {
     // Navigation States
     private final World world = new World();
@@ -26,21 +36,34 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     private GameState currentState;
     private GameState previousState;
 
+    /**
+     * Constructs a new instance of {@code GameRoot} and initializes the main menu
+     * as the current game state.
+     */
     public GameRoot() {
         currentState = mainMenu;
         EventDispatcher.getInstance().registerListener(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void processInput(final InputEvent inputEvent) {
         currentState.processInput(inputEvent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update(final long elapsed) {
         currentState.update(elapsed);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void render() {
         currentState.render();

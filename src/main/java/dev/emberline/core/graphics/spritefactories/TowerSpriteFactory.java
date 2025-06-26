@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.SingleSprite;
 import dev.emberline.core.graphics.Sprite;
+import dev.emberline.core.graphics.spritekeys.ProjectileSpriteKey;
+import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import dev.emberline.core.graphics.spritekeys.TowerSpriteKey;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
@@ -13,7 +15,12 @@ import javafx.scene.image.WritableImage;
 import java.util.Map;
 import java.util.Objects;
 
-public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
+/**
+ * A factory class for creating tower sprites based on a provided {@link TowerSpriteKey}.
+ * The tower sprite atlas is a single image containing all possible towers,
+ * and the specific ones are extracted during sprite creation based on metadata values.
+ */
+public final class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
 
     private static final Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/tower.json", Metadata.class);
 
@@ -30,6 +37,9 @@ public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
         Map<EnchantmentInfo.Type, Integer> enchant;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Sprite loadSprite(final TowerSpriteKey key) {
         final ProjectileInfo.Type size = key.size();
@@ -49,7 +59,9 @@ public class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
         return new Image(Objects.requireNonNull(TowerSpriteFactory.class.getResourceAsStream(METADATA.filename)));
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<TowerSpriteKey> getKeyType() {
         return TowerSpriteKey.class;

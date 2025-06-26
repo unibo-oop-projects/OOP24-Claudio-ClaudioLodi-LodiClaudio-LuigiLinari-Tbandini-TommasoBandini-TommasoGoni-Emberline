@@ -36,6 +36,7 @@ public interface IEnemiesManager extends Updatable, Renderable {
     List<IEnemy> getNear(Vector2D location, double radius);
 
     /**
+     * Returns whether all enemies have been killed
      * @return whether all enemies have been killed
      */
     boolean areAllDead();

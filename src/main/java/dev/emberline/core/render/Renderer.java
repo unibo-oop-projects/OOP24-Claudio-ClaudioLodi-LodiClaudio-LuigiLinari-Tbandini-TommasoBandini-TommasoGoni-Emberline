@@ -14,8 +14,31 @@ import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * The {@code Renderer} class is responsible for executing {@link RenderTask} sent to it by
+ * a root Renderable which will fill a {@code renderQueue}.
+ * It does that in a thread-safe manner by ensuring they are executed
+ * on the JavaFX Application thread using the {@link Platform#runLater(Runnable)} method.
+ * <p>
+ * To make sure the JavaFX run later queue doesn't get flooded due to not keeping up, when a run later
+ * call is due an {@link AtomicBoolean} {@code isRunningLater} is set to {@code true} and no other {@link RenderTask}
+ * are added until it has finished. The {@code Runnable} in the run later call is responsible for resetting the flag.
+ * <p>
+ * The {@code Renderer} is also responsible to keep updated the {@code worldCoordinateSystem},
+ * and the {@code guiCoordinateSystem} based on the attached {@link Canvas}.
+ */
 public class Renderer {
+    /**
+     * Defines the default height in GUI coordinate space used for rendering GUI elements.
+     * This constant is utilized as a standard height measurement when rendering
+     * or placing graphical user interface components.
+     */
     public static final int GUICS_HEIGHT = 18;
+    /**
+     * Defines the default width in GUI coordinate space used for rendering GUI elements.
+     * This constant is utilized as a standard width measurement when rendering
+     * or placing graphical user interface components.
+     */
     public static final int GUICS_WIDTH = 32;
 
     // JavaFX Canvas, only JavaFX thread can modify the scene graph, do not modify the scene graph from another thread
@@ -36,6 +59,20 @@ public class Renderer {
     private final Queue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
     private long taskOrderingCounter = 0;
 
+    // drawtext centering height margin
+    private static final double CENTER_TEXT_H_MARGIN = 0.07;
+    // Minimum area in pixels before using uppercase
+    private static final double MIN_TEXT_AREA_PX_UPPERCASE = 500;
+    // Minimum text height in pixels before enabling image smoothing
+    private static final double MIN_TEXT_HEIGHT_PX_SMOOTH = 20;
+
+    /**
+     * Constructs a Renderer instance.
+     *
+     * @param root   the root Renderable object of the rendering hierarchy, used as the starting point for rendering operations
+     * @param canvas the Canvas object on where the draw calls are performed
+     * @see Renderer
+     */
     public Renderer(final Renderable root, final Canvas canvas) {
         this.root = root;
         this.canvas = canvas;
@@ -44,6 +81,10 @@ public class Renderer {
         this.lastUsedCanvasHeight = canvas.getHeight();
     }
 
+    /**
+     * Triggers the rendering process for the associated root {@link Renderable} on the attached {@link Canvas}.
+     * @see Renderer
+     */
     public void render() {
         if (isRunningLater.get()) {
             return; // Busy waiting
@@ -73,10 +114,20 @@ public class Renderer {
         });
     }
 
+    /**
+     * Retrieves the current screen width in canvas coordinates.
+     *
+     * @return the current screen width as a double value.
+     */
     public double getScreenWidth() {
         return lastUsedCanvasWidth;
     }
 
+    /**
+     * Retrieves the current screen height in canvas coordinates.
+     *
+     * @return the current screen height as a double value.
+     */
     public double getScreenHeight() {
         return lastUsedCanvasHeight;
     }
@@ -92,31 +143,81 @@ public class Renderer {
         renderQueue.offer(Objects.requireNonNull(renderTask));
     }
 
+    /**
+     * Retrieves the {@code GraphicsContext} associated with the current renderer.
+     *
+     * @return the {@code GraphicsContext} used by the renderer.
+     */
     public GraphicsContext getGraphicsContext() {
         return gc;
     }
 
+    /**
+     * Retrieves the world coordinate system used by the renderer.
+     *
+     * @return the {@code CoordinateSystem} instance representing the world coordinate system.
+     */
     public CoordinateSystem getWorldCoordinateSystem() {
         return worldCoordinateSystem;
     }
 
+    /**
+     * Retrieves the GUI coordinate system used by the renderer.
+     *
+     * @return the {@code CoordinateSystem} instance representing the GUI coordinate system.
+     */
     public CoordinateSystem getGuiCoordinateSystem() {
         return guiCoordinateSystem;
     }
 
-    // UTILITY METHODS FOR RENDERING; must be called from the JavaFX Application Thread (rendertask lambda) // TODO DOCUMENTATION
+    /**
+     * Utility method for drawing an image onto the specified {@code GraphicsContext} given a position and an area.
+     * It helps by transforming coordinates and scaling based on the provided {@code CoordinateSystem}.
+     * <p>
+     * Note: Since it's an operation on the {@code GraphicsContext} it must be called from the JavaFX Application Thread.
+     *
+     * @param image  the {@code Image} to be drawn
+     * @param gc     the {@code GraphicsContext} on which the image will be drawn
+     * @param cs     the {@code CoordinateSystem} used for transforming coordinates
+     * @param x      the X coordinate of the top-left corner in the coordinate system
+     * @param y      the Y coordinate of the top-left corner in the coordinate system
+     * @param width  the width of the image in the coordinate system
+     * @param height the height of the image in the coordinate system
+     */
     public static void drawImage(final Image image, final GraphicsContext gc, final CoordinateSystem cs, final double x, final double y, final double width, final double height) {
         gc.drawImage(image, cs.toScreenX(x), cs.toScreenY(y), cs.getScale() * width, cs.getScale() * height);
     }
 
-    // Draw an Image with a fixed aspect ratio, aligned to the left and centered vertically of the given rectangular area
+    /**
+     * Draws an image on the specified {@code GraphicsContext}, scaling it to fit within the specified rectangular area
+     * while preserving its aspect ratio. The image is centered vertically in the given area.
+     *
+     * @param image  the {@code Image} to be drawn
+     * @param gc     the {@code GraphicsContext} on which the image will be drawn
+     * @param cs     the {@code CoordinateSystem} used for transforming coordinates
+     * @param x      the X coordinate of the top-left corner in the coordinate system
+     * @param y      the Y coordinate of the top-left corner in the coordinate system
+     * @param width  the width of the target area in the coordinate system
+     * @param height the height of the target area in the coordinate system
+     */
     public static void drawImageFit(final Image image, final GraphicsContext gc, final CoordinateSystem cs, final double x, double y, final double width, final double height) {
         final double scalingFactor = Math.min(width / image.getWidth(), height / image.getHeight());
         y += (height - image.getHeight() * scalingFactor) / 2; // vertical centering
         drawImage(image, gc, cs, x, y, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
     }
 
-    // Draw an Image with a fixed aspect ratio, aligned to the center of the given rectangular area in both axes
+    /**
+     * Draws an image on the specified {@code GraphicsContext}, with a fixed aspect ratio,
+     * aligned to the center of the given rectangular area in both axes
+     *
+     * @param image  the {@code Image} to be drawn
+     * @param gc     the {@code GraphicsContext} on which the image will be drawn
+     * @param cs     the {@code CoordinateSystem} used for transforming coordinates
+     * @param x      the X coordinate of the top-left corner in the coordinate system
+     * @param y      the Y coordinate of the top-left corner in the coordinate system
+     * @param width  the width of the target area in the coordinate system
+     * @param height the height of the target area in the coordinate system
+     */
     public static void drawImageFitCenter(final Image image, final GraphicsContext gc, final CoordinateSystem cs, double x, double y, final double width, final double height) {
         final double scalingFactor = Math.min(width / image.getWidth(), height / image.getHeight());
         y += (height - image.getHeight() * scalingFactor) / 2; // vertical centering
@@ -124,15 +225,22 @@ public class Renderer {
         drawImage(image, gc, cs, x, y, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
     }
 
-    // drawtext centering height margin
-    private static final double CENTER_TEXT_H_MARGIN = 0.07;
-    // Minimum area in pixels before using uppercase
-    private static final double MIN_TEXT_AREA_PX_UPPERCASE = 500;
-    // Minimum text height in pixels before enabling image smoothing
-    private static final double MIN_TEXT_HEIGHT_PX_SMOOTH = 20;
-
-    // Draw a string within the given rectangular area optimizing for readability
-    public static void drawText(String text, final GraphicsContext gc, final CoordinateSystem cs, final double x, final double y, final double width, final double height) {
+    /**
+     * Draws a text string onto the specified {@code GraphicsContext} within the given rectangular
+     * area optimizing for readability.
+     *
+     * @param text   the text string to be drawn
+     * @param gc     the {@code GraphicsContext} on which the text will be rendered
+     * @param cs     the {@code CoordinateSystem} used for transforming coordinates
+     * @param x      the X coordinate of the top-left corner for the text area in the coordinate system
+     * @param y      the Y coordinate of the top-left corner for the text area in the coordinate system
+     * @param width  the width of the area available for rendering the text in the coordinate system
+     * @param height the height of the area available for rendering the text in the coordinate system
+     */
+    public static void drawText(
+            String text, final GraphicsContext gc, final CoordinateSystem cs,
+            final double x, final double y, final double width, final double height
+    ) {
         final boolean gcImageSmoothing = gc.isImageSmoothing();
         final double areaInPixels = width * height * cs.getScale() * cs.getScale();
         // Convert to uppercase if the area is too small
@@ -153,8 +261,21 @@ public class Renderer {
         gc.setImageSmoothing(gcImageSmoothing);
     }
 
-    // Draw a rectangle with the given coordinates and size, filling it with the current fill color
-    public static void fillRect(final GraphicsContext gc, final CoordinateSystem cs, final double x, final double y, final double width, final double height) {
+    /**
+     * Utility method wrapping the {@link GraphicsContext#fillRect(double, double, double, double)} and
+     * transforming coordinates and dimension based on the provided {@link CoordinateSystem}.
+     *
+     * @param gc     the {@code GraphicsContext} on which the rectangle will be drawn
+     * @param cs     the {@code CoordinateSystem} used for transforming coordinates and scaling
+     * @param x      the X coordinate of the top-left corner in the coordinate system
+     * @param y      the Y coordinate of the top-left corner in the coordinate system
+     * @param width  the width of the rectangle in the coordinate system
+     * @param height the height of the rectangle in the coordinate system
+     */
+    public static void fillRect(
+            final GraphicsContext gc, final CoordinateSystem cs, final double x,
+            final double y, final double width, final double height
+    ) {
         gc.fillRect(cs.toScreenX(x), cs.toScreenY(y), cs.getScale() * width, cs.getScale() * height);
     }
 

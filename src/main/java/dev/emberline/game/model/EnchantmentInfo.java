@@ -22,8 +22,12 @@ import java.util.Optional;
  * @param level The level of the enchantment, which can be between 0 and {@link #MAX_LEVEL}.
  * @see EnchantmentEffect
  */
-public record EnchantmentInfo(Type type,
-                              int level) implements TowerStatsProvider, UpgradableInfo<EnchantmentInfo.Type, EnchantmentInfo> {
+public record EnchantmentInfo (
+        Type type, int level
+    ) implements TowerStatsProvider, UpgradableInfo<EnchantmentInfo.Type, EnchantmentInfo> {
+
+    private final static Metadata METADATA =
+            ConfigLoader.loadConfig("/sprites/towerAssets/enchantmentInfoStats.json", Metadata.class);
 
     /**
      * Represents the type of enchantment in the game.
@@ -139,9 +143,7 @@ public record EnchantmentInfo(Type type,
         double[] fireDamagePerSecond,
         @JsonProperty
         double[] iceSlowingFactor
-    ) {}
-
-    private final static Metadata metadata = ConfigLoader.loadConfig("/sprites/towerAssets/enchantmentInfoStats.json", Metadata.class);
+    ) { }
 
     /**
      * {@inheritDoc}
@@ -149,9 +151,9 @@ public record EnchantmentInfo(Type type,
     @Override
     public int getUpgradeCost() {
         if (type == Type.BASE) {
-            return metadata.baseUpgradeCost;
+            return METADATA.baseUpgradeCost;
         }
-        return metadata.upgradeCosts[level];
+        return METADATA.upgradeCosts[level];
     }
 
     /**
@@ -162,7 +164,7 @@ public record EnchantmentInfo(Type type,
         if (type == Type.BASE) {
             return 0;
         }
-        return metadata.resetRefunds[level];
+        return METADATA.resetRefunds[level];
     }
 
     /**
@@ -175,10 +177,10 @@ public record EnchantmentInfo(Type type,
      * or an empty {@code Optional} if no effect is associated with the enchantment.
      */
     public Optional<EnchantmentEffect> getEffect() {
-        final double duration = metadata.effectDuration[level];
+        final double duration = METADATA.effectDuration[level];
         return Optional.ofNullable(switch (type) {
-            case Type.ICE -> new SlowEffect(metadata.iceSlowingFactor[level], duration);
-            case Type.FIRE -> new BurnEffect(metadata.fireDamagePerSecond[level], duration);
+            case Type.ICE -> new SlowEffect(METADATA.iceSlowingFactor[level], duration);
+            case Type.FIRE -> new BurnEffect(METADATA.fireDamagePerSecond[level], duration);
             case Type.BASE -> null;
         });
     }

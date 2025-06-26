@@ -6,8 +6,12 @@ import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
 
 /**
- * This class is used to Zoom in and out areas of the map.
- * It requires a file with the proper indications to be used.
+ * The {@code Zoom} class represents an animation effect that interpolates between two defined
+ * coordinate regions over a specified duration, applying easing for a smooth transition.
+ * <p>
+ * The animation is configured using {@code Metadata}, which defines the starting and
+ * target coordinates, as well as the duration and delay of the animation sequence.
+ * The configuration is loaded from a JSON file using the {@code ConfigLoader}.
  */
 public class Zoom implements Renderable {
 
@@ -33,6 +37,13 @@ public class Zoom implements Renderable {
     ) {
     }
 
+    /**
+     * Constructs a new {@code Zoom} instance by loading metadata from a configuration file
+     * and initializing the animation sequence.
+     *
+     * @param wavePath the base file path used to locate the configuration file.
+     * @throws RuntimeException if the configuration file cannot be read or parsed.
+     */
     public Zoom(final String wavePath) {
         metadata = ConfigLoader.loadConfig(wavePath + "cs.json", Metadata.class);
         startAnimation();
@@ -42,15 +53,26 @@ public class Zoom implements Renderable {
         GameLoop.getInstance().getRenderer().getWorldCoordinateSystem().setRegion(regionX1, regionY1, regionX2, regionY2);
     }
 
+    /**
+     * Returns whether the animation sequence is complete.
+     *
+     * @return whether the animation sequence is complete.
+     */
     public boolean isOver() {
         return accumulatorNs >= metadata.animationDurationSeconds * 1e9;
     }
 
+    /**
+     * Starts the animation sequence by initializing the time tracking variables.
+     */
     public void startAnimation() {
         previousTimeNs = System.nanoTime();
         accumulatorNs = -(long) (metadata.animationDelaySeconds * 1e9);
     }
 
+    /**
+     * Updates the world coordinate system based on the ongoing state of the zoom animation.
+     */
     @Override
     public void render() {
         final long currentTimeNs = System.nanoTime();

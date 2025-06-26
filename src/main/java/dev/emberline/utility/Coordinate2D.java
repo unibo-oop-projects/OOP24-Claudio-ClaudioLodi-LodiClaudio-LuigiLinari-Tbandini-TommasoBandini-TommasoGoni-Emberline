@@ -10,11 +10,11 @@ import java.io.Serializable;
 public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializable {
 
     /**
-     * x coordinate
+     * x coordinate.
      */
     private final double x;
     /**
-     * y coordinate
+     * y coordinate.
      */
     private final double y;
 
@@ -120,8 +120,8 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
     }
 
     /**
-     * Returns a point with the coordinates of this point multiplied
-     * by the specified factor
+     * Returns a point with the coordinates of this point,
+     * multiplied by the specified factor.
      *
      * @param factor the factor multiplying the coordinates
      * @return the point with multiplied coordinates
@@ -263,11 +263,8 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
     public boolean equals(final Object obj) {
         if (obj == this) {
             return true;
-        }
-        if (obj instanceof final Coordinate2D other) {
-            return toPoint2D(this.x, this.y).equals(Vector2D.of(other.getX(), other.getY()));
         } else {
-            return false;
+            return obj instanceof Coordinate2D;
         }
     }
 

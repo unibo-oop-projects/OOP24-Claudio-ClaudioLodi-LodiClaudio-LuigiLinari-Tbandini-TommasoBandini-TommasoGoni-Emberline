@@ -18,13 +18,13 @@ public class Player implements EventListener {
     private int gold;
     private final World world;
 
+    Metadata metadata = ConfigLoader.loadConfig("/world/player.json", Metadata.class);
+
     private record Metadata(
             @JsonProperty int health,
             @JsonProperty int gold
     ) {
     }
-
-    Metadata metadata = ConfigLoader.loadConfig("/world/player.json", Metadata.class);
 
     public Player(final World world) {
         this.health = metadata.health;

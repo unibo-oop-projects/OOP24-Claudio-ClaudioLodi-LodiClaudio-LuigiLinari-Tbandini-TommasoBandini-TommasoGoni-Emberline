@@ -20,7 +20,23 @@ import dev.emberline.gui.event.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/**
+ * Represents the main menu state of the game, which serves as the starting point
+ * for user interaction upon launching.
+ * <p>
+ * The MainMenu class handles the rendering of the main menu scene, displaying background graphics,
+ * the game title, and interactive buttons for starting the game, accessing options, or exiting.
+ * <p>
+ * It is initialized with predefined menu bounds, loaded from a configuration
+ * file, defining the areas of the GUI dedicated to the main menu.
+ * <p>
+ * It is responsible for triggering appropriate events for game state transitions
+ * (e.g., starting the game, opening options, or exiting).
+ */
 public class MainMenu extends GuiLayer implements GameState {
+
+    private final MenuBounds menuBounds;
+
     private static class Layout {
         // Background
         private static final double BG_WIDTH = 32;
@@ -62,9 +78,16 @@ public class MainMenu extends GuiLayer implements GameState {
     ) {
     }
 
-    private final MenuBounds menuBounds;
 
-    // TODO refactor this constructors 
+    // TODO refactor this constructors
+
+    /**
+     * Constructs a new instance of {@code MainMenu}.
+     * This constructor initializes the main menu by loading its configuration from a JSON resource file.
+     *
+     * @throws RuntimeException if an error occurs during the configuration loading or deserialization process.
+     * @see MainMenu
+     */
     public MainMenu() {
         this(ConfigLoader.loadConfig("/gui/menu/menuBounds.json", MenuBounds.class));
     }
@@ -95,6 +118,9 @@ public class MainMenu extends GuiLayer implements GameState {
         super.buttons.add(exitButton);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void render() {
         // Render background
@@ -122,6 +148,9 @@ public class MainMenu extends GuiLayer implements GameState {
         super.render();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update(final long elapsed) {
     }

@@ -15,7 +15,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
+/**
+ * A factory class for creating animated enemy sprites based on a provided {@link EnemySpriteKey}.
+ * The enemy sprite atlas is a single image containing all sprite frames,
+ * and the individual frames are extracted during sprite creation based on metadata values.
+ */
+public final class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
     private static class Metadata {
         @JsonProperty
         int width;
@@ -31,6 +36,9 @@ public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
         Map<EnemyAppearance, Integer> state;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Sprite loadSprite(final EnemySpriteKey key) {
         final EnemyType type = key.type();
@@ -61,6 +69,9 @@ public class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
         return new Image(Objects.requireNonNull(EnemySpriteFactory.class.getResourceAsStream(enemyAtlasPath)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<EnemySpriteKey> getKeyType() {
         return EnemySpriteKey.class;

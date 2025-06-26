@@ -98,21 +98,21 @@ public class AudioController implements EventListener {
     }
 
     private Media getCachedSfxMedia(final SfxSoundEvent event) {
-        SoundType type = event.getSoundType();
+        final SoundType type = event.getSoundType();
 
         return cachedSfxMedia.computeIfAbsent(type, t -> {
-            String soundPath = metadata.SFX_PATHS.get(t);
+            final String soundPath = metadata.SFX_PATHS.get(t);
             if (soundPath == null) {
                 throw new IllegalArgumentException("Sound type " + t + " not found in metadata.");
             }
-            URL fileURL = Objects.requireNonNull(getClass().getResource(soundPath));
+            final URL fileURL = Objects.requireNonNull(getClass().getResource(soundPath));
             return new Media(fileURL.toExternalForm());
         });
     }
 
     private void playSfx(final SfxSoundEvent event) {
-        Media sfxMedia = getCachedSfxMedia(event);
-        MediaPlayer sfxPlayer = new MediaPlayer(sfxMedia);
+        final Media sfxMedia = getCachedSfxMedia(event);
+        final MediaPlayer sfxPlayer = new MediaPlayer(sfxMedia);
         sfxPlayer.setVolume(metadata.SFX_VOLUME);
         sfxPlayer.setMute(metadata.SFX_MUTE);
         sfxPlayer.play();
@@ -135,7 +135,7 @@ public class AudioController implements EventListener {
     @EventHandler
     private void handleToggleMusicMuteEvent(final ToggleMuteEvent event) {
         Platform.runLater(() -> {
-            musicPlayer.setMute(event.getMuteState());
+            // musicPlayer.setMute(event.getMuteState());
         });
     }
 

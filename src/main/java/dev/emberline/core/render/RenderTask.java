@@ -1,5 +1,12 @@
 package dev.emberline.core.render;
 
+/**
+ * The RenderTask class encapsulates a {@link Runnable} intended for rendering in a
+ * graphical or game application. It associates a priority and optional
+ * z-order with the task to ensure proper rendering order.
+ * <p>
+ * RenderTask implements the Comparable interface for ordering.
+ */
 public class RenderTask implements Comparable<RenderTask>, Runnable {
     private final RenderPriority renderPriority;
     private boolean zOrderEnabled = false;
@@ -7,11 +14,21 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
     private long secondaryPriority = 0; //lower values get rendered first
     private final Runnable runnable;
 
+    /**
+     * Constructs a {@code RenderTask} with the specified rendering priority and runnable.
+     *
+     * @param renderPriority the rendering priority associated with this task. Determines the
+     *                       render sequence based on its priority value.
+     * @param runnable       the {@code Runnable} to be executed for this render task.
+     */
     public RenderTask(final RenderPriority renderPriority, final Runnable runnable) {
         this.renderPriority = renderPriority;
         this.runnable = runnable;
     }
 
+    /**
+     * Executes the encapsulated {@link Runnable} associated with this {@code RenderTask}.
+     */
     @Override
     public void run() {
         runnable.run();
@@ -28,6 +45,16 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
         this.secondaryPriority = secondaryPriority;
     }
 
+    /**
+     * Enables the z-ordering for the {@link RenderTask} to ensure a
+     * rendering sequence based on the provided z-order value.
+     *
+     * @param lowestUnder the z-order value to be associated with this task.
+     *                    Tasks with lower z-order values will be rendered underneath tasks
+     *                    with higher z-order values.
+     * @return the current {@code RenderTask} instance with z-ordering enabled
+     *         and the z-order value updated.
+     */
     public RenderTask enableZOrder(final double lowestUnder) {
         this.zOrderEnabled = true;
         this.zOrder = lowestUnder;
@@ -37,7 +64,8 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
     /**
      * Compares this object with the specified object for order.
      *
-     * @return Returns a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object.
+     * @return Returns a negative integer, zero, or a positive integer
+     * as this object is less than, equal to, or greater than the specified object.
      */
     @Override
     public int compareTo(final RenderTask t1) {
