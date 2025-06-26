@@ -2,14 +2,14 @@ package dev.emberline.core.sounds.event;
 
 public class SetVolumeEvent extends SoundEvent {
 
-    private final float volume;
+    private final double volume;
 
-    public SetVolumeEvent(final Object source, final float volume) {
+    public SetVolumeEvent(final Object source, final double volume) {
         super(source);
         this.volume = volume;
     }
 
-    public float getVolume() {
+    public double getVolume() {
         return volume;
     }
 }

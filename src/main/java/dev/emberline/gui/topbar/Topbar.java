@@ -79,8 +79,8 @@ public class Topbar extends GuiLayer implements EventListener {
     private void addOptionsButton() {
         GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X, Layout.BTN_OPTIONS_Y,
                 Layout.BTN_OPTIONS_WIDTH, Layout.BTN_OPTIONS_HEIGHT,
-                SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_OPTIONS_BUTTON_1).image(),
-                SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_OPTIONS_BUTTON_2).image());
+                SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_OPTIONS_BUTTON).image(),
+                SpriteLoader.loadSprite(SingleSpriteKey.TOPBAR_OPTIONS_BUTTON_HOVER).image());
         optionsButton.setOnClick(() -> throwEvent(new OpenOptionsEvent(optionsButton)));
         super.buttons.add(optionsButton);
     }

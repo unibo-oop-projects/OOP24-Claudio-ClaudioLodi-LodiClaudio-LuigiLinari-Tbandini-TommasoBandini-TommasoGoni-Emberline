@@ -8,7 +8,8 @@ public class SfxSoundEvent extends SoundEvent {
         CLICK,
         BUILD,
         PROJECTILE_LANDED,
-        ENEMY_ENTERED_CASTLE
+        ENEMY_ENTERED_CASTLE,
+        OPEN_DIALOG_CHAINS
     }
 
     public SfxSoundEvent(final Object source, SoundType soundType) {

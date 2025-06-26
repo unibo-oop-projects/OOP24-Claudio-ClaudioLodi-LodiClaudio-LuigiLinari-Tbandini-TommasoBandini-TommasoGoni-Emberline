@@ -3,6 +3,8 @@ package dev.emberline.game.world.buildings;
 import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
+import dev.emberline.core.sounds.AudioController;
+import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.game.world.Building;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.buildings.tower.Tower;
@@ -62,6 +64,7 @@ public class TowersManager implements Updatable, Renderable, Inputable {
      */
     public void openNewBuildDialog(final TowerPreBuild tower) {
         if (newBuildDialogLayer == null || newBuildDialogLayer.getTowerPreBuild() != tower) {
+            AudioController.requestSfxSound(this, SoundType.OPEN_DIALOG_CHAINS);
             newBuildDialogLayer = new NewBuildDialogLayer(tower);
         }
     }
@@ -72,6 +75,7 @@ public class TowersManager implements Updatable, Renderable, Inputable {
      */
     public void openTowerDialog(final Tower tower) {
         if (towerDialogLayer == null || towerDialogLayer.getTower() != tower) {
+            AudioController.requestSfxSound(this, SoundType.OPEN_DIALOG_CHAINS);
             towerDialogLayer = new TowerDialogLayer(tower);
         }
     }

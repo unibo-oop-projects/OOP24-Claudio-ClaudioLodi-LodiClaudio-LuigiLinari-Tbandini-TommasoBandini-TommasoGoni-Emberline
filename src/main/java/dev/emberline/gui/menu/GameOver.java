@@ -9,8 +9,6 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
-import dev.emberline.core.sounds.AudioController;
-import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.game.GameState;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
@@ -45,14 +43,14 @@ public class GameOver extends GuiLayer implements GameState {
 
     // GameOver bounds
     private record Coordinate(
-            @JsonProperty int x,
-            @JsonProperty int y
+        @JsonProperty int x,
+        @JsonProperty int y
     ) {
     }
 
     private record GameOverBounds(
-            @JsonProperty Coordinate topLeftBound,
-            @JsonProperty Coordinate bottomRightBound
+        @JsonProperty Coordinate topLeftBound,
+        @JsonProperty Coordinate bottomRightBound
     ) {
     }
 
@@ -67,8 +65,8 @@ public class GameOver extends GuiLayer implements GameState {
     private void addMainMenuButton() {
         final GuiButton menuButton = new GuiButton(Layout.BTN_MENU_X,
                 Layout.BTN_MENU_Y, Layout.BTN_MENU_WIDTH, Layout.BTN_MENU_HEIGHT,
-                SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON_1).image(),
-                SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON_2).image());
+                SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON).image(),
+                SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON_HOVER).image());
         menuButton.setOnClick(() -> throwEvent(new SetMainMenuEvent(this)));
         super.buttons.add(menuButton);
     }
@@ -77,8 +75,8 @@ public class GameOver extends GuiLayer implements GameState {
     private void addExitButton() {
         final GuiButton exitButton = new GuiButton(Layout.BTN_EXIT_X,
                 Layout.BTN_EXIT_Y, Layout.BTN_EXIT_WIDTH, Layout.BTN_EXIT_HEIGHT,
-                SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON_1).image(),
-                SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON_2).image());
+                SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON).image(),
+                SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON_HOVER).image());
         exitButton.setOnClick(() -> throwEvent(new ExitGameEvent(exitButton)));
         super.buttons.add(exitButton);
     }
