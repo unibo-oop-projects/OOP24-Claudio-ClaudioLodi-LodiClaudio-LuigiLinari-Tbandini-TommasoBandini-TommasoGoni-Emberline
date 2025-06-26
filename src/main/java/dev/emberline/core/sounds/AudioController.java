@@ -5,6 +5,7 @@ import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.prefs.Preferences;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,8 +24,9 @@ import javafx.util.Duration;
 public class AudioController implements EventListener {
 
     private static final String METADATA_PATH = "/audio/audioController.json";
+    private static final Preferences prefs = Preferences.userRoot().node("dev.emberline.audio");
     private Media musicMedia;
-    private final MediaPlayer mediaPlayer;
+    private final MediaPlayer musicPlayer;
     private static Metadata metadata;
     private final Map<SoundType, Media> cachedSfxMedia = new HashMap<>();
 
@@ -34,38 +36,60 @@ public class AudioController implements EventListener {
         @JsonProperty double MUSIC_VOLUME,
         @JsonProperty double SFX_VOLUME,
         @JsonProperty boolean MUSIC_MUTE,
-        @JsonProperty boolean SFX_MUTE
+        @JsonProperty boolean SFX_MUTE,
+        @JsonProperty double STEP_VOLUME_AMOUNT
     ) {}
 
     public AudioController() {
         EventDispatcher.getInstance().registerListener(this);
         metadata = ConfigLoader.loadConfig(METADATA_PATH, Metadata.class);
-        
+
         loadSoundtrack();
-        mediaPlayer = new MediaPlayer(musicMedia);
+        musicPlayer = new MediaPlayer(musicMedia);
         initializeSoundtrack();
     }
 
+    /**
+     * Starts the soundtrack if it is not already playing.
+     * This method is called when the game starts.
+     */
     public void startSoundtrack() {
-        if (!mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING)) {
-            mediaPlayer.play();
+        if (!musicPlayer.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+            musicPlayer.play();
         }
     }
 
     /**
      * Requests a sound effect to be played.
      * This method dispatches an event that will be handled by the audio controller.
+     * @param src the source of the event, typically the object that requested the sound
+     * @param soundType the type of sound effect to play
      */
     public static void requestSfxSound(Object src, final SoundType soundType) {
         EventDispatcher.getInstance().dispatchEvent(new SfxSoundEvent(src, soundType));
     }
 
+
+    public static void requestDecreaseMusicVolume(Object src) {
+        double newVolume = Math.max(0, prefs.getDouble("musicVolume", metadata.MUSIC_VOLUME) - metadata.STEP_VOLUME_AMOUNT);
+        prefs.putDouble("musicVolume", newVolume);
+        System.out.println("Decreasing music volume to: " + newVolume);
+        EventDispatcher.getInstance().dispatchEvent(new SetVolumeEvent(src, newVolume));
+    }
+
+    public static void requestIncreaseMusicVolume(Object src) {
+        double newVolume = Math.min(1, prefs.getDouble("musicVolume", metadata.MUSIC_VOLUME) + metadata.STEP_VOLUME_AMOUNT);
+        prefs.putDouble("musicVolume", newVolume);
+        System.out.println("Decreasing music volume to: " + newVolume);
+        EventDispatcher.getInstance().dispatchEvent(new SetVolumeEvent(src, newVolume));
+    }
+
     private void initializeSoundtrack() {
-        mediaPlayer.setStartTime(Duration.ZERO);
-        mediaPlayer.setStopTime(musicMedia.getDuration());
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.setVolume(metadata.MUSIC_VOLUME);
-        mediaPlayer.setMute(metadata.MUSIC_MUTE);
+        musicPlayer.setStartTime(Duration.ZERO);
+        musicPlayer.setStopTime(musicMedia.getDuration());
+        musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        musicPlayer.setVolume(loadMusicVolume());
+        musicPlayer.setMute(metadata.MUSIC_MUTE);
     }
 
     private void loadSoundtrack() {
@@ -102,17 +126,48 @@ public class AudioController implements EventListener {
     }
 
     @EventHandler
-    private void handleToggleMuteEvent(final ToggleMuteEvent event) {
+    private void handleSetMusicVolumeEvent(final SetVolumeEvent event) {
         Platform.runLater(() -> {
-            mediaPlayer.setMute(event.getMuteState());
+            musicPlayer.setVolume(event.getVolume());
         });
     }
 
     @EventHandler
-    private void handleSetVolumeEvent(final SetVolumeEvent event) {
+    private void handleToggleMusicMuteEvent(final ToggleMuteEvent event) {
         Platform.runLater(() -> {
-            mediaPlayer.setVolume(event.getVolume());
+            musicPlayer.setMute(event.getMuteState());
         });
     }
 
+    @EventHandler
+    private void handleSetSfxVolumeEvent(final SetVolumeEvent event) {
+        Platform.runLater(() -> {
+            //metadata.SFX_VOLUME = event.getVolume();
+            cachedSfxMedia.clear(); // Clear cache to reload SFX with new volume
+        });
+    }
+
+    @EventHandler
+    private void handleToggleSfxMuteEvent(final ToggleMuteEvent event) {
+        Platform.runLater(() -> {
+            //metadata.SFX_MUTE = event.getMuteState();
+            cachedSfxMedia.clear(); // Clear cache to reload SFX with new mute state
+        });
+    }
+
+    private double loadMusicVolume() {
+        return prefs.getDouble("musicVolume", metadata.MUSIC_VOLUME);
+    }
+
+    private double loadSfxVolume() {
+        return prefs.getDouble("sfxVolume", metadata.SFX_VOLUME);
+    }
+
+    private boolean loadMusicMute() {
+        return prefs.getBoolean("musicMute", metadata.MUSIC_MUTE);
+    }
+
+    private boolean loadSfxMute() {
+        return prefs.getBoolean("sfxMute", metadata.SFX_MUTE);
+    }
 }

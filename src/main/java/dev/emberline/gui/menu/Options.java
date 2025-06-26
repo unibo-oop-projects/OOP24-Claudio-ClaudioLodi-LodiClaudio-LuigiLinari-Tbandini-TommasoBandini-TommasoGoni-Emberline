@@ -1,5 +1,7 @@
 package dev.emberline.gui.menu;
 
+import java.util.prefs.Preferences;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
@@ -10,18 +12,20 @@ import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
 import dev.emberline.core.sounds.AudioController;
-import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.game.GameState;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.CloseOptionsEvent;
 import dev.emberline.gui.event.SetMainMenuEvent;
+import dev.emberline.preferences.PreferenceKey;
+import dev.emberline.preferences.PreferencesManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Options extends GuiLayer implements GameState {
     private final OptionsBounds bounds;
     private final boolean showMenuButton;
+    private static final Preferences prefs = Preferences.userRoot().node("dev.emberline.audio");
 
     private static class Layout {
         // Background
@@ -33,6 +37,31 @@ public class Options extends GuiLayer implements GameState {
         private static final double WINDOW_BG_HEIGHT = 5 * SCALE;
         private static final double WINDOW_BG_X = (BG_WIDTH - WINDOW_BG_WIDTH) / 2;
         private static final double WINDOW_BG_Y = (BG_HEIGHT - WINDOW_BG_HEIGHT) / 2 - 2;
+
+        // Gui buttons dimensions
+        private static final double btn_scale = 1.5;
+        private static final double BTN_WIDTH = 1 * SCALE;
+        private static final double BTN_HEIGHT = 1 * SCALE;
+
+        // Music Control that uses dimensions from above
+        private static final double VOLUME_CONTROL_X = (BG_WIDTH - BTN_WIDTH) / 2;
+        private static final double VOLUME_CONTROL_Y = WINDOW_BG_Y + 0.5 * SCALE;
+        
+        // Music checkbox
+        private static final double CHECKBOX_X = VOLUME_CONTROL_X + BTN_WIDTH + 0.5 * SCALE;
+        private static final double CHECKBOX_Y = VOLUME_CONTROL_Y + 0.5 * SCALE;
+
+        // Sfx Control that uses dimensions from above
+        private static final double SFX_CONTROL_X = VOLUME_CONTROL_X;
+        private static final double SFX_CONTROL_Y = VOLUME_CONTROL_Y + BTN_HEIGHT + 0.5 * SCALE;
+
+        // Sfx checkbox
+        private static final double SFX_CHECKBOX_X = CHECKBOX_X;
+        private static final double SFX_CHECKBOX_Y = CHECKBOX_Y + BTN_HEIGHT + 0.5 * SCALE;
+
+        // Fullscreen checkbox
+        private static final double FULLSCREEN_CHECKBOX_X = CHECKBOX_X;
+        private static final double FULLSCREEN_CHECKBOX_Y = CHECKBOX_Y + BTN_HEIGHT + 0.5 * SCALE;
 
         // Back Button
         private static final double SCALE_FACTOR = 1.7;
@@ -91,7 +120,15 @@ public class Options extends GuiLayer implements GameState {
 
     // Music volume control
     private void addMusicVolumeControl() {
-        
+        final GuiButton musicVolumeControl = new GuiButton(Layout.VOLUME_CONTROL_X, Layout.VOLUME_CONTROL_Y, Layout.BTN_WIDTH, Layout.BTN_HEIGHT,
+                SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_MINUS_BUTTON).image(),
+                SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_MINUS_BUTTON_HOVER).image());
+        musicVolumeControl.setOnClick(() -> {
+           AudioController.requestDecreaseMusicVolume(this);
+           PreferencesManager.getBooleanPreference(PreferenceKey.MUSIC_MUTE);
+           //AudioController.requestIncreaseMusicVolume(this);
+        });
+        super.buttons.add(musicVolumeControl);
     }
     
     // Music checkbox
@@ -118,7 +155,7 @@ public class Options extends GuiLayer implements GameState {
     private void addCloseOptionsButton() {
         final GuiButton backButton = new GuiButton(Layout.BTN_BACK_X,
                 Layout.BTN_BACK_Y, Layout.BTN_BACK_WIDTH,
-                Layout.BTN_BACK_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON_1).image(), SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON_2).image());
+                Layout.BTN_BACK_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON).image(), SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON_HOVER).image());
         backButton.setOnClick(() -> throwEvent(new CloseOptionsEvent(this)));
         super.buttons.add(backButton);
     }
@@ -127,7 +164,7 @@ public class Options extends GuiLayer implements GameState {
     private void addMenuOptionsButton() {
         final GuiButton menuButton = new GuiButton(Layout.BTN_MENU_X,
                 Layout.BTN_MENU_Y, Layout.BTN_MENU_WIDTH,
-                Layout.BTN_MENU_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON_1).image(), SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON_2).image());
+                Layout.BTN_MENU_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON).image(), SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON_HOVER).image());
         menuButton.setOnClick(() -> throwEvent(new SetMainMenuEvent(this)));
         super.buttons.add(menuButton);
     }
