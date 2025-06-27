@@ -5,13 +5,18 @@ import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Optional;
 
 /**
  * This class listens for projectile hit events and handles what
  * should happen when a specific hit event is thrown.
  */
-public class ProjectileHitListener {
+public class ProjectileHitListener implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -6166989976490461169L;
 
     private final IEnemiesManager enemiesManager;
 
