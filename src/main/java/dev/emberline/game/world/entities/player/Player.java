@@ -35,7 +35,7 @@ public class Player implements EventListener, Serializable {
     private record Metadata(
             @JsonProperty int health,
             @JsonProperty int gold
-    ) {
+    ) implements Serializable {
     }
 
     /**

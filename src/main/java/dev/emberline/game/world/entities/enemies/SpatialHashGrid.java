@@ -39,7 +39,7 @@ public class SpatialHashGrid implements Iterable<IEnemy>, Serializable {
 
     private int size = 0;
 
-    private record CellIdx(int x, int y) {
+    private record CellIdx(int x, int y) implements Serializable {
     }
 
     /**

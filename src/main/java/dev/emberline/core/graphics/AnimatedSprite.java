@@ -21,7 +21,7 @@ public class AnimatedSprite implements Sprite, Serializable {
     @Serial
     private static final long serialVersionUID = -6515408676254063528L;
 
-    private final transient Image[] images;
+    private transient Image[] images;
     private final SpriteKey key;
     private final int frameTimeNs;
 

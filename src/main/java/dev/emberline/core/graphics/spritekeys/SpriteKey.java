@@ -1,5 +1,7 @@
 package dev.emberline.core.graphics.spritekeys;
 
+import java.io.Serializable;
+
 /**
  * Tag interface for objects that will be used as keys in a caching mechanism
  * based on a {@link java.util.HashMap}.
@@ -20,5 +22,5 @@ package dev.emberline.core.graphics.spritekeys;
  * </ul>
  * otherwise use a {@code record} class.
  */
-public interface SpriteKey {
+public interface SpriteKey extends Serializable {
 }

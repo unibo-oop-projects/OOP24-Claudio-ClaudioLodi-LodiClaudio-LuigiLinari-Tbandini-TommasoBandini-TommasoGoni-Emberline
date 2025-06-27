@@ -7,6 +7,8 @@ import dev.emberline.game.world.entities.enemies.enemy.concrete.Ogre;
 import dev.emberline.game.world.entities.enemies.enemy.concrete.Pig;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -16,7 +18,9 @@ import java.util.Map;
  * Enemies are created by providing their spawn position, type, and the game world.
  * The factory ensures that only registered enemy types can be instantiated, throwing an exception otherwise.
  */
-public class EnemiesFactory {
+public class EnemiesFactory implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 4930191613193608108L;
 
     private static final Map<EnemyType, EnemyCreator> CREATOR_REGISTRY = new EnumMap<>(EnemyType.class);
 

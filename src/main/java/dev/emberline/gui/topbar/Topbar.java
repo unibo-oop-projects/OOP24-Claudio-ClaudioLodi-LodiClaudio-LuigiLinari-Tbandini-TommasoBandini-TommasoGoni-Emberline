@@ -1,5 +1,7 @@
 package dev.emberline.gui.topbar;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.EventListener;
 
 import dev.emberline.core.GameLoop;
@@ -26,7 +28,10 @@ import javafx.scene.image.Image;
  * <p>
  * This class also provides an options button that allows users to access the options menu.
  */
-public class Topbar extends GuiLayer implements EventListener {
+public class Topbar extends GuiLayer implements EventListener, Serializable {
+    @Serial
+    private static final long serialVersionUID = 8884571458744285336L;
+
     private int health;
     private int gold;
     private int wave;
