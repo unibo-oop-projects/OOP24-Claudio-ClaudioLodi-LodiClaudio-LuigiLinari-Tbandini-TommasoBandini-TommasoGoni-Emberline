@@ -65,7 +65,7 @@ public class TowerDialogLayer extends GuiLayer {
         private static final double BG_WIDTH = 9.2;
         private static final double BG_HEIGHT = 15.34;
         private static final double BG_X = Renderer.GUICS_WIDTH * 0.98 - BG_WIDTH;
-        private static final double BG_Y = 1.2;
+        private static final double BG_Y = 1.5;
         // Title
         private static final double TITLE_HEIGHT = 2 * 0.52;
         private static final double TITLE_Y = BG_Y + 2;
