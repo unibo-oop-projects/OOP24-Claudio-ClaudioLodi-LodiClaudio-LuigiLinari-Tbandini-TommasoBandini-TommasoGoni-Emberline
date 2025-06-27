@@ -260,13 +260,8 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      */
     @Override
     public boolean equals(final Object obj) {
-        if (obj == this) {
-            return true;
-        } else if (obj instanceof final Coordinate2D other) {
-            return toPoint2D(this.x, this.y).equals(Vector2D.of(other.getX(), other.getY()));
-        } else {
-            return false;
-        }
+        return obj == this
+        || (obj instanceof Coordinate2D other && toPoint2D(this.x, this.y).equals(Vector2D.of(other.getX(), other.getY())));
     }
 
     /**

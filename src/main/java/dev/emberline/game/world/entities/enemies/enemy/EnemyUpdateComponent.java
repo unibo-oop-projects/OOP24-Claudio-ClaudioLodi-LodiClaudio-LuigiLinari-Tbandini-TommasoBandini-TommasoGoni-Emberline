@@ -33,7 +33,7 @@ class EnemyUpdateComponent implements Updatable {
     private Vector2D velocity;
 
     private final List<Vector2D> destinations = new ArrayList<>();
-    private int destinationsIdx = 0;
+    private int destinationsIdx;
 
     EnemyUpdateComponent(final Vector2D spawnPoint, final World world, final AbstractEnemy enemy) {
         this.enemy = enemy;
@@ -199,7 +199,7 @@ class EnemyUpdateComponent implements Updatable {
             final double overshootAmount = posToDest.magnitude();
 
             position = currDestination;
-            if (currDestination == destinations.getLast()) {
+            if (currDestination.equals(destinations.getLast())) {
                 attack();
                 return;
             }

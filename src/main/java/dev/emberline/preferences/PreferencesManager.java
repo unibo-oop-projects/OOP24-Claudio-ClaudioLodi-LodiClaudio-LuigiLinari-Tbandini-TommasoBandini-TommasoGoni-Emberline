@@ -23,7 +23,6 @@ public final class PreferencesManager {
             prefs.putBoolean(key.getKey(), value = key.getDefaultBooleanValue());
 
         }
-        System.out.println(prefs.get(key.getKey(), "ciao"));
         return value;
     }
 

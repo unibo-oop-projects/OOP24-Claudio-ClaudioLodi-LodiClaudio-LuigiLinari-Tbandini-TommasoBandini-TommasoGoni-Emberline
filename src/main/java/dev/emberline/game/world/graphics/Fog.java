@@ -60,7 +60,7 @@ public class Fog implements Renderable {
     private static final int FOG_SIDE_LENGTH = 2;
     private final Metadata metadata;
 
-    private long accumulatorNs = 0;
+    private long accumulatorNs;
     private long previousTimeNs = System.nanoTime();
 
     private static final double SECOND_IN_NS = 1e9;

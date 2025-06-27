@@ -43,13 +43,13 @@ public class TowerDialogLayer extends GuiLayer {
     // The Tower linked to this dialog layer
     private final Tower tower;
     // The current state of what is displayed in the dialog
-    private EnchantmentInfo displayedEnchantment = null;
-    private ProjectileInfo displayedProjectile = null;
+    private EnchantmentInfo displayedEnchantment;
+    private ProjectileInfo displayedProjectile;
     // Initial aim type is set to FIRST
     private AimType displayedAimType = AimType.FIRST;
     private AimType currentAimType = displayedAimType;
     // Tower Stats Views
-    private List<TowerStatView> statsViews = null;
+    private List<TowerStatView> statsViews;
     // Data to display on button hover
     private final Map<GuiButton, TowerStatsProvider> hoverData = new HashMap<>();
 
@@ -296,13 +296,13 @@ public class TowerDialogLayer extends GuiLayer {
      */
     @Override
     public void render() {
-        if (displayedEnchantment != tower.getEnchantmentInfo()) {
+        if (!displayedEnchantment.equals(tower.getEnchantmentInfo())) {
             updateLayout();
         }
-        if (displayedProjectile != tower.getProjectileInfo()) {
+        if (!displayedProjectile.equals(tower.getProjectileInfo())) {
             updateLayout();
         }
-        if (displayedAimType != currentAimType) {
+        if (!displayedAimType.equals(currentAimType)) {
             updateLayout();
         }
 

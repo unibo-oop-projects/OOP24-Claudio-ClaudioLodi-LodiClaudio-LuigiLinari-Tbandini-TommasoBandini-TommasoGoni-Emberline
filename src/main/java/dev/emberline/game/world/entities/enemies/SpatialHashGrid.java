@@ -29,10 +29,10 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     private final int cols;
     private final int rows;
 
-    private final List<List<Set<IEnemy>>> spatialHashGrid;
+    private final List<List<Set<IEnemy>>> cellBuckets;
     private final Map<IEnemy, CellIdx> enemyCell = new HashMap<>();
 
-    private int size = 0;
+    private int size;
 
     private record CellIdx(int x, int y) {
     }
@@ -54,11 +54,11 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
         this.xMax = xMax;
         this.yMax = yMax;
 
-        this.spatialHashGrid = new ArrayList<>();
+        this.cellBuckets = new ArrayList<>();
         for (int x = 0; x < cols; x++) {
-            this.spatialHashGrid.add(new ArrayList<>());
+            this.cellBuckets.add(new ArrayList<>());
             for (int y = 0; y < rows; y++) {
-                spatialHashGrid.get(x).add(new HashSet<>());
+                cellBuckets.get(x).add(new HashSet<>());
             }
         }
     }
@@ -80,7 +80,7 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
         }
 
         final CellIdx cellIdx = getCellIdx(enemyLocation);
-        spatialHashGrid.get(cellIdx.x()).get(cellIdx.y()).add(enemy);
+        cellBuckets.get(cellIdx.x()).get(cellIdx.y()).add(enemy);
         enemyCell.put(enemy, cellIdx);
         size++;
     }
@@ -99,7 +99,7 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
             throw new IllegalArgumentException("Enemy isn't present in the spatial hash grid");
         }
 
-        spatialHashGrid.get(cellIdx.x()).get(cellIdx.y()).remove(enemy);
+        cellBuckets.get(cellIdx.x()).get(cellIdx.y()).remove(enemy);
         enemyCell.remove(enemy);
         size--;
     }
@@ -186,7 +186,7 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
                 if (!isInside(cellIdx)) {
                     continue;
                 }
-                for (final IEnemy enemy : spatialHashGrid.get(cellIdx.x()).get(cellIdx.y())) {
+                for (final IEnemy enemy : cellBuckets.get(cellIdx.x()).get(cellIdx.y())) {
                     final Vector2D pos = enemy.getPosition();
                     final double dstX = pos.getX() - location.getX();
                     final double dstY = pos.getY() - location.getY();

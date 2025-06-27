@@ -90,12 +90,6 @@ public class Statistics implements Updatable, Serializable {
         return this.totalDamage;
     }
 
-    private void printToTerminal() {
-        System.out.println(enemiesKilled);
-        System.out.println(wavesSurvived);
-        System.out.println(timeInGame);
-    }
-
     /**
      * Should be used to update the time-dependent stats of the game.
      *

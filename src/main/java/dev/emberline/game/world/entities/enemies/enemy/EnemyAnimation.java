@@ -21,11 +21,11 @@ public class EnemyAnimation implements Updatable {
     private EnemyAppearance enemyAppearance = EnemyAppearance.NORMAL;
     private AbstractEnemy.FacingDirection facingDirection = AbstractEnemy.FacingDirection.RIGHT;
 
-    private int frameIndex = 0;
-    private long accumulatedTimeNs = 0;
+    private int frameIndex;
+    private long accumulatedTimeNs;
 
-    private boolean dyingAnimationFinished = false; // To track if the dying animation has finished
-    private boolean isDying = false; // To track if the enemy is currently in a dying state
+    private boolean dyingAnimationFinished; // To track if the dying animation has finished
+    private boolean isDying; // To track if the enemy is currently in a dying state
 
     /**
      * This enumeration defines different visual states that an enemy can have,
@@ -91,7 +91,7 @@ public class EnemyAnimation implements Updatable {
      * @param enemyAppearance The new enemy appearance.
      * @return {@code true} if the appearance was changed, {@code false} otherwise.
      */
-    private boolean setEnemyAppearance(final EnemyAppearance enemyAppearance) {
+    private boolean updateEnemyAppearance(final EnemyAppearance enemyAppearance) {
         if (this.enemyAppearance == enemyAppearance) {
             return false; // No change needed
         }
@@ -105,7 +105,7 @@ public class EnemyAnimation implements Updatable {
      * @param facingDirection The new facing direction.
      * @return {@code true} if the direction was changed, {@code false} otherwise.
      */
-    private boolean setFacingDirection(final AbstractEnemy.FacingDirection facingDirection) {
+    private boolean updateFacingDirection(final AbstractEnemy.FacingDirection facingDirection) {
         if (this.facingDirection == facingDirection) {
             return false; // No change needed
         }
@@ -114,8 +114,8 @@ public class EnemyAnimation implements Updatable {
     }
 
     private void updateAnimatedSprite() {
-        boolean changed = setFacingDirection(enemy.getFacingDirection());
-        changed |= setEnemyAppearance(enemy.getEnemyAppearance());
+        boolean changed = updateFacingDirection(enemy.getFacingDirection());
+        changed |= updateEnemyAppearance(enemy.getEnemyAppearance());
         if (!changed) {
             return; // No changes to the sprite, no need to update
         }

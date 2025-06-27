@@ -35,7 +35,7 @@ public class Projectile implements IProjectile {
                       final ProjectileInfo projInfo, final EnchantmentInfo enchInfo,
                       final World world) throws FlightPathNotFound {
         this.updateComponent = new ProjectileUpdateComponent(start, target, projInfo, enchInfo, world, this);
-        this.renderComponent = new ProjectileRenderComponent(projInfo, enchInfo, this);
+        this.renderComponent = new ProjectileRenderComponent(this);
     }
 
     /**

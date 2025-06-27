@@ -9,7 +9,6 @@ import dev.emberline.game.world.Building;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.buildings.tower.Tower;
 import dev.emberline.game.world.buildings.towerprebuild.TowerPreBuild;
-import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.gui.towerdialog.NewBuildDialogLayer;
 import dev.emberline.gui.towerdialog.TowerDialogLayer;
 import dev.emberline.utility.Coordinate2D;
@@ -35,7 +34,6 @@ public class TowersManager implements Updatable, Renderable, Inputable {
     private final Collection<TowerPreBuild> toBuild = new LinkedList<>();
 
     private final World world;
-    private final IEnemiesManager enemiesManager;
 
     /**
      * Constructs a new instance of the {@code TowersManager} class and initializes its internal state.
@@ -45,7 +43,6 @@ public class TowersManager implements Updatable, Renderable, Inputable {
      */
     public TowersManager(final World world) {
         this.world = world;
-        this.enemiesManager = world.getEnemiesManager();
 
         // TODO
         buildings.add(new TowerPreBuild(new Coordinate2D(10, 10), this));
@@ -63,7 +60,7 @@ public class TowersManager implements Updatable, Renderable, Inputable {
      * @param tower the {@code TowerPreBuild} instance for which the new build dialog is to be opened
      */
     public void openNewBuildDialog(final TowerPreBuild tower) {
-        if (newBuildDialogLayer == null || newBuildDialogLayer.getTowerPreBuild() != tower) {
+        if (newBuildDialogLayer == null || !newBuildDialogLayer.getTowerPreBuild().equals(tower)) {
             AudioController.requestSfxSound(this, SoundType.OPEN_DIALOG_CHAINS);
             newBuildDialogLayer = new NewBuildDialogLayer(tower);
         }
@@ -76,7 +73,7 @@ public class TowersManager implements Updatable, Renderable, Inputable {
      * @param tower the tower attached to the tower dialog to be opened
      */
     public void openTowerDialog(final Tower tower) {
-        if (towerDialogLayer == null || towerDialogLayer.getTower() != tower) {
+        if (towerDialogLayer == null || !towerDialogLayer.getTower().equals(tower)) {
             AudioController.requestSfxSound(this, SoundType.OPEN_DIALOG_CHAINS);
             towerDialogLayer = new TowerDialogLayer(tower);
         }
