@@ -7,6 +7,8 @@ import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
 import javafx.scene.image.Image;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Locale;
 
 /**
@@ -14,7 +16,10 @@ import java.util.Locale;
  * of an enemy in the game. This includes handling animations and updating the
  * sprite based on the enemy's state, appearance, and facing direction.
  */
-public class EnemyAnimation implements Updatable {
+public class EnemyAnimation implements Updatable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -914520544245366892L;
 
     private final AbstractEnemy enemy;
     private AnimatedSprite animatedSprite;

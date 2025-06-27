@@ -7,6 +7,8 @@ import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+
 /**
  * Represents a Pig, a specific type of enemy in the game.
  * This class extends the {@link AbstractEnemy} class to provide
@@ -18,6 +20,9 @@ import dev.emberline.utility.Vector2D;
  * should be pretty balanced
  */
 public class Pig extends AbstractEnemy {
+    @Serial
+    private static final long serialVersionUID = 5359660777148905655L;
+
     private static final Metadata METADATA;
     private static final String ASSET_PATH = "/sprites/enemyAssets/pig.json";
 

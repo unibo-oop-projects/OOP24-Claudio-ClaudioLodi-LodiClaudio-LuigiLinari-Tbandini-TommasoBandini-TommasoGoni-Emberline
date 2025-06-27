@@ -11,11 +11,16 @@ import dev.emberline.game.world.entities.projectiles.events.ProjectileHitListene
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-class ProjectileUpdateComponent implements Updatable {
+class ProjectileUpdateComponent implements Updatable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -4975238003430316426L;
 
     private static final long MAX_FLIGHT_TIME = 10_000_000_000L; // 10s
     private final double velocityMag;

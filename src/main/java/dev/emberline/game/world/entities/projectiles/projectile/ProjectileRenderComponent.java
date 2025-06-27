@@ -14,7 +14,13 @@ import dev.emberline.utility.Vector2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-class ProjectileRenderComponent implements Renderable {
+import java.io.Serial;
+import java.io.Serializable;
+
+class ProjectileRenderComponent implements Renderable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 7918701324023489282L;
 
     private static final double WIDTH = 1;
     private static final double HEIGHT = 1;

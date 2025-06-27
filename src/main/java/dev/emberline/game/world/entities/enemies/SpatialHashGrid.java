@@ -3,6 +3,7 @@ package dev.emberline.game.world.entities.enemies;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -13,6 +14,9 @@ import java.util.*;
  * their positions.
  */
 public class SpatialHashGrid implements Iterable<IEnemy>, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -763266007228997533L;
 
     private static final int CELL_SIZE = 1;
 

@@ -7,6 +7,7 @@ import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.Locale;
 
@@ -15,6 +16,9 @@ import java.util.Locale;
  * common properties and behaviors that all specific enemy types must implement.
  */
 public abstract class AbstractEnemy implements IEnemy {
+
+    @Serial
+    private static final long serialVersionUID = 2633064928656056204L;
 
     private final EnemyUpdateComponent updateComponent;
     private final EnemyRenderComponent renderComponent;

@@ -12,7 +12,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Paint;
 
-public class EnemyRenderComponent implements Renderable {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class EnemyRenderComponent implements Renderable, Serializable {
+    @Serial
+    private static final long serialVersionUID = -288209243117357956L;
+
     private final AbstractEnemy enemy;
     private final EnemyAnimation enemyAnimation;
 
