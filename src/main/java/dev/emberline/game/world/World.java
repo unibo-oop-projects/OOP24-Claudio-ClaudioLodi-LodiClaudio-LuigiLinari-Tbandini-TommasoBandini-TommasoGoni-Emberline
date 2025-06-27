@@ -48,9 +48,7 @@ public class World implements GameState, Serializable {
     // HitListener
     private final ProjectileHitListener projectileHitListener;
 
-    // Player
     private final Player player;
-
     private final Topbar topbar;
 
     /**

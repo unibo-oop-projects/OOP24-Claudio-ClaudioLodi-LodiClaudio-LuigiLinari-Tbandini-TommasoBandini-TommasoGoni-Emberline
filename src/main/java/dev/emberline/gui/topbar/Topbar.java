@@ -84,7 +84,6 @@ public class Topbar extends GuiLayer implements EventListener {
     protected Topbar(final double x, final double y, final double width, final double height, final World world) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         this.world = world;
-        updateLayout();
     }
 
     private void updateLayout() {
@@ -118,7 +117,7 @@ public class Topbar extends GuiLayer implements EventListener {
 
     private void drawStatImage(final GraphicsContext gc, final CoordinateSystem cs, final Image img, final double x, final double baseHeight) {
         final double ratio = img.getWidth() / img.getHeight();
-        final double targetHeight = baseHeight * 0.8; // Scale down a bit for better appearance
+        final double targetHeight = baseHeight * 0.8;
         final double targetWidth = targetHeight * ratio;
         Renderer.drawImage(img, gc, cs, x, (Layout.BG_HEIGHT - targetHeight) / 2, targetWidth, targetHeight);
     }

@@ -10,7 +10,7 @@ import java.util.List;
 
 class EventDispatcherTest {
 
-    private static final List<String> caughtEvents = new ArrayList<>();
+    private static final List<String> CAUGHT_EVENTS = new ArrayList<>();
     private final TestListener listener1 = new TestListener("Listener1");
     private final TestListener listener2 = new TestListener("Listener2");
     private final SubTestListener subListener1 = new SubTestListener("SubListener1");
@@ -27,7 +27,7 @@ class EventDispatcherTest {
         }
     }
 
-    private static class SubTestEvent extends TestEvent {
+    private static final class SubTestEvent extends TestEvent {
         private SubTestEvent(final Object source, final String message) {
             super(source, message);
         }
@@ -39,14 +39,14 @@ class EventDispatcherTest {
     private record TestListener(String name) implements EventListener {
         @EventHandler
         public void onTestEvent(final TestEvent event) {
-            caughtEvents.add(name + ": " + event.getMessage());
+            CAUGHT_EVENTS.add(name + ": " + event.getMessage());
         }
     }
 
     private record SubTestListener(String name) implements EventListener {
         @EventHandler
         public void onSubTestEvent(final SubTestEvent event) {
-            caughtEvents.add(name + ": " + event.getMessage());
+            CAUGHT_EVENTS.add(name + ": " + event.getMessage());
         }
     }
 
@@ -78,7 +78,7 @@ class EventDispatcherTest {
 
         // Dispatching an event before any listeners are registered
         dispatcher.dispatchEvent(new TestEvent(this, "Event before listeners"));
-        Assertions.assertTrue(caughtEvents.isEmpty(), "No listeners should be registered yet");
+        Assertions.assertTrue(CAUGHT_EVENTS.isEmpty(), "No listeners should be registered yet");
 
         // Every listener is registered, sub listeners should not catch the event
         dispatcher.registerListener(listener1);
@@ -91,10 +91,10 @@ class EventDispatcherTest {
             "Listener1: Test Event 1",
             "Listener2: Test Event 1"
         );
-        org.assertj.core.api.Assertions.assertThat(caughtEvents)
+        org.assertj.core.api.Assertions.assertThat(CAUGHT_EVENTS)
                 .withFailMessage("Only listener1 and listener2 should catch the event")
                 .containsExactlyInAnyOrderElementsOf(expectedEvents);
-        caughtEvents.clear();
+        CAUGHT_EVENTS.clear();
 
         // Every listener should catch the sub event
         dispatcher.dispatchEvent(new SubTestEvent(this, "Sub Test Event 1"));
@@ -104,12 +104,15 @@ class EventDispatcherTest {
             "SubListener1: [SUB]Sub Test Event 1",
             "SubListener2: [SUB]Sub Test Event 1"
         );
-        org.assertj.core.api.Assertions.assertThat(caughtEvents)
-                .withFailMessage("All listeners should catch the sub event\n" +
-                        "Expected: " + expectedEvents + "\n" +
-                        "Actual: " + caughtEvents)
+        org.assertj.core.api.Assertions.assertThat(CAUGHT_EVENTS)
+                .withFailMessage("All listeners should catch the sub event\n"
+                        + "Expected: "
+                        + expectedEvents
+                        + "\n"
+                        + "Actual: "
+                        + CAUGHT_EVENTS)
                 .containsExactlyInAnyOrderElementsOf(expectedEvents);
-        caughtEvents.clear();
+        CAUGHT_EVENTS.clear();
 
         // Unregistering a listener and checking if it no longer receives events
         dispatcher.unregisterListener(listener1);
@@ -119,57 +122,65 @@ class EventDispatcherTest {
             "SubListener1: [SUB]Sub Test Event 2",
             "SubListener2: [SUB]Sub Test Event 2"
         );
-        System.out.println("Caught events: " + caughtEvents);
 
-        org.assertj.core.api.Assertions.assertThat(caughtEvents)
+        org.assertj.core.api.Assertions.assertThat(CAUGHT_EVENTS)
                 .withFailMessage("Listener1 should not catch the event after being unregistered")
                 .containsExactlyInAnyOrderElementsOf(expectedEvents);
-        caughtEvents.clear();
+        CAUGHT_EVENTS.clear();
 
         // Unregistering all listeners and checking if no events are caught
         dispatcher.unregisterListener(listener2);
         dispatcher.unregisterListener(subListener1);
         dispatcher.unregisterListener(subListener2);
         dispatcher.dispatchEvent(new TestEvent(this, "Test Event 3"));
-        Assertions.assertTrue(caughtEvents.isEmpty(), "No listeners should be registered, so no events should be caught");
+        Assertions.assertTrue(CAUGHT_EVENTS.isEmpty(), "No listeners should be registered, "
+                + "so no events should be caught");
     }
 
     @Test
     void testEventDispatchingWithNullEvent() {
         final EventDispatcher dispatcher = EventDispatcher.getInstance();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dispatcher.dispatchEvent(null), "Dispatching a null event should throw IllegalArgumentException");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> dispatcher.dispatchEvent(null),
+                "Dispatching a null event should throw IllegalArgumentException");
     }
 
     @Test
     void testRegisterNullListener() {
         final EventDispatcher dispatcher = EventDispatcher.getInstance();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dispatcher.registerListener(null), "Registering a null listener should throw IllegalArgumentException");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> dispatcher.registerListener(null),
+                "Registering a null listener should throw IllegalArgumentException");
     }
 
     @Test
     void testUnregisterNullListener() {
         final EventDispatcher dispatcher = EventDispatcher.getInstance();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dispatcher.unregisterListener(null), "Unregistering a null listener should throw IllegalArgumentException");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> dispatcher.unregisterListener(null),
+                "Unregistering a null listener should throw IllegalArgumentException");
     }
 
     @Test
     void testUnregisteringNonExistentListener() {
         final EventDispatcher dispatcher = EventDispatcher.getInstance();
         final TestListener nonExistentListener = new TestListener("NonExistent");
-        Assertions.assertDoesNotThrow(() -> dispatcher.unregisterListener(nonExistentListener), "Unregistering a non-existent listener should not throw an exception");
+        Assertions.assertDoesNotThrow(() -> dispatcher.unregisterListener(nonExistentListener),
+                "Unregistering a non-existent listener should not throw an exception");
     }
 
     @Test
     void testInvalidListenerParameterType() {
         final EventDispatcher dispatcher = EventDispatcher.getInstance();
         final InvalidListenerParameterType invalidListener = new InvalidListenerParameterType("InvalidListener");
-        Assertions.assertThrows(InvalidEventHandlerException.class, () -> dispatcher.registerListener(invalidListener), "Registering a listener with an invalid parameter type should throw IllegalArgumentException");
+        Assertions.assertThrows(InvalidEventHandlerException.class, () -> dispatcher.registerListener(invalidListener),
+                "Registering a listener with an invalid parameter type should throw IllegalArgumentException");
     }
 
     @Test
     void testInvalidListenerTooManyParameters() {
         final EventDispatcher dispatcher = EventDispatcher.getInstance();
-        final InvalidListenerTooManyParameters invalidListener = new InvalidListenerTooManyParameters("InvalidListener");
-        Assertions.assertThrows(InvalidEventHandlerException.class, () -> dispatcher.registerListener(invalidListener), "Registering a listener with too many parameters should throw IllegalArgumentException");
+        final InvalidListenerTooManyParameters invalidListener =
+                new InvalidListenerTooManyParameters("InvalidListener");
+        Assertions.assertThrows(InvalidEventHandlerException.class,
+                () -> dispatcher.registerListener(invalidListener),
+                "Registering a listener with too many parameters should throw IllegalArgumentException");
     }
 }

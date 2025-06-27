@@ -118,7 +118,7 @@ public class EnemyWithStats implements IEnemy, Serializable {
     }
 
     /**
-     * Renders the decorating {@code IEnemy} instance
+     * Renders the decorating {@code IEnemy} instance.
      * @see EnemyRenderComponent#render()
      */
     @Override
@@ -127,7 +127,7 @@ public class EnemyWithStats implements IEnemy, Serializable {
     }
 
     /**
-     * Updates the decorating {@code IEnemy} instance
+     * Updates the decorating {@code IEnemy} instance.
      * @see EnemyUpdateComponent#update(long)
      */
     @Override

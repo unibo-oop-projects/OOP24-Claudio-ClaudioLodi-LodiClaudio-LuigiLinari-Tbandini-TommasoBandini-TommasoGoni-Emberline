@@ -42,7 +42,7 @@ public class Spawnpoints implements Serializable {
         long spawnIntervalNs,
         @JsonProperty
         EnemyType[] enemies
-    ) implements Serializable {}
+    ) { }
 
     private record Spawnpoint (
         @JsonProperty
@@ -51,7 +51,7 @@ public class Spawnpoints implements Serializable {
         double y,
         @JsonProperty
         SpawnSequence[] spawnSequences
-    ) implements Serializable {}
+    ) { }
 
     /**
      * Single enemy identified by these 3 parameters:
@@ -76,10 +76,6 @@ public class Spawnpoints implements Serializable {
 
         /**
          * Initializes an instance of {@code EnemyToSpawn} and validates that the provided parameters.
-         *
-         * @param spawnTimeNs the time in nanoseconds when the enemy is to be spawned; must be non-negative.
-         * @param spawnLocation the location where the enemy is to be spawned; must not be null.
-         * @param enemyType the type of enemy to spawn; must not be null.
          * @throws IllegalArgumentException if {@code spawnTimeNs} is negative, {@code spawnLocation} is null,
          *                                  or {@code enemyType} is null.
          */

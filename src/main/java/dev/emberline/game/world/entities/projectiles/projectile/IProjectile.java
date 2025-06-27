@@ -14,7 +14,7 @@ import java.io.Serializable;
 public interface IProjectile extends Updatable, Renderable, Serializable {
 
     /**
-     * Returns whether the projectile has hit the target
+     * Returns whether the projectile has hit the target.
      * @return whether the projectile has hit the target
      */
     boolean hasHit();

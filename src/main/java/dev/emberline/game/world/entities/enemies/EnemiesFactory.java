@@ -31,6 +31,14 @@ public class EnemiesFactory {
     }
 
     /**
+     * Constructs an instance of the {@code EnemiesFactory}.
+     * @see EnemiesFactory
+     */
+    public EnemiesFactory() {
+
+    }
+
+    /**
      * Creates an enemy instance of the specified type at the given spawn point within the game world.
      * If the requested enemy type is not registered, an {@code IllegalArgumentException} is thrown.
      *

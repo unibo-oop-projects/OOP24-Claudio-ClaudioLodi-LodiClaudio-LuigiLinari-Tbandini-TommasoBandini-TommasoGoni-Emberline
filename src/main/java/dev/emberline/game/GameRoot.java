@@ -8,7 +8,12 @@ import dev.emberline.core.components.Updatable;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.event.EventHandler;
 import dev.emberline.game.world.World;
-import dev.emberline.gui.event.*;
+import dev.emberline.gui.event.CloseOptionsEvent;
+import dev.emberline.gui.event.OpenOptionsEvent;
+import dev.emberline.gui.event.SetMainMenuEvent;
+import dev.emberline.gui.event.SetStartEvent;
+import dev.emberline.gui.event.GameOverEvent;
+import dev.emberline.gui.event.ExitGameEvent;
 import dev.emberline.gui.menu.GameOver;
 import dev.emberline.gui.menu.MainMenu;
 import dev.emberline.gui.menu.Options;
@@ -99,6 +104,7 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     @EventHandler
     private void handleGameOverEvent(final GameOverEvent event) {
         currentState = gameOver;
+        gameOver.setStatistics(event.getStatistics());
     }
 
     @EventHandler

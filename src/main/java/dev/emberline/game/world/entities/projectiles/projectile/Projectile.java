@@ -13,7 +13,7 @@ import java.io.Serial;
 /**
  * Represents a projectile in the game world, that includes
  * having a {@link ProjectileInfo}, an {@link EnchantmentInfo},
- * a {@code start position} and a {@code target}
+ * a {@code start position} and a {@code target}.
  */
 public class Projectile implements IProjectile {
 
@@ -36,7 +36,9 @@ public class Projectile implements IProjectile {
      * @param world the game world instance in which the projectile exists
      * @throws FlightPathNotFound if a valid flight path to the target cannot be determined
      */
-    public Projectile(final Vector2D start, final IEnemy target, final ProjectileInfo projInfo, final EnchantmentInfo enchInfo, final World world) throws FlightPathNotFound {
+    public Projectile(final Vector2D start, final IEnemy target,
+                      final ProjectileInfo projInfo, final EnchantmentInfo enchInfo,
+                      final World world) throws FlightPathNotFound {
         this.updateComponent = new ProjectileUpdateComponent(start, target, projInfo, enchInfo, world, this);
         this.renderComponent = new ProjectileRenderComponent(projInfo, enchInfo, this);
     }

@@ -4,6 +4,7 @@ import dev.emberline.core.input.InputDispatcher;
 import dev.emberline.core.render.Renderer;
 import dev.emberline.core.update.Updater;
 import dev.emberline.game.GameRoot;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
 
@@ -17,7 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * This class is implemented as a singleton and must be initialized using the static
  * {@link GameLoop#init(Stage, Canvas)} method before obtaining an instance.
  */
-public class GameLoop extends Thread {
+public final class GameLoop extends Thread {
     // GameLoop initialized only once
     private static GameLoop instance;
     private static boolean initialized = false;
@@ -31,8 +32,8 @@ public class GameLoop extends Thread {
     private final InputDispatcher inputDispatcher;
 
     // Game loop settings
-    private final long TICKS_PER_SECOND = 20;
-    private final long NS_PER_UPDATE = (long) 1e9 / TICKS_PER_SECOND;
+    private static final long TICKS_PER_SECOND = 20;
+    private static final long NS_PER_UPDATE = (long) 1e9 / TICKS_PER_SECOND;
 
     // To stop the game loop
     public final AtomicBoolean running = new AtomicBoolean(false);
@@ -122,5 +123,15 @@ public class GameLoop extends Thread {
      */
     public Renderer getRenderer() {
         return renderer;
+    }
+    
+    /*
+     * Sets the fullscreen mode of the game window.
+     * @param fullscreen if true, the game will run in fullscreen mode; otherwise, it will run in windowed mode.
+     */
+    public void setFullscreen(final boolean fullscreen) {
+        Platform.runLater(() -> {
+            stage.setFullScreen(fullscreen);
+        });
     }
 }

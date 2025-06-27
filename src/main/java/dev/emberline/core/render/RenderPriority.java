@@ -13,12 +13,51 @@ package dev.emberline.core.render;
  * retrieved using the {@link #getPriority()} method.
  */
 public enum RenderPriority {
+    /**
+     * Represents the rendering priority for GUI elements that require a high priority
+     * in the drawing sequence. This priority level ensures that these GUI components
+     * are rendered above standard GUI components.
+     * <p>
+     * The associated priority value is {@code 21}.
+     */
     GUI_HIGH(21),
+    /**
+     * Represents the rendering priority for standard GUI elements.
+     * <p>
+     * The associated priority value is {@code 20}.
+     */
     GUI(20),
+    /**
+     * Represents the rendering priority for fog elements.
+     * <p>
+     * The associated priority value is {@code 19}.
+     */
     FOG(19),
-    // Enemies and Buildings have the same priority, enable z-ordering
+    /**
+     * Represents the rendering priority for enemy entities in the application.
+     * <p>
+     * Note: Enemies share the same priority value as buildings, allowing z-ordering
+     * is mandatory to determine their correct visual stacking.
+     * <p>
+     * The associated priority value is {@code 10}.
+     */
     ENEMIES(10),
+    /**
+     * Represents the rendering priority for buildings entities in the application.
+     * <p>
+     * Note: Buildings share the same priority value as enemis, allowing z-ordering
+     * is mandatory to determine their correct visual stacking.
+     * <p>
+     * The associated priority value is {@code 10}.
+     */
     BUILDINGS(10),
+    /**
+     * Represents the rendering priority for background layers in the application.
+     * This is the lowest priority, ensuring that background elements are rendered
+     * beneath all other graphical components.
+     * <p>
+     * The associated priority value is {@code 1}.
+     */
     BACKGROUND(1);
 
     private final int priority;

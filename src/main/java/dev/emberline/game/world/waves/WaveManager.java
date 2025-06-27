@@ -29,7 +29,7 @@ public class WaveManager implements IWaveManager {
     ) { }
 
     /**
-     * Creates a new instance of {@code WaveManager}
+     * Creates a new instance of {@code WaveManager}.
      *
      * @param world is the reference to the World
      */
@@ -61,7 +61,7 @@ public class WaveManager implements IWaveManager {
     /**
      * Updates the current wave and check weather it is over.
      *
-     * @param elapsed
+     * @param elapsed the time elapsed in nanoseconds since the last update call
      */
     @Override
     public void update(final long elapsed) {

@@ -22,21 +22,19 @@ import java.util.Objects;
  */
 public final class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKey> {
 
-    private final static Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/crystal.json", Metadata.class);
+    private static final Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/crystal.json", Metadata.class);
 
-    private static class Metadata {
-        @JsonProperty
-        String filename;
-        @JsonProperty
-        int width;
-        @JsonProperty
-        int height;
-        @JsonProperty
-        int frames;
-        @JsonProperty
-        int frameTimeNs;
-        @JsonProperty
-        Map<EnchantmentInfo.Type, Integer> enchant;
+    private record Metadata(@JsonProperty String filename, @JsonProperty int width, @JsonProperty int height,
+                            @JsonProperty int frames, @JsonProperty int frameTimeNs,
+                            @JsonProperty Map<EnchantmentInfo.Type, Integer> enchant) {
+    }
+
+    /**
+     * Constructs a new {@code CrystalSpriteFactory} instance.
+     * @see CrystalSpriteFactory
+     */
+    public CrystalSpriteFactory() {
+
     }
 
     /**

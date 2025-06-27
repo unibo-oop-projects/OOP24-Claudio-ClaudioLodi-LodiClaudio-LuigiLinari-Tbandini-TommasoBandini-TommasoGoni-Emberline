@@ -225,9 +225,10 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      * Return the unit vector representing the direction of displacement
      * from this vector to the given vector.
      *
-     * @param x
-     * @param y
-     * @return
+     * @param x the x coordinate of the given vector
+     * @param y the y coordinate of the given vector
+     * @return the unit vector representing the direction of displacement
+     *         from this vector to the given vector.
      */
     @Override
     public dev.emberline.utility.Vector2D directionTo(final double x, final double y) {
@@ -245,8 +246,9 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      * Return the unit vector representing the direction of displacement
      * from this vector to the given vector.
      *
-     * @param vector
-     * @return
+     * @param vector the given vector
+     * @return the unit vector representing the direction of displacement
+     *         from this vector to the given vector.
      */
     @Override
     public dev.emberline.utility.Vector2D directionTo(final dev.emberline.utility.Vector2D vector) {
@@ -254,16 +256,13 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
     }
 
     /**
-     * Indicates whether some other object is "equal to" this one.
-     *
-     * @param obj the reference object with which to compare
-     * @return true if this point is the same as the obj argument; false otherwise
+     * {@inheritDoc}
      */
     @Override
     public boolean equals(final Object obj) {
         if (obj == this) {
             return true;
-        } if (obj instanceof final Coordinate2D other) {
+        } else if (obj instanceof final Coordinate2D other) {
             return toPoint2D(this.x, this.y).equals(Vector2D.of(other.getX(), other.getY()));
         } else {
             return false;
@@ -286,6 +285,8 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializabl
      * The content and format of the returned string might vary between
      * implementations.
      * The returned string might be empty but cannot be {@code null}.
+     *
+     * @return a string representation of this {@code Coordinate2D}.
      */
     @Override
     public String toString() {

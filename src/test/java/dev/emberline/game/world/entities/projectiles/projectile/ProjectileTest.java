@@ -5,6 +5,7 @@ import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.EnemiesManager;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
+import dev.emberline.game.world.entities.projectiles.FlightPathNotFound;
 import dev.emberline.game.world.entities.projectiles.events.ProjectileHitListener;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
@@ -16,7 +17,9 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
@@ -67,8 +70,9 @@ class ProjectileTest {
                     projInfo, enchInfo,
                     world
             );
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
+        } catch (final FlightPathNotFound e) {
+            Assertions.fail("Flight path not found", e);
+            return;
         }
 
         final double enemyHealthBefore = health;

@@ -26,7 +26,7 @@ public record ProjectileInfo(
         Type type, int level
     ) implements TowerStatsProvider, UpgradableInfo<ProjectileInfo.Type, ProjectileInfo> {
 
-    private final static Metadata METADATA =
+    private static final Metadata METADATA =
             ConfigLoader.loadConfig("/sprites/towerAssets/projectileInfoStats.json", Metadata.class);
 
     /**

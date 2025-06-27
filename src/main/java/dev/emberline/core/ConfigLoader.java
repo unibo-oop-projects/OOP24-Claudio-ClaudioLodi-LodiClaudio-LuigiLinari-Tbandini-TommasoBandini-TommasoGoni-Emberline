@@ -16,13 +16,15 @@ import java.io.IOException;
  * It supports loading JSON content from a resource path, and it offers methods to
  * transform the loaded content into desired data types.
  */
-public class ConfigLoader {
+public final class ConfigLoader {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .registerModule(new ParameterNamesModule())
             .findAndRegisterModules();
 
-    private ConfigLoader() {}
+    private ConfigLoader() {
+
+    }
 
     /**
      * Loads a JSON node from a given resource path.

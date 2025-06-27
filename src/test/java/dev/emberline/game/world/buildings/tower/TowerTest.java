@@ -15,7 +15,10 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
 
 class TowerTest {
 
@@ -29,7 +32,7 @@ class TowerTest {
     private IEnemy enemy;
 
     private Tower tower;
-    private int addedProjectiles = 0;
+    private int addedProjectiles;
 
     @BeforeEach
     void setUp() {

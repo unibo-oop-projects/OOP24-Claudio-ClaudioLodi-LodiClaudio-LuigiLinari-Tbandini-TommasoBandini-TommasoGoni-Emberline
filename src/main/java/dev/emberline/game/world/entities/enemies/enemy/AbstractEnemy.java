@@ -28,29 +28,19 @@ public abstract class AbstractEnemy implements IEnemy {
      * Represents metadata for an enemy in the game. This class encapsulates
      * configuration and physical properties that define an enemy's behavior
      * and appearance, such as dimensions, health, and movement speed.
+     *
+     * @param tileWidth the width of the enemy in world space
+     * @param tileHeight the height of the enemy in world space
+     * @param fullHealth the full health value of the enemy
+     * @param speed the speed of the enemy in tile/ns
      */
-    protected record Metadata (
-        /**
-         * Represents the width in the game world for an enemy entity.
-         */
-        @JsonProperty
-        double tileWidth,
-        /**
-         * Represents the height in the game world for an enemy entity.
-         */
-        @JsonProperty
-        double tileHeight,
-        /**
-         * Represents the full health of the enemy entity.
-         */
-        @JsonProperty
-        double fullHealth,
-        /**
-         * Represents the normal speed of the enemy entity in tile/ns.
-         */
-        @JsonProperty
-        double speed
-    ) implements Serializable { }
+    protected record Metadata(
+            @JsonProperty double tileWidth,
+            @JsonProperty double tileHeight,
+            @JsonProperty double fullHealth,
+            @JsonProperty double speed
+    ) {
+    }
 
     /**
      * This enum is used to indicate the direction an entity is currently facing.
@@ -109,13 +99,13 @@ public abstract class AbstractEnemy implements IEnemy {
      * Returns the {@link Metadata} associated with the enemy
      * @return the {@link Metadata} associated with the enemy
      */
-    abstract protected Metadata getMetadata();
+    protected abstract Metadata getMetadata();
 
     /**
      * Returns the {@link Metadata} associated with the enemy
      * @return the {@link EnemyType} associated with the enemy
      */
-    abstract protected EnemyType getEnemyType();
+    protected abstract EnemyType getEnemyType();
 
     /**
      * {@inheritDoc}

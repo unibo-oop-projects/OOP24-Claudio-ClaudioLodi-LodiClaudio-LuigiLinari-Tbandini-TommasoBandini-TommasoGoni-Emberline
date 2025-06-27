@@ -77,6 +77,8 @@ public class TowersManager implements Updatable, Renderable, Inputable, Serializ
     /**
      * Opens a dialog for interacting with the specified tower. If a dialog is already open for
      * a different tower, it closes the current dialog and creates a new one for the given tower.
+     *
+     * @param tower the tower attached to the tower dialog to be opened
      */
     public void openTowerDialog(final Tower tower) {
         if (towerDialogLayer == null || towerDialogLayer.getTower() != tower) {

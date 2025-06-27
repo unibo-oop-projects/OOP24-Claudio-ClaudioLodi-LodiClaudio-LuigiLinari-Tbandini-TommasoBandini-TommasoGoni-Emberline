@@ -10,7 +10,7 @@ import java.util.Locale;
  */
 public enum EnemyType implements Serializable {
     /**
-     * Represents a pig type enemy in the game
+     * Represents a pig type enemy in the game.
      * @see dev.emberline.game.world.entities.enemies.enemy.concrete.Pig
      */
     PIG,

@@ -53,7 +53,7 @@ public class ProjectileAnimation implements Updatable, Serializable {
     }
 
     /**
-     * Returns the current image representing the active animation frame of the projectile
+     * Returns the current image representing the active animation frame of the projectile.
      * @return the current image representing the active animation frame of the projectile
      */
     public Image getImage() {

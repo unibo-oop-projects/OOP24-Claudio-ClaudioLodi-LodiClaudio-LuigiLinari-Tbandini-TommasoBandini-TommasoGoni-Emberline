@@ -45,7 +45,10 @@ class TowerUpdateComponent implements Updatable, Serializable {
         // Shooting
         final IEnemiesManager enemiesManager = world.getEnemiesManager();
 
-        final List<IEnemy> toShoot = enemiesManager.getNear(tower.firingWorldCenterLocation(), tower.getProjectileInfo().getTowerRange());
+        final List<IEnemy> toShoot = enemiesManager.getNear(
+                tower.firingWorldCenterLocation(),
+                tower.getProjectileInfo().getTowerRange()
+        );
         // Sort by aim preference (TODO)
 
         for (final IEnemy enemy : toShoot) {
