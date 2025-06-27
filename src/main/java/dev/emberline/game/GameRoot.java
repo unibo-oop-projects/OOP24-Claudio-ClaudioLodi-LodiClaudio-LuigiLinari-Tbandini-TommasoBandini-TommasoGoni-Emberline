@@ -104,6 +104,7 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     @EventHandler
     private void handleGameOverEvent(final GameOverEvent event) {
         currentState = gameOver;
+        gameOver.setStatistics(event.getStatistics());
     }
 
     @EventHandler

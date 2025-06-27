@@ -5,6 +5,7 @@ import dev.emberline.core.ConfigLoader;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +33,7 @@ public record ProjectileInfo(
      * Represents the type of projectile in the game, influencing the projectile's behavior, such as damage, speed,
      * firing rate, and other attributes.
      */
-    public enum Type implements UpgradableInfo.InfoType {
+    public enum Type implements UpgradableInfo.InfoType, Serializable {
         /**
          * The default projectile type. It has no special properties and cannot be upgraded.
          */

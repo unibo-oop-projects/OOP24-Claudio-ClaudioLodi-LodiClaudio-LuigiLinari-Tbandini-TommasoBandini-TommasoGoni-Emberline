@@ -3,6 +3,7 @@ package dev.emberline.game.world.roads;
 import dev.emberline.utility.Pair;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,12 @@ import java.util.Optional;
  */
 class Node implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 6775258487774026022L;
+
     private final Vector2D pos;
-    /*
-     * List of Nodes this Node is connected to with a given weight each.
+    /**
+     * List of Nodes this Node is connected to, with a given weight each.
      * The weight determines the number of enemies that go that way.
      */
     private final List<Pair<Node, Integer>> neighbours;

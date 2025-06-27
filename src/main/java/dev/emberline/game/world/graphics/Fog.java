@@ -12,6 +12,9 @@ import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * The Fog class is responsible for rendering a layer of fog in the game environment. It is used to hide parts of the world
  * and guarantees that the player can only see a limited area of the game world at any given time. Fog tiles are rendered
@@ -55,7 +58,10 @@ import javafx.scene.canvas.GraphicsContext;
  * <li>The `animationDelaySeconds` field defines the initial delay before the fog transition starts.</li>
  * </ul>
  */
-public class Fog implements Renderable {
+public class Fog implements Renderable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 4864461952717171977L;
 
     private static final int FOG_SIDE_LENGTH = 2;
     private final Metadata metadata;
@@ -70,7 +76,7 @@ public class Fog implements Renderable {
             @JsonProperty double fromY,
             @JsonProperty double toX,
             @JsonProperty double toY
-    ) {
+    ) implements Serializable {
     }
 
     private record Metadata(
@@ -81,7 +87,7 @@ public class Fog implements Renderable {
             @JsonProperty double dutyCycle,
             @JsonProperty double animationDurationSeconds,
             @JsonProperty double animationDelaySeconds
-    ) {
+    ) implements Serializable {
     }
 
     /**

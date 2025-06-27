@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.game.world.World;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,9 @@ import java.util.List;
  */
 public class WaveManager implements IWaveManager {
 
+    @Serial
+    private static final long serialVersionUID = -6011747010138482409L;
+
     private final List<Wave> waves = new ArrayList<>();
     private int currentWaveIndex;
 
@@ -19,8 +24,9 @@ public class WaveManager implements IWaveManager {
     private static final WavesConfig WAVES_CONFIG = ConfigLoader.loadConfig(WAVES_CONFIG_PATH, WavesConfig.class);
 
     // Loading waves from resources
-    private record WavesConfig(@JsonProperty String[] wavePaths) {
-    }
+    private record WavesConfig (
+        @JsonProperty String[] wavePaths
+    ) { }
 
     /**
      * Creates a new instance of {@code WaveManager}.

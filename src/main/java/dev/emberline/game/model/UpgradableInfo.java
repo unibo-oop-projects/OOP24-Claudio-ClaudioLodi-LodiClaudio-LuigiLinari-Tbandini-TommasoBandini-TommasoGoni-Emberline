@@ -1,5 +1,7 @@
 package dev.emberline.game.model;
 
+import java.io.Serializable;
+
 /**
  * An {@code UpgradableInfo} represents a family of attributes that can be altered through upgrades or type changes.
  * Implementations of this interface must be {@code immutable}:
@@ -12,7 +14,7 @@ package dev.emberline.game.model;
  *               This is used to link the object to its specific type information enforcing type safety.
  * @param <SELF> the class type of the implementing class, used for referencing itself in method signatures, for type safety.
  */
-public interface UpgradableInfo<T extends UpgradableInfo.InfoType, SELF extends UpgradableInfo<T, SELF>> {
+public interface UpgradableInfo<T extends UpgradableInfo.InfoType, SELF extends UpgradableInfo<T, SELF>> extends Serializable {
     /**
      * This is a tag interface,
      * every implementing class must be linked to one and only one implementation of {@link UpgradableInfo}.

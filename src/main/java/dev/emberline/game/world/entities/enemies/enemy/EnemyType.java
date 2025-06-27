@@ -2,12 +2,13 @@ package dev.emberline.game.world.entities.enemies.enemy;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 /**
  * Enum representing the type of enemies in the game.
  */
-public enum EnemyType {
+public enum EnemyType implements Serializable {
     /**
      * Represents a pig type enemy in the game.
      * @see dev.emberline.game.world.entities.enemies.enemy.concrete.Pig

@@ -9,13 +9,18 @@ import dev.emberline.game.world.entities.enemies.enemy.IEnemy.UniformMotion;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-class EnemyUpdateComponent implements Updatable {
 
-    private enum EnemyState {
+class EnemyUpdateComponent implements Updatable, Serializable {
+    @Serial
+    private static final long serialVersionUID = 8979305885961605613L;
+
+    private enum EnemyState implements Serializable {
         WALKING,
         DYING,
         DEAD

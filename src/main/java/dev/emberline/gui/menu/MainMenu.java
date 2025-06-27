@@ -3,16 +3,13 @@ package dev.emberline.gui.menu;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
-import dev.emberline.core.event.EventDispatcher;
+
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
-import dev.emberline.core.sounds.AudioController;
-import dev.emberline.core.sounds.event.SfxSoundEvent;
-import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.game.GameState;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
@@ -77,9 +74,6 @@ public class MainMenu extends GuiLayer implements GameState {
             @JsonProperty Coordinate bottomRightBound
     ) {
     }
-
-
-    // TODO refactor this constructors
 
     /**
      * Constructs a new instance of {@code MainMenu}.

@@ -8,12 +8,17 @@ import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.game.world.entities.projectiles.FlightPathNotFound;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+
 /**
  * Represents a projectile in the game world, that includes
  * having a {@link ProjectileInfo}, an {@link EnchantmentInfo},
  * a {@code start position} and a {@code target}.
  */
 public class Projectile implements IProjectile {
+
+    @Serial
+    private static final long serialVersionUID = 2993223252712274839L;
 
     private final ProjectileUpdateComponent updateComponent;
     private final ProjectileRenderComponent renderComponent;

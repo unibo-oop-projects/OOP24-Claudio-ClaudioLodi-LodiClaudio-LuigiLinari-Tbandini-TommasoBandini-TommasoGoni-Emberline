@@ -7,6 +7,8 @@ import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
@@ -15,6 +17,9 @@ import java.util.Locale;
  * common properties and behaviors that all specific enemy types must implement.
  */
 public abstract class AbstractEnemy implements IEnemy {
+
+    @Serial
+    private static final long serialVersionUID = 2633064928656056204L;
 
     private final EnemyUpdateComponent updateComponent;
     private final EnemyRenderComponent renderComponent;
@@ -29,8 +34,12 @@ public abstract class AbstractEnemy implements IEnemy {
      * @param fullHealth the full health value of the enemy
      * @param speed the speed of the enemy in tile/ns
      */
-    protected record Metadata(@JsonProperty double tileWidth, @JsonProperty double tileHeight,
-                              @JsonProperty double fullHealth, @JsonProperty double speed) {
+    protected record Metadata(
+            @JsonProperty double tileWidth,
+            @JsonProperty double tileHeight,
+            @JsonProperty double fullHealth,
+            @JsonProperty double speed
+    ) {
     }
 
     /**
@@ -41,21 +50,21 @@ public abstract class AbstractEnemy implements IEnemy {
      * It also provides a utility for converting string representations of directions
      * into their corresponding enum values.
      */
-    public enum FacingDirection {
+    public enum FacingDirection implements Serializable {
         /**
-         * Represents that the enemy is facing upwards.
+         * Represents that the enemy is facing upwards
          */
         UP,
         /**
-         * Represents that the enemy is facing rightwards.
+         * Represents that the enemy is facing rightwards
          */
         RIGHT,
         /**
-         * Represents that the enemy is facing downwards.
+         * Represents that the enemy is facing downwards
          */
         DOWN,
         /**
-         * Represents that the enemy is facing leftwards.
+         * Represents that the enemy is facing leftwards
          */
         LEFT;
 
@@ -87,13 +96,13 @@ public abstract class AbstractEnemy implements IEnemy {
     }
 
     /**
-     * Returns the {@link Metadata} associated with the enemy.
+     * Returns the {@link Metadata} associated with the enemy
      * @return the {@link Metadata} associated with the enemy
      */
     protected abstract Metadata getMetadata();
 
     /**
-     * Returns the {@link Metadata} associated with the enemy.
+     * Returns the {@link Metadata} associated with the enemy
      * @return the {@link EnemyType} associated with the enemy
      */
     protected abstract EnemyType getEnemyType();
@@ -123,7 +132,7 @@ public abstract class AbstractEnemy implements IEnemy {
     }
 
     /**
-     * Returns the full health value of the enemy as described by its metadata.
+     * Returns the full health value of the enemy as described by its metadata
      * @return the full health value of the enemy as described by its metadata
      */
     protected double getFullHealth() {

@@ -27,6 +27,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +41,10 @@ import java.util.Objects;
  * This layer allows players to modify the tower's properties, such as projectiles,
  * enchantments, and aiming modes, as well as view stat comparisons.
  */
-public class TowerDialogLayer extends GuiLayer {
+public class TowerDialogLayer extends GuiLayer implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -5500028587999360489L;
+
     // The Tower linked to this dialog layer
     private final Tower tower;
     // The current state of what is displayed in the dialog
@@ -65,11 +70,9 @@ public class TowerDialogLayer extends GuiLayer {
         private static final double BG_WIDTH = 9.2;
         private static final double BG_HEIGHT = 15.34;
         private static final double BG_X = Renderer.GUICS_WIDTH * 0.98 - BG_WIDTH;
-        private static final double BG_Y = 1.2;
+        private static final double BG_Y = 1.5;
         // Title
-        private static final double TITLE_WIDTH = 8 * 0.77;
         private static final double TITLE_HEIGHT = 2 * 0.52;
-        private static final double TITLE_X = BG_X + (BG_WIDTH - TITLE_WIDTH) / 2;
         private static final double TITLE_Y = BG_Y + 2;
 
         // stats

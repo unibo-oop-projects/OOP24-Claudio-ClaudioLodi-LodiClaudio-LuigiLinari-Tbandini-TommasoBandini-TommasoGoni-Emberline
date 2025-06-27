@@ -1,5 +1,7 @@
 package dev.emberline.game.world.entities.player;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.EventListener;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,12 +22,15 @@ import dev.emberline.gui.event.SetTowerInfoEvent;
  * Represents a player within the game, keeping track of the health,
  * gold and handling player-related game events such as building a tower.
  */
-public class Player implements EventListener {
+public class Player implements EventListener, Serializable {
+    @Serial
+    private static final long serialVersionUID = 3553209889364137174L;
+
     private int health;
     private int gold;
     private final World world;
 
-    private Metadata metadata = ConfigLoader.loadConfig("/world/player.json", Metadata.class);
+    private final Metadata metadata = ConfigLoader.loadConfig("/world/player.json", Metadata.class);
 
     private record Metadata(
             @JsonProperty int health,
@@ -87,7 +92,7 @@ public class Player implements EventListener {
      */
     public void takeDamage() {
         if (this.health - 1 <= 0) {
-            EventDispatcher.getInstance().dispatchEvent(new GameOverEvent(this));
+            EventDispatcher.getInstance().dispatchEvent(new GameOverEvent(this, world.getStatistics()));
         }
         this.health -= 1;
     }

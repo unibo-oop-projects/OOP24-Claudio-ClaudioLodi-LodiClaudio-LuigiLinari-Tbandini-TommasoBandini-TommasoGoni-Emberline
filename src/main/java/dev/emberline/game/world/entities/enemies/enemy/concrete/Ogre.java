@@ -7,6 +7,8 @@ import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+
 /**
  * Represents an Ogre, a specific type of enemy in the game.
  * This class extends the {@link AbstractEnemy} class to provide
@@ -18,6 +20,9 @@ import dev.emberline.utility.Vector2D;
  * than a regular enemy and be much slower.
  */
 public class Ogre extends AbstractEnemy {
+    @Serial
+    private static final long serialVersionUID = 8294750990752804332L;
+
     private static final Metadata METADATA;
     private static final String ASSET_PATH = "/sprites/enemyAssets/ogre.json";
 

@@ -301,6 +301,11 @@ public enum SingleSpriteKey implements SpriteKey {
      * the game over.
      */
     GAME_OVER,
+    /**
+     * Represents the key used to identify and cache the sprite asset for
+     * the statistics window to be shown in the game over game state.
+     */
+    STATISTICS,
 
     // Options
     /**

@@ -1,5 +1,7 @@
 package dev.emberline.game.model;
 
+import java.io.Serializable;
+
 /**
  * Provides information about a tower's projectile and enchantment capabilities.
  * Towers should implement this interface to provide their specific projectile and enchantment information.
@@ -9,7 +11,7 @@ package dev.emberline.game.model;
  * lifetime of the provider, it should be designed to be mutable and always return
  * the most current data.
  */
-public interface TowerInfoProvider {
+public interface TowerInfoProvider extends Serializable {
     /**
      * Retrieves the projectile information associated with the tower.
      *

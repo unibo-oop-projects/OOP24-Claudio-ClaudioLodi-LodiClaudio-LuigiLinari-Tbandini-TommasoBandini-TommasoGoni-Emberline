@@ -15,6 +15,9 @@ import dev.emberline.utility.Vector2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Represents a pre-build state for a tower in the game. This class is responsible for
  * handling its rendering, location, and interaction.
@@ -24,7 +27,9 @@ import javafx.scene.image.Image;
  * <p>
  * Configuration data such as dimensions are retrieved from an external JSON file using {@code ConfigLoader}.
  */
-public class TowerPreBuild extends Building {
+public class TowerPreBuild extends Building implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 6299522696067352043L;
 
     private static final String CONFIGS_PATH = "/sprites/towerAssets/towerPreBuild.json";
 
@@ -33,8 +38,11 @@ public class TowerPreBuild extends Building {
     private final Vector2D locationBottomLeft;
     private final TowersManager towersManager;
 
-    private record Metadata(@JsonProperty double worldDimensionWidth, @JsonProperty double worldDimensionHeight,
-                            @JsonProperty int newBuildCost) {
+    private record Metadata(
+            @JsonProperty double worldDimensionWidth,
+            @JsonProperty double worldDimensionHeight,
+            @JsonProperty int newBuildCost
+    ) {
     }
 
     /**

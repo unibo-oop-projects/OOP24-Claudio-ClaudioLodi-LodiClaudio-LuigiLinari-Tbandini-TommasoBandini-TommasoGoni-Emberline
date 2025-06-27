@@ -5,6 +5,7 @@ import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
  * @see Updatable
  * @see Renderable
  */
-public interface IEnemy extends Updatable, Renderable {
+public interface IEnemy extends Updatable, Renderable, Serializable {
 
     /**
      * Returns the height of the enemy in the world space.

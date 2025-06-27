@@ -37,4 +37,19 @@ public final class SpriteLoader {
     public static <K extends SpriteKey> Sprite loadSprite(final K spriteKey) {
         return SPRITE_CACHE.computeIfAbsent(spriteKey, currKey -> SpriteFactoryRegistry.getFactory(currKey).loadSprite(currKey));
     }
+
+    /**
+     * Loads a {@link Sprite} corresponding to the provided {@link SpriteKey}.
+     * It will ignore the cache, and it will create the Sprite
+     * using the appropriate {@link dev.emberline.core.graphics.spritefactories.SpriteFactory}.
+     * This method is supposed to be used only after deserialization.
+     *
+     * @param <K>       the type of the {@link SpriteKey}
+     * @param spriteKey the key used to identify and load the sprite
+     * @return the {@link Sprite} associated with the given key
+     * @throws IllegalArgumentException if no factory is found for the provided key type
+     */
+    public static <K extends SpriteKey> Sprite loadSpriteAfterSerialization(final K spriteKey) {
+        return SpriteFactoryRegistry.getFactory(spriteKey).loadSprite(spriteKey);
+    }
 }

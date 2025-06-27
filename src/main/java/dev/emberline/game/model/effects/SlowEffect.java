@@ -5,6 +5,7 @@ import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 import dev.emberline.gui.towerdialog.stats.TowerStat.TowerStatType;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ import java.util.List;
  * @see dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation.EnemyAppearance#FREEZING
  */
 public class SlowEffect implements EnchantmentEffect {
+    @Serial
+    private static final long serialVersionUID = 7420627639738734702L;
 
     private static final int SECONDS_IN_NS = 1_000_000_000;
 

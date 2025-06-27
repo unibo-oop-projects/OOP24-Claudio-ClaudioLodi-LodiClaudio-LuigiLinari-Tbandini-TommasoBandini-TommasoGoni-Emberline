@@ -16,6 +16,8 @@ import dev.emberline.utility.Vector2D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -25,7 +27,10 @@ import java.util.Set;
  * Manages the lifecycle and interactions of towers and pre-built tower in the world.
  * Responsible for rendering, updating, and handling input for towers and their associated dialogs.
  */
-public class TowersManager implements Updatable, Renderable, Inputable {
+public class TowersManager implements Updatable, Renderable, Inputable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 8310031147169513653L;
 
     private TowerDialogLayer towerDialogLayer;
     private NewBuildDialogLayer newBuildDialogLayer;

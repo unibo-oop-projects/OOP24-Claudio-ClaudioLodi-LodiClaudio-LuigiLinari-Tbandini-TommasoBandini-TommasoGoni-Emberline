@@ -46,7 +46,7 @@ public final class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
         for (int i = 0; i < frameNumber; i++) {
             frames[i] = getMapAtlas(wave, String.valueOf(i));
         }
-        return new AnimatedSprite(frames, METADATA.frameTimeNs);
+        return new AnimatedSprite(frames, key, METADATA.frameTimeNs);
     }
 
     private static Image getMapAtlas(final String wave, final String frame) {

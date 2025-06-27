@@ -8,6 +8,7 @@ import dev.emberline.game.model.effects.SlowEffect;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,7 @@ public record EnchantmentInfo(
      * Represents the type of enchantment in the game.
      * The type of enchantment influences its {@code EnchantmentEffect}.
      */
-    public enum Type implements UpgradableInfo.InfoType {
+    public enum Type implements UpgradableInfo.InfoType, Serializable {
         /**
          * The default enchantment type. It has no effect and cannot be upgraded.
          */

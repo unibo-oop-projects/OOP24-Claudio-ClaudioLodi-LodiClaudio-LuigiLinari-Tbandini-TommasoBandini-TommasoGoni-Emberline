@@ -10,6 +10,8 @@ import dev.emberline.game.world.Building;
 import dev.emberline.game.world.World;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -23,7 +25,10 @@ import java.util.Map;
  * <p>
  * It interacts with the game world to react to events such as clicks and updates.
  */
-public class Tower extends Building implements TowerInfoProvider {
+public class Tower extends Building implements TowerInfoProvider, Serializable {
+    @Serial
+    private static final long serialVersionUID = -8194111509090222110L;
+
     private static String configsPath = "/sprites/towerAssets/tower.json";
 
     private static Metadata metadata = ConfigLoader.loadConfig(
@@ -37,9 +42,14 @@ public class Tower extends Building implements TowerInfoProvider {
     private ProjectileInfo projectileInfo = new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
     private EnchantmentInfo enchantmentInfo = new EnchantmentInfo(EnchantmentInfo.Type.BASE, 0);
 
-    private record Metadata(@JsonProperty double width, @JsonProperty Map<ProjectileInfo.Type, Double> height,
-                            @JsonProperty double firingYOffsetTiles) {
-    }
+    private record Metadata (
+        @JsonProperty
+        double width,
+        @JsonProperty
+        Map<ProjectileInfo.Type, Double> height,
+        @JsonProperty
+        double firingYOffsetTiles
+    ) implements Serializable { }
 
     /**
      * Constructs a new Tower object with a specified location and associated world.
