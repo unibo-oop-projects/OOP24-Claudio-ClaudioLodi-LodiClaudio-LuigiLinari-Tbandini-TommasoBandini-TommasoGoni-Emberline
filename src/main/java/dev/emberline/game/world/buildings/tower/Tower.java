@@ -41,14 +41,14 @@ public class Tower extends Building implements TowerInfoProvider, Serializable {
     private ProjectileInfo projectileInfo = new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
     private EnchantmentInfo enchantmentInfo = new EnchantmentInfo(EnchantmentInfo.Type.BASE, 0);
 
-    private static class Metadata {
+    private record Metadata (
         @JsonProperty
-        double width;
+        double width,
         @JsonProperty
-        Map<ProjectileInfo.Type, Double> height;
+        Map<ProjectileInfo.Type, Double> height,
         @JsonProperty
-        double firingYOffsetTiles;
-    }
+        double firingYOffsetTiles
+    ) implements Serializable { }
 
     /**
      * Constructs a new Tower object with a specified location and associated world.

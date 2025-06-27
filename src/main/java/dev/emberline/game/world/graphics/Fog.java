@@ -75,7 +75,7 @@ public class Fog implements Renderable, Serializable {
             @JsonProperty double fromY,
             @JsonProperty double toX,
             @JsonProperty double toY
-    ) {
+    ) implements Serializable {
     }
 
     private record Metadata(
@@ -86,7 +86,7 @@ public class Fog implements Renderable, Serializable {
             @JsonProperty double dutyCycle,
             @JsonProperty double animationDurationSeconds,
             @JsonProperty double animationDelaySeconds
-    ) {
+    ) implements Serializable {
     }
 
     /**

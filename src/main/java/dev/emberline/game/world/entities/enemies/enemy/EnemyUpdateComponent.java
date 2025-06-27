@@ -20,7 +20,7 @@ class EnemyUpdateComponent implements Updatable, Serializable {
     @Serial
     private static final long serialVersionUID = 8979305885961605613L;
 
-    private enum EnemyState {WALKING, DYING, DEAD}
+    private enum EnemyState implements Serializable {WALKING, DYING, DEAD}
 
     private final AbstractEnemy enemy;
     private EnemyState enemyState;

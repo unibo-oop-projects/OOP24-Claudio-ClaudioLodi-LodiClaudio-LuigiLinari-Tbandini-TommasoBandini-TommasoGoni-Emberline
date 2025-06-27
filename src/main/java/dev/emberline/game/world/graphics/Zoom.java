@@ -32,7 +32,7 @@ public class Zoom implements Renderable, Serializable {
             @JsonProperty double fromY,
             @JsonProperty double toX,
             @JsonProperty double toY
-    ) {
+    ) implements Serializable {
     }
 
     private record Metadata(
@@ -40,7 +40,7 @@ public class Zoom implements Renderable, Serializable {
             @JsonProperty Translation bottomRight,
             @JsonProperty double animationDurationSeconds,
             @JsonProperty double animationDelaySeconds
-    ) {
+    ) implements Serializable {
     }
 
     /**

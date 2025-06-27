@@ -42,7 +42,7 @@ public class EnemyAnimation implements Updatable, Serializable {
      * <li>DYING: The enemy is in the process of dying.</li>
      * </ul>
      */
-    public enum EnemyAppearance {
+    public enum EnemyAppearance implements Serializable {
         /**
          * The enemy default appearance.
          */

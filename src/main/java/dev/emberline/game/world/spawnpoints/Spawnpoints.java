@@ -42,7 +42,7 @@ public class Spawnpoints implements Serializable {
         long spawnIntervalNs,
         @JsonProperty
         EnemyType[] enemies
-    ) {}
+    ) implements Serializable {}
 
     private record Spawnpoint (
         @JsonProperty
@@ -51,7 +51,7 @@ public class Spawnpoints implements Serializable {
         double y,
         @JsonProperty
         SpawnSequence[] spawnSequences
-    ) {}
+    ) implements Serializable {}
 
     /**
      * Single enemy identified by these 3 parameters:

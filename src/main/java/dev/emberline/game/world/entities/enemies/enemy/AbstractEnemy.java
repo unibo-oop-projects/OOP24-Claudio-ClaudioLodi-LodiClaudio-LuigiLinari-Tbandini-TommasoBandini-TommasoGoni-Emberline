@@ -8,6 +8,7 @@ import dev.emberline.game.world.World;
 import dev.emberline.utility.Vector2D;
 
 import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,28 +29,28 @@ public abstract class AbstractEnemy implements IEnemy {
      * configuration and physical properties that define an enemy's behavior
      * and appearance, such as dimensions, health, and movement speed.
      */
-    protected static class Metadata {
+    protected record Metadata (
         /**
          * Represents the width in the game world for an enemy entity.
          */
         @JsonProperty
-        public double tileWidth;
+        double tileWidth,
         /**
          * Represents the height in the game world for an enemy entity.
          */
         @JsonProperty
-        public double tileHeight;
+        double tileHeight,
         /**
          * Represents the full health of the enemy entity.
          */
         @JsonProperty
-        public double fullHealth;
+        double fullHealth,
         /**
          * Represents the normal speed of the enemy entity in tile/ns.
          */
         @JsonProperty
-        public double speed;
-    }
+        double speed
+    ) implements Serializable { }
 
     /**
      * This enum is used to indicate the direction an entity is currently facing.
@@ -59,7 +60,7 @@ public abstract class AbstractEnemy implements IEnemy {
      * It also provides a utility for converting string representations of directions
      * into their corresponding enum values.
      */
-    public enum FacingDirection {
+    public enum FacingDirection implements Serializable {
         /**
          * Represents that the enemy is facing upwards
          */
