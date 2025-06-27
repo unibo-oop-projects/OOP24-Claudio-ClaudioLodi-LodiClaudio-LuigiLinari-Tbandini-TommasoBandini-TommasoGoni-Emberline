@@ -159,41 +159,31 @@ public class Options extends GuiLayer implements GameState {
             plusButtonHover = SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_PLUS_BUTTON_DISABLED).image();
         }
 
-        final GuiButton musicMinusVolumeControl = new GuiButton(
-            Layout.CONTROLS_START_X + Layout.MINUS_OFFSET_X, 
-            Layout.MUSIC_VOLUME_Y + (Layout.ROW_HEIGHT - Layout.BTN_HEIGHT) / 2, 
-            Layout.BTN_WIDTH, 
-            Layout.BTN_HEIGHT,
-            minusButton,
-            minusButtonHover
-        );
-        musicMinusVolumeControl.setOnClick(() -> {
-            if (musicVolume - 10 < 0) {
-                return; // Do not decrease volume if already at minimum
-            }
-            double musicDoubleVolume = (musicVolume - 10) / 100.0;
-            PreferencesManager.setDoublePreference(PreferenceKey.MUSIC_VOLUME, musicDoubleVolume);
-            AudioController.requestSetMusicVolume(this, musicDoubleVolume);
-        });
+        final GuiButton musicMinusVolumeControl = createMusicVolumeControlButton(Layout.MINUS_OFFSET_X, minusButton, minusButtonHover, musicVolume - 10 < 0, musicVolume - 10);
         super.buttons.add(musicMinusVolumeControl);
-        
-        final GuiButton musicPlusVolumeControl = new GuiButton(
-            Layout.CONTROLS_START_X + Layout.PLUS_OFFSET_X, 
-            Layout.MUSIC_VOLUME_Y + (Layout.ROW_HEIGHT - Layout.BTN_HEIGHT) / 2, 
-            Layout.BTN_WIDTH, 
-            Layout.BTN_HEIGHT,
-            plusButton,
-            plusButtonHover
-        );
-        musicPlusVolumeControl.setOnClick(() -> {
-            if (musicVolume + 10 > 100) {
-                return; // Do not increase volume if already at maximum
-            }
-            double newMusicVolume = (musicVolume + 10) / 100.0;
-            PreferencesManager.setDoublePreference(PreferenceKey.MUSIC_VOLUME, newMusicVolume);
-            AudioController.requestSetMusicVolume(this, newMusicVolume);
-        });
+
+        final GuiButton musicPlusVolumeControl = createMusicVolumeControlButton(Layout.PLUS_OFFSET_X, plusButton, plusButtonHover, musicVolume + 10 > 100, musicVolume + 10);
         super.buttons.add(musicPlusVolumeControl);
+    }
+
+    private GuiButton createMusicVolumeControlButton(double xOffset, Image buttonImage, Image buttonHoverImage, boolean volumeBound, int volumeToSet) {
+        final GuiButton musicVolumeControl = new GuiButton(
+            Layout.CONTROLS_START_X + xOffset,
+                Layout.MUSIC_VOLUME_Y + (Layout.ROW_HEIGHT - Layout.BTN_HEIGHT) / 2,
+                Layout.BTN_WIDTH,
+                Layout.BTN_HEIGHT,
+                buttonImage,
+                buttonHoverImage
+        );
+        musicVolumeControl.setOnClick(() -> {
+            if (volumeBound) {
+                return; // Do not change volume if already at the limit
+            }
+            double volumeToSetDouble = volumeToSet / 100.0;
+            PreferencesManager.setDoublePreference(PreferenceKey.MUSIC_VOLUME, volumeToSetDouble);
+            AudioController.requestSetMusicVolume(this, volumeToSetDouble);
+        });
+        return musicVolumeControl;
     }
 
     private void addMusicCheckbox(final GraphicsContext gc, final CoordinateSystem cs) {  
