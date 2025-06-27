@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * This class is implemented as a singleton and must be initialized using the static
  * {@link GameLoop#init(Stage, Canvas)} method before obtaining an instance.
  */
-public class GameLoop extends Thread {
+public final class GameLoop extends Thread {
     // GameLoop initialized only once
     private static GameLoop instance;
     private static boolean initialized = false;
@@ -32,8 +32,8 @@ public class GameLoop extends Thread {
     private final InputDispatcher inputDispatcher;
 
     // Game loop settings
-    private final long TICKS_PER_SECOND = 20;
-    private final long NS_PER_UPDATE = (long) 1e9 / TICKS_PER_SECOND;
+    private static final long TICKS_PER_SECOND = 20;
+    private static final long NS_PER_UPDATE = (long) 1e9 / TICKS_PER_SECOND;
 
     // To stop the game loop
     public final AtomicBoolean running = new AtomicBoolean(false);

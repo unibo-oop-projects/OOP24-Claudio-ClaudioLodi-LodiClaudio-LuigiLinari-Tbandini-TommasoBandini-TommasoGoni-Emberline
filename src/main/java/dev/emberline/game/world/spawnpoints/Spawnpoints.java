@@ -30,26 +30,30 @@ public class Spawnpoints {
     private static final String SPAWNPOINT_CONFIG_FILENAME = "spawnpoints.json";
 
     // Single spawnpoint configuration
-    private record SpawnSequence (
+    private record SpawnSequence(
         @JsonProperty
         long firstSpawnTimeNs,
         @JsonProperty
         long spawnIntervalNs,
         @JsonProperty
         EnemyType[] enemies
-    ) {}
+    ) {
 
-    private record Spawnpoint (
+    }
+
+    private record Spawnpoint(
         @JsonProperty
         double x,
         @JsonProperty
         double y,
         @JsonProperty
         SpawnSequence[] spawnSequences
-    ) {}
+    ) {
+
+    }
 
     /**
-     * Single enemy identified by these 3 parameters:
+     * Single enemy identified by these 3 parameters.
      *
      * @param spawnTimeNs the spawn time of the enemy in nanoseconds
      * @param spawnLocation the spawn location of the enemy as a {@link Vector2D}
@@ -71,10 +75,6 @@ public class Spawnpoints {
 
         /**
          * Initializes an instance of {@code EnemyToSpawn} and validates that the provided parameters.
-         *
-         * @param spawnTimeNs the time in nanoseconds when the enemy is to be spawned; must be non-negative.
-         * @param spawnLocation the location where the enemy is to be spawned; must not be null.
-         * @param enemyType the type of enemy to spawn; must not be null.
          * @throws IllegalArgumentException if {@code spawnTimeNs} is negative, {@code spawnLocation} is null,
          *                                  or {@code enemyType} is null.
          */

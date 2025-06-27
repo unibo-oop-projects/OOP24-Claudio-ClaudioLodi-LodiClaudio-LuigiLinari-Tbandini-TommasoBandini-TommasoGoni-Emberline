@@ -113,7 +113,7 @@ public class EnemyWithStats implements IEnemy {
     }
 
     /**
-     * Renders the decorating {@code IEnemy} instance
+     * Renders the decorating {@code IEnemy} instance.
      * @see EnemyRenderComponent#render()
      */
     @Override
@@ -122,7 +122,7 @@ public class EnemyWithStats implements IEnemy {
     }
 
     /**
-     * Updates the decorating {@code IEnemy} instance
+     * Updates the decorating {@code IEnemy} instance.
      * @see EnemyUpdateComponent#update(long)
      */
     @Override

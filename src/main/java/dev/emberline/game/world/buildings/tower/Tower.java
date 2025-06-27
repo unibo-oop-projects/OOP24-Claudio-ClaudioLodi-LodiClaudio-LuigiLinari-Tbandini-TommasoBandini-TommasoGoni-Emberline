@@ -26,7 +26,8 @@ import java.util.Map;
 public class Tower extends Building implements TowerInfoProvider {
     private static String configsPath = "/sprites/towerAssets/tower.json";
 
-    private static Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
+    private static Metadata metadata = ConfigLoader.loadConfig(
+            ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
 
     private final World world;
     private final TowerUpdateComponent towerUpdateComponent;
@@ -36,13 +37,8 @@ public class Tower extends Building implements TowerInfoProvider {
     private ProjectileInfo projectileInfo = new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
     private EnchantmentInfo enchantmentInfo = new EnchantmentInfo(EnchantmentInfo.Type.BASE, 0);
 
-    private static class Metadata {
-        @JsonProperty
-        double width;
-        @JsonProperty
-        Map<ProjectileInfo.Type, Double> height;
-        @JsonProperty
-        double firingYOffsetTiles;
+    private record Metadata(@JsonProperty double width, @JsonProperty Map<ProjectileInfo.Type, Double> height,
+                            @JsonProperty double firingYOffsetTiles) {
     }
 
     /**
@@ -100,7 +96,7 @@ public class Tower extends Building implements TowerInfoProvider {
     }
 
     /**
-     * Updates the tower
+     * Updates the tower.
      * @see TowerUpdateComponent#update(long)
      */
     @Override
@@ -109,12 +105,27 @@ public class Tower extends Building implements TowerInfoProvider {
     }
 
     /**
-     * Renders the tower
+     * Renders the tower.
      * @see TowerRenderComponent#render()
      */
     @Override
     public void render() {
         towerRenderComponent.render();
+    }
+
+    /**
+     * Sets the upgradable information for this tower. This method determines whether the provided info
+     * is a projectile-related upgrade or an enchantment-related upgrade and assigns it to the corresponding field.
+     *
+     * @param info the upgradable information to be assigned. This must be an instance of either
+     *             {@code ProjectileInfo} or {@code EnchantmentInfo}.
+     */
+    public void setUpgradableInfo(final UpgradableInfo<?, ?> info) {
+        if (info instanceof final ProjectileInfo infoCast) {
+            projectileInfo = infoCast;
+        } else if (info instanceof final EnchantmentInfo infoCast) {
+            enchantmentInfo = infoCast;
+        }
     }
 
     Vector2D firingWorldCenterLocation() {
@@ -127,21 +138,5 @@ public class Tower extends Building implements TowerInfoProvider {
 
     double getWorldHeight() {
         return metadata.height.get(getProjectileInfo().type());
-    }
-
-    public void setUpgradableInfo(final UpgradableInfo<?, ?> info) {
-        if (info instanceof final ProjectileInfo infoCast) {
-            projectileInfo = infoCast;
-        } else if (info instanceof final EnchantmentInfo infoCast) {
-            enchantmentInfo = infoCast;
-        }
-    }
-
-    public static void setConfigsPath(final String configsPath) {
-        Tower.configsPath = configsPath;
-    }
-
-    public static void setMetadata(final Metadata metadata) {
-        Tower.metadata = metadata;
     }
 }

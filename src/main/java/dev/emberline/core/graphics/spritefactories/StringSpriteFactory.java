@@ -27,23 +27,22 @@ import java.util.Objects;
  */
 public final class StringSpriteFactory implements SpriteFactory<StringSpriteKey> {
 
-    private final static Metadata METADATA = ConfigLoader.loadConfig("/font/font.json", Metadata.class);
+    private static final Metadata METADATA = ConfigLoader.loadConfig("/font/font.json", Metadata.class);
 
-    private final static Map<Character, Image> CHAR_CACHE = Collections.synchronizedMap(new HashMap<>());
+    private static final Map<Character, Image> CHAR_CACHE = Collections.synchronizedMap(new HashMap<>());
 
-    private static class Metadata {
-        @JsonProperty
-        String filename;
-        @JsonProperty
-        int atlasHeight;
-        @JsonProperty
-        int atlasWidth;
-        @JsonProperty
-        int rows;
-        @JsonProperty
-        int columns;
-        @JsonProperty
-        String charOrder;
+    private record Metadata(@JsonProperty String filename,
+                            @JsonProperty int atlasHeight, @JsonProperty int atlasWidth,
+                            @JsonProperty int rows, @JsonProperty int columns,
+                            @JsonProperty String charOrder) {
+    }
+
+    /**
+     * Constructs a new instance of {@code StringSpriteFactory}.
+     * @see StringSpriteFactory
+     */
+    public StringSpriteFactory() {
+
     }
 
     /**
@@ -90,7 +89,8 @@ public final class StringSpriteFactory implements SpriteFactory<StringSpriteKey>
             int mutableCharWidth = charWidth;
 
             // Truncate left
-            int transparentColumns = -1; // First let's count how many transparent columns are on the left (of the first non-transparent pixel)
+            // First let's count how many transparent columns are on the left (of the first non-transparent pixel)
+            int transparentColumns = -1;
             boolean transparent = true;
             for (int x = charX; x < charX + mutableCharWidth && transparent; x++, transparentColumns++) {
                 for (int y = charY; y < charY + charHeight; y++) {

@@ -3,7 +3,15 @@ package dev.emberline.game.world.entities.enemies;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * The SpatialHashGrid class is a data structure designed for efficient
@@ -66,8 +74,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
      */
     public void add(final IEnemy enemy) {
         final Vector2D enemyLocation = enemy.getPosition();
-        if (enemyLocation.getX() < xMin || enemyLocation.getX() > xMax ||
-                enemyLocation.getY() < yMin || enemyLocation.getY() > yMax) {
+        if (enemyLocation.getX() < xMin || enemyLocation.getX() > xMax
+                || enemyLocation.getY() < yMin || enemyLocation.getY() > yMax) {
             throw new IllegalStateException("Enemy is outside the bounds of the spatial hash grid");
         }
 
@@ -120,6 +128,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
 
     /**
      * Removes all the specified {@code IEnemy} instances from the spatial hash grid.
+     *
+     * @param enemies the collection of {@code IEnemy} to be removed from the spatial hash grid.
      * @see SpatialHashGrid#remove(IEnemy)
      */
     public void removeAll(final Collection<IEnemy> enemies) {
@@ -131,6 +141,7 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     /**
      * Updates all the specified {@code IEnemy} instances from the spatial hash grid.
      *
+     * @param enemies the collection of {@code IEnemy} to be updated from the spatial hash grid.
      * @see SpatialHashGrid#update(IEnemy)
      */
     public void updateAll(final Collection<IEnemy> enemies) {
@@ -140,7 +151,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     }
 
     /**
-     * @return an {@code Iterator<IEnemy>} over the enemies currently stored in the spatial hash grid
+     * Retruns an {@code Iterator<IEnemy>} over the enemies currently stored in the spatial hash grid.
+     * @return an {@code Iterator<IEnemy>} over the enemies currently stored in the spatial hash grid.
      */
     @Override
     public Iterator<IEnemy> iterator() {
@@ -148,7 +160,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     }
 
     /**
-     * @return the number of elements currently stored in the spatial hash grid
+     * Returns the number of elements currently stored in the spatial hash grid.
+     * @return the number of elements currently stored in the spatial hash grid.
      */
     public int size() {
         return size;
@@ -190,8 +203,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     }
 
     private boolean isInside(final CellIdx cellIdx) {
-        return cellIdx.x() >= 0 && cellIdx.x() < cols &&
-                cellIdx.y() >= 0 && cellIdx.y() < rows;
+        return cellIdx.x() >= 0 && cellIdx.x() < cols
+                && cellIdx.y() >= 0 && cellIdx.y() < rows;
     }
 
     private CellIdx getCellIdx(final Vector2D location) {

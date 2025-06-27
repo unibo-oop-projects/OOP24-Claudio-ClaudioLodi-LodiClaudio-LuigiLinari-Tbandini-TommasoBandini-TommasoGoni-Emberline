@@ -22,17 +22,18 @@ public final class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
 
     private static final Metadata METADATA = ConfigLoader.loadConfig("/sprites/towerAssets/tower.json", Metadata.class);
 
-    private static class Metadata {
-        @JsonProperty
-        String filename;
-        @JsonProperty
-        int width;
-        @JsonProperty
-        Map<ProjectileInfo.Type, Integer> height;
-        @JsonProperty
-        Map<ProjectileInfo.Type, Integer> size;
-        @JsonProperty
-        Map<EnchantmentInfo.Type, Integer> enchant;
+    private record Metadata(@JsonProperty String filename,
+                            @JsonProperty int width, @JsonProperty Map<ProjectileInfo.Type, Integer> height,
+                            @JsonProperty Map<ProjectileInfo.Type, Integer> size,
+                            @JsonProperty Map<EnchantmentInfo.Type, Integer> enchant) {
+    }
+
+    /**
+     * Constructs a new {@code TowerSpriteFactory} instance.
+     * @see TowerSpriteFactory
+     */
+    public TowerSpriteFactory() {
+
     }
 
     /**

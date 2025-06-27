@@ -1,12 +1,20 @@
 package dev.emberline.core.event;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EventListener;
+import java.util.EventObject;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * TODO
+ * TODO.
  */
-public class EventDispatcher {
+public final class EventDispatcher {
+    // Singleton instance of the EventDispatcher
     private static EventDispatcher instance;
 
     // Map to hold event handler methods and their corresponding listeners
@@ -25,9 +33,10 @@ public class EventDispatcher {
     }
     
     private EventDispatcher() {
+        // Prevent instantiation from outside
     }
 
-    public static EventDispatcher getInstance() {
+    public synchronized static EventDispatcher getInstance() {
         if (instance == null) {
             instance = new EventDispatcher();
         }
@@ -35,7 +44,8 @@ public class EventDispatcher {
     }
 
     /**
-     * TODO
+     * TODO.
+     * @param listener TODO.
      */
     public void registerListener(final EventListener listener) {
         if (listener == null) {
@@ -48,6 +58,7 @@ public class EventDispatcher {
 
     /**
      * TODO
+     * @param listener TODO.
      */
     public void unregisterListener(final EventListener listener) {
         if (listener == null) {
@@ -74,6 +85,10 @@ public class EventDispatcher {
      *              or one of its subclasses
      * @throws IllegalArgumentException if the event parameter is {@code null}
      */
+    /* Suppressing warning for setAccessible(true) usage.
+    Event handlers are supposed to be private because they are invoked by the dispatcher
+    and should not be part of the public API. */
+    @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
     public void dispatchEvent(final EventObject event) {
         if (event == null) {
             throw new IllegalArgumentException("Event cannot be null");
@@ -89,8 +104,8 @@ public class EventDispatcher {
             listeners.forEach(listener -> {
                 try {
                     method.invoke(listener, event);
-                } catch (final Exception e) {
-                    throw new RuntimeException("Failed to invoke event handler method: " + method.getName(), e);
+                } catch (final IllegalAccessException | InvocationTargetException e) {
+                    throw new EventHandlerInvocationException("Failed to invoke event handler method: " + method.getName(), e);
                 }
             });
         }
@@ -141,13 +156,18 @@ public class EventDispatcher {
     private void validateEventHandler(final Method method) {
         final Class<?>[] parameterTypes = method.getParameterTypes();
         if (parameterTypes.length != 1) {
-            throw new InvalidEventHandlerException("Event handler methods must have exactly one parameter, but found: " + parameterTypes.length);
+            throw new InvalidEventHandlerException(
+                    "Event handler methods must have exactly one parameter, but found: " + parameterTypes.length);
         }
         if (!EventObject.class.isAssignableFrom(parameterTypes[0])) {
-            throw new InvalidEventHandlerException("Event handler methods must accept a parameter of type EventObject or a subclass, but found: " + parameterTypes[0].getName());
+            throw new InvalidEventHandlerException(
+                    "Event handler methods must accept a parameter of type EventObject or a subclass, but found: "
+                            + parameterTypes[0].getName());
         }
         if (!EventListener.class.isAssignableFrom(method.getDeclaringClass())) {
-            throw new InvalidEventHandlerException("Event handler methods must be declared in a class that implements EventListener, but found: " + method.getDeclaringClass().getName());
+            throw new InvalidEventHandlerException(
+                    "Event handler methods must be declared in a class that implements EventListener, but found: "
+                            + method.getDeclaringClass().getName());
         }
     }
 }

@@ -19,7 +19,7 @@ import java.util.Map;
  * a synchronizedMap is used for mutual exclusive access to the sprite cache.
  */
 public final class SpriteLoader {
-    private final static Map<SpriteKey, Sprite> SPRITE_CACHE = Collections.synchronizedMap(new HashMap<>());
+    private static final Map<SpriteKey, Sprite> SPRITE_CACHE = Collections.synchronizedMap(new HashMap<>());
 
     private SpriteLoader() { }
 

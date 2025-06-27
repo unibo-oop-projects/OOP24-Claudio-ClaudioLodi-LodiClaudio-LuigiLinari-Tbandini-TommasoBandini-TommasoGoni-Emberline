@@ -29,14 +29,45 @@ public record TowerStat(TowerStatType type, double value) {
      */
     public enum TowerStatType {
         // Projectile stats
+        /**
+         * Represents the "Fire Rate" statistical property of a tower, describing the frequency
+         * at which the tower can attack or fire projectiles during gameplay.
+         */
         FIRE_RATE("Fire Rate", SpriteLoader.loadSprite(SingleSpriteKey.FIRE_RATE).image()),
+        /**
+         * Represents the "Damage" statistical property of a tower.
+         * This property defines the amount of damage dealt to targets by a tower's projectiles or attacks.
+         */
         DAMAGE("Damage", SpriteLoader.loadSprite(SingleSpriteKey.DAMAGE).image()),
+        /**
+         * Represents the "Projectile Speed" statistical property of a tower.
+         * This property defines the velocity at which a tower's projectiles travel
+         * through the game environment.
+         */
         PROJECTILE_SPEED("Projectile Speed", SpriteLoader.loadSprite(SingleSpriteKey.PROJECTILE_SPEED).image()),
+        /**
+         * Represents the "Tower Range" statistical property of a tower.
+         * This property defines the maximum distance at which the tower can target enemies.
+         */
         TOWER_RANGE("Tower Range", SpriteLoader.loadSprite(SingleSpriteKey.TOWER_RANGE).image()),
+        /**
+         * Represents the "Damage Area" statistical property of a tower.
+         * This property defines the area affected by the projectile hit.
+         */
         DAMAGE_AREA("Damage Radius", SpriteLoader.loadSprite(SingleSpriteKey.DAMAGE_AREA).image()),
+
         // Enchantment stats
+        /**
+         * Represents the duration of an effect applied by a tower in the game.
+         */
         EFFECT_DURATION("Effect Duration", SpriteLoader.loadSprite(SingleSpriteKey.EFFECT_DURATION).image()),
+        /**
+         * Represents the burn effect stat for a tower, which damages targets over time.
+         */
         BURN_EFFECT("Dmg per sec", SpriteLoader.loadSprite(SingleSpriteKey.BURN_EFFECT).image()),
+        /**
+         * Represents the slow effect stat for a tower, which slows targets over time.
+         */
         SLOW_EFFECT("Slowing Factor", SpriteLoader.loadSprite(SingleSpriteKey.SLOW_EFFECT).image());
 
         private final String displayName;

@@ -1,6 +1,6 @@
 package dev.emberline.core.render;
 
-public class CoordinateSystem {
+public final class CoordinateSystem {
     // Screen coordinates:  [SCREEN]
     // World coordinates:   [WORLD]
 
@@ -22,7 +22,8 @@ public class CoordinateSystem {
         setRegion(regionX1, regionY1, regionX2, regionY2);
     }
 
-    public final synchronized void setRegion(final double regionX1, final double regionY1, final double regionX2, final double regionY2) {
+    public final synchronized void setRegion(final double regionX1, final double regionY1,
+                                             final double regionX2, final double regionY2) {
         this.regionX1 = regionX1;
         this.regionY1 = regionY1;
         this.regionX2 = regionX2;

@@ -29,7 +29,7 @@ public class NewBuildDialogLayer extends GuiLayer {
     private final TowerPreBuild tower;
     private final GuiButton buildButton;
 
-    private static class Layout {
+    private static final class Layout {
         // Background
         private static final double BG_WIDTH = 9.2;
         private static final double BG_HEIGHT = 5.84;

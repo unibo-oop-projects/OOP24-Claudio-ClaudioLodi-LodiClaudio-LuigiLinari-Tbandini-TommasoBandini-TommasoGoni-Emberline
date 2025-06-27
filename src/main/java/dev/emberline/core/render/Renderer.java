@@ -184,7 +184,8 @@ public class Renderer {
      * @param width  the width of the image in the coordinate system
      * @param height the height of the image in the coordinate system
      */
-    public static void drawImage(final Image image, final GraphicsContext gc, final CoordinateSystem cs, final double x, final double y, final double width, final double height) {
+    public static void drawImage(final Image image, final GraphicsContext gc, final CoordinateSystem cs,
+                                 final double x, final double y, final double width, final double height) {
         gc.drawImage(image, cs.toScreenX(x), cs.toScreenY(y), cs.getScale() * width, cs.getScale() * height);
     }
 
@@ -200,7 +201,8 @@ public class Renderer {
      * @param width  the width of the target area in the coordinate system
      * @param height the height of the target area in the coordinate system
      */
-    public static void drawImageFit(final Image image, final GraphicsContext gc, final CoordinateSystem cs, final double x, double y, final double width, final double height) {
+    public static void drawImageFit(final Image image, final GraphicsContext gc, final CoordinateSystem cs,
+                                    final double x, double y, final double width, final double height) {
         final double scalingFactor = Math.min(width / image.getWidth(), height / image.getHeight());
         y += (height - image.getHeight() * scalingFactor) / 2; // vertical centering
         drawImage(image, gc, cs, x, y, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
@@ -208,7 +210,7 @@ public class Renderer {
 
     /**
      * Draws an image on the specified {@code GraphicsContext}, with a fixed aspect ratio,
-     * aligned to the center of the given rectangular area in both axes
+     * aligned to the center of the given rectangular area in both axes.
      *
      * @param image  the {@code Image} to be drawn
      * @param gc     the {@code GraphicsContext} on which the image will be drawn
@@ -218,7 +220,8 @@ public class Renderer {
      * @param width  the width of the target area in the coordinate system
      * @param height the height of the target area in the coordinate system
      */
-    public static void drawImageFitCenter(final Image image, final GraphicsContext gc, final CoordinateSystem cs, double x, double y, final double width, final double height) {
+    public static void drawImageFitCenter(final Image image, final GraphicsContext gc, final CoordinateSystem cs,
+                                          double x, double y, final double width, final double height) {
         final double scalingFactor = Math.min(width / image.getWidth(), height / image.getHeight());
         y += (height - image.getHeight() * scalingFactor) / 2; // vertical centering
         x += (width - image.getWidth() * scalingFactor) / 2; // horizontal centering

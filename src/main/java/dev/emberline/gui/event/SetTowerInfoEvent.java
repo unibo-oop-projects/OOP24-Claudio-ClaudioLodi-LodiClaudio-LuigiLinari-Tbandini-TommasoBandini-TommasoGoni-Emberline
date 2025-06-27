@@ -22,12 +22,15 @@ public class SetTowerInfoEvent extends GuiEvent {
      * @param <T>           the type of the {@link InfoType} associated with the {@code UpgradableInfo}.
      * @param <S>           the type of the {@link UpgradableInfo} implementation, which is linked to the {@code InfoType}.
      * @param source        the source of the event.
-     * @param tower         the {@link Tower} related to this event, representing the tower whose information is being set or updated.
+     * @param tower         the {@link Tower} related to this event,
+     *                      representing the tower whose information is being set or updated.
      * @param upgradableInfo the {@link UpgradableInfo} instance containing the upgradable attributes of the tower.
-     * @param type          the specific {@link InfoType} associated with the {@code UpgradableInfo}, identifying the type of the upgradable information.
+     * @param type          the specific {@link InfoType} associated with the {@code UpgradableInfo},
+     *                      identifying the type of the upgradable information.
      * @see SetTowerInfoEvent
      */
-    public <T extends InfoType, S extends UpgradableInfo<T, S>> SetTowerInfoEvent(final Object source, final Tower tower, final UpgradableInfo<T, S> upgradableInfo, final T type) {
+    public <T extends InfoType, S extends UpgradableInfo<T, S>> SetTowerInfoEvent(final Object source,
+    final Tower tower, final UpgradableInfo<T, S> upgradableInfo, final T type) {
         super(source);
         this.tower = tower;
         this.upgradableInfo = upgradableInfo;

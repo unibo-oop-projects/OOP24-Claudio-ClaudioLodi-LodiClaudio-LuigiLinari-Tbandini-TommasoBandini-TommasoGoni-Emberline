@@ -110,8 +110,14 @@ public class Options extends GuiLayer implements GameState {
     ) {}
 
     /**
-     * Constructs an Options menu with the default bounds and visibility of the menu button.
-     * @param showMenuButton whether to show the menu button in the options true in game, false in main menu.
+     * Constructs an {@code Options} object by initializing it with the configuration
+     * data loaded from a predefined JSON resource file. The configuration provides
+     * the bounds necessary for setting up the {@code Options} screen in the GUI.
+     *
+     * @param showMenuButton a boolean representing whether the options menu should or should not
+     *                       have a menu button
+     * @throws RuntimeException if the configuration file cannot be loaded or parsed.
+     * @see Options
      */
     public Options(final boolean showMenuButton) {
         this(ConfigLoader.loadConfig("/gui/options/optionsBounds.json", OptionsBounds.class), showMenuButton);

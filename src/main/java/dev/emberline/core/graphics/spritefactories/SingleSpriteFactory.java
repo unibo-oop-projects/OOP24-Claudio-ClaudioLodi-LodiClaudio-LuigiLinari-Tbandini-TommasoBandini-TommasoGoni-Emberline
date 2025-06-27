@@ -21,17 +21,17 @@ public final class SingleSpriteFactory implements SpriteFactory<SingleSpriteKey>
 
     private static final JsonNode CONFIGS_ROOT = ConfigLoader.loadNode("/sprites/singleSprites.json");
 
-    private static class SpriteMetadata {
-        @JsonProperty
-        String filename;
-        @JsonProperty
-        int x;
-        @JsonProperty
-        int y;
-        @JsonProperty
-        int width;
-        @JsonProperty
-        int height;
+    private record SpriteMetadata(@JsonProperty String filename,
+                                  @JsonProperty int x, @JsonProperty int y,
+                                  @JsonProperty int width, @JsonProperty int height) {
+    }
+
+    /**
+     * Constructs a new instance of the {@code SingleSpriteFactory}.
+     * @see SingleSpriteFactory
+     */
+    public SingleSpriteFactory() {
+
     }
 
     /**
@@ -41,8 +41,13 @@ public final class SingleSpriteFactory implements SpriteFactory<SingleSpriteKey>
     public Sprite loadSprite(final SingleSpriteKey uiSpriteKey) {
         final JsonNode currentNode = CONFIGS_ROOT.get(uiSpriteKey.name());
         final SpriteMetadata spriteMetadata = ConfigLoader.loadConfig(currentNode, SpriteMetadata.class);
-        final Image spriteAtlas = new Image(Objects.requireNonNull(SingleSpriteFactory.class.getResourceAsStream(spriteMetadata.filename)));
-        return new SingleSprite(new WritableImage(spriteAtlas.getPixelReader(), spriteMetadata.x, spriteMetadata.y, spriteMetadata.width, spriteMetadata.height));
+        final Image spriteAtlas = new Image(Objects.requireNonNull(
+                SingleSpriteFactory.class.getResourceAsStream(spriteMetadata.filename)));
+        return new SingleSprite(new WritableImage(
+                spriteAtlas.getPixelReader(),
+                spriteMetadata.x, spriteMetadata.y,
+                spriteMetadata.width, spriteMetadata.height)
+        );
     }
 
     /**
