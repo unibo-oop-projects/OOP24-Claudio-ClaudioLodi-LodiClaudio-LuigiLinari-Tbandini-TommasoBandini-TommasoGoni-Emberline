@@ -70,6 +70,7 @@ public enum SingleSpriteKey implements SpriteKey {
     // Game Over
     GAME_OVER_BACKGROUND,
     GAME_OVER,
+    STATISTICS,
     // Options
     OPTIONS_WINDOW_BACKGROUND,
     OPTIONS_MINUS_BUTTON,

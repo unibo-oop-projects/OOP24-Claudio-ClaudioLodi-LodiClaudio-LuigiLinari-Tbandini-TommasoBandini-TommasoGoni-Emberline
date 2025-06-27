@@ -13,7 +13,7 @@ import dev.emberline.game.world.World;
 import dev.emberline.gui.event.*;
 
 
-public class Player implements EventListener {
+public class Player implements EventListener { 
     private int health;
     private int gold;
     private final World world;
@@ -56,7 +56,7 @@ public class Player implements EventListener {
 
     public void takeDamage() {
         if (this.health - 1 <= 0) {
-            EventDispatcher.getInstance().dispatchEvent(new GameOverEvent(this));
+            EventDispatcher.getInstance().dispatchEvent(new GameOverEvent(this, world.getStatistics()));
         }
         this.health -= 1;
     }
