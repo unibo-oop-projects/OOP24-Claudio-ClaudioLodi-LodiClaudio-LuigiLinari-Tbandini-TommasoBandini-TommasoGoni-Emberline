@@ -67,6 +67,7 @@ public class Player implements EventListener {
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleNewBuildEvent(final NewBuildEvent event) {
         if (!spendGold(event.getTowerPreBuild().getNewBuildCost())) {
             return;
@@ -75,6 +76,7 @@ public class Player implements EventListener {
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleUpgradeEvent(final UpgradeTowerInfoEvent event) {
         final UpgradableInfo<?, ?> info = event.getUpgradableInfo();
         if (!spendGold(info.getUpgradeCost()) || !info.canUpgrade()) {
@@ -84,6 +86,7 @@ public class Player implements EventListener {
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleResetEvent(final ResetTowerInfoEvent event) {
         final UpgradableInfo<?,?> info = event.getUpgradableInfo();
         earnGold(event.getUpgradableInfo().getRefundValue());
@@ -91,6 +94,7 @@ public class Player implements EventListener {
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleSetEvent(final SetTowerInfoEvent event) {
         final UpgradableInfo<?, ?> info = event.getUpgradableInfo();
         if (!info.canChangeType() || !spendGold(info.getUpgradeCost())) {
@@ -104,6 +108,7 @@ public class Player implements EventListener {
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleSetAimTypeEvent(final SetTowerAimTypeEvent event) {
         event.getTower().setAimType(event.getAimType());
     }

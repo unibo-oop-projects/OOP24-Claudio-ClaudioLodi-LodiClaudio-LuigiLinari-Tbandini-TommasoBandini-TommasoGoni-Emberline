@@ -1,19 +1,24 @@
 package dev.emberline.game;
 
-import java.util.EventListener;
-
 import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.event.EventHandler;
 import dev.emberline.game.world.World;
-import dev.emberline.gui.event.*;
+import dev.emberline.gui.event.CloseOptionsEvent;
+import dev.emberline.gui.event.ExitGameEvent;
+import dev.emberline.gui.event.GameOverEvent;
+import dev.emberline.gui.event.OpenOptionsEvent;
+import dev.emberline.gui.event.SetMainMenuEvent;
+import dev.emberline.gui.event.SetStartEvent;
 import dev.emberline.gui.menu.GameOver;
 import dev.emberline.gui.menu.MainMenu;
 import dev.emberline.gui.menu.Options;
 import javafx.application.Platform;
 import javafx.scene.input.InputEvent;
+
+import java.util.EventListener;
 
 /**
  * The GameRoot class serves as the central node for managing the game states and
@@ -71,16 +76,19 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
 
     // Event Handlers
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleStartEvent(final SetStartEvent event) {
         currentState = world;
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleSetMainMenuEvent(final SetMainMenuEvent event) {
         currentState = mainMenu;
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleOpenOptionsEvent(final OpenOptionsEvent event) {
         previousState = currentState;
 
@@ -92,16 +100,19 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleCloseOptionsEvent(final CloseOptionsEvent event) {
         currentState = previousState;
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleGameOverEvent(final GameOverEvent event) {
         currentState = gameOver;
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleExitGameEvent(final ExitGameEvent event) {
         Platform.exit();
     }

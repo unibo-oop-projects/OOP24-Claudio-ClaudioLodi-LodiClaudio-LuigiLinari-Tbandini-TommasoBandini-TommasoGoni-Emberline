@@ -1,25 +1,24 @@
 package dev.emberline.core.sounds;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.event.EventDispatcher;
+import dev.emberline.core.event.EventHandler;
+import dev.emberline.core.sounds.event.SetVolumeEvent;
+import dev.emberline.core.sounds.event.SfxSoundEvent;
+import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
+import dev.emberline.core.sounds.event.ToggleMuteEvent;
+import javafx.application.Platform;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
+
 import java.net.URL;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.prefs.Preferences;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import dev.emberline.core.ConfigLoader;
-import dev.emberline.core.event.EventDispatcher;
-import dev.emberline.core.event.EventHandler;
-import dev.emberline.core.sounds.event.SetVolumeEvent;
-import dev.emberline.core.sounds.event.SfxSoundEvent;
-import dev.emberline.core.sounds.event.ToggleMuteEvent;
-import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
-import javafx.application.Platform;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 
 public class AudioController implements EventListener {
 
@@ -119,6 +118,7 @@ public class AudioController implements EventListener {
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleSFXSoundEvent(final SfxSoundEvent event) {
         Platform.runLater(() -> {
             playSfx(event);
@@ -126,6 +126,7 @@ public class AudioController implements EventListener {
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleSetMusicVolumeEvent(final SetVolumeEvent event) {
         Platform.runLater(() -> {
             musicPlayer.setVolume(event.getVolume());
@@ -133,6 +134,7 @@ public class AudioController implements EventListener {
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleToggleMusicMuteEvent(final ToggleMuteEvent event) {
         Platform.runLater(() -> {
             // musicPlayer.setMute(event.getMuteState());
@@ -140,6 +142,7 @@ public class AudioController implements EventListener {
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleSetSfxVolumeEvent(final SetVolumeEvent event) {
         Platform.runLater(() -> {
             //metadata.SFX_VOLUME = event.getVolume();
@@ -148,6 +151,7 @@ public class AudioController implements EventListener {
     }
 
     @EventHandler
+    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleToggleSfxMuteEvent(final ToggleMuteEvent event) {
         Platform.runLater(() -> {
             //metadata.SFX_MUTE = event.getMuteState();
