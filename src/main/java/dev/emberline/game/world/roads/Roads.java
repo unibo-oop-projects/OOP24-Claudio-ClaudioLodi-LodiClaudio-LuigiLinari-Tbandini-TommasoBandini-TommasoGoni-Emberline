@@ -5,6 +5,7 @@ import dev.emberline.core.ConfigLoader;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,8 @@ import java.util.Optional;
  */
 public class Roads implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = -8951416501747185886L;
     /**
      * graph data structure, represents the walkable roads on the map
      */

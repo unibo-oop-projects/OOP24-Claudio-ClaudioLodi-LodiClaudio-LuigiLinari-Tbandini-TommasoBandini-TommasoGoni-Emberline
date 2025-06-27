@@ -61,7 +61,7 @@ public final class ProjectileSpriteFactory implements SpriteFactory<ProjectileSp
             frames[i] = new WritableImage(projectileAtals.getPixelReader(), x, y, METADATA.width, METADATA.height);
         }
 
-        return new AnimatedSprite(frames, METADATA.frameTimeNs);
+        return new AnimatedSprite(frames, key, METADATA.frameTimeNs);
     }
 
     private static Image getProjectileAtlas() {

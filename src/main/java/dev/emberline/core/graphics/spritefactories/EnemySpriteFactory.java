@@ -62,7 +62,7 @@ public final class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
             frames[i] = new WritableImage(enemyAtals.getPixelReader(), x, y, metadata.width, metadata.height);
         }
 
-        return new AnimatedSprite(frames, metadata.frameTimeNs);
+        return new AnimatedSprite(frames, key, metadata.frameTimeNs);
     }
 
     private static Image getEnemyAtlas(final String enemyAtlasPath) {

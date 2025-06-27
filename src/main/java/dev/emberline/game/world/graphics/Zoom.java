@@ -5,6 +5,9 @@ import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * The {@code Zoom} class represents an animation effect that interpolates between two defined
  * coordinate regions over a specified duration, applying easing for a smooth transition.
@@ -13,7 +16,10 @@ import dev.emberline.core.components.Renderable;
  * target coordinates, as well as the duration and delay of the animation sequence.
  * The configuration is loaded from a JSON file using the {@code ConfigLoader}.
  */
-public class Zoom implements Renderable {
+public class Zoom implements Renderable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -7769530860574511173L;
 
     private final Metadata metadata;
 

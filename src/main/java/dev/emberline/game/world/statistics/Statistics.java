@@ -2,6 +2,7 @@ package dev.emberline.game.world.statistics;
 
 import dev.emberline.core.components.Updatable;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -10,6 +11,9 @@ import java.io.Serializable;
  * but relies on decorators to gather data.
  */
 public class Statistics implements Updatable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 493178187508275976L;
 
     private int enemiesKilled;
     private int wavesSurvived;

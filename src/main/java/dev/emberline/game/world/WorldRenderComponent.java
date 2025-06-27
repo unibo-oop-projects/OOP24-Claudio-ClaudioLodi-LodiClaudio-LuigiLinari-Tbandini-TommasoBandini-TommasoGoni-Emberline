@@ -13,11 +13,17 @@ import dev.emberline.game.world.waves.IWaveManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * The WorldRenderComponent class is responsible for rendering the game world, specifically
  * it's underlying map. That also means keeping track of how the map changes due to its animation.
  */
-public class WorldRenderComponent implements Renderable, Updatable {
+public class WorldRenderComponent implements Renderable, Updatable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 8505789831229582267L;
 
     private final WorldBounds worldBounds;
     private final MapAnimation mapAnimation;
@@ -26,13 +32,13 @@ public class WorldRenderComponent implements Renderable, Updatable {
     private record Coordinate(
             @JsonProperty int x,
             @JsonProperty int y
-    ) {
+    ) implements Serializable {
     }
 
     private record WorldBounds(
             @JsonProperty Coordinate topLeftBound,
             @JsonProperty Coordinate bottomRightBound
-    ) {
+    ) implements Serializable {
     }
 
     WorldRenderComponent(final IWaveManager waveManager) {

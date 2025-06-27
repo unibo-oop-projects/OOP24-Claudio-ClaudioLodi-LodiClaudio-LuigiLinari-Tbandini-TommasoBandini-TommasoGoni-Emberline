@@ -14,6 +14,8 @@ import dev.emberline.game.world.entities.projectiles.projectile.IProjectile;
 import dev.emberline.game.world.entities.projectiles.projectile.Projectile;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +26,10 @@ import java.util.List;
  * It maintains a list of active projectiles and ensures they are removed
  * when they have reached their targets or completed their flight path.
  */
-public class ProjectilesManager implements Updatable, Renderable {
+public class ProjectilesManager implements Updatable, Renderable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -6752968614568839514L;
 
     private final List<IProjectile> projectiles;
     private final World world;

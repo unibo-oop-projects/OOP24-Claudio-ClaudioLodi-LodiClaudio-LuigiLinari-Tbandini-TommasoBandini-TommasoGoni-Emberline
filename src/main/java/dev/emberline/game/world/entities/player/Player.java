@@ -1,5 +1,6 @@
 package dev.emberline.game.world.entities.player;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.EventListener;
 
@@ -15,6 +16,9 @@ import dev.emberline.gui.event.*;
 
 
 public class Player implements EventListener, Serializable {
+    @Serial
+    private static final long serialVersionUID = 3553209889364137174L;
+
     private int health;
     private int gold;
     private final World world;

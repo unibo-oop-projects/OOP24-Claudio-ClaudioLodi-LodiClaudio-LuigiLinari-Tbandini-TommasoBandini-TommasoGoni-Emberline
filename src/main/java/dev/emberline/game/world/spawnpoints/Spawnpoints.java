@@ -6,6 +6,7 @@ import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,9 @@ import java.util.Queue;
  * based on specified timings and locations.
  */
 public class Spawnpoints implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 6410862547692370971L;
 
     private final Spawnpoint[] rawSpawnpoints;
     private final Queue<EnemyToSpawn> spawnQueue = new PriorityQueue<>();

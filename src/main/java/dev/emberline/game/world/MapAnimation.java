@@ -7,12 +7,18 @@ import dev.emberline.core.graphics.spritekeys.MapSpriteKey;
 import dev.emberline.game.world.waves.IWaveManager;
 import javafx.scene.image.Image;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Represents an animated map that updates its animation based on the current wave
  * managed by an external {@link IWaveManager}. This class controls the animation's
  * frame updates and sprite transitions as the wave index changes.
  */
-public class MapAnimation implements Updatable {
+public class MapAnimation implements Updatable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 556620506149444855L;
 
     private final IWaveManager waveManager;
     private AnimatedSprite animatedSprite;
