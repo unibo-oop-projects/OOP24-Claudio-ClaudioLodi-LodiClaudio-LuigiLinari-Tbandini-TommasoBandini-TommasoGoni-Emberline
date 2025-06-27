@@ -1,7 +1,7 @@
 package dev.emberline.core.graphics.spritefactories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.SingleSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.TowerSpriteKey;
@@ -26,14 +26,6 @@ public final class TowerSpriteFactory implements SpriteFactory<TowerSpriteKey> {
                             @JsonProperty int width, @JsonProperty Map<ProjectileInfo.Type, Integer> height,
                             @JsonProperty Map<ProjectileInfo.Type, Integer> size,
                             @JsonProperty Map<EnchantmentInfo.Type, Integer> enchant) {
-    }
-
-    /**
-     * Constructs a new {@code TowerSpriteFactory} instance.
-     * @see TowerSpriteFactory
-     */
-    public TowerSpriteFactory() {
-
     }
 
     /**

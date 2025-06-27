@@ -13,7 +13,7 @@ class TowerUpdateComponent implements Updatable, Serializable {
     @Serial
     private static final long serialVersionUID = 5273964472174671968L;
 
-    private long accumulatedTimeNs = 0;
+    private long accumulatedTimeNs;
 
     private final World world;
     private final Tower tower;

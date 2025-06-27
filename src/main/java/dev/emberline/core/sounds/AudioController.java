@@ -8,7 +8,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.event.EventHandler;
 import dev.emberline.core.sounds.event.SetMusicVolumeEvent;
@@ -31,11 +31,13 @@ public class AudioController implements EventListener {
     private static Metadata metadata;
     private final Map<SoundType, Media> cachedSfxMedia = new HashMap<>();
 
-    private record Metadata (
+    private record Metadata(
         @JsonProperty String MUSIC_PATH,
         @JsonProperty Map<SoundType, String> SFX_PATHS,
         @JsonProperty double STEP_VOLUME_AMOUNT
-    ) {}
+    ) {
+
+    }
 
     /**
      * Constructs an AudioController instance.
@@ -67,7 +69,7 @@ public class AudioController implements EventListener {
      * @param src the source of the event, typically the object that requested the sound
      * @param soundType the type of sound effect to play
      */
-    public static void requestSfxSound(Object src, final SoundType soundType) {
+    public static void requestSfxSound(final Object src, final SoundType soundType) {
         EventDispatcher.getInstance().dispatchEvent(new SfxSoundEvent(src, soundType));
     }
 
@@ -77,7 +79,7 @@ public class AudioController implements EventListener {
      * @param src the source of the event, typically the object that requested the volume change
      * @param newVolume the new volume level for the music
      */
-    public static void requestSetMusicVolume(Object src, final double newVolume) {
+    public static void requestSetMusicVolume(final Object src, final double newVolume) {
         EventDispatcher.getInstance().dispatchEvent(new SetMusicVolumeEvent(src, newVolume));
     }
 
@@ -87,7 +89,7 @@ public class AudioController implements EventListener {
      * @param src the source of the event, typically the object that requested the mute toggle
      * @param newMuteState the new mute state for the music
      */
-    public static void requestToggleMusicMute(Object src, final boolean newMuteState) {
+    public static void requestToggleMusicMute(final Object src, final boolean newMuteState) {
         EventDispatcher.getInstance().dispatchEvent(new ToggleMusicMuteEvent(src, newMuteState));
     }
 
@@ -97,7 +99,7 @@ public class AudioController implements EventListener {
      * @param src the source of the event, typically the object that requested the volume change
      * @param newVolume the new volume level for the sound effects
      */
-    public static void requestSetSfxVolume(Object src, final double newVolume) {
+    public static void requestSetSfxVolume(final Object src, final double newVolume) {
         EventDispatcher.getInstance().dispatchEvent(new SetSfxVolumeEvent(src, newVolume));
     }
 
@@ -107,7 +109,7 @@ public class AudioController implements EventListener {
      * @param src the source of the event, typically the object that requested the mute toggle
      * @param newMuteState the new mute state for the sound effects
      */
-    public static void requestToggleSfxMute(Object src, final boolean newMuteState) {
+    public static void requestToggleSfxMute(final Object src, final boolean newMuteState) {
         EventDispatcher.getInstance().dispatchEvent(new ToggleSfxMuteEvent(src, newMuteState));
     }
 
@@ -164,6 +166,7 @@ public class AudioController implements EventListener {
     /**
      * Since JavaFx MediaPlayer.setMute() does not take the volume change while muted into account,
      * we need to set the volume again after toggling mute, getting the new volume from the preferences.
+     * @param event the {@link ToggleMusicMuteEvent} with the attached mute state
      */
     @EventHandler
     private void handleToggleMusicMuteEvent(final ToggleMusicMuteEvent event) {

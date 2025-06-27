@@ -1,7 +1,7 @@
 package dev.emberline.core.graphics.spritefactories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.ProjectileSpriteKey;
@@ -27,14 +27,6 @@ public final class ProjectileSpriteFactory implements SpriteFactory<ProjectileSp
                             @JsonProperty int frames, @JsonProperty int frameTimeNs,
                             @JsonProperty Map<ProjectileInfo.Type, Integer> size,
                             @JsonProperty Map<EnchantmentInfo.Type, Integer> enchant) {
-    }
-
-    /**
-     * Constructs a new {@code ProjectileSpriteFactory} instance.
-     * @see ProjectileSpriteFactory
-     */
-    public ProjectileSpriteFactory() {
-
     }
 
     /**

@@ -1,7 +1,7 @@
 package dev.emberline.game.world.buildings.tower;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.graphics.AnimatedSprite;

@@ -1,7 +1,7 @@
 package dev.emberline.game.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.game.model.effects.BurnEffect;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.model.effects.SlowEffect;

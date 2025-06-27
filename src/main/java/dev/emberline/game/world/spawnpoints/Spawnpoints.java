@@ -1,7 +1,7 @@
 package dev.emberline.game.world.spawnpoints;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
@@ -35,26 +35,30 @@ public class Spawnpoints implements Serializable {
     private static final String SPAWNPOINT_CONFIG_FILENAME = "spawnpoints.json";
 
     // Single spawnpoint configuration
-    private record SpawnSequence (
+    private record SpawnSequence(
         @JsonProperty
         long firstSpawnTimeNs,
         @JsonProperty
         long spawnIntervalNs,
         @JsonProperty
         EnemyType[] enemies
-    ) { }
+    ) {
 
-    private record Spawnpoint (
+    }
+
+    private record Spawnpoint(
         @JsonProperty
         double x,
         @JsonProperty
         double y,
         @JsonProperty
         SpawnSequence[] spawnSequences
-    ) { }
+    ) {
+
+    }
 
     /**
-     * Single enemy identified by these 3 parameters:
+     * Single enemy identified by these 3 parameters.
      *
      * @param spawnTimeNs the spawn time of the enemy in nanoseconds
      * @param spawnLocation the spawn location of the enemy as a {@link Vector2D}

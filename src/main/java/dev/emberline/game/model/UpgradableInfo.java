@@ -12,9 +12,9 @@ import java.io.Serializable;
  * @param <T>    the class of the type of the specific {@code UpgradableInfo} implementation,
  *               which must implement the {@link InfoType} interface.
  *               This is used to link the object to its specific type information enforcing type safety.
- * @param <SELF> the class type of the implementing class, used for referencing itself in method signatures, for type safety.
+ * @param <S> the class type of the implementing class, used for referencing itself in method signatures, for type safety.
  */
-public interface UpgradableInfo<T extends UpgradableInfo.InfoType, SELF extends UpgradableInfo<T, SELF>> extends Serializable {
+public interface UpgradableInfo<T extends UpgradableInfo.InfoType, S extends UpgradableInfo<T, S>> extends Serializable {
     /**
      * This is a tag interface,
      * every implementing class must be linked to one and only one implementation of {@link UpgradableInfo}.
@@ -66,7 +66,7 @@ public interface UpgradableInfo<T extends UpgradableInfo.InfoType, SELF extends 
      *
      * @return the upgraded version of the current object.
      */
-    SELF getUpgrade();
+    S getUpgrade();
 
     /**
      * Returns a new instance of the same object updated to the specified type.
@@ -76,7 +76,7 @@ public interface UpgradableInfo<T extends UpgradableInfo.InfoType, SELF extends 
      * @param type the target type to which the current instance should be changed.
      * @return the updated version of the current object to the specified type.
      */
-    SELF getChangeType(T type);
+    S getChangeType(T type);
 
     /**
      * Calculates and retrieves the cost required for upgrading or transitioning from the base type to a specific type.
@@ -104,5 +104,5 @@ public interface UpgradableInfo<T extends UpgradableInfo.InfoType, SELF extends 
      *
      * @return a new instance of the object in its default state.
      */
-    SELF getDefault();
+    S getDefault();
 }

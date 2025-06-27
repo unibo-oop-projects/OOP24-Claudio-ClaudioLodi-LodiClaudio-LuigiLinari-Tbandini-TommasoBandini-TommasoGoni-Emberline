@@ -1,7 +1,7 @@
 package dev.emberline.game.world;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
@@ -46,6 +46,10 @@ public class WorldRenderComponent implements Renderable, Updatable, Serializable
         this.mapAnimation = new MapAnimation(waveManager);
     }
 
+    /**
+     * Renders the current state of the map.
+     * @see Renderable#render()
+     */
     @Override
     public void render() {
         final Renderer renderer = GameLoop.getInstance().getRenderer();
@@ -64,6 +68,11 @@ public class WorldRenderComponent implements Renderable, Updatable, Serializable
         }));
     }
 
+    /**
+     * Updates the map animation based on the time elapsed since the last update.
+     *
+     * @param elapsed the time in nanoseconds since the last update
+     */
     @Override
     public void update(final long elapsed) {
         mapAnimation.update(elapsed);

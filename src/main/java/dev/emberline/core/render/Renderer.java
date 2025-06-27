@@ -205,16 +205,16 @@ public class Renderer {
      */
     public static void drawImageFit(
             final Image image, final GraphicsContext gc, final CoordinateSystem cs,
-            final double x, double y, final double width, final double height
+            final double x, final double y, final double width, final double height
     ) {
         final double scalingFactor = Math.min(width / image.getWidth(), height / image.getHeight());
-        y += (height - image.getHeight() * scalingFactor) / 2; // vertical centering
-        drawImage(image, gc, cs, x, y, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
+        final double newY = y + (height - image.getHeight() * scalingFactor) / 2; // vertical centering
+        drawImage(image, gc, cs, x, newY, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
     }
 
     /**
      * Draws an image on the specified {@code GraphicsContext}, with a fixed aspect ratio,
-     * aligned to the center of the given rectangular area in both axes
+     * aligned to the center of the given rectangular area in both axes.
      *
      * @param image  the {@code Image} to be drawn
      * @param gc     the {@code GraphicsContext} on which the image will be drawn
@@ -226,12 +226,12 @@ public class Renderer {
      */
     public static void drawImageFitCenter(
             final Image image, final GraphicsContext gc, final CoordinateSystem cs,
-            double x, double y, final double width, final double height
+            final double x, final double y, final double width, final double height
     ) {
         final double scalingFactor = Math.min(width / image.getWidth(), height / image.getHeight());
-        y += (height - image.getHeight() * scalingFactor) / 2; // vertical centering
-        x += (width - image.getWidth() * scalingFactor) / 2; // horizontal centering
-        drawImage(image, gc, cs, x, y, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
+        final double newX = x + (height - image.getHeight() * scalingFactor) / 2; // vertical centering
+        final double newY = y +  (width - image.getWidth() * scalingFactor) / 2; // horizontal centering
+        drawImage(image, gc, cs, newX, newY, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
     }
 
     /**
@@ -247,21 +247,22 @@ public class Renderer {
      * @param height the height of the area available for rendering the text in the coordinate system
      */
     public static void drawText(
-            String text, final GraphicsContext gc, final CoordinateSystem cs,
+            final String text, final GraphicsContext gc, final CoordinateSystem cs,
             final double x, final double y, final double width, final double height
     ) {
         final boolean gcImageSmoothing = gc.isImageSmoothing();
         final double areaInPixels = width * height * cs.getScale() * cs.getScale();
+        String formattedText = text;
         // Convert to uppercase if the area is too small
         if (areaInPixels < MIN_TEXT_AREA_PX_UPPERCASE) {
-            text = text.toUpperCase(Locale.US);
+            formattedText = text.toUpperCase(Locale.US);
         }
         // Use image smoothing if the area is too small
         if (height * cs.getScale() < MIN_TEXT_HEIGHT_PX_SMOOTH) {
             gc.setImageSmoothing(true);
         }
         // Fit image or stretch vertically
-        final Image image = SpriteLoader.loadSprite(new StringSpriteKey(text)).image();
+        final Image image = SpriteLoader.loadSprite(new StringSpriteKey(formattedText)).image();
         if (width / image.getWidth() < height / image.getHeight()) {
             drawImage(image, gc, cs, x, y + height * CENTER_TEXT_H_MARGIN, width, height * (1 - 2 * CENTER_TEXT_H_MARGIN));
         } else {

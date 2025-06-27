@@ -70,6 +70,10 @@ public class EnemiesManager implements IEnemiesManager {
         return spatialHashGrid.size() == 0;
     }
 
+    /**
+     * Returns the number of enemies currently inside the {@code EnemiesManager}.
+     * @return the number of enemies currently inside the {@code EnemiesManager}.
+     */
     int getAliveEnemiesNumber() {
         return spatialHashGrid.size();
     }

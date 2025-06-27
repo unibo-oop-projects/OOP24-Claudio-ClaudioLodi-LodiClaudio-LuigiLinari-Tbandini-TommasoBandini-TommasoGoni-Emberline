@@ -12,7 +12,7 @@ public final class PreferencesManager {
     public static Double getDoublePreference(final PreferenceKey key) {
         double value = prefs.getDouble(key.getKey(), key.getDefaultDoubleValue());
         if (value == key.getDefaultDoubleValue()) {
-            prefs.putDouble(key.getKey(), value = key.getDefaultDoubleValue());
+            prefs.putDouble(key.getKey(), value);
         }
         return value;
     }
@@ -20,7 +20,7 @@ public final class PreferencesManager {
     public static Boolean getBooleanPreference(final PreferenceKey key) {
         boolean value = prefs.getBoolean(key.getKey(), key.getDefaultBooleanValue());
         if (value == key.getDefaultBooleanValue()) {
-            prefs.putBoolean(key.getKey(), value = key.getDefaultBooleanValue());
+            prefs.putBoolean(key.getKey(), value);
         }
         return value;
     }

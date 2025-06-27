@@ -1,7 +1,7 @@
 package dev.emberline.game.world.entities.enemies.enemy.concrete;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.enemy.AbstractEnemy;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;

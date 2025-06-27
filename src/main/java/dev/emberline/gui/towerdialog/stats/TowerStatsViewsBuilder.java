@@ -125,14 +125,6 @@ public final class TowerStatsViewsBuilder {
     }
 
     /**
-     * Creates a new instance of the {@code TowerStatsViewsBuilder}.
-     * @see TowerStatsViewsBuilder
-     */
-    public TowerStatsViewsBuilder() {
-
-    }
-
-    /**
      * Adds stats from the given provider to the builder.
      *
      * @param provider the provider containing tower stats

@@ -124,8 +124,8 @@ public final class GameLoop extends Thread {
     public Renderer getRenderer() {
         return renderer;
     }
-    
-    /*
+
+    /**
      * Sets the fullscreen mode of the game window.
      * @param fullscreen if true, the game will run in fullscreen mode; otherwise, it will run in windowed mode.
      */

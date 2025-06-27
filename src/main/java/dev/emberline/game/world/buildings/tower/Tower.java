@@ -1,7 +1,7 @@
 package dev.emberline.game.world.buildings.tower;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.TowerInfoProvider;
@@ -42,7 +42,7 @@ public class Tower extends Building implements TowerInfoProvider, Serializable {
     private ProjectileInfo projectileInfo = new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
     private EnchantmentInfo enchantmentInfo = new EnchantmentInfo(EnchantmentInfo.Type.BASE, 0);
 
-    private record Metadata (
+    private record Metadata(
         @JsonProperty
         double width,
         @JsonProperty

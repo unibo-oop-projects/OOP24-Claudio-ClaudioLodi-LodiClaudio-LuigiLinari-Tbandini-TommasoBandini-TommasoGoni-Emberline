@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.EventListener;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.event.EventHandler;
 import dev.emberline.game.model.EnchantmentInfo;

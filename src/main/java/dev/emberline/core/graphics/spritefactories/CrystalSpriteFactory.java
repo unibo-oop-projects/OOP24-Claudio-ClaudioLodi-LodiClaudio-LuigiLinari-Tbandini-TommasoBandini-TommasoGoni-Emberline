@@ -1,7 +1,7 @@
 package dev.emberline.core.graphics.spritefactories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.CrystalSpriteKey;
@@ -27,14 +27,6 @@ public final class CrystalSpriteFactory implements SpriteFactory<CrystalSpriteKe
     private record Metadata(@JsonProperty String filename, @JsonProperty int width, @JsonProperty int height,
                             @JsonProperty int frames, @JsonProperty int frameTimeNs,
                             @JsonProperty Map<EnchantmentInfo.Type, Integer> enchant) {
-    }
-
-    /**
-     * Constructs a new {@code CrystalSpriteFactory} instance.
-     * @see CrystalSpriteFactory
-     */
-    public CrystalSpriteFactory() {
-
     }
 
     /**

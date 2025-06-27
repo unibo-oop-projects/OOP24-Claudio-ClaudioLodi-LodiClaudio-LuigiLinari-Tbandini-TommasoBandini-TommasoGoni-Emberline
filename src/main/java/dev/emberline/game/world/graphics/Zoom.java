@@ -1,7 +1,7 @@
 package dev.emberline.game.world.graphics;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
 
@@ -23,7 +23,7 @@ public class Zoom implements Renderable, Serializable {
 
     private final Metadata metadata;
 
-    private long accumulatorNs = 0;
+    private long accumulatorNs;
     private long previousTimeNs = System.nanoTime();
 
     //zoom configuration

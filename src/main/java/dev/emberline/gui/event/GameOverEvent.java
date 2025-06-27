@@ -9,13 +9,14 @@ import dev.emberline.game.world.statistics.Statistics;
  * which may be triggered by scenarios such as the player losing all lives.
  */
 public class GameOverEvent extends GameEvent {
-    
+
     private final Statistics statistics;
-    
+
     /**
      * Constructs a new {@code GameOverEvent}.
      *
      * @param source the object on which the event initially occurred.
+     * @param statistics the statistics to be shown in the game over screen.
      * @see GameOverEvent
      */
     public GameOverEvent(final Object source, final Statistics statistics) {
@@ -31,5 +32,5 @@ public class GameOverEvent extends GameEvent {
     public Statistics getStatistics() {
         return statistics;
     }
-    
+
 }

@@ -1,7 +1,7 @@
 package dev.emberline.core.graphics.spritefactories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
@@ -26,14 +26,6 @@ public final class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
                             @JsonProperty int frames, @JsonProperty int frameTimeNs,
                             @JsonProperty Map<FacingDirection, Integer> direction,
                             @JsonProperty Map<EnemyAppearance, Integer> state) {
-    }
-
-    /**
-     * Constructs a new {@code EnemySpriteFactory} instance.
-     * @see EnemySpriteFactory
-     */
-    public EnemySpriteFactory() {
-
     }
 
     /**

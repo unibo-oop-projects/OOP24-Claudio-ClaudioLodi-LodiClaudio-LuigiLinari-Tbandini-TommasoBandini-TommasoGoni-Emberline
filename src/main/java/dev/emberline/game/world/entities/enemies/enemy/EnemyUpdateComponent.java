@@ -86,6 +86,9 @@ class EnemyUpdateComponent implements Updatable, Serializable {
             case DYING -> dying();
             case DEAD -> {
             }
+            default -> {
+                throw new IllegalStateException("The only handled enemy states are: WALKING, DYING and DEAD");
+            }
         }
         enemy.getAnimationUpdatable().update(elapsed);
     }

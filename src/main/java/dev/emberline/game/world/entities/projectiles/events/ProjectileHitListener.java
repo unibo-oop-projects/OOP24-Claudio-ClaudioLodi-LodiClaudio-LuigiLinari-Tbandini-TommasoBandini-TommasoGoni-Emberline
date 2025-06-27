@@ -36,7 +36,8 @@ public class ProjectileHitListener {
     public void onProjectileHit(final ProjectileHitEvent e) {
         final Vector2D landingLocation = e.getLandingLocation();
         final double damage = e.getDamage();
-        final double damageArea = e.getDamageArea().isPresent() ? e.getDamageArea().get() : 0.1;
+        final double defaultDamageArea = 0.1;
+        final double damageArea = e.getDamageArea().isPresent() ? e.getDamageArea().get() : defaultDamageArea;
         final Optional<EnchantmentEffect> effect = e.getEffect();
 
         for (final IEnemy enemy : enemiesManager.getNear(landingLocation, damageArea)) {
