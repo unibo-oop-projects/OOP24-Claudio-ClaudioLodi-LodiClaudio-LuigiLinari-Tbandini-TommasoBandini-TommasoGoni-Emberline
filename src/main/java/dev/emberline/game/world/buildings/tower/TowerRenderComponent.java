@@ -1,9 +1,9 @@
 package dev.emberline.game.world.buildings.tower;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.CrystalSpriteKey;
@@ -17,14 +17,20 @@ import javafx.scene.effect.Bloom;
 import javafx.scene.image.Image;
 import javafx.scene.transform.Rotate;
 
-class TowerRenderComponent implements Renderable {
+import java.io.Serial;
+import java.io.Serializable;
+
+class TowerRenderComponent implements Renderable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 3616851823744803302L;
 
     private final Tower tower;
     private final long creationTimeNs = System.nanoTime();
 
     private static final JsonNode CONFIGS_NODE = ConfigLoader.loadNode("/sprites/towerAssets/crystal.json");
 
-    private static class Metadata {
+    private static final class Metadata {
         private static final double CRYSTAL_WIDTH = CONFIGS_NODE.get("worldDimensions").get("width").asDouble();
         private static final double CRYSTAL_HEIGHT = CONFIGS_NODE.get("worldDimensions").get("width").asDouble();
         private static final double CRYSTAL_SWING_PERIOD_NS = CONFIGS_NODE.get("swingPeriodNs").asDouble();
@@ -48,17 +54,22 @@ class TowerRenderComponent implements Renderable {
      */
     @Override
     public void render() {
-        final Image bodyImage = SpriteLoader.loadSprite(new TowerSpriteKey(tower.getProjectileInfo().type(), tower.getEnchantmentInfo().type())).image();
-        final AnimatedSprite crystalSprite = (AnimatedSprite) SpriteLoader.loadSprite(new CrystalSpriteKey(tower.getEnchantmentInfo().type()));
+        final Image bodyImage = SpriteLoader.loadSprite(new TowerSpriteKey(
+                tower.getProjectileInfo().type(), tower.getEnchantmentInfo().type())).image();
+        final AnimatedSprite crystalSprite = (AnimatedSprite) SpriteLoader.loadSprite(new CrystalSpriteKey(
+                tower.getEnchantmentInfo().type()));
 
         final Renderer renderer = GameLoop.getInstance().getRenderer();
         final GraphicsContext gc = renderer.getGraphicsContext();
         final CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
-        final int currentFrame = (int) ((System.nanoTime() - creationTimeNs) / crystalSprite.getFrameTimeNs()) % crystalSprite.getFrameCount();
+        final int currentFrame = (int) (
+                (System.nanoTime() - creationTimeNs) / crystalSprite.getFrameTimeNs()) % crystalSprite.getFrameCount();
         final Image crystalImage = crystalSprite.image(currentFrame);
 
-        final double crystalSwingOffset = Math.sin((System.nanoTime() - creationTimeNs) * 2 * Math.PI * 1. / Metadata.CRYSTAL_SWING_PERIOD_NS) * Metadata.CRYSTAL_SWING_AMPLITUDE * cs.getScale();
+        final double crystalSwingOffset =
+                Math.sin((System.nanoTime() - creationTimeNs) * 2 * Math.PI * 1. / Metadata.CRYSTAL_SWING_PERIOD_NS)
+                * Metadata.CRYSTAL_SWING_AMPLITUDE * cs.getScale();
 
         final double topLeftScreenX = cs.toScreenX(tower.getWorldTopLeft().getX());
         final double topLeftScreenY = cs.toScreenY(tower.getWorldTopLeft().getY());
@@ -69,15 +80,19 @@ class TowerRenderComponent implements Renderable {
         final double firingWorldCenterY = tower.getFiringWorldCenterLocation().getY();
 
         final double crystalScreenX = cs.toScreenX(firingWorldCenterX - Metadata.CRYSTAL_WIDTH / 2);
-        final double crystalScreenY = cs.toScreenY(firingWorldCenterY - Metadata.CRYSTAL_HEIGHT / 2) + crystalSwingOffset;
+        final double crystalScreenY = cs.toScreenY(firingWorldCenterY - Metadata.CRYSTAL_HEIGHT / 2)
+                + crystalSwingOffset;
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BUILDINGS, () -> {
             gc.save();
-            final Rotate r = new Rotate(2 * Math.sin((System.nanoTime() - creationTimeNs) / 3e8), crystalScreenX + cs.getScale() * (Metadata.CRYSTAL_WIDTH / 2), crystalScreenY + cs.getScale() * (Metadata.CRYSTAL_HEIGHT / 2));
+            final Rotate r = new Rotate(2 * Math.sin((System.nanoTime() - creationTimeNs) / 3e8),
+                    crystalScreenX + cs.getScale() * (Metadata.CRYSTAL_WIDTH / 2),
+                    crystalScreenY + cs.getScale() * (Metadata.CRYSTAL_HEIGHT / 2));
             gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
             gc.setEffect(new Bloom(Metadata.CRYSTAL_BLOOM_THRESHOLD));
             gc.setGlobalAlpha(Metadata.CRYSTAL_TRANSPARENCY);
-            gc.drawImage(crystalImage, crystalScreenX, crystalScreenY, Metadata.CRYSTAL_WIDTH * cs.getScale(), Metadata.CRYSTAL_HEIGHT * cs.getScale());
+            gc.drawImage(crystalImage, crystalScreenX, crystalScreenY,
+                    Metadata.CRYSTAL_WIDTH * cs.getScale(), Metadata.CRYSTAL_HEIGHT * cs.getScale());
             gc.restore();
             gc.drawImage(bodyImage, topLeftScreenX, topLeftScreenY, screenWidth, screenHeight);
         }).enableZOrder(tower.getWorldBottomRight().getY()));

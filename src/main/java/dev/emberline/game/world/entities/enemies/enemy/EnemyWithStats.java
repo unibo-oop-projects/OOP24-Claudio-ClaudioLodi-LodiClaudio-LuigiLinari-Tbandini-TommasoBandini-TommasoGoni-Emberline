@@ -4,6 +4,8 @@ import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.statistics.Statistics;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +15,10 @@ import java.util.List;
  * This class delegates the core behavior to the provided {@link IEnemy} instance while
  * tracking and recording statistical information.
  */
-public class EnemyWithStats implements IEnemy {
+public class EnemyWithStats implements IEnemy, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -1891378884257347492L;
 
     private final IEnemy enemy;
     private final Statistics statistics;
@@ -121,7 +126,7 @@ public class EnemyWithStats implements IEnemy {
     }
 
     /**
-     * Renders the decorating {@code IEnemy} instance
+     * Renders the decorating {@code IEnemy} instance.
      * @see EnemyRenderComponent#render()
      */
     @Override
@@ -130,7 +135,7 @@ public class EnemyWithStats implements IEnemy {
     }
 
     /**
-     * Updates the decorating {@code IEnemy} instance
+     * Updates the decorating {@code IEnemy} instance.
      * @see EnemyUpdateComponent#update(long)
      */
     @Override

@@ -9,13 +9,22 @@ import dev.emberline.game.world.entities.enemies.enemy.IEnemy.UniformMotion;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
-class EnemyUpdateComponent implements Updatable {
-    private enum EnemyState {WALKING, DYING, DEAD}
+class EnemyUpdateComponent implements Updatable, Serializable {
+    @Serial
+    private static final long serialVersionUID = 8979305885961605613L;
+
+    private enum EnemyState implements Serializable {
+        WALKING,
+        DYING,
+        DEAD
+    }
 
     private final AbstractEnemy enemy;
     private EnemyState enemyState;
@@ -29,7 +38,7 @@ class EnemyUpdateComponent implements Updatable {
     private Vector2D velocity;
 
     private final List<Vector2D> destinations = new ArrayList<>();
-    private int destinationsIdx = 0;
+    private int destinationsIdx;
 
     EnemyUpdateComponent(final Vector2D spawnPoint, final World world, final AbstractEnemy enemy) {
         this.enemy = enemy;
@@ -76,6 +85,9 @@ class EnemyUpdateComponent implements Updatable {
             case WALKING -> walk(elapsed);
             case DYING -> dying();
             case DEAD -> {
+            }
+            default -> {
+                throw new IllegalStateException("The only handled enemy states are: WALKING, DYING and DEAD");
             }
         }
         enemy.getAnimationUpdatable().update(elapsed);
@@ -175,14 +187,17 @@ class EnemyUpdateComponent implements Updatable {
     }
 
     FacingDirection getFacingDirection() {
+        final int leftAngle = -180, upAngle = 90, rightAngle = 0, downAngle = -90;
         final int angle = Math.round((float) Math.toDegrees(Math.atan2(-velocity.getY(), velocity.getX())));
         return switch (angle) {
-            case -180 -> FacingDirection.LEFT;
-            case 90 -> FacingDirection.UP;
-            case 0 -> FacingDirection.RIGHT;
-            case -90 -> FacingDirection.DOWN;
+            case leftAngle -> FacingDirection.LEFT;
+            case upAngle -> FacingDirection.UP;
+            case rightAngle -> FacingDirection.RIGHT;
+            case downAngle -> FacingDirection.DOWN;
             default ->
-                    throw new IllegalStateException("The only handled cases of velocity are: LEFT, UP, RIGHT, DOWN. Found angle: " + angle);
+                    throw new IllegalStateException(
+                            "The only handled cases of velocity are: LEFT, UP, RIGHT, DOWN. Found angle: " + angle
+                    );
         };
     }
 
@@ -208,7 +223,7 @@ class EnemyUpdateComponent implements Updatable {
             final double overshootAmount = posToDest.magnitude();
 
             position = currDestination;
-            if (currDestination == destinations.getLast()) {
+            if (currDestination.equals(destinations.getLast())) {
                 attack();
                 return;
             }
@@ -239,4 +254,5 @@ class EnemyUpdateComponent implements Updatable {
         enemyState = EnemyState.DEAD;
         clearEffect();
     }
+
 }

@@ -31,9 +31,9 @@ public enum PreferenceKey {
     public Boolean getDefaultBooleanValue() {
         return booleanDefaultValue;
     } 
-    
+
     public Double getDefaultDoubleValue() {
         return doubleDefaultValue;
     } 
-    
+
 }

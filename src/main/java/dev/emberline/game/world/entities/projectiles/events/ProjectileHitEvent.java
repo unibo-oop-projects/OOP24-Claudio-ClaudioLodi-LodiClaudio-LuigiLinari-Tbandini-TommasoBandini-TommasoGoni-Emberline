@@ -34,7 +34,7 @@ public class ProjectileHitEvent {
     }
 
     /**
-     * Returns the landing location as a {@code Vector2D} object
+     * Returns the landing location as a {@code Vector2D} object.
      * @return the landing location as a {@code Vector2D} object
      */
     public Vector2D getLandingLocation() {
@@ -42,7 +42,7 @@ public class ProjectileHitEvent {
     }
 
     /**
-     * Returns the damage value as a {@code double}
+     * Returns the damage value as a {@code double}.
      * @return the damage value as a {@code double}
      */
     public double getDamage() {

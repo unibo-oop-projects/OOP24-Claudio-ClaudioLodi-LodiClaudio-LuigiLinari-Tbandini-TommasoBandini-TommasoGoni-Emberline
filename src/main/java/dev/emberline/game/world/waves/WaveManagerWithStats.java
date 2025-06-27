@@ -12,16 +12,27 @@ public class WaveManagerWithStats implements IWaveManager {
     private final IWaveManager waveManager;
     private final Statistics statistics;
 
+    /**
+     * Constructs a new instance of {@code WaveManagerWithStats}.
+     * @param world the {@code World} instance within which this wave manager operates.
+     * @see WaveManagerWithStats
+     */
     public WaveManagerWithStats(final World world) {
         waveManager = new WaveManager(world);
         statistics = world.getStatistics();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Wave getWave() {
         return waveManager.getWave();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getCurrentWaveIndex() {
         return waveManager.getCurrentWaveIndex();
@@ -31,7 +42,7 @@ public class WaveManagerWithStats implements IWaveManager {
      * Updates the Wavemanager.
      * Keeps record of the last wave reached.
      *
-     * @param elapsed
+     * @param elapsed the time elapsed in nanoseconds since the last update call
      */
     @Override
     public void update(final long elapsed) {
@@ -44,6 +55,10 @@ public class WaveManagerWithStats implements IWaveManager {
         }
     }
 
+    /**
+     * Renders the wave manager.
+     * @see WaveManager#render()
+     */
     @Override
     public void render() {
         waveManager.render();

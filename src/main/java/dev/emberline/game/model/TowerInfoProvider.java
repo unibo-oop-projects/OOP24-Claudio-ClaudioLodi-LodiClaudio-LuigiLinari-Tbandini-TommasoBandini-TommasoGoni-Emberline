@@ -3,6 +3,8 @@ package dev.emberline.game.model;
 import dev.emberline.gui.event.SetTowerAimTypeEvent.AimType;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serializable;
+
 /**
  * Provides read-only access to a tower's information.
  * Towers should implement this interface to provide their specific information.
@@ -12,7 +14,7 @@ import dev.emberline.utility.Vector2D;
  * lifetime of the provider, it should be designed to be mutable and always return
  * the most current data.
  */
-public interface TowerInfoProvider {
+public interface TowerInfoProvider extends Serializable {
     /**
      * Retrieves the projectile information associated with the tower.
      *

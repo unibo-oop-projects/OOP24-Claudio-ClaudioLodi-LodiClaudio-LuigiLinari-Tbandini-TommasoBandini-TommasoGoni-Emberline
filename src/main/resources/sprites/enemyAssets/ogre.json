@@ -18,7 +18,7 @@
   "metadata": {
     "tileWidth": 1,
     "tileHeight": 2,
-    "fullHealth": 50,
+    "fullHealth": 5000,
     "speed": 0.000000001
   }
 }

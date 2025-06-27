@@ -1,7 +1,7 @@
 package dev.emberline.game.world.buildings.tower;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.TowerInfoProvider;
@@ -11,6 +11,8 @@ import dev.emberline.game.world.World;
 import dev.emberline.gui.event.SetTowerAimTypeEvent.AimType;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -24,10 +26,14 @@ import java.util.Map;
  * <p>
  * It interacts with the game world to react to events such as clicks and updates.
  */
-public class Tower extends Building implements TowerInfoProvider {
+public class Tower extends Building implements TowerInfoProvider, Serializable {
+    @Serial
+    private static final long serialVersionUID = -8194111509090222110L;
+
     private static String configsPath = "/sprites/towerAssets/tower.json";
 
-    private static Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
+    private static Metadata metadata = ConfigLoader.loadConfig(
+            ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
 
     private final World world;
     private final TowerUpdateComponent towerUpdateComponent;
@@ -38,16 +44,16 @@ public class Tower extends Building implements TowerInfoProvider {
     private EnchantmentInfo enchantmentInfo = new EnchantmentInfo(EnchantmentInfo.Type.BASE, 0);
     private AimType aimType = AimType.FIRST;
 
-    private static class Metadata {
+    private record Metadata(
         @JsonProperty
-        double width;
+        double width,
         @JsonProperty
-        double baseHeight;
+        double baseHeight,
         @JsonProperty
-        Map<ProjectileInfo.Type, Double> height;
+        Map<ProjectileInfo.Type, Double> height,
         @JsonProperty
-        double firingYOffsetTiles;
-    }
+        double firingYOffsetTiles
+    ) implements Serializable { }
 
     /**
      * Constructs a new Tower object with a specified location and associated world.
@@ -137,18 +143,13 @@ public class Tower extends Building implements TowerInfoProvider {
         towerRenderComponent.render();
     }
 
-    public Vector2D getFiringWorldCenterLocation() {
-        return getWorldTopLeft().add(getWorldWidth() / 2, metadata.firingYOffsetTiles);
-    }
-
-    double getWorldWidth() {
-        return metadata.width;
-    }
-
-    double getWorldHeight() {
-        return metadata.height.get(getProjectileInfo().type());
-    }
-
+    /**
+     * Sets the upgradable information for this tower. This method determines whether the provided info
+     * is a projectile-related upgrade or an enchantment-related upgrade and assigns it to the corresponding field.
+     *
+     * @param info the upgradable information to be assigned. This must be an instance of either
+     *             {@code ProjectileInfo} or {@code EnchantmentInfo}.
+     */
     public void setUpgradableInfo(final UpgradableInfo<?, ?> info) {
         if (info instanceof final ProjectileInfo infoCast) {
             projectileInfo = infoCast;
@@ -166,11 +167,15 @@ public class Tower extends Building implements TowerInfoProvider {
         this.aimType = aimType;
     }
 
-    public static void setConfigsPath(final String configsPath) {
-        Tower.configsPath = configsPath;
+    public Vector2D getFiringWorldCenterLocation() {
+        return getWorldTopLeft().add(getWorldWidth() / 2, metadata.firingYOffsetTiles);
     }
 
-    public static void setMetadata(final Metadata metadata) {
-        Tower.metadata = metadata;
+    double getWorldWidth() {
+        return metadata.width;
+    }
+
+    double getWorldHeight() {
+        return metadata.height.get(getProjectileInfo().type());
     }
 }

@@ -6,6 +6,7 @@ import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * updating and rendering the entire pool and also querying which enemies are in a given area.
  * It also provides methods to check if all enemies are dead.
  */
-public interface IEnemiesManager extends Updatable, Renderable {
+public interface IEnemiesManager extends Updatable, Renderable, Serializable {
 
     /**
      * Adds a new enemy to the spatial hash grid in the game world.
@@ -36,7 +37,7 @@ public interface IEnemiesManager extends Updatable, Renderable {
     List<IEnemy> getNear(Vector2D location, double radius);
 
     /**
-     * Returns whether all enemies have been killed
+     * Returns whether all enemies have been killed.
      * @return whether all enemies have been killed
      */
     boolean areAllDead();

@@ -1,5 +1,11 @@
 package dev.emberline.utility;
 
+/**
+ * The {@code Vector2D} interface represents a two-dimensional vector or
+ * point in a Cartesian coordinate system. It provides methods for
+ * performing various operations such as addition, subtraction,
+ * normalization, and scalar products on vectors.
+ */
 public interface Vector2D {
 
     /**
@@ -71,7 +77,7 @@ public interface Vector2D {
 
     /**
      * Returns a point with the coordinates of this point multiplied
-     * by the specified factor
+     * by the specified.
      *
      * @param factor the factor multiplying the coordinates
      * @return the point with multiplied coordinates
@@ -150,9 +156,10 @@ public interface Vector2D {
      * Return the unit vector representing the direction of displacement
      * from this vector to the given vector.
      *
-     * @param x
-     * @param y
-     * @return
+     * @param x the x coordinate of the given vector
+     * @param y the y coordinate of the given vector
+     * @return the unit vector representing the direction of displacement
+     *         from this vector to the given vector.
      */
     Vector2D directionTo(double x, double y);
 
@@ -160,8 +167,9 @@ public interface Vector2D {
      * Return the unit vector representing the direction of displacement
      * from this vector to the given vector.
      *
-     * @param vector
-     * @return
+     * @param vector the given vector
+     * @return the unit vector representing the direction of displacement
+     *         from this vector to the given vector.
      */
     Vector2D directionTo(Vector2D vector);
 
@@ -183,11 +191,13 @@ public interface Vector2D {
     int hashCode();
 
     /**
-     * Returns a string representation of this {@code Point2D}.
+     * Returns a string representation of this {@code Vector2D}.
      * This method is intended to be used only for informational purposes.
      * The content and format of the returned string might vary between
      * implementations.
      * The returned string might be empty but cannot be {@code null}.
+     *
+     * @return a string representation of this {@code Vector2D}.
      */
     @Override
     String toString();

@@ -1,6 +1,5 @@
 package dev.emberline.game.world;
 
-import dev.emberline.core.components.Renderable;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.game.GameState;
 import dev.emberline.game.world.buildings.TowersManager;
@@ -18,6 +17,7 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -30,6 +30,9 @@ import java.io.Serializable;
  * Implements the {@link Serializable} interface, for saving the state of the game.
  */
 public class World implements GameState, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -8997628045954555469L;
 
     private final WorldRenderComponent worldRenderComponent;
     // Enemies
@@ -45,9 +48,7 @@ public class World implements GameState, Serializable {
     // HitListener
     private final ProjectileHitListener projectileHitListener;
 
-    // Player
     private final Player player;
-
     private final Topbar topbar;
 
     /**

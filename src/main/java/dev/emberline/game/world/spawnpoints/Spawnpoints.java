@@ -1,11 +1,13 @@
 package dev.emberline.game.world.spawnpoints;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -22,7 +24,10 @@ import java.util.Queue;
  * It loads spawnpoints configuration from a file and creates a scheduled queue of enemies to spawn
  * based on specified timings and locations.
  */
-public class Spawnpoints {
+public class Spawnpoints implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 6410862547692370971L;
 
     private final Spawnpoint[] rawSpawnpoints;
     private final Queue<EnemyToSpawn> spawnQueue = new PriorityQueue<>();
@@ -30,26 +35,30 @@ public class Spawnpoints {
     private static final String SPAWNPOINT_CONFIG_FILENAME = "spawnpoints.json";
 
     // Single spawnpoint configuration
-    private record SpawnSequence (
+    private record SpawnSequence(
         @JsonProperty
         long firstSpawnTimeNs,
         @JsonProperty
         long spawnIntervalNs,
         @JsonProperty
         EnemyType[] enemies
-    ) {}
+    ) {
 
-    private record Spawnpoint (
+    }
+
+    private record Spawnpoint(
         @JsonProperty
         double x,
         @JsonProperty
         double y,
         @JsonProperty
         SpawnSequence[] spawnSequences
-    ) {}
+    ) {
+
+    }
 
     /**
-     * Single enemy identified by these 3 parameters:
+     * Single enemy identified by these 3 parameters.
      *
      * @param spawnTimeNs the spawn time of the enemy in nanoseconds
      * @param spawnLocation the spawn location of the enemy as a {@link Vector2D}
@@ -71,10 +80,6 @@ public class Spawnpoints {
 
         /**
          * Initializes an instance of {@code EnemyToSpawn} and validates that the provided parameters.
-         *
-         * @param spawnTimeNs the time in nanoseconds when the enemy is to be spawned; must be non-negative.
-         * @param spawnLocation the location where the enemy is to be spawned; must not be null.
-         * @param enemyType the type of enemy to spawn; must not be null.
          * @throws IllegalArgumentException if {@code spawnTimeNs} is negative, {@code spawnLocation} is null,
          *                                  or {@code enemyType} is null.
          */

@@ -1,7 +1,5 @@
 package dev.emberline.gui.topbar;
 
-import java.util.EventListener;
-
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.graphics.SpriteLoader;
@@ -11,14 +9,14 @@ import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
-import dev.emberline.core.sounds.AudioController;
-import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.game.world.World;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.OpenOptionsEvent;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+
+import java.util.EventListener;
 
 /**
  * The {@code Topbar} class represents a {@link GuiLayer} for the top section of the screen
@@ -35,17 +33,17 @@ public class Topbar extends GuiLayer implements EventListener {
     private Image goldImageString;
     private Image waveImageString;
 
-    private static class Layout {
+    private static final class Layout {
         // Background
-        private static final double scale = 1.25;
-        private static final double BG_WIDTH = 11.97 * scale;
-        private static final double BG_HEIGHT = 1.33 * scale;
+        private static final double SCALE = 1.25;
+        private static final double BG_WIDTH = 11.97 * SCALE;
+        private static final double BG_HEIGHT = 1.33 * SCALE;
         private static final double BG_Y = 0;
         private static final double BG_X = 32 - BG_WIDTH;
         // Options Button
-        private static final double scale_factor = 0.95;
-        private static final double BTN_OPTIONS_HEIGHT = 1 * scale_factor;
-        private static final double BTN_OPTIONS_WIDTH = 1 * scale_factor;
+        private static final double SCALE_FACTOR = 0.95;
+        private static final double BTN_OPTIONS_HEIGHT = 1 * SCALE_FACTOR;
+        private static final double BTN_OPTIONS_WIDTH = 1 * SCALE_FACTOR;
         private static final double BTN_OPTIONS_X = BG_X + BG_WIDTH - BTN_OPTIONS_WIDTH * 2;
         private static final double BTN_OPTIONS_Y = BG_Y + (BG_HEIGHT - BTN_OPTIONS_HEIGHT) / 2;
         // Stats
@@ -84,7 +82,6 @@ public class Topbar extends GuiLayer implements EventListener {
     protected Topbar(final double x, final double y, final double width, final double height, final World world) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         this.world = world;
-        updateLayout();
     }
 
     private void updateLayout() {
@@ -110,15 +107,17 @@ public class Topbar extends GuiLayer implements EventListener {
         super.buttons.add(optionsButton);
     }
 
-    private void drawStats(final GraphicsContext gc, final CoordinateSystem cs, final Image healtImage, final Image goldImage, final Image waveImage) {
+    private void drawStats(final GraphicsContext gc, final CoordinateSystem cs,
+                           final Image healtImage, final Image goldImage, final Image waveImage) {
         drawStatImage(gc, cs, healtImage, Layout.STATS_X_HEALT, Layout.STATS_HEIGHT);
         drawStatImage(gc, cs, goldImage, Layout.STATS_X_GOLD, Layout.STATS_HEIGHT);
         drawStatImage(gc, cs, waveImage, Layout.STATS_X_WAVE, Layout.STATS_HEIGHT);
     }
 
-    private void drawStatImage(final GraphicsContext gc, final CoordinateSystem cs, final Image img, final double x, final double baseHeight) {
+    private void drawStatImage(final GraphicsContext gc, final CoordinateSystem cs,
+                               final Image img, final double x, final double baseHeight) {
         final double ratio = img.getWidth() / img.getHeight();
-        final double targetHeight = baseHeight * 0.8; // Scale down a bit for better appearance
+        final double targetHeight = baseHeight * 0.8;
         final double targetWidth = targetHeight * ratio;
         Renderer.drawImage(img, gc, cs, x, (Layout.BG_HEIGHT - targetHeight) / 2, targetWidth, targetHeight);
     }

@@ -5,7 +5,7 @@
     "spawnSequences": [
       {
         "firstSpawnTimeNs": 0,
-        "spawnIntervalNs": 3000000000,
+        "spawnIntervalNs": 1000000000,
         "enemies": [
           "pig"
         ]
@@ -25,9 +25,9 @@
     "spawnSequences": [
       {
         "firstSpawnTimeNs": 0,
-        "spawnIntervalNs": 3000000000,
+        "spawnIntervalNs": 1000000000,
         "enemies": [
-          "ogre"
+          "ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig","ogre","pig"
         ]
       }
     ]

@@ -80,16 +80,17 @@ public class GuiButton implements Inputable, Renderable {
      * <p>
      * Note: use this only for holding the previous hovered state, use hovered to communicate to the outside world.
      */
-    private boolean wasHovered = false;
+    private boolean wasHovered;
 
     /**
      * Indicates whether the GUI button is currently being hovered over by the mouse.
-     * This is needed if isHovered() is called from onMouseEnter or onMouseLeave, because the wasHovered state is not updated yet.
+     * This is needed if isHovered() is called from onMouseEnter or onMouseLeave, because the wasHovered state
+     * is not updated yet.
      *
      * @see GuiButton#isHovered()
      * @see GuiButton#computeHoverState(double, double)
      */
-    private boolean hovered = false;
+    private boolean hovered;
 
     /**
      * Constructs a new GuiButton with the specified coordinates and sprites.
@@ -102,7 +103,8 @@ public class GuiButton implements Inputable, Renderable {
      * @param hoverSprite  The image to be displayed when the button is hovered over.
      * @see GuiButton#GuiButton(double, double, double, double, Image)
      */
-    public GuiButton(final double x, final double y, final double width, final double height, final Image normalSprite, final Image hoverSprite) {
+    public GuiButton(final double x, final double y, final double width, final double height,
+                     final Image normalSprite, final Image hoverSprite) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -190,7 +192,7 @@ public class GuiButton implements Inputable, Renderable {
     }
 
     /**
-     * Renders the GUI button based on its visual representation, such as rendering the normal or hover state
+     * Renders the GUI button based on its visual representation, such as rendering the normal or hover state.
      * @see Renderable#render()
      */
     @Override

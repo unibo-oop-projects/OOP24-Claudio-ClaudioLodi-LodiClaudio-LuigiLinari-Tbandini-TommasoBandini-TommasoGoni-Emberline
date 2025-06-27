@@ -1,10 +1,11 @@
 package dev.emberline.game.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,14 +26,14 @@ public record ProjectileInfo(
         Type type, int level
     ) implements TowerStatsProvider, UpgradableInfo<ProjectileInfo.Type, ProjectileInfo> {
 
-    private final static Metadata METADATA =
+    private static final Metadata METADATA =
             ConfigLoader.loadConfig("/sprites/towerAssets/projectileInfoStats.json", Metadata.class);
 
     /**
      * Represents the type of projectile in the game, influencing the projectile's behavior, such as damage, speed,
      * firing rate, and other attributes.
      */
-    public enum Type implements UpgradableInfo.InfoType {
+    public enum Type implements UpgradableInfo.InfoType, Serializable {
         /**
          * The default projectile type. It has no special properties and cannot be upgraded.
          */

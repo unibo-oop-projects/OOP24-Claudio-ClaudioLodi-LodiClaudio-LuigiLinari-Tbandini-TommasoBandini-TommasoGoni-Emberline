@@ -29,10 +29,30 @@ public class SetTowerAimTypeEvent extends GuiEvent {
      * Each mode defines a distinct strategy for determining which enemy target to prioritize.
      */
     public enum AimType {
+        /**
+         * Represents the "First" targeting mode in the tower's targeting strategy.
+         * The "First" mode prioritizes selecting the enemy closest to its endpoint.
+         */
         FIRST("First", new FirstAimStrategy()),
+        /**
+         * Represents the "Last" targeting mode in the tower's targeting strategy.
+         * The "Last" mode prioritizes selecting the enemy furthest from its endpoint.
+         */
         LAST("Last", new LastAimStrategy()),
+        /**
+         * Represents the "Weak" targeting mode in the tower's targeting strategy.
+         * The "Weak" mode prioritizes selecting the enemy with the lowest health value.
+         */
         WEAK("Weakest", new WeakAimStrategy()),
+        /**
+         * Represents the "Strong" targeting mode in the tower's targeting strategy.
+         * The "Strong" mode prioritizes selecting the enemy with the highest health value.
+         */
         STRONG("Strongest", new StrongAimStrategy()),
+        /**
+         * Represents the "Closest" targeting mode in the tower's targeting strategy.
+         * The "Closest" mode prioritizes selecting the enemy closest to the tower.
+         */
         CLOSE("Closest", new CloseAimStrategy()),;
 
         private final String displayName;

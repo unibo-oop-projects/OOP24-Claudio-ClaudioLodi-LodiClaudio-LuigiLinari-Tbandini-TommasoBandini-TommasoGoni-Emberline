@@ -2,11 +2,14 @@ package dev.emberline.core;
 
 import dev.emberline.core.input.InputDispatcher;
 import dev.emberline.core.sounds.AudioController;
+import dev.emberline.preferences.PreferenceKey;
+import dev.emberline.preferences.PreferencesManager;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -26,7 +29,6 @@ public class EmberlineApp extends Application {
     private static final long MIN_WINDOW_WIDTH = 400;
     private static final long MIN_WINDOW_HEIGHT = 400;
     private GameLoop gameLoop;
-    private AudioController audioController;
 
     /**
      * The entry point for the JavaFX application. This method is called after the
@@ -66,6 +68,8 @@ public class EmberlineApp extends Application {
 
         // Stage settings
         stage.setMaximized(true);
+        stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        stage.setFullScreen(PreferencesManager.getBooleanPreference(PreferenceKey.FULLSCREEN));
         stage.setMinWidth(MIN_WINDOW_WIDTH);
         stage.setMinHeight(MIN_WINDOW_HEIGHT);
         stage.setTitle("Emberline");
@@ -77,8 +81,8 @@ public class EmberlineApp extends Application {
         this.gameLoop = GameLoop.getInstance();
         this.gameLoop.start();
         // Loops musical track of the game
-        this.audioController = new AudioController();
-        this.audioController.startSoundtrack();
+        AudioController audioController = new AudioController();
+        audioController.startSoundtrack();
     }
 
     /**

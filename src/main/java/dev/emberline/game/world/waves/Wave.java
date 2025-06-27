@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The Wave class contains all the elements that characterize a single wave
+ * The Wave class contains all the elements that characterize a single wave.
  */
 public class Wave implements Updatable, Renderable {
 
@@ -29,8 +29,10 @@ public class Wave implements Updatable, Renderable {
     private long accumulatorNs;
 
     /**
+     * Creates a new {@code Wave} object with the provided {@link World} and the waveDirectoryPath.
      * @param world             the world in which the wave is being played
      * @param waveDirectoryPath the path of the directory containing the wave files
+     * @see Wave
      */
     public Wave(final World world, final String waveDirectoryPath) {
         this.world = world;
@@ -51,6 +53,7 @@ public class Wave implements Updatable, Renderable {
     }
 
     /**
+     * Returns true if the wave is over.
      * @return true if the wave is over
      */
     public boolean isOver() {
@@ -69,8 +72,9 @@ public class Wave implements Updatable, Renderable {
     }
 
     /**
-     * Updates the CoordinateSystem and sends to the EnemyManager the new enemies to spawn,
-     * at the current time @param elapsed
+     * Sends to the EnemyManager the new enemies to spawn based on the elapsed time.
+     *
+     * @param elapsed time in nanoseconds since the last update call
      */
     @Override
     public void update(final long elapsed) {
@@ -79,7 +83,7 @@ public class Wave implements Updatable, Renderable {
     }
 
     /**
-     * Renders the fog and zoom
+     * Renders the fog and zoom.
      */
     @Override
     public void render() {

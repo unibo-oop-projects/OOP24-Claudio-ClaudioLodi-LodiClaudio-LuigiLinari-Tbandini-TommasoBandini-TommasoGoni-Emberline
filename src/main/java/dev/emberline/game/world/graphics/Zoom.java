@@ -1,9 +1,12 @@
 package dev.emberline.game.world.graphics;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
+import dev.emberline.core.config.ConfigLoader;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * The {@code Zoom} class represents an animation effect that interpolates between two defined
@@ -13,11 +16,14 @@ import dev.emberline.core.components.Renderable;
  * target coordinates, as well as the duration and delay of the animation sequence.
  * The configuration is loaded from a JSON file using the {@code ConfigLoader}.
  */
-public class Zoom implements Renderable {
+public class Zoom implements Renderable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -7769530860574511173L;
 
     private final Metadata metadata;
 
-    private long accumulatorNs = 0;
+    private long accumulatorNs;
     private long previousTimeNs = System.nanoTime();
 
     //zoom configuration
@@ -26,7 +32,7 @@ public class Zoom implements Renderable {
             @JsonProperty double fromY,
             @JsonProperty double toX,
             @JsonProperty double toY
-    ) {
+    ) implements Serializable {
     }
 
     private record Metadata(
@@ -34,7 +40,7 @@ public class Zoom implements Renderable {
             @JsonProperty Translation bottomRight,
             @JsonProperty double animationDurationSeconds,
             @JsonProperty double animationDelaySeconds
-    ) {
+    ) implements Serializable {
     }
 
     /**

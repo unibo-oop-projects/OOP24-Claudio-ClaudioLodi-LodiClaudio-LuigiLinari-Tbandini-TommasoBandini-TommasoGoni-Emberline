@@ -9,8 +9,8 @@ import java.util.Optional;
 
 class RoadsTest {
 
-    private final String roadsPath = "/roads/";
-    private final Roads roads = new Roads(roadsPath);
+    private static final String ROADS_PATH = "/roads/";
+    private final Roads roads = new Roads(ROADS_PATH);
 
     @Test
     void testGetNextNodeDifferentWeights() {
@@ -40,7 +40,6 @@ class RoadsTest {
     void testGetNextNodeWithZeroWeight() {
         final Vector2D oneOne = new Coordinate2D(1.5, 1.5);
         final Vector2D twoOne = new Coordinate2D(2.5, 1.5);
-        final Vector2D oneTwo = new Coordinate2D(1.5, 2.5);
         Optional<Vector2D> next;
 
         next = roads.getNextNode(oneOne);

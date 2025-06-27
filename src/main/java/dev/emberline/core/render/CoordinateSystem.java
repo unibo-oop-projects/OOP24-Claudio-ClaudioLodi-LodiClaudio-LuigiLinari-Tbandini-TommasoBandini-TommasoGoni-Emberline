@@ -1,6 +1,6 @@
 package dev.emberline.core.render;
 
-public class CoordinateSystem {
+public final class CoordinateSystem {
     // Screen coordinates:  [SCREEN]
     // World coordinates:   [WORLD]
 
@@ -9,10 +9,6 @@ public class CoordinateSystem {
     private double regionY1;
     private double regionX2;
     private double regionY2;
-
-    // Screen Dimensions [SCREEN]
-    private double screenWidth;
-    private double screenHeight;
 
     // Scaling factor
     private double scale;
@@ -26,7 +22,8 @@ public class CoordinateSystem {
         setRegion(regionX1, regionY1, regionX2, regionY2);
     }
 
-    public final synchronized void setRegion(final double regionX1, final double regionY1, final double regionX2, final double regionY2) {
+    public synchronized void setRegion(final double regionX1, final double regionY1,
+                                             final double regionX2, final double regionY2) {
         this.regionX1 = regionX1;
         this.regionY1 = regionY1;
         this.regionX2 = regionX2;
@@ -35,9 +32,6 @@ public class CoordinateSystem {
 
     // Package private method; should only be called by the renderer
     void update(final double screenWidth, final double screenHeight) {
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
-
         final double regionCenterX = getRegionCenterX();
         final double regionCenterY = getRegionCenterY();
 

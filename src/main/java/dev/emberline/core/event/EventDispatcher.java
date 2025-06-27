@@ -19,24 +19,24 @@ public final class EventDispatcher {
 
     // Map to hold event handler methods and their corresponding listeners
     private final Map<EventHandlerMethod, List<EventListener>> eventHandlers = new HashMap<>();
-    
+
     private record EventHandlerMethod(Class<? extends EventObject> eventType, Method method) {
         private EventHandlerMethod {
             if (eventType == null || method == null) {
                 throw new IllegalArgumentException("Event type and method cannot be null");
             }
         }
-        
+
         private EventHandlerMethod(final Method method) {
             this(method.getParameterTypes()[0].asSubclass(EventObject.class), method);
         }
     }
-    
+
     private EventDispatcher() {
         // Prevent instantiation from outside
     }
 
-    public synchronized static EventDispatcher getInstance() {
+    public static synchronized EventDispatcher getInstance() {
         if (instance == null) {
             instance = new EventDispatcher();
         }
@@ -57,7 +57,7 @@ public final class EventDispatcher {
     }
 
     /**
-     * TODO
+     * TODO.
      * @param listener TODO.
      */
     public void unregisterListener(final EventListener listener) {
@@ -157,18 +157,17 @@ public final class EventDispatcher {
         final Class<?>[] parameterTypes = method.getParameterTypes();
         if (parameterTypes.length != 1) {
             throw new InvalidEventHandlerException(
-                    "Event handler methods must have exactly one parameter, but found: " + parameterTypes.length
-            );
+                    "Event handler methods must have exactly one parameter, but found: " + parameterTypes.length);
         }
         if (!EventObject.class.isAssignableFrom(parameterTypes[0])) {
             throw new InvalidEventHandlerException(
-                    "Event handler methods must accept a parameter of type EventObject or a subclass, but found: " + parameterTypes[0].getName()
-            );
+                    "Event handler methods must accept a parameter of type EventObject or a subclass, but found: "
+                            + parameterTypes[0].getName());
         }
         if (!EventListener.class.isAssignableFrom(method.getDeclaringClass())) {
             throw new InvalidEventHandlerException(
-                    "Event handler methods must be declared in a class that implements EventListener, but found: " + method.getDeclaringClass().getName()
-            );
+                    "Event handler methods must be declared in a class that implements EventListener, but found: "
+                            + method.getDeclaringClass().getName());
         }
     }
 }

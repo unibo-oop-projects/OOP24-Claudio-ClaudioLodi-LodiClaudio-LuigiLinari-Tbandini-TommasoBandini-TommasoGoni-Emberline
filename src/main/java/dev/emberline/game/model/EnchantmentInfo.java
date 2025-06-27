@@ -1,13 +1,14 @@
 package dev.emberline.game.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.game.model.effects.BurnEffect;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.model.effects.SlowEffect;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,18 +23,18 @@ import java.util.Optional;
  * @param level The level of the enchantment, which can be between 0 and {@link #MAX_LEVEL}.
  * @see EnchantmentEffect
  */
-public record EnchantmentInfo (
+public record EnchantmentInfo(
         Type type, int level
     ) implements TowerStatsProvider, UpgradableInfo<EnchantmentInfo.Type, EnchantmentInfo> {
 
-    private final static Metadata METADATA =
+    private static final Metadata METADATA =
             ConfigLoader.loadConfig("/sprites/towerAssets/enchantmentInfoStats.json", Metadata.class);
 
     /**
      * Represents the type of enchantment in the game.
      * The type of enchantment influences its {@code EnchantmentEffect}.
      */
-    public enum Type implements UpgradableInfo.InfoType {
+    public enum Type implements UpgradableInfo.InfoType, Serializable {
         /**
          * The default enchantment type. It has no effect and cannot be upgraded.
          */
@@ -130,7 +131,7 @@ public record EnchantmentInfo (
         return new EnchantmentInfo(Type.BASE, 0);
     }
 
-    private record Metadata (
+    private record Metadata(
         @JsonProperty
         int baseUpgradeCost,
         @JsonProperty

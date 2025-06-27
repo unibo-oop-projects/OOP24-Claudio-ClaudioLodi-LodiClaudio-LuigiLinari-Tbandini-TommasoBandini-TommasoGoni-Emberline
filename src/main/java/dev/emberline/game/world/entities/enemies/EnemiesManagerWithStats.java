@@ -6,6 +6,7 @@ import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.game.world.statistics.Statistics;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -14,12 +15,14 @@ import java.util.List;
  */
 public class EnemiesManagerWithStats implements IEnemiesManager {
 
+    @Serial
+    private static final long serialVersionUID = 1323030008674166431L;
+
     private final EnemiesManager enemiesManager;
     private final Statistics statistics;
-    private int deadEnemies;
 
     /**
-     * Constructs an {@code EnemiesManagerWithStats} instance wrapping {@code EnemiesManager},
+     * Constructs an {@code EnemiesManagerWithStats} instance wrapping {@code EnemiesManager}.
      *
      * @param world the game world within which the enemies manager operates; it provides the context
      *              and statistics tracker used by this manager
@@ -54,7 +57,7 @@ public class EnemiesManagerWithStats implements IEnemiesManager {
     }
 
     /**
-     * Renders all the enemies inside the {@code EnemiesManagerWithStats}
+     * Renders all the enemies inside the {@code EnemiesManagerWithStats}.
      * @see EnemiesManager#render()
      */
     @Override
@@ -63,7 +66,7 @@ public class EnemiesManagerWithStats implements IEnemiesManager {
     }
 
     /**
-     * Updates all the enemies inside the {@code EnemiesManagerWithStats}, and keeps track of the statistics
+     * Updates all the enemies inside the {@code EnemiesManagerWithStats}, and keeps track of the statistics.
      * @see EnemiesManager#update(long)
      */
     @Override
@@ -73,7 +76,7 @@ public class EnemiesManagerWithStats implements IEnemiesManager {
         enemiesManager.update(elapsed);
 
         final int alivePostUpdate = enemiesManager.getAliveEnemiesNumber();
-        deadEnemies = alivePreUpdate - alivePostUpdate;
-        statistics.updateEnemiesKilled(deadEnemies);
+
+        statistics.updateEnemiesKilled(alivePreUpdate - alivePostUpdate);
     }
 }

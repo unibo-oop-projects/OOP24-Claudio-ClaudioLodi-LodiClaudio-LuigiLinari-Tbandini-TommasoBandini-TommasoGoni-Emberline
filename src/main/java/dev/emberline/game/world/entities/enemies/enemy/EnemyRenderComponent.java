@@ -12,11 +12,17 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Paint;
 
-public class EnemyRenderComponent implements Renderable {
+import java.io.Serial;
+import java.io.Serializable;
+
+class EnemyRenderComponent implements Renderable, Serializable {
+    @Serial
+    private static final long serialVersionUID = -288209243117357956L;
+
     private final AbstractEnemy enemy;
     private final EnemyAnimation enemyAnimation;
 
-    private static class HealthbarLayout {
+    private static final class HealthbarLayout {
         private static final double FULL_WIDTH = 1;
         private static final double HEIGHT = 0.1;
         private static final double X_OFFSET = 0.1;
@@ -65,10 +71,20 @@ public class EnemyRenderComponent implements Renderable {
         }).enableZOrder(position.getY() + enemy.getHeight() / 2));
     }
 
+    /**
+     * Returns whether the dying animation has finished.
+     * @return whether the dying animation has finished.
+     * @see AbstractEnemy#isDyingAnimationFinished()
+     */
     boolean isDyingAnimationFinished() {
         return enemyAnimation.isDyingAnimationFinished();
     }
 
+    /**
+     * Returns the {@code Updatable} instance of the enemy's animation.
+     * @return the {@code Updatable} instance of the enemy's animation.
+     * @see AbstractEnemy#getAnimationUpdatable()
+     */
     Updatable getAnimationUpdatable() {
         return enemyAnimation;
     }

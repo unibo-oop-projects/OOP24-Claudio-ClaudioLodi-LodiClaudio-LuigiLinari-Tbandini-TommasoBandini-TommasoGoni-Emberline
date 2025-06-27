@@ -2,9 +2,7 @@ package dev.emberline.game.world.entities.projectiles;
 
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
-import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.sounds.AudioController;
-import dev.emberline.core.sounds.event.SfxSoundEvent;
 import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
@@ -14,6 +12,8 @@ import dev.emberline.game.world.entities.projectiles.projectile.IProjectile;
 import dev.emberline.game.world.entities.projectiles.projectile.Projectile;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +24,10 @@ import java.util.List;
  * It maintains a list of active projectiles and ensures they are removed
  * when they have reached their targets or completed their flight path.
  */
-public class ProjectilesManager implements Updatable, Renderable {
+public class ProjectilesManager implements Updatable, Renderable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -6752968614568839514L;
 
     private final List<IProjectile> projectiles;
     private final World world;

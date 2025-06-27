@@ -2,6 +2,7 @@ package dev.emberline.game.world.statistics;
 
 import dev.emberline.core.components.Updatable;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -10,6 +11,9 @@ import java.io.Serializable;
  * but relies on decorators to gather data.
  */
 public class Statistics implements Updatable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 493178187508275976L;
 
     private int enemiesKilled;
     private int wavesSurvived;
@@ -51,7 +55,7 @@ public class Statistics implements Updatable, Serializable {
     }
 
     /**
-     * Returns the number of enemies killed
+     * Returns the number of enemies killed.
      * @return the number of enemies killed
      */
     public int getEnemiesKilled() {
@@ -59,7 +63,7 @@ public class Statistics implements Updatable, Serializable {
     }
 
     /**
-     * Returns the number of waves survived
+     * Returns the number of waves survived.
      * @return the number of waves survived
      */
     public int getWavesSurvived() {
@@ -75,27 +79,20 @@ public class Statistics implements Updatable, Serializable {
     }
 
     /**
+     * Returns total damage dealt by towers to enemies.
      * @return total damage dealt by towers to enemies
      */
     public double getTotalDamage() {
         return this.totalDamage;
     }
 
-    private void printToTerminal() {
-        System.out.println(enemiesKilled);
-        System.out.println(wavesSurvived);
-        System.out.println(timeInGame);
-    }
-
     /**
-     * Should be used to update the time-dependent stats of the game
+     * Should be used to update the time-dependent stats of the game.
      *
      * @param elapsed the time elapsed since the last update in nanoseconds
      */
     @Override
     public void update(final long elapsed) {
         updateTimeInGame(elapsed);
-        //updatePlayerHealth();
-        //printToTerminal();
     }
 }

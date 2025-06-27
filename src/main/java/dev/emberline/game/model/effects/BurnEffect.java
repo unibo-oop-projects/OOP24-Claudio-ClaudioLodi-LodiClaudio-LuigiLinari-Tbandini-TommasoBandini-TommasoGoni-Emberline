@@ -5,6 +5,7 @@ import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 import dev.emberline.gui.towerdialog.stats.TowerStat.TowerStatType;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -15,17 +16,19 @@ import java.util.List;
  * @see dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation.EnemyAppearance#BURNING
  */
 public class BurnEffect implements EnchantmentEffect {
+    @Serial
+    private static final long serialVersionUID = 4592711708572597944L;
 
-    public static final int secondInNs = 1_000_000_000;
+    private static final int SECONDS_IN_NS = 1_000_000_000;
 
     private final double damagePerSecond;
     private final double damagePerNs;
 
     private final double duration;
     private final long durationNs;
-    private long totalElapsed = 0;
+    private long totalElapsed;
 
-    private boolean isExpired = false;
+    private boolean isExpired;
 
     /**
      * Constructs a {@code BurnEffect} that applies burn damage to an enemy over a specified duration.
@@ -35,10 +38,10 @@ public class BurnEffect implements EnchantmentEffect {
      */
     public BurnEffect(final double damagePerSecond, final double duration) {
         this.damagePerSecond = damagePerSecond;
-        this.damagePerNs = damagePerSecond / secondInNs;
+        this.damagePerNs = damagePerSecond / SECONDS_IN_NS;
 
         this.duration = duration;
-        this.durationNs = (long) (duration * secondInNs);
+        this.durationNs = (long) (duration * SECONDS_IN_NS);
     }
 
     /**

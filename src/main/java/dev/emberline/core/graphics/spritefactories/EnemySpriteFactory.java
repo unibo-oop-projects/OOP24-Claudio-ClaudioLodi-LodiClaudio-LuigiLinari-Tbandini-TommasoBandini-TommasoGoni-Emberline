@@ -1,7 +1,7 @@
 package dev.emberline.core.graphics.spritefactories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
@@ -21,19 +21,11 @@ import java.util.Objects;
  * and the individual frames are extracted during sprite creation based on metadata values.
  */
 public final class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
-    private static class Metadata {
-        @JsonProperty
-        int width;
-        @JsonProperty
-        int height;
-        @JsonProperty
-        int frames;
-        @JsonProperty
-        int frameTimeNs;
-        @JsonProperty
-        Map<FacingDirection, Integer> direction;
-        @JsonProperty
-        Map<EnemyAppearance, Integer> state;
+
+    private record Metadata(@JsonProperty int width, @JsonProperty int height,
+                            @JsonProperty int frames, @JsonProperty int frameTimeNs,
+                            @JsonProperty Map<FacingDirection, Integer> direction,
+                            @JsonProperty Map<EnemyAppearance, Integer> state) {
     }
 
     /**
@@ -62,7 +54,7 @@ public final class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
             frames[i] = new WritableImage(enemyAtals.getPixelReader(), x, y, metadata.width, metadata.height);
         }
 
-        return new AnimatedSprite(frames, metadata.frameTimeNs);
+        return new AnimatedSprite(frames, key, metadata.frameTimeNs);
     }
 
     private static Image getEnemyAtlas(final String enemyAtlasPath) {

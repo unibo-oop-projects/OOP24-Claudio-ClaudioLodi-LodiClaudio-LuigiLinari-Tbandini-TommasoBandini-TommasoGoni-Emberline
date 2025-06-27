@@ -1,9 +1,9 @@
 package dev.emberline.game.world.graphics;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import dev.emberline.core.render.CoordinateSystem;
@@ -11,7 +11,9 @@ import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.media.MediaPlayer;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * The Fog class is responsible for rendering a layer of fog in the game environment. It is used to hide parts of the world
@@ -56,20 +58,25 @@ import javafx.scene.media.MediaPlayer;
  * <li>The `animationDelaySeconds` field defines the initial delay before the fog transition starts.</li>
  * </ul>
  */
-public class Fog implements Renderable {
+public class Fog implements Renderable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 4864461952717171977L;
 
     private static final int FOG_SIDE_LENGTH = 2;
     private final Metadata metadata;
 
-    private long accumulatorNs = 0;
+    private long accumulatorNs;
     private long previousTimeNs = System.nanoTime();
+
+    private static final double SECOND_IN_NS = 1e9;
 
     private record Translation(
             @JsonProperty double fromX,
             @JsonProperty double fromY,
             @JsonProperty double toX,
             @JsonProperty double toY
-    ) {
+    ) implements Serializable {
     }
 
     private record Metadata(
@@ -80,7 +87,7 @@ public class Fog implements Renderable {
             @JsonProperty double dutyCycle,
             @JsonProperty double animationDurationSeconds,
             @JsonProperty double animationDelaySeconds
-    ) {
+    ) implements Serializable {
     }
 
     /**
@@ -100,7 +107,7 @@ public class Fog implements Renderable {
      */
     public void startAnimation() {
         previousTimeNs = System.nanoTime();
-        accumulatorNs = -(long) (metadata.animationDelaySeconds * 1e9);
+        accumulatorNs = -(long) (metadata.animationDelaySeconds * SECOND_IN_NS);
     }
 
     /**
@@ -116,19 +123,23 @@ public class Fog implements Renderable {
         previousTimeNs = currentTimeNs;
 
         // Duty cycle to make the fog blink between two states
-        final double cycleDurationNs = metadata.blinkPeriodSeconds * 1e9;
+        final double cycleDurationNs = metadata.blinkPeriodSeconds * SECOND_IN_NS;
         final boolean blinkState = accumulatorNs % cycleDurationNs < cycleDurationNs * metadata.dutyCycle;
         // Determine if the fog is currently blinking
-        final boolean isBlinking = accumulatorNs >= 0 && accumulatorNs < metadata.animationDurationSeconds * 1e9 && metadata.blinkEnabled;
+        final boolean isBlinking = accumulatorNs >= 0
+                && accumulatorNs < metadata.animationDurationSeconds * SECOND_IN_NS && metadata.blinkEnabled;
         // Draw inner or outer fog
         if (accumulatorNs < 0 || isBlinking && blinkState) {
-            renderFog(metadata.topLeft.fromX, metadata.topLeft.fromY, metadata.bottomRight.fromX, metadata.bottomRight.fromY);
+            renderFog(metadata.topLeft.fromX, metadata.topLeft.fromY,
+                    metadata.bottomRight.fromX, metadata.bottomRight.fromY);
         } else {
-            renderFog(metadata.topLeft.toX, metadata.topLeft.toY, metadata.bottomRight.toX, metadata.bottomRight.toY);
+            renderFog(metadata.topLeft.toX, metadata.topLeft.toY,
+                    metadata.bottomRight.toX, metadata.bottomRight.toY);
         }
     }
 
-    private static void renderFog(final double topLeftX, final double topLeftY, final double bottomRightX, final double bottomRightY) {
+    private static void renderFog(final double topLeftX, final double topLeftY,
+                                  final double bottomRightX, final double bottomRightY) {
         final Renderer renderer = GameLoop.getInstance().getRenderer();
         final GraphicsContext gc = renderer.getGraphicsContext();
         final CoordinateSystem cs = renderer.getWorldCoordinateSystem();
@@ -141,17 +152,22 @@ public class Fog implements Renderable {
         renderer.addRenderTask(new RenderTask(RenderPriority.FOG, () -> {
             for (double fogWorldX = topLeftX; fogWorldX < topLeftX + viewWorldWidth; fogWorldX += FOG_SIDE_LENGTH) {
                 drawFogTile(gc, cs, SingleSpriteKey.FOG_TOP, fogWorldX, topLeftY);
-                drawFogTile(gc, cs, SingleSpriteKey.FOG_BOTTOM, fogWorldX, topLeftY + viewWorldHeight - FOG_SIDE_LENGTH);
+                drawFogTile(gc, cs, SingleSpriteKey.FOG_BOTTOM,
+                        fogWorldX, topLeftY + viewWorldHeight - FOG_SIDE_LENGTH);
             }
             for (double fogWorldY = topLeftY; fogWorldY < topLeftY + viewWorldHeight; fogWorldY += FOG_SIDE_LENGTH) {
                 drawFogTile(gc, cs, SingleSpriteKey.FOG_LEFT, topLeftX, fogWorldY);
-                drawFogTile(gc, cs, SingleSpriteKey.FOG_RIGHT, topLeftX + viewWorldWidth - FOG_SIDE_LENGTH, fogWorldY);
+                drawFogTile(gc, cs, SingleSpriteKey.FOG_RIGHT,
+                        topLeftX + viewWorldWidth - FOG_SIDE_LENGTH, fogWorldY);
             }
             // Draw fog corners
             drawFogTile(gc, cs, SingleSpriteKey.FOG_TOP_LEFT, topLeftX, topLeftY);
-            drawFogTile(gc, cs, SingleSpriteKey.FOG_TOP_RIGHT, topLeftX + viewWorldWidth - FOG_SIDE_LENGTH, topLeftY);
-            drawFogTile(gc, cs, SingleSpriteKey.FOG_BOTTOM_LEFT, topLeftX, topLeftY + viewWorldHeight - FOG_SIDE_LENGTH);
-            drawFogTile(gc, cs, SingleSpriteKey.FOG_BOTTOM_RIGHT, topLeftX + viewWorldWidth - FOG_SIDE_LENGTH, topLeftY + viewWorldHeight - FOG_SIDE_LENGTH);
+            drawFogTile(gc, cs, SingleSpriteKey.FOG_TOP_RIGHT,
+                    topLeftX + viewWorldWidth - FOG_SIDE_LENGTH, topLeftY);
+            drawFogTile(gc, cs, SingleSpriteKey.FOG_BOTTOM_LEFT,
+                    topLeftX, topLeftY + viewWorldHeight - FOG_SIDE_LENGTH);
+            drawFogTile(gc, cs, SingleSpriteKey.FOG_BOTTOM_RIGHT,
+                    topLeftX + viewWorldWidth - FOG_SIDE_LENGTH, topLeftY + viewWorldHeight - FOG_SIDE_LENGTH);
             // Convert screen corners to world coordinates and align to tile grid
             final double screenWorldLeft = Math.floor(cs.toWorldX(0));
             final double screenWorldTop = Math.floor(cs.toWorldY(0));
@@ -161,10 +177,15 @@ public class Fog implements Renderable {
             final double fogOffsetX = (screenWorldLeft - topLeftX) % FOG_SIDE_LENGTH;
             final double fogOffsetY = (screenWorldTop - topLeftY) % FOG_SIDE_LENGTH;
             // Iterate through the fog tiles that intersect the screen area
-            for (double fogX = screenWorldLeft + fogOffsetX - FOG_SIDE_LENGTH; fogX < screenWorldRight; fogX += FOG_SIDE_LENGTH) {
-                for (double fogY = screenWorldTop + fogOffsetY - FOG_SIDE_LENGTH; fogY < screenWorldBottom; fogY += FOG_SIDE_LENGTH) {
+            for (double fogX = screenWorldLeft + fogOffsetX - FOG_SIDE_LENGTH;
+                 fogX < screenWorldRight; fogX += FOG_SIDE_LENGTH) {
+                for (double fogY = screenWorldTop + fogOffsetY - FOG_SIDE_LENGTH;
+                     fogY < screenWorldBottom; fogY += FOG_SIDE_LENGTH) {
                     // Draw fog only outside the current visible world area
-                    final boolean isOutsideView = fogX < topLeftX || fogX >= topLeftX + viewWorldWidth || fogY < topLeftY || fogY >= topLeftY + viewWorldHeight;
+                    final boolean isOutsideView = fogX < topLeftX
+                            || fogX >= topLeftX + viewWorldWidth
+                            || fogY < topLeftY
+                            || fogY >= topLeftY + viewWorldHeight;
                     if (isOutsideView) {
                         drawFogTile(gc, cs, SingleSpriteKey.FOG, fogX, fogY);
                     }
@@ -173,7 +194,8 @@ public class Fog implements Renderable {
         }));
     }
 
-    private static void drawFogTile(final GraphicsContext gc, final CoordinateSystem cs, final SingleSpriteKey fogKey, final double x, final double y) {
+    private static void drawFogTile(final GraphicsContext gc, final CoordinateSystem cs,
+                                    final SingleSpriteKey fogKey, final double x, final double y) {
         Renderer.drawImage(SpriteLoader.loadSprite(fogKey).image(), gc, cs, x, y, FOG_SIDE_LENGTH, FOG_SIDE_LENGTH);
     }
 }

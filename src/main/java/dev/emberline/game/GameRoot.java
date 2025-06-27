@@ -109,6 +109,7 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
     private void handleGameOverEvent(final GameOverEvent event) {
         currentState = gameOver;
+        gameOver.setStatistics(event.getStatistics());
     }
 
     @EventHandler

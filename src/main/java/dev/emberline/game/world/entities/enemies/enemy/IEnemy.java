@@ -5,6 +5,7 @@ import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -17,16 +18,16 @@ import java.util.List;
  * @see Updatable
  * @see Renderable
  */
-public interface IEnemy extends Updatable, Renderable {
+public interface IEnemy extends Updatable, Renderable, Serializable {
 
     /**
-     * Returns the height of the enemy in the world space
+     * Returns the height of the enemy in the world space.
      * @return the height of the enemy in the world space
      */
     double getHeight();
 
     /**
-     * Returns the width of the enemy in the world space
+     * Returns the width of the enemy in the world space.
      * @return the width of the enemy in the world space
      */
     double getWidth();
@@ -44,7 +45,7 @@ public interface IEnemy extends Updatable, Renderable {
     void dealDamage(double damage);
 
     /**
-     * Applies the provided {@link EnchantmentEffect}
+     * Applies the provided {@link EnchantmentEffect}.
      * @param effect the effect to be assigned on the enemy
      */
     void applyEffect(EnchantmentEffect effect);
@@ -56,21 +57,22 @@ public interface IEnemy extends Updatable, Renderable {
     void setSlowFactor(double slowFactor);
 
     /**
-     * Returns whether the enemy is dead
+     * Returns whether the enemy is dead.
      *
      * @return whether the enemy is dead
      */
     boolean isDead();
 
     /**
-     * Returns whether the enemy is dead
+     * Returns whether the enemy is dead.
      *
      * @return whether the enemy is in a hittable state
      */
     boolean isHittable();
 
     /**
-     * Uniform motion ({@code origin}+ {@code velocity} * {@code t}) with {@code t} in [{@code 0}, {@code durationNs}] ns
+     * Uniform motion ({@code origin} + {@code velocity} * {@code t})
+     * with {@code t} in [{@code 0}, {@code durationNs}] ns.
      * @param origin the position at {@code t=0}
      * @param velocity the velocity vector of the {@code UniformMotion}
      * @param durationNs how much does the {@code UniformMotion} last
