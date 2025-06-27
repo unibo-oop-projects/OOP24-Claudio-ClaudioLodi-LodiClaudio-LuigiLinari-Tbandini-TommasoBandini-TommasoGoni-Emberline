@@ -1,18 +1,20 @@
 package dev.emberline.core.event;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EventListener;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
- * TODO
+ * TODO.
  */
 public final class EventDispatcher {
+    // Singleton instance of the EventDispatcher
     private static EventDispatcher instance;
 
     // Map to hold event handler methods and their corresponding listeners
@@ -31,9 +33,10 @@ public final class EventDispatcher {
     }
     
     private EventDispatcher() {
+        // Prevent instantiation from outside
     }
 
-    public static EventDispatcher getInstance() {
+    public synchronized static EventDispatcher getInstance() {
         if (instance == null) {
             instance = new EventDispatcher();
         }
@@ -41,7 +44,8 @@ public final class EventDispatcher {
     }
 
     /**
-     * TODO
+     * TODO.
+     * @param listener TODO.
      */
     public void registerListener(final EventListener listener) {
         if (listener == null) {
@@ -54,6 +58,7 @@ public final class EventDispatcher {
 
     /**
      * TODO
+     * @param listener TODO.
      */
     public void unregisterListener(final EventListener listener) {
         if (listener == null) {
@@ -80,6 +85,10 @@ public final class EventDispatcher {
      *              or one of its subclasses
      * @throws IllegalArgumentException if the event parameter is {@code null}
      */
+    /* Suppressing warning for setAccessible(true) usage.
+    Event handlers are supposed to be private because they are invoked by the dispatcher
+    and should not be part of the public API. */
+    @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
     public void dispatchEvent(final EventObject event) {
         if (event == null) {
             throw new IllegalArgumentException("Event cannot be null");
@@ -95,8 +104,8 @@ public final class EventDispatcher {
             listeners.forEach(listener -> {
                 try {
                     method.invoke(listener, event);
-                } catch (final Exception e) {
-                    throw new RuntimeException("Failed to invoke event handler method: " + method.getName(), e);
+                } catch (final IllegalAccessException | InvocationTargetException e) {
+                    throw new EventHandlerInvocationException("Failed to invoke event handler method: " + method.getName(), e);
                 }
             });
         }
