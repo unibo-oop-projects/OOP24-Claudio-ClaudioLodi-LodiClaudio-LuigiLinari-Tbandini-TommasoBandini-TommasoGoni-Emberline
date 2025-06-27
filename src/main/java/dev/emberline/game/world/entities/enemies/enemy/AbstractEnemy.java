@@ -226,6 +226,14 @@ public abstract class AbstractEnemy implements IEnemy {
         return updateComponent.getPosition();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double getRemainingDistanceToTarget() {
+        return updateComponent.getRemainingDistanceToTarget();
+    }
+
     double getHealthPercentage() {
         return updateComponent.getHealthPercentage();
     }

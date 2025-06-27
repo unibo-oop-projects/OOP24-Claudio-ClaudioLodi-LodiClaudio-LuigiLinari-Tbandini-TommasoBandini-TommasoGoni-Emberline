@@ -113,6 +113,14 @@ public class EnemyWithStats implements IEnemy {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double getRemainingDistanceToTarget() {
+        return enemy.getRemainingDistanceToTarget();
+    }
+
+    /**
      * Renders the decorating {@code IEnemy} instance
      * @see EnemyRenderComponent#render()
      */

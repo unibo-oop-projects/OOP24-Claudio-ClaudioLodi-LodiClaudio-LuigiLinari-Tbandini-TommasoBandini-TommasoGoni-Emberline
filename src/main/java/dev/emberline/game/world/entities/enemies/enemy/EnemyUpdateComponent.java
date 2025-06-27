@@ -123,6 +123,22 @@ class EnemyUpdateComponent implements Updatable {
         return enemyMotion;
     }
 
+    /**
+     * @see IEnemy#getRemainingDistanceToTarget()
+     *
+     * @return the remaining distance to the target destination.
+     */
+    public double getRemainingDistanceToTarget() {
+        double remainingDistance = 0;
+        Vector2D currPosition = new Coordinate2D(position.getX(), position.getY());
+        for (int i = destinationsIdx; i < destinations.size(); ++i) {
+            Vector2D currDestination = destinations.get(i);
+            remainingDistance += currPosition.distance(currDestination);
+            currPosition = new Coordinate2D(currDestination.getX(), currDestination.getY());
+        }
+        return remainingDistance;
+    }
+
     void dealDamage(final double damage) {
         health -= damage;
         if (health <= 0) {

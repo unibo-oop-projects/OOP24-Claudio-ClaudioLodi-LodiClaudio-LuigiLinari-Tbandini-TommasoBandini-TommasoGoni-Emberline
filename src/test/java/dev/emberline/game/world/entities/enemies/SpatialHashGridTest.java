@@ -80,6 +80,11 @@ class EnemyMock implements IEnemy {
         return position;
     }
 
+    @Override
+    public double getRemainingDistanceToTarget() {
+        throw new UnsupportedOperationException();
+    }
+
     public void setPosition(final Vector2D position) {
         this.position = position;
     }
