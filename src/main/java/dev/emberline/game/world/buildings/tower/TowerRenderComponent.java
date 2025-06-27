@@ -17,7 +17,13 @@ import javafx.scene.effect.Bloom;
 import javafx.scene.image.Image;
 import javafx.scene.transform.Rotate;
 
-class TowerRenderComponent implements Renderable {
+import java.io.Serial;
+import java.io.Serializable;
+
+class TowerRenderComponent implements Renderable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 3616851823744803302L;
 
     private final Tower tower;
     private final long creationTimeNs = System.nanoTime();

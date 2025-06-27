@@ -5,6 +5,7 @@ import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 import dev.emberline.gui.towerdialog.stats.TowerStat.TowerStatType;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ import java.util.List;
  * @see dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation.EnemyAppearance#BURNING
  */
 public class BurnEffect implements EnchantmentEffect {
+    @Serial
+    private static final long serialVersionUID = 4592711708572597944L;
 
     public static final int secondInNs = 1_000_000_000;
 

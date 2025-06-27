@@ -5,9 +5,14 @@ import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
-class TowerUpdateComponent implements Updatable {
+class TowerUpdateComponent implements Updatable, Serializable {
+    @Serial
+    private static final long serialVersionUID = 5273964472174671968L;
+
     private long accumulatedTimeNs = 0;
 
     private final World world;

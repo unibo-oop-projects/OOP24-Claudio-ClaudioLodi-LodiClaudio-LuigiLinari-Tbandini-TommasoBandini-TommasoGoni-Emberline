@@ -5,6 +5,8 @@ import dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
 
+import java.io.Serializable;
+
 /**
  * EnchantmentEffect defines the behavior of effects applied to enemies during gameplay.
  * An EnchantmentEffect is applied to an enemy, and it can modify the enemy's attributes and behavior.
@@ -16,7 +18,7 @@ import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
  *
  * @see EnchantmentInfo#getEffect()
  */
-public interface EnchantmentEffect extends TowerStatsProvider {
+public interface EnchantmentEffect extends TowerStatsProvider, Serializable {
 
     /**
      * Updates the effect applied to the specified enemy based on the elapsed time.

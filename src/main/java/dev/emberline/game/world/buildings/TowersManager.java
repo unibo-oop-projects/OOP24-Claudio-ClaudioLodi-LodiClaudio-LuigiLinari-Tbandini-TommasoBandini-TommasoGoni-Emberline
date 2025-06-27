@@ -17,6 +17,7 @@ import dev.emberline.utility.Vector2D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -28,6 +29,9 @@ import java.util.Set;
  * Responsible for rendering, updating, and handling input for towers and their associated dialogs.
  */
 public class TowersManager implements Updatable, Renderable, Inputable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 8310031147169513653L;
 
     private TowerDialogLayer towerDialogLayer;
     private NewBuildDialogLayer newBuildDialogLayer;
