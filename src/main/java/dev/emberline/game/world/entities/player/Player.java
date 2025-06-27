@@ -11,6 +11,7 @@ import dev.emberline.game.world.World;
 import dev.emberline.gui.event.GameOverEvent;
 import dev.emberline.gui.event.NewBuildEvent;
 import dev.emberline.gui.event.ResetTowerInfoEvent;
+import dev.emberline.gui.event.SetTowerAimTypeEvent;
 import dev.emberline.gui.event.SetTowerInfoEvent;
 import dev.emberline.gui.event.UpgradeTowerInfoEvent;
 
