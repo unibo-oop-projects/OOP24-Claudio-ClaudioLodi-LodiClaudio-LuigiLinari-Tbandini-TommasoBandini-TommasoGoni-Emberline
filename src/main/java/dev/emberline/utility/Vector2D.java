@@ -77,7 +77,7 @@ public interface Vector2D {
 
     /**
      * Returns a point with the coordinates of this point multiplied
-     * by the specified factor
+     * by the specified.
      *
      * @param factor the factor multiplying the coordinates
      * @return the point with multiplied coordinates

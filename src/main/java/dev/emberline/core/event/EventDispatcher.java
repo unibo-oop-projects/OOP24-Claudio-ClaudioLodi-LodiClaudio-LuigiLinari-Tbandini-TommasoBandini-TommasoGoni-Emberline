@@ -1,12 +1,18 @@
 package dev.emberline.core.event;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.EventListener;
+import java.util.EventObject;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * TODO
  */
-public class EventDispatcher {
+public final class EventDispatcher {
     private static EventDispatcher instance;
 
     // Map to hold event handler methods and their corresponding listeners
@@ -141,13 +147,18 @@ public class EventDispatcher {
     private void validateEventHandler(final Method method) {
         final Class<?>[] parameterTypes = method.getParameterTypes();
         if (parameterTypes.length != 1) {
-            throw new InvalidEventHandlerException("Event handler methods must have exactly one parameter, but found: " + parameterTypes.length);
+            throw new InvalidEventHandlerException(
+                    "Event handler methods must have exactly one parameter, but found: " + parameterTypes.length);
         }
         if (!EventObject.class.isAssignableFrom(parameterTypes[0])) {
-            throw new InvalidEventHandlerException("Event handler methods must accept a parameter of type EventObject or a subclass, but found: " + parameterTypes[0].getName());
+            throw new InvalidEventHandlerException(
+                    "Event handler methods must accept a parameter of type EventObject or a subclass, but found: "
+                            + parameterTypes[0].getName());
         }
         if (!EventListener.class.isAssignableFrom(method.getDeclaringClass())) {
-            throw new InvalidEventHandlerException("Event handler methods must be declared in a class that implements EventListener, but found: " + method.getDeclaringClass().getName());
+            throw new InvalidEventHandlerException(
+                    "Event handler methods must be declared in a class that implements EventListener, but found: "
+                            + method.getDeclaringClass().getName());
         }
     }
 }

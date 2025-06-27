@@ -23,15 +23,8 @@ public class TextGuiButton extends GuiButton {
     private final String labelText;
     private final TextLayout textLayout;
 
-    private static final class TextLayout {
-        @JsonProperty
-        double textWidthRatio;
-        @JsonProperty
-        double textHeightRatio;
-        @JsonProperty
-        double textXOffset;
-        @JsonProperty
-        double textYPosition;
+    private record TextLayout(@JsonProperty double textWidthRatio, @JsonProperty double textHeightRatio,
+                              @JsonProperty double textXOffset, @JsonProperty double textYPosition) {
     }
 
     /**

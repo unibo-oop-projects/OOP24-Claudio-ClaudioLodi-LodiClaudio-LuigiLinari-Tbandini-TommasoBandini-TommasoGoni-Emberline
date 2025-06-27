@@ -102,7 +102,8 @@ public class GuiButton implements Inputable, Renderable {
      * @param hoverSprite  The image to be displayed when the button is hovered over.
      * @see GuiButton#GuiButton(double, double, double, double, Image)
      */
-    public GuiButton(final double x, final double y, final double width, final double height, final Image normalSprite, final Image hoverSprite) {
+    public GuiButton(final double x, final double y, final double width, final double height,
+                     final Image normalSprite, final Image hoverSprite) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -190,7 +191,7 @@ public class GuiButton implements Inputable, Renderable {
     }
 
     /**
-     * Renders the GUI button based on its visual representation, such as rendering the normal or hover state
+     * Renders the GUI button based on its visual representation, such as rendering the normal or hover state.
      * @see Renderable#render()
      */
     @Override

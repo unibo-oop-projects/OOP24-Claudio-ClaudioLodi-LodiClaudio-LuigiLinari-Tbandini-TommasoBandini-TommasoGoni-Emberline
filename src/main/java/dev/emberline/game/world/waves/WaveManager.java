@@ -19,13 +19,11 @@ public class WaveManager implements IWaveManager {
     private static final WavesConfig WAVES_CONFIG = ConfigLoader.loadConfig(WAVES_CONFIG_PATH, WavesConfig.class);
 
     // Loading waves from resources
-    private static class WavesConfig {
-        @JsonProperty
-        String[] wavePaths;
+    private record WavesConfig(@JsonProperty String[] wavePaths) {
     }
 
     /**
-     * Creates a new instance of {@code WaveManager}
+     * Creates a new instance of {@code WaveManager}.
      *
      * @param world is the reference to the World
      */

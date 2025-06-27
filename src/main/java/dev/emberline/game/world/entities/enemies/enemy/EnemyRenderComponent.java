@@ -16,7 +16,7 @@ class EnemyRenderComponent implements Renderable {
     private final AbstractEnemy enemy;
     private final EnemyAnimation enemyAnimation;
 
-    private static class HealthbarLayout {
+    private static final class HealthbarLayout {
         private static final double FULL_WIDTH = 1;
         private static final double HEIGHT = 0.1;
         private static final double X_OFFSET = 0.1;

@@ -13,7 +13,7 @@ public class WaveManagerWithStats implements IWaveManager {
     private final Statistics statistics;
 
     /**
-     * Constructs a new instance of {@code WaveManagerWithStats}
+     * Constructs a new instance of {@code WaveManagerWithStats}.
      * @param world the {@code World} instance within which this wave manager operates.
      * @see WaveManagerWithStats
      */

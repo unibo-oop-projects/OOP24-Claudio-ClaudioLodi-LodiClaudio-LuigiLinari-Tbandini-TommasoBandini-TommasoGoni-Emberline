@@ -28,15 +28,13 @@ public class TowerPreBuild extends Building {
 
     private static final String CONFIGS_PATH = "/sprites/towerAssets/towerPreBuild.json";
 
-    private static final Metadata metadata = ConfigLoader.loadConfig(CONFIGS_PATH, Metadata.class);
+    private static final Metadata METADATA = ConfigLoader.loadConfig(CONFIGS_PATH, Metadata.class);
 
     private final Vector2D locationBottomLeft;
     private final TowersManager towersManager;
 
-    private static class Metadata {
-        @JsonProperty double worldDimensionWidth;
-        @JsonProperty double worldDimensionHeight;
-        @JsonProperty int newBuildCost;
+    private record Metadata(@JsonProperty double worldDimensionWidth, @JsonProperty double worldDimensionHeight,
+                            @JsonProperty int newBuildCost) {
     }
 
     /**
@@ -55,7 +53,7 @@ public class TowerPreBuild extends Building {
      */
     @Override
     public Vector2D getWorldTopLeft() {
-        return locationBottomLeft.subtract(0, metadata.worldDimensionHeight);
+        return locationBottomLeft.subtract(0, METADATA.worldDimensionHeight);
     }
 
     /**
@@ -63,7 +61,7 @@ public class TowerPreBuild extends Building {
      */
     @Override
     public Vector2D getWorldBottomRight() {
-        return locationBottomLeft.add(metadata.worldDimensionWidth, 0);
+        return locationBottomLeft.add(METADATA.worldDimensionWidth, 0);
     }
 
     /**
@@ -72,7 +70,7 @@ public class TowerPreBuild extends Building {
      * @return the cost of building a new tower as an integer
      */
     public int getNewBuildCost() {
-        return metadata.newBuildCost;
+        return METADATA.newBuildCost;
     }
 
     /**
@@ -97,8 +95,8 @@ public class TowerPreBuild extends Building {
 
         final double topLeftScreenX = cs.toScreenX(getWorldTopLeft().getX());
         final double topLeftScreenY = cs.toScreenY(getWorldTopLeft().getY());
-        final double screenWidth = cs.getScale() * metadata.worldDimensionWidth;
-        final double screenHeight = cs.getScale() * metadata.worldDimensionHeight;
+        final double screenWidth = cs.getScale() * METADATA.worldDimensionWidth;
+        final double screenHeight = cs.getScale() * METADATA.worldDimensionHeight;
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BUILDINGS, () -> {
             gc.drawImage(image, topLeftScreenX, topLeftScreenY, screenWidth, screenHeight);

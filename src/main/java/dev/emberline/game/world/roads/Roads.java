@@ -16,7 +16,7 @@ import java.util.Optional;
 public class Roads {
 
     /**
-     * graph data structure, represents the walkable roads on the map
+     * graph data structure, represents the walkable roads on the map.
      */
     private final Map<Vector2D, Node> posToNode = new HashMap<>();
     private final Arch[] arches;
@@ -24,7 +24,7 @@ public class Roads {
     private static final String ROADS_CONFIG_FILENAME = "roads.json";
 
     //single arch configuration
-    private record Arch (
+    private record Arch(
         @JsonProperty
         double fromX,
         @JsonProperty
@@ -35,7 +35,9 @@ public class Roads {
         double toY,
         @JsonProperty
         int weight
-    ) {}
+    ) {
+
+    }
 
     /**
      * Creates a new Roads object and determines the road network based on the configuration file.

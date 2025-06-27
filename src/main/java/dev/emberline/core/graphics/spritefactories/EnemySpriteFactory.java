@@ -21,19 +21,11 @@ import java.util.Objects;
  * and the individual frames are extracted during sprite creation based on metadata values.
  */
 public final class EnemySpriteFactory implements SpriteFactory<EnemySpriteKey> {
-    private static class Metadata {
-        @JsonProperty
-        int width;
-        @JsonProperty
-        int height;
-        @JsonProperty
-        int frames;
-        @JsonProperty
-        int frameTimeNs;
-        @JsonProperty
-        Map<FacingDirection, Integer> direction;
-        @JsonProperty
-        Map<EnemyAppearance, Integer> state;
+
+    private record Metadata(@JsonProperty int width, @JsonProperty int height,
+                            @JsonProperty int frames, @JsonProperty int frameTimeNs,
+                            @JsonProperty Map<FacingDirection, Integer> direction,
+                            @JsonProperty Map<EnemyAppearance, Integer> state) {
     }
 
     /**

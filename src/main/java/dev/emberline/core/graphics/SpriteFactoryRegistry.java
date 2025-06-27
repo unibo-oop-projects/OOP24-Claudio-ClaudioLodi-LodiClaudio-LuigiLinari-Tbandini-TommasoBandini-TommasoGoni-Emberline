@@ -1,6 +1,14 @@
 package dev.emberline.core.graphics;
 
-import dev.emberline.core.graphics.spritefactories.*;
+
+import dev.emberline.core.graphics.spritefactories.EnemySpriteFactory;
+import dev.emberline.core.graphics.spritefactories.SingleSpriteFactory;
+import dev.emberline.core.graphics.spritefactories.SpriteFactory;
+import dev.emberline.core.graphics.spritefactories.StringSpriteFactory;
+import dev.emberline.core.graphics.spritefactories.ProjectileSpriteFactory;
+import dev.emberline.core.graphics.spritefactories.CrystalSpriteFactory;
+import dev.emberline.core.graphics.spritefactories.TowerSpriteFactory;
+import dev.emberline.core.graphics.spritefactories.MapSpriteFactory;
 import dev.emberline.core.graphics.spritekeys.SpriteKey;
 
 import java.util.ArrayList;
@@ -17,9 +25,12 @@ import java.util.List;
  * {@link IllegalArgumentException} is thrown when no matching factory is found for a given key type.
  */
 final class SpriteFactoryRegistry {
-    private final static List<SpriteFactory<?>> FACTORIES = Collections.synchronizedList(new ArrayList<>());
 
-    private SpriteFactoryRegistry() {}
+    private static final List<SpriteFactory<?>> FACTORIES = Collections.synchronizedList(new ArrayList<>());
+
+    private SpriteFactoryRegistry() {
+
+    }
 
     static <K extends SpriteKey> void registerFactory(final SpriteFactory<K> factory) {
         FACTORIES.add(factory);
@@ -48,4 +59,5 @@ final class SpriteFactoryRegistry {
         registerFactory(new CrystalSpriteFactory());
         registerFactory(new MapSpriteFactory());
     }
+
 }

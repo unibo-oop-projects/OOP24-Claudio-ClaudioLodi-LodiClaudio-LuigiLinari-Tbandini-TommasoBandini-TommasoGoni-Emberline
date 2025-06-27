@@ -36,7 +36,7 @@ class Node implements Serializable {
      *
      * @param pos the positional vector of this Node, represented as a {@code Vector2D}
      */
-    public Node(final Vector2D pos) {
+    Node(final Vector2D pos) {
         this.pos = pos;
         this.neighbours = new ArrayList<>();
 

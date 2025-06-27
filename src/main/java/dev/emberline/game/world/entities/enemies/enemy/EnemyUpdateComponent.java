@@ -13,9 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 class EnemyUpdateComponent implements Updatable {
-    private enum EnemyState {WALKING, DYING, DEAD}
+
+    private enum EnemyState {
+        WALKING,
+        DYING,
+        DEAD
+    }
 
     private final AbstractEnemy enemy;
     private EnemyState enemyState;
@@ -159,14 +163,17 @@ class EnemyUpdateComponent implements Updatable {
     }
 
     FacingDirection getFacingDirection() {
+        final int leftAngle = -180, upAngle = 90, rightAngle = 0, downAngle = -90;
         final int angle = Math.round((float) Math.toDegrees(Math.atan2(-velocity.getY(), velocity.getX())));
         return switch (angle) {
-            case -180 -> FacingDirection.LEFT;
-            case 90 -> FacingDirection.UP;
-            case 0 -> FacingDirection.RIGHT;
-            case -90 -> FacingDirection.DOWN;
+            case leftAngle -> FacingDirection.LEFT;
+            case upAngle -> FacingDirection.UP;
+            case rightAngle -> FacingDirection.RIGHT;
+            case downAngle -> FacingDirection.DOWN;
             default ->
-                    throw new IllegalStateException("The only handled cases of velocity are: LEFT, UP, RIGHT, DOWN. Found angle: " + angle);
+                    throw new IllegalStateException(
+                            "The only handled cases of velocity are: LEFT, UP, RIGHT, DOWN. Found angle: " + angle
+                    );
         };
     }
 
@@ -223,4 +230,5 @@ class EnemyUpdateComponent implements Updatable {
         enemyState = EnemyState.DEAD;
         clearEffect();
     }
+
 }

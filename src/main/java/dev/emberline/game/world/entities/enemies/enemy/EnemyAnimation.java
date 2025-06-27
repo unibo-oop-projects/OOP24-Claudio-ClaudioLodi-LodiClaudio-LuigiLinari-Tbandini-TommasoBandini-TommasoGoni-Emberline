@@ -119,11 +119,13 @@ public class EnemyAnimation implements Updatable {
         if (!changed) {
             return; // No changes to the sprite, no need to update
         }
-        this.animatedSprite = (AnimatedSprite) SpriteLoader.loadSprite(new EnemySpriteKey(enemy.getEnemyType(), facingDirection, enemyAppearance));
+        this.animatedSprite = (AnimatedSprite) SpriteLoader.loadSprite(
+                new EnemySpriteKey(enemy.getEnemyType(), facingDirection, enemyAppearance)
+        );
     }
 
     /**
-     * Returns the current frame of the enemy's animation as an image
+     * Returns the current frame of the enemy's animation as an image.
      *
      * @return the current frame of the enemy's animation as an image
      */

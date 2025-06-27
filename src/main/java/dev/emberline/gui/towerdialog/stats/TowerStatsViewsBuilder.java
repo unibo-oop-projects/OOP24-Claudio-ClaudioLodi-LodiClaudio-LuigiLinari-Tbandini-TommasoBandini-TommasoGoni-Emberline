@@ -2,7 +2,11 @@ package dev.emberline.gui.towerdialog.stats;
 
 import dev.emberline.gui.towerdialog.stats.TowerStat.TowerStatType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -36,11 +40,13 @@ public final class TowerStatsViewsBuilder {
         /**
          * The type of {@code TowerStatView}, can be in one of three {@link Type states}:
          * <ul>
-         *   <li><b>NORMAL:</b> A stat that is not being compared to another stat, or is being compared but has the same value.</li>
+         *   <li><b>NORMAL:</b> A stat that is not being compared to another stat,
+         *       or is being compared but has the same value.</li>
          *   <li><b>COMPARED:</b> A stat that is being compared to another stat of the same type and has a different value
          *       (for example, damage is 100 but compared to 200 will show +100).</li>
          *   <li><b>NEW:</b> A stat that is being compared but has no corresponding stat to be compared to
-         *       (for example, an effect is being compared but is actually a new stat that wasn't already present in the tower).</li>
+         *       (for example, an effect is being compared but is actually a new stat
+         *       that wasn't already present in the tower).</li>
          * </ul>
          */
         public enum Type {

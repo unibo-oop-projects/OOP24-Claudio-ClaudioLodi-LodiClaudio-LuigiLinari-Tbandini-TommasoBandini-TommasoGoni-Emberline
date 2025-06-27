@@ -10,7 +10,11 @@ import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.World;
-import dev.emberline.gui.event.*;
+import dev.emberline.gui.event.GameOverEvent;
+import dev.emberline.gui.event.NewBuildEvent;
+import dev.emberline.gui.event.ResetTowerInfoEvent;
+import dev.emberline.gui.event.UpgradeTowerInfoEvent;
+import dev.emberline.gui.event.SetTowerInfoEvent;
 
 /**
  * Represents a player within the game, keeping track of the health,
@@ -21,7 +25,7 @@ public class Player implements EventListener {
     private int gold;
     private final World world;
 
-    Metadata metadata = ConfigLoader.loadConfig("/world/player.json", Metadata.class);
+    private Metadata metadata = ConfigLoader.loadConfig("/world/player.json", Metadata.class);
 
     private record Metadata(
             @JsonProperty int health,
@@ -107,7 +111,7 @@ public class Player implements EventListener {
 
     @EventHandler
     private void handleResetEvent(final ResetTowerInfoEvent event) {
-        final UpgradableInfo<?,?> info = event.getUpgradableInfo();
+        final UpgradableInfo<?, ?> info = event.getUpgradableInfo();
         earnGold(event.getUpgradableInfo().getRefundValue());
         event.getTower().setUpgradableInfo(info.getDefault());
     }

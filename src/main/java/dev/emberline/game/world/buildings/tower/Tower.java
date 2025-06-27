@@ -26,7 +26,8 @@ import java.util.Map;
 public class Tower extends Building implements TowerInfoProvider {
     private static String configsPath = "/sprites/towerAssets/tower.json";
 
-    private static Metadata metadata = ConfigLoader.loadConfig(ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
+    private static Metadata metadata = ConfigLoader.loadConfig(
+            ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
 
     private final World world;
     private final TowerUpdateComponent towerUpdateComponent;
@@ -36,13 +37,8 @@ public class Tower extends Building implements TowerInfoProvider {
     private ProjectileInfo projectileInfo = new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
     private EnchantmentInfo enchantmentInfo = new EnchantmentInfo(EnchantmentInfo.Type.BASE, 0);
 
-    private static class Metadata {
-        @JsonProperty
-        double width;
-        @JsonProperty
-        Map<ProjectileInfo.Type, Double> height;
-        @JsonProperty
-        double firingYOffsetTiles;
+    private record Metadata(@JsonProperty double width, @JsonProperty Map<ProjectileInfo.Type, Double> height,
+                            @JsonProperty double firingYOffsetTiles) {
     }
 
     /**
@@ -100,7 +96,7 @@ public class Tower extends Building implements TowerInfoProvider {
     }
 
     /**
-     * Updates the tower
+     * Updates the tower.
      * @see TowerUpdateComponent#update(long)
      */
     @Override
@@ -109,7 +105,7 @@ public class Tower extends Building implements TowerInfoProvider {
     }
 
     /**
-     * Renders the tower
+     * Renders the tower.
      * @see TowerRenderComponent#render()
      */
     @Override

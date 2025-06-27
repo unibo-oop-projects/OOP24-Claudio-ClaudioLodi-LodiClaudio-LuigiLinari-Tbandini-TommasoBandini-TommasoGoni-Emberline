@@ -3,7 +3,15 @@ package dev.emberline.game.world.entities.enemies;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * The SpatialHashGrid class is a data structure designed for efficient
@@ -66,8 +74,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
      */
     public void add(final IEnemy enemy) {
         final Vector2D enemyLocation = enemy.getPosition();
-        if (enemyLocation.getX() < xMin || enemyLocation.getX() > xMax ||
-                enemyLocation.getY() < yMin || enemyLocation.getY() > yMax) {
+        if (enemyLocation.getX() < xMin || enemyLocation.getX() > xMax
+                || enemyLocation.getY() < yMin || enemyLocation.getY() > yMax) {
             throw new IllegalStateException("Enemy is outside the bounds of the spatial hash grid");
         }
 
@@ -195,8 +203,8 @@ public class SpatialHashGrid implements Iterable<IEnemy> {
     }
 
     private boolean isInside(final CellIdx cellIdx) {
-        return cellIdx.x() >= 0 && cellIdx.x() < cols &&
-                cellIdx.y() >= 0 && cellIdx.y() < rows;
+        return cellIdx.x() >= 0 && cellIdx.x() < cols
+                && cellIdx.y() >= 0 && cellIdx.y() < rows;
     }
 
     private CellIdx getCellIdx(final Vector2D location) {
