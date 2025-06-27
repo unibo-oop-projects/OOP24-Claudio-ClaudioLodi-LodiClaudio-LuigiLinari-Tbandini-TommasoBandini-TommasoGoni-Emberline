@@ -39,7 +39,7 @@ public class Roads implements Serializable {
         double toY,
         @JsonProperty
         int weight
-    ) {
+    ) implements Serializable {
 
     }
 

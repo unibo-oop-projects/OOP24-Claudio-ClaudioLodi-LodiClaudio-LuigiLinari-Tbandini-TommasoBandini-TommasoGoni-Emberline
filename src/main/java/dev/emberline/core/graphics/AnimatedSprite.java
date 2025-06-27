@@ -91,6 +91,8 @@ public class AnimatedSprite implements Sprite, Serializable {
 
         AnimatedSprite animatedSprite = (AnimatedSprite) SpriteLoader.loadSpriteAfterSerialization(key);
 
+        images = new Image[animatedSprite.getFrameCount()];
+
         System.arraycopy(animatedSprite.images, 0, this.images, 0, animatedSprite.images.length);
     }
 }

@@ -10,13 +10,18 @@ import dev.emberline.game.world.spawnpoints.Spawnpoints;
 import dev.emberline.game.world.spawnpoints.Spawnpoints.EnemyToSpawn;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * The Wave class contains all the elements that characterize a single wave.
  */
-public class Wave implements Updatable, Renderable {
+public class Wave implements Updatable, Renderable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 7347475266212681012L;
 
     private final World world;
     private final Roads roads;

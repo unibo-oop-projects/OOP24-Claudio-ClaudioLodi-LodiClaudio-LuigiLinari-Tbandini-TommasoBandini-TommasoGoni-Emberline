@@ -42,7 +42,7 @@ public class Spawnpoints implements Serializable {
         long spawnIntervalNs,
         @JsonProperty
         EnemyType[] enemies
-    ) { }
+    ) implements Serializable { }
 
     private record Spawnpoint (
         @JsonProperty
@@ -51,7 +51,7 @@ public class Spawnpoints implements Serializable {
         double y,
         @JsonProperty
         SpawnSequence[] spawnSequences
-    ) { }
+    ) implements Serializable { }
 
     /**
      * Single enemy identified by these 3 parameters:
@@ -61,7 +61,7 @@ public class Spawnpoints implements Serializable {
      * @param enemyType the {@link EnemyType}
      */
     public record EnemyToSpawn(long spawnTimeNs, Vector2D spawnLocation,
-                               EnemyType enemyType) implements Comparable<EnemyToSpawn> {
+                               EnemyType enemyType) implements Comparable<EnemyToSpawn>, Serializable {
         /**
          * The comparison is based on the {@code spawnTimeNs} field of each instance.
          *
