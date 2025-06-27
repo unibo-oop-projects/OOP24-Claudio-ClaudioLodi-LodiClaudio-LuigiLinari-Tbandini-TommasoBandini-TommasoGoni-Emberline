@@ -1,6 +1,12 @@
 package dev.emberline.core.graphics;
 
+import dev.emberline.core.graphics.spritekeys.SpriteKey;
 import javafx.scene.image.Image;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * The {@code AnimatedSprite} class represents a sprite composed of multiple frames,
@@ -11,8 +17,12 @@ import javafx.scene.image.Image;
  *
  * @see Sprite
  */
-public class AnimatedSprite implements Sprite {
-    private final Image[] images;
+public class AnimatedSprite implements Sprite, Serializable {
+    @Serial
+    private static final long serialVersionUID = -6515408676254063528L;
+
+    private final transient Image[] images;
+    private final SpriteKey key;
     private final int frameTimeNs;
 
     /**
@@ -24,11 +34,12 @@ public class AnimatedSprite implements Sprite {
      * @param frameTimeNs the duration in nanoseconds each frame is displayed; must be a positive integer
      * @throws IllegalArgumentException if the {@code images} array is null or empty
      */
-    public AnimatedSprite(final Image[] images, final int frameTimeNs) {
+    public AnimatedSprite(final Image[] images, final SpriteKey spriteKey, final int frameTimeNs) {
         if (images == null || images.length == 0) {
             throw new IllegalArgumentException("Image array cannot be null or empty");
         }
         this.images = images;
+        this.key = spriteKey;
         this.frameTimeNs = frameTimeNs;
     }
 
@@ -72,5 +83,14 @@ public class AnimatedSprite implements Sprite {
      */
     public int getFrameTimeNs() {
         return frameTimeNs;
+    }
+
+    @Serial
+    private void readObject(ObjectInputStream e) throws IOException, ClassNotFoundException {
+        e.defaultReadObject();
+
+        AnimatedSprite animatedSprite = (AnimatedSprite) SpriteLoader.loadSpriteAfterSerialization(key);
+
+        System.arraycopy(animatedSprite.images, 0, this.images, 0, animatedSprite.images.length);
     }
 }
