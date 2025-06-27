@@ -229,8 +229,8 @@ public class Renderer {
             final double x, final double y, final double width, final double height
     ) {
         final double scalingFactor = Math.min(width / image.getWidth(), height / image.getHeight());
-        final double newX = x + (height - image.getHeight() * scalingFactor) / 2; // vertical centering
-        final double newY = y +  (width - image.getWidth() * scalingFactor) / 2; // horizontal centering
+        final double newY = y + (height - image.getHeight() * scalingFactor) / 2; // vertical centering
+        final double newX = x + (width - image.getWidth() * scalingFactor) / 2; // horizontal centering
         drawImage(image, gc, cs, newX, newY, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
     }
 
