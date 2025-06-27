@@ -40,12 +40,12 @@ class TowerUpdateComponent implements Updatable {
         // Shooting
         final IEnemiesManager enemiesManager = world.getEnemiesManager();
 
-        final List<IEnemy> toShoot = enemiesManager.getNear(tower.firingWorldCenterLocation(), tower.getProjectileInfo().getTowerRange());
-        // Sort by aim preference (TODO)
+        final List<IEnemy> nearEnemies = enemiesManager.getNear(tower.getPosition(), tower.getProjectileInfo().getTowerRange());
+        List<IEnemy> aimOrder = tower.getAimType().getAimStrategy().getOrder(tower, nearEnemies);
 
-        for (final IEnemy enemy : toShoot) {
+        for (final IEnemy enemyToShoot : aimOrder) {
             final boolean creationSucceeded = world.getProjectilesManager().addProjectile(
-                    tower.firingWorldCenterLocation(), enemy, tower.getProjectileInfo(), tower.getEnchantmentInfo()
+                    tower.getFiringWorldCenterLocation(), enemyToShoot, tower.getProjectileInfo(), tower.getEnchantmentInfo()
             );
 
             if (creationSucceeded) {

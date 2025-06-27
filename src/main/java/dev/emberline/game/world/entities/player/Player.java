@@ -1,7 +1,5 @@
 package dev.emberline.game.world.entities.player;
 
-import java.util.EventListener;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.event.EventDispatcher;
@@ -10,7 +8,14 @@ import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.World;
-import dev.emberline.gui.event.*;
+import dev.emberline.gui.event.GameOverEvent;
+import dev.emberline.gui.event.NewBuildEvent;
+import dev.emberline.gui.event.ResetTowerInfoEvent;
+import dev.emberline.gui.event.SetTowerAimTypeEvent;
+import dev.emberline.gui.event.SetTowerInfoEvent;
+import dev.emberline.gui.event.UpgradeTowerInfoEvent;
+
+import java.util.EventListener;
 
 
 public class Player implements EventListener {
@@ -96,5 +101,10 @@ public class Player implements EventListener {
         } else if (info instanceof final EnchantmentInfo infoCast) {
             event.getTower().setUpgradableInfo(infoCast.getChangeType((EnchantmentInfo.Type) event.getType()));
         }
+    }
+
+    @EventHandler
+    private void handleSetAimTypeEvent(final SetTowerAimTypeEvent event) {
+        event.getTower().setAimType(event.getAimType());
     }
 }

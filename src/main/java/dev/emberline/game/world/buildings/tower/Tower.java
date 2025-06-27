@@ -8,6 +8,7 @@ import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.Building;
 import dev.emberline.game.world.World;
+import dev.emberline.gui.event.SetTowerAimTypeEvent.AimType;
 import dev.emberline.utility.Vector2D;
 
 import java.util.Map;
@@ -35,10 +36,13 @@ public class Tower extends Building implements TowerInfoProvider {
 
     private ProjectileInfo projectileInfo = new ProjectileInfo(ProjectileInfo.Type.BASE, 0);
     private EnchantmentInfo enchantmentInfo = new EnchantmentInfo(EnchantmentInfo.Type.BASE, 0);
+    private AimType aimType = AimType.FIRST;
 
     private static class Metadata {
         @JsonProperty
         double width;
+        @JsonProperty
+        double baseHeight;
         @JsonProperty
         Map<ProjectileInfo.Type, Double> height;
         @JsonProperty
@@ -78,6 +82,22 @@ public class Tower extends Building implements TowerInfoProvider {
      * {@inheritDoc}
      */
     @Override
+    public AimType getAimType() {
+        return aimType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Vector2D getPosition() {
+        return locationBottomLeft.add(getWorldWidth()/2, metadata.baseHeight/2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Vector2D getWorldTopLeft() {
         return locationBottomLeft.subtract(0, getWorldHeight());
     }
@@ -100,7 +120,7 @@ public class Tower extends Building implements TowerInfoProvider {
     }
 
     /**
-     * Updates the tower
+     * Updates the tower.
      * @see TowerUpdateComponent#update(long)
      */
     @Override
@@ -109,7 +129,7 @@ public class Tower extends Building implements TowerInfoProvider {
     }
 
     /**
-     * Renders the tower
+     * Renders the tower.
      * @see TowerRenderComponent#render()
      */
     @Override
@@ -117,7 +137,7 @@ public class Tower extends Building implements TowerInfoProvider {
         towerRenderComponent.render();
     }
 
-    Vector2D firingWorldCenterLocation() {
+    public Vector2D getFiringWorldCenterLocation() {
         return getWorldTopLeft().add(getWorldWidth() / 2, metadata.firingYOffsetTiles);
     }
 
@@ -135,6 +155,15 @@ public class Tower extends Building implements TowerInfoProvider {
         } else if (info instanceof final EnchantmentInfo infoCast) {
             enchantmentInfo = infoCast;
         }
+    }
+
+    /**
+     * Sets the aim type for the tower, which determines its targeting behavior.
+     *
+     * @param aimType the {@link AimType} to set for the tower.
+     */
+    public void setAimType(final AimType aimType) {
+        this.aimType = aimType;
     }
 
     public static void setConfigsPath(final String configsPath) {

@@ -45,9 +45,7 @@ public class TowerDialogLayer extends GuiLayer {
     // The current state of what is displayed in the dialog
     private EnchantmentInfo displayedEnchantment = null;
     private ProjectileInfo displayedProjectile = null;
-    // Initial aim type is set to FIRST
-    private AimType displayedAimType = AimType.FIRST;
-    private AimType currentAimType = displayedAimType;
+    private AimType displayedAimType = null;
     // Tower Stats Views
     private List<TowerStatView> statsViews = null;
     // Data to display on button hover
@@ -187,7 +185,7 @@ public class TowerDialogLayer extends GuiLayer {
         hoverData.clear();
         displayedEnchantment = Objects.requireNonNull(tower.getEnchantmentInfo(), "EnchantmentInfo cannot be null");
         displayedProjectile = Objects.requireNonNull(tower.getProjectileInfo(), "ProjectileInfo cannot be null");
-        displayedAimType = currentAimType;
+        displayedAimType = Objects.requireNonNull(tower.getAimType(), "AimType cannot be null");
 
         // Building stats
         rebuildStats();
@@ -218,12 +216,10 @@ public class TowerDialogLayer extends GuiLayer {
                 Layout.AimButton.BTN_X, Layout.AimButton.BTN_Y,
                 Layout.AimButton.BTN_WIDTH, Layout.AimButton.BTN_HEIGHT,
                 SpriteLoader.loadSprite(SingleSpriteKey.AIM_BUTTON).image(),
-                currentAimType.displayName(), TextLayoutType.CENTER
+                displayedAimType.displayName(), TextLayoutType.CENTER
         );
         aimButton.setOnClick(() -> {
-            currentAimType = currentAimType.next();
-
-            throwEvent(new SetTowerAimTypeEvent(aimButton, currentAimType));
+            throwEvent(new SetTowerAimTypeEvent(aimButton, tower, displayedAimType.next()));
         });
         buttons.add(aimButton);
     }
@@ -302,7 +298,7 @@ public class TowerDialogLayer extends GuiLayer {
         if (displayedProjectile != tower.getProjectileInfo()) {
             updateLayout();
         }
-        if (displayedAimType != currentAimType) {
+        if (displayedAimType != tower.getAimType()) {
             updateLayout();
         }
 

@@ -65,8 +65,8 @@ class TowerRenderComponent implements Renderable {
         final double screenWidth = cs.getScale() * tower.getWorldWidth();
         final double screenHeight = cs.getScale() * tower.getWorldHeight();
 
-        final double firingWorldCenterX = tower.firingWorldCenterLocation().getX();
-        final double firingWorldCenterY = tower.firingWorldCenterLocation().getY();
+        final double firingWorldCenterX = tower.getFiringWorldCenterLocation().getX();
+        final double firingWorldCenterY = tower.getFiringWorldCenterLocation().getY();
 
         final double crystalScreenX = cs.toScreenX(firingWorldCenterX - Metadata.CRYSTAL_WIDTH / 2);
         final double crystalScreenY = cs.toScreenY(firingWorldCenterY - Metadata.CRYSTAL_HEIGHT / 2) + crystalSwingOffset;
