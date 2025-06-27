@@ -2,11 +2,14 @@ package dev.emberline.core;
 
 import dev.emberline.core.input.InputDispatcher;
 import dev.emberline.core.sounds.AudioController;
+import dev.emberline.preferences.PreferenceKey;
+import dev.emberline.preferences.PreferencesManager;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -66,6 +69,8 @@ public class EmberlineApp extends Application {
 
         // Stage settings
         stage.setMaximized(true);
+        stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        stage.setFullScreen(PreferencesManager.getBooleanPreference(PreferenceKey.FULLSCREEN));
         stage.setMinWidth(MIN_WINDOW_WIDTH);
         stage.setMinHeight(MIN_WINDOW_HEIGHT);
         stage.setTitle("Emberline");

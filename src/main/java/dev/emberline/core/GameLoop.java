@@ -4,6 +4,7 @@ import dev.emberline.core.input.InputDispatcher;
 import dev.emberline.core.render.Renderer;
 import dev.emberline.core.update.Updater;
 import dev.emberline.game.GameRoot;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
 
@@ -122,5 +123,15 @@ public class GameLoop extends Thread {
      */
     public Renderer getRenderer() {
         return renderer;
+    }
+    
+    /*
+     * Sets the fullscreen mode of the game window.
+     * @param fullscreen if true, the game will run in fullscreen mode; otherwise, it will run in windowed mode.
+     */
+    public void setFullscreen(final boolean fullscreen) {
+        Platform.runLater(() -> {
+            stage.setFullScreen(fullscreen);
+        });
     }
 }
