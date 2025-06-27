@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
-import dev.emberline.core.graphics.spritekeys.MapSpriteKey;
 import dev.emberline.core.graphics.spritekeys.ProjectileSpriteKey;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;

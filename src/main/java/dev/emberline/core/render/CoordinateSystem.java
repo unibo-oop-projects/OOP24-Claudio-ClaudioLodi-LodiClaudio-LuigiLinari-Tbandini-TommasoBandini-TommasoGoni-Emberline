@@ -10,10 +10,6 @@ public class CoordinateSystem {
     private double regionX2;
     private double regionY2;
 
-    // Screen Dimensions [SCREEN]
-    private double screenWidth;
-    private double screenHeight;
-
     // Scaling factor
     private double scale;
 
@@ -35,9 +31,6 @@ public class CoordinateSystem {
 
     // Package private method; should only be called by the renderer
     void update(final double screenWidth, final double screenHeight) {
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
-
         final double regionCenterX = getRegionCenterX();
         final double regionCenterY = getRegionCenterY();
 

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.SingleSprite;
 import dev.emberline.core.graphics.Sprite;
-import dev.emberline.core.graphics.spritekeys.ProjectileSpriteKey;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;

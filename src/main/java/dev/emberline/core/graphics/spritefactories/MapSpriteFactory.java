@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
-import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
 import dev.emberline.core.graphics.spritekeys.MapSpriteKey;
 import javafx.scene.image.Image;
 
