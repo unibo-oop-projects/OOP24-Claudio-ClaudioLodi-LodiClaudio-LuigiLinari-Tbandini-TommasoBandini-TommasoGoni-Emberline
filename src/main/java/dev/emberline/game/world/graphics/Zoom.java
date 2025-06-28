@@ -113,6 +113,6 @@ public final class Zoom implements Renderable, Serializable {
             return Math.clamp(x, 0, 1);
         }
         final double beforeHalfFactor = 20, afterHalfFactor = -20;
-        return x < 0.5 ? Math.pow(2, beforeHalfFactor * x - 10) / 2 : (2 - Math.pow(2, -afterHalfFactor * x + 10)) / 2;
+        return x < 0.5 ? Math.pow(2, beforeHalfFactor * x - 10) / 2 : (2 - Math.pow(2, afterHalfFactor * x + 10)) / 2;
     }
 }
