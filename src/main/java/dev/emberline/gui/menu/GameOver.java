@@ -31,12 +31,12 @@ import javafx.scene.image.Image;
  * It is responsible for triggering appropriate events for game state transitions
  * (e.g., exiting the game, returning to the main menu).
  */
-public class GameOver extends GuiLayer implements GameState {
+public final class GameOver extends GuiLayer implements GameState {
 
     private final GameOverBounds gameOverBounds;
     private Statistics statistics;
 
-    private static class Layout {
+    private static final class Layout {
         private static final double SCALE_FACTOR = 1.7;
         // Background
         private static final double BG_WIDTH = 32;
@@ -147,7 +147,9 @@ public class GameOver extends GuiLayer implements GameState {
 
     private void drawStringImage(final GraphicsContext gc, final CoordinateSystem cs, final Image img, 
                               final double x, final double y, final double maxWidth, final double maxHeight) {
-        if (img == null) return;
+        if (img == null) {
+            return;
+        }
         
         final double ratio = img.getWidth() / img.getHeight();
         double targetWidth = maxWidth;
@@ -160,7 +162,7 @@ public class GameOver extends GuiLayer implements GameState {
             targetHeight = targetWidth / ratio;
         }
 
-        double adjustedY = y - targetHeight;  // To allign to the bottom of the image
+        final double adjustedY = y - targetHeight;  // To allign to the bottom of the image
 
         Renderer.drawImage(img, gc, cs, x, adjustedY, targetWidth, targetHeight);
     }
@@ -174,19 +176,19 @@ public class GameOver extends GuiLayer implements GameState {
         final double totalDamage = statistics.getTotalDamage();
         final double timeInGame = statistics.getTimeInGame() / 1_000_000_000.0; 
             
-        int hours = (int) timeInGame / 3600;
-        int minutes = (int) (timeInGame % 3600) / 60;
-        int seconds = (int) timeInGame % 60;
+        final int hours = (int) timeInGame / 3600;
+        final int minutes = (int) (timeInGame % 3600) / 60;
+        final int seconds = (int) timeInGame % 60;
 
-        String timeInGameFormatted = hours > 0 ? String.format("%02d:%02d:%02d", hours, minutes, seconds) : String.format("%02d:%02d", minutes, seconds);
+        final String timeInGameFormatted = hours > 0 ? String.format("%02d:%02d:%02d", hours, minutes, seconds) : String.format("%02d:%02d", minutes, seconds);
         
         final Image enemiesKilledLabel = SpriteLoader.loadSprite(new StringSpriteKey("Enemies killed:")).image();
         final Image wavesSurvivedLabel = SpriteLoader.loadSprite(new StringSpriteKey("Waves survived:")).image();
         final Image totalDamageLabel = SpriteLoader.loadSprite(new StringSpriteKey("Total damage dealt:")).image();
         final Image timeInGameLabel = SpriteLoader.loadSprite(new StringSpriteKey("Time in game:")).image();
 
-        final Image enemiesKilledValue = SpriteLoader.loadSprite(new StringSpriteKey("" + enemiesKilled)).image();
-        final Image wavesSurvivedValue = SpriteLoader.loadSprite(new StringSpriteKey("" + wavesSurvived)).image();
+        final Image enemiesKilledValue = SpriteLoader.loadSprite(new StringSpriteKey(Integer.toString(enemiesKilled))).image();
+        final Image wavesSurvivedValue = SpriteLoader.loadSprite(new StringSpriteKey(Integer.toString(wavesSurvived))).image();
         final Image totalDamageValue = SpriteLoader.loadSprite(new StringSpriteKey(String.format("%.2f", totalDamage))).image();
         final Image timeInGameValue = SpriteLoader.loadSprite(new StringSpriteKey(timeInGameFormatted)).image();
 

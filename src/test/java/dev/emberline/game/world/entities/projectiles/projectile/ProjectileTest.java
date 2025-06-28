@@ -39,8 +39,6 @@ class ProjectileTest {
     private IEnemy enemy;
     private double health = 100.0;
 
-    private ProjectileHitListener projectileHitListener;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -56,7 +54,7 @@ class ProjectileTest {
         }).when(enemy).dealDamage(anyDouble());
 
         when(enemiesManager.getNear(any(), anyDouble())).thenReturn(List.of(enemy));
-        projectileHitListener = new ProjectileHitListener(enemiesManager);
+        final ProjectileHitListener projectileHitListener = new ProjectileHitListener(enemiesManager);
         when(world.getProjectileHitListener()).thenReturn(projectileHitListener);
     }
 

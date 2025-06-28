@@ -1,6 +1,8 @@
 package dev.emberline.gui.event;
 
 
+import java.io.Serial;
+
 /**
  * Represents an event that signals the closure of the options menu in the GUI.
  * <p>
@@ -8,6 +10,9 @@ package dev.emberline.gui.event;
  * to the previous state before the options menu was opened.
  */
 public class CloseOptionsEvent extends GuiEvent {
+
+    @Serial
+    private static final long serialVersionUID = -1813619923053971563L;
 
     /**
      * Creates a new {@code CloseOptionsEvent}.

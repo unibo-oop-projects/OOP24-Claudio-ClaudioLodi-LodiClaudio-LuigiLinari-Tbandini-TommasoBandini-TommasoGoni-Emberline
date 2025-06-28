@@ -81,7 +81,7 @@ public class EmberlineApp extends Application {
         this.gameLoop = GameLoop.getInstance();
         this.gameLoop.start();
         // Loops musical track of the game
-        AudioController audioController = new AudioController();
+        final AudioController audioController = new AudioController();
         audioController.startSoundtrack();
     }
 

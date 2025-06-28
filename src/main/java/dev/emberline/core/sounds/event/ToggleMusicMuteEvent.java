@@ -1,14 +1,18 @@
 package dev.emberline.core.sounds.event;
 
-public class ToggleMusicMuteEvent extends SoundEvent  {
-    private final boolean muteState;
+import java.io.Serial;
 
-    public ToggleMusicMuteEvent(final Object source, final boolean muteState) {
+public class ToggleMusicMuteEvent extends SoundEvent  {
+    @Serial
+    private static final long serialVersionUID = 4340934494495651830L;
+    private final boolean isMuted;
+
+    public ToggleMusicMuteEvent(final Object source, final boolean isMuted) {
         super(source);
-        this.muteState = muteState;
+        this.isMuted = isMuted;
     }
 
-    public boolean getMuteState() {
-        return muteState;
+    public boolean isMuted() {
+        return isMuted;
     }
 }

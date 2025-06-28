@@ -25,7 +25,7 @@ public class WeakAimStrategy extends AimStrategy {
      * @see AimStrategy#compare(TowerInfoProvider, IEnemy, IEnemy)
      */
     @Override
-    protected int compare(TowerInfoProvider towerInfoProvider, IEnemy enemy1, IEnemy enemy2) {
+    protected int compare(TowerInfoProvider towerInfoProvider, final IEnemy enemy1, final IEnemy enemy2) {
         return Double.compare(enemy1.getHealth(), enemy2.getHealth());
     }
 }

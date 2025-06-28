@@ -3,6 +3,8 @@ package dev.emberline.gui.event;
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.buildings.tower.Tower;
 
+import java.io.Serial;
+
 /**
  * The {@code ResetTowerInfoEvent} class represents an event triggered when the upgradable information
  * associated with a tower needs to be reset. This event enables the resetting of a tower's current projectile
@@ -10,6 +12,8 @@ import dev.emberline.game.world.buildings.tower.Tower;
  */
 public class ResetTowerInfoEvent extends GuiEvent {
 
+    @Serial
+    private static final long serialVersionUID = -1270204394588734835L;
     private final Tower tower;
     private final UpgradableInfo<?, ?> upgradableInfo;
 

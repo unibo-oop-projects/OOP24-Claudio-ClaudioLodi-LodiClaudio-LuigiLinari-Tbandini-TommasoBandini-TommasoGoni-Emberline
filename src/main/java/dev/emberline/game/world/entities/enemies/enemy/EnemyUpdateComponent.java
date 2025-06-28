@@ -144,7 +144,7 @@ class EnemyUpdateComponent implements Updatable, Serializable {
         double remainingDistance = 0;
         Vector2D currPosition = new Coordinate2D(position.getX(), position.getY());
         for (int i = destinationsIdx; i < destinations.size(); ++i) {
-            Vector2D currDestination = destinations.get(i);
+            final Vector2D currDestination = destinations.get(i);
             remainingDistance += currPosition.distance(currDestination);
             currPosition = new Coordinate2D(currDestination.getX(), currDestination.getY());
         }

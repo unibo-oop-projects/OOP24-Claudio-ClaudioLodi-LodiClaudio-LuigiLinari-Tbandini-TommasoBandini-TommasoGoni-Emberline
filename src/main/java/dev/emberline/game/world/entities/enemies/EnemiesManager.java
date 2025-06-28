@@ -55,7 +55,7 @@ public class EnemiesManager implements IEnemiesManager {
     public EnemiesManager(final World world) {
         this.world = world;
 
-        WorldBounds worldBounds = ConfigLoader.loadConfig("/world/worldBounds.json", WorldBounds.class);
+        final WorldBounds worldBounds = ConfigLoader.loadConfig("/world/worldBounds.json", WorldBounds.class);
         this.spatialHashGrid = new SpatialHashGrid(
                 worldBounds.topLeftX, worldBounds.topLeftY,
                 worldBounds.bottomRightX, worldBounds.bottomRightY

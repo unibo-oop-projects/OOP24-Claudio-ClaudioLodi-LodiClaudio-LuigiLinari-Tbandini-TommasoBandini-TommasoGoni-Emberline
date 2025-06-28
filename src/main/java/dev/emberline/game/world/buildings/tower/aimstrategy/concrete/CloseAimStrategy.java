@@ -25,8 +25,8 @@ public final class CloseAimStrategy extends AimStrategy {
      */
     @Override
     protected int compare(final TowerInfoProvider towerInfoProvider, final IEnemy enemy1, final IEnemy enemy2) {
-        double distance1 = towerInfoProvider.getPosition().distance(enemy1.getPosition());
-        double distance2 = towerInfoProvider.getPosition().distance(enemy2.getPosition());
+        final double distance1 = towerInfoProvider.getPosition().distance(enemy1.getPosition());
+        final double distance2 = towerInfoProvider.getPosition().distance(enemy2.getPosition());
         return Double.compare(distance1, distance2);
     }
 }

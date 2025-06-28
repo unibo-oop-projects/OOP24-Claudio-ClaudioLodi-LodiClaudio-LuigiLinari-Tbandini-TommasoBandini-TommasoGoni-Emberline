@@ -44,8 +44,8 @@ public class Renderer {
     // JavaFX Canvas, only JavaFX thread can modify the scene graph, do not modify the scene graph from another thread
     private final Canvas canvas;
     // Last used canvas dimensions
-    private double lastUsedCanvasWidth = 0;
-    private double lastUsedCanvasHeight = 0;
+    private double lastUsedCanvasWidth;
+    private double lastUsedCanvasHeight;
 
     private final GraphicsContext gc;
     private final AtomicBoolean isRunningLater = new AtomicBoolean(false);
@@ -57,7 +57,7 @@ public class Renderer {
 
     // Rendering queue
     private final Queue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
-    private long taskOrderingCounter = 0;
+    private long taskOrderingCounter;
 
     // drawtext centering height margin
     private static final double CENTER_TEXT_H_MARGIN = 0.07;

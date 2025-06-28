@@ -58,7 +58,7 @@ import java.io.Serializable;
  * <li>The `animationDelaySeconds` field defines the initial delay before the fog transition starts.</li>
  * </ul>
  */
-public class Fog implements Renderable, Serializable {
+public final class Fog implements Renderable, Serializable {
 
     @Serial
     private static final long serialVersionUID = 4864461952717171977L;

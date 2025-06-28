@@ -58,7 +58,7 @@ public class SetTowerAimTypeEvent extends GuiEvent {
         private final String displayName;
         private final AimStrategy aimStrategy;
 
-        AimType(final String displayName, AimStrategy aimStrategy) {
+        AimType(final String displayName, final AimStrategy aimStrategy) {
             this.displayName = displayName;
             this.aimStrategy = aimStrategy;
         }

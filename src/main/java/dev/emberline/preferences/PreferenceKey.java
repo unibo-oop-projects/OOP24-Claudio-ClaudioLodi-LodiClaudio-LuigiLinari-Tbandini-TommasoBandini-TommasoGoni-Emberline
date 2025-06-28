@@ -28,9 +28,12 @@ public enum PreferenceKey {
         return key;
     }
 
+    // Since we are retrieving a default value, having "getDefaultBooleanValue" seems more appropriate than
+    // "isDefaultBooleanValue"
+    @SuppressWarnings("PMD.BooleanGetMethodName")
     public Boolean getDefaultBooleanValue() {
         return booleanDefaultValue;
-    } 
+    }
 
     public Double getDefaultDoubleValue() {
         return doubleDefaultValue;

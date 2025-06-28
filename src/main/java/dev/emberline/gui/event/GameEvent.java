@@ -1,5 +1,6 @@
 package dev.emberline.gui.event;
 
+import java.io.Serial;
 import java.util.EventObject;
 
 /**
@@ -9,6 +10,9 @@ import java.util.EventObject;
  * for fine-grained event handling within the game logic.
  */
 public abstract class GameEvent extends EventObject {
+
+    @Serial
+    private static final long serialVersionUID = 342144865823116108L;
 
     /**
      * Constructs a new {@code GameEvent}.

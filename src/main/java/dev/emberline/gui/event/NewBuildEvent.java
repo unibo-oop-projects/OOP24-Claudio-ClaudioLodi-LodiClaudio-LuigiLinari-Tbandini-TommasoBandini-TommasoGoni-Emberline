@@ -2,6 +2,8 @@ package dev.emberline.gui.event;
 
 import dev.emberline.game.world.buildings.towerprebuild.TowerPreBuild;
 
+import java.io.Serial;
+
 /**
  * Represents an event triggered to initiate the construction of a new tower.
  * <p>
@@ -11,6 +13,8 @@ import dev.emberline.game.world.buildings.towerprebuild.TowerPreBuild;
  */
 public class NewBuildEvent extends GuiEvent {
 
+    @Serial
+    private static final long serialVersionUID = -1536112446735959877L;
     private final TowerPreBuild tower;
 
     /**
