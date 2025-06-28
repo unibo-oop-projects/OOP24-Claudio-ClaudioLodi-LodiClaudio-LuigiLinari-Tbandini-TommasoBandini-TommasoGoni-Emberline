@@ -2,6 +2,8 @@ package dev.emberline.gui.event;
 
 import dev.emberline.game.world.statistics.Statistics;
 
+import java.io.Serial;
+
 /**
  * Represents an event that signals the game has ended.
  * <p>
@@ -9,13 +11,16 @@ import dev.emberline.game.world.statistics.Statistics;
  * which may be triggered by scenarios such as the player losing all lives.
  */
 public class GameOverEvent extends GameEvent {
-    
+
+    @Serial
+    private static final long serialVersionUID = -3343228124548231703L;
     private final Statistics statistics;
-    
+
     /**
      * Constructs a new {@code GameOverEvent}.
      *
      * @param source the object on which the event initially occurred.
+     * @param statistics the statistics to be shown in the game over screen.
      * @see GameOverEvent
      */
     public GameOverEvent(final Object source, final Statistics statistics) {
@@ -31,5 +36,5 @@ public class GameOverEvent extends GameEvent {
     public Statistics getStatistics() {
         return statistics;
     }
-    
+
 }

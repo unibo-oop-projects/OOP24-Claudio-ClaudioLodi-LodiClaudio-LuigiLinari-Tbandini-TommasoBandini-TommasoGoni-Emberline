@@ -4,6 +4,7 @@ import dev.emberline.game.world.entities.enemies.enemy.EnemyAnimation;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -18,14 +19,8 @@ import java.util.List;
  * This effect will never expire, even if {@link #endEffect(IEnemy)} is called.
  */
 public class DummyEffect implements EnchantmentEffect {
-
-    /**
-     * Constructs a {@code DummyEffect} instance.
-     * @see DummyEffect
-     */
-    public DummyEffect() {
-
-    }
+    @Serial
+    private static final long serialVersionUID = -1838578694017688121L;
 
     /**
      * {@inheritDoc}

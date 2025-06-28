@@ -1,5 +1,15 @@
 package dev.emberline.gui.event;
 
+import dev.emberline.game.world.buildings.tower.Tower;
+import dev.emberline.game.world.buildings.tower.aimstrategy.AimStrategy;
+import dev.emberline.game.world.buildings.tower.aimstrategy.concrete.CloseAimStrategy;
+import dev.emberline.game.world.buildings.tower.aimstrategy.concrete.FirstAimStrategy;
+import dev.emberline.game.world.buildings.tower.aimstrategy.concrete.LastAimStrategy;
+import dev.emberline.game.world.buildings.tower.aimstrategy.concrete.StrongAimStrategy;
+import dev.emberline.game.world.buildings.tower.aimstrategy.concrete.WeakAimStrategy;
+
+import java.io.Serial;
+
 /**
  * Represents an event triggered to set the aim preference of a tower in the game.
  * <p>
@@ -8,8 +18,11 @@ package dev.emberline.gui.event;
  * precise control over how a tower selects its targets during gameplay.
  */
 public class SetTowerAimTypeEvent extends GuiEvent {
+    @Serial
+    private static final long serialVersionUID = -4695684923846091262L;
 
     private final AimType aimType;
+    private final Tower tower;
 
     /**
      * Represents the different targeting modes a tower can have for selecting its targets.
@@ -20,32 +33,34 @@ public class SetTowerAimTypeEvent extends GuiEvent {
          * Represents the "First" targeting mode in the tower's targeting strategy.
          * The "First" mode prioritizes selecting the enemy closest to its endpoint.
          */
-        FIRST("First"),
+        FIRST("First", new FirstAimStrategy()),
         /**
          * Represents the "Last" targeting mode in the tower's targeting strategy.
          * The "Last" mode prioritizes selecting the enemy furthest from its endpoint.
          */
-        LAST("Last"),
+        LAST("Last", new LastAimStrategy()),
         /**
          * Represents the "Weak" targeting mode in the tower's targeting strategy.
          * The "Weak" mode prioritizes selecting the enemy with the lowest health value.
          */
-        WEAK("Weakest"),
+        WEAK("Weakest", new WeakAimStrategy()),
         /**
          * Represents the "Strong" targeting mode in the tower's targeting strategy.
          * The "Strong" mode prioritizes selecting the enemy with the highest health value.
          */
-        STRONG("Strongest"),
+        STRONG("Strongest", new StrongAimStrategy()),
         /**
          * Represents the "Closest" targeting mode in the tower's targeting strategy.
          * The "Closest" mode prioritizes selecting the enemy closest to the tower.
          */
-        CLOSE("Closest");
+        CLOSE("Closest", new CloseAimStrategy()),;
 
         private final String displayName;
+        private final AimStrategy aimStrategy;
 
-        AimType(final String displayName) {
+        AimType(final String displayName, final AimStrategy aimStrategy) {
             this.displayName = displayName;
+            this.aimStrategy = aimStrategy;
         }
 
         /**
@@ -65,17 +80,28 @@ public class SetTowerAimTypeEvent extends GuiEvent {
         public AimType next() {
             return values()[(this.ordinal() + 1) % values().length];
         }
+
+        /**
+         * Returns an instance of the appropriate {@link AimStrategy}.
+         *
+         * @return the instance of the appropriate {@link AimStrategy}.
+         */
+        public AimStrategy getAimStrategy() {
+            return aimStrategy;
+        }
     }
 
     /**
      * Constructs a new {@code SetTowerAimTypeEvent}.
      *
-     * @param source  the object on which the event initially occurred
+     * @param source the object on which the event initially occurred
+     * @param tower the tower whose aim type needs to be changed
      * @param aimType the desired targeting mode for the tower
      * @see SetTowerInfoEvent
      */
-    public SetTowerAimTypeEvent(final Object source, final AimType aimType) {
+    public SetTowerAimTypeEvent(final Object source, final Tower tower, final AimType aimType) {
         super(source);
+        this.tower = tower;
         this.aimType = aimType;
     }
 
@@ -86,5 +112,14 @@ public class SetTowerAimTypeEvent extends GuiEvent {
      */
     public AimType getAimType() {
         return aimType;
+    }
+
+    /**
+     * Returns the tower associated with this event.
+     *
+     * @return the tower associated with this event.
+     */
+    public Tower getTower() {
+        return tower;
     }
 }

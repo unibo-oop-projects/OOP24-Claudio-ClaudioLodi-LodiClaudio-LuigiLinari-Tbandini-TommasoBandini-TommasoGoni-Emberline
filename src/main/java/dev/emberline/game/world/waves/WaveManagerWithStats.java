@@ -3,12 +3,16 @@ package dev.emberline.game.world.waves;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.statistics.Statistics;
 
+import java.io.Serial;
+
 /**
  * This class is a decorator for the Wavemanager.
  * Its purpose is to gather stats (ex: enemies killed)
  */
 public class WaveManagerWithStats implements IWaveManager {
 
+    @Serial
+    private static final long serialVersionUID = -1311529313996617055L;
     private final IWaveManager waveManager;
     private final Statistics statistics;
 
@@ -22,11 +26,17 @@ public class WaveManagerWithStats implements IWaveManager {
         statistics = world.getStatistics();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Wave getWave() {
         return waveManager.getWave();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getCurrentWaveIndex() {
         return waveManager.getCurrentWaveIndex();
@@ -49,6 +59,10 @@ public class WaveManagerWithStats implements IWaveManager {
         }
     }
 
+    /**
+     * Renders the wave manager.
+     * @see WaveManager#render()
+     */
     @Override
     public void render() {
         waveManager.render();

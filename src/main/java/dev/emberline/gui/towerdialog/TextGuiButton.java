@@ -2,8 +2,8 @@ package dev.emberline.gui.towerdialog;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
 import dev.emberline.core.render.RenderPriority;
@@ -147,10 +147,10 @@ public class TextGuiButton extends GuiButton {
 
         final Image textImage = SpriteLoader.loadSprite(new StringSpriteKey(labelText)).image();
 
-        final double textWidth = this.width * textLayout.textWidthRatio;
-        final double textHeight = this.height * textLayout.textHeightRatio;
-        final double textX = this.x + (this.width - textWidth) * textLayout.textXOffset;
-        final double textY = this.y + (this.height - textHeight) * textLayout.textYPosition;
+        final double textWidth = this.getWidth() * textLayout.textWidthRatio;
+        final double textHeight = this.getHeight() * textLayout.textHeightRatio;
+        final double textX = this.getX() + (this.getWidth() - textWidth) * textLayout.textXOffset;
+        final double textY = this.getY() + (this.getHeight() - textHeight) * textLayout.textYPosition;
 
         Renderer.drawImageFitCenter(textImage, renderer.getGraphicsContext(),
                                     renderer.getGuiCoordinateSystem(), textX, textY, textWidth, textHeight);

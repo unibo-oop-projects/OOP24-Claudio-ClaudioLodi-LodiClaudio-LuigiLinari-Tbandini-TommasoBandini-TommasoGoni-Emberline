@@ -1,9 +1,8 @@
 package dev.emberline.gui.menu;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
-
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import dev.emberline.core.render.CoordinateSystem;
@@ -13,7 +12,9 @@ import dev.emberline.core.render.Renderer;
 import dev.emberline.game.GameState;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
-import dev.emberline.gui.event.*;
+import dev.emberline.gui.event.ExitGameEvent;
+import dev.emberline.gui.event.OpenOptionsEvent;
+import dev.emberline.gui.event.SetStartEvent;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -34,7 +35,7 @@ public class MainMenu extends GuiLayer implements GameState {
 
     private final MenuBounds menuBounds;
 
-    private static class Layout {
+    private static final class Layout {
         // Background
         private static final double BG_WIDTH = 32;
         private static final double BG_HEIGHT = 18;
@@ -87,29 +88,39 @@ public class MainMenu extends GuiLayer implements GameState {
     }
 
     private MainMenu(final MenuBounds menuBounds) {
-        super(menuBounds.topLeftBound.x, menuBounds.topLeftBound.y, menuBounds.bottomRightBound.x - menuBounds.topLeftBound.x, menuBounds.bottomRightBound.y - menuBounds.topLeftBound.y);
+        super(menuBounds.topLeftBound.x, menuBounds.topLeftBound.y,
+        menuBounds.bottomRightBound.x - menuBounds.topLeftBound.x, menuBounds.bottomRightBound.y - menuBounds.topLeftBound.y);
         this.menuBounds = menuBounds;
     }
 
     // Start button
     private void addStartButton() {
-        final GuiButton startButton = new GuiButton(Layout.BTN_START_X, Layout.BTN_START_Y, Layout.BTN_START_WIDTH, Layout.BTN_START_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.START_SIGN_BUTTON).image(), SpriteLoader.loadSprite(SingleSpriteKey.START_SIGN_BUTTON_HOVER).image());
+        final GuiButton startButton = new GuiButton(Layout.BTN_START_X, Layout.BTN_START_Y,
+                Layout.BTN_START_WIDTH, Layout.BTN_START_HEIGHT,
+                SpriteLoader.loadSprite(SingleSpriteKey.START_SIGN_BUTTON).image(),
+                SpriteLoader.loadSprite(SingleSpriteKey.START_SIGN_BUTTON_HOVER).image());
         startButton.setOnClick(() -> throwEvent(new SetStartEvent(startButton)));
-        super.buttons.add(startButton);
+        super.getButtons().add(startButton);
     }
 
     // Options button
     private void addOptionsButton() {
-        final GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X, Layout.BTN_OPTIONS_Y, Layout.BTN_OPTIONS_WIDTH, Layout.BTN_OPTIONS_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON).image(),  SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON_HOVER).image());
+        final GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X, Layout.BTN_OPTIONS_Y,
+                Layout.BTN_OPTIONS_WIDTH, Layout.BTN_OPTIONS_HEIGHT,
+                SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON).image(),
+                SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON_HOVER).image());
         optionsButton.setOnClick(() -> throwEvent(new OpenOptionsEvent(optionsButton)));
-        super.buttons.add(optionsButton);
+        super.getButtons().add(optionsButton);
     }
 
     // Exit button
     private void addExitButton() {
-        final GuiButton exitButton = new GuiButton(Layout.BTN_EXIT_X, Layout.BTN_EXIT_Y, Layout.BTN_EXIT_WIDTH, Layout.BTN_EXIT_HEIGHT, SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON).image(), SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON_HOVER).image());
+        final GuiButton exitButton = new GuiButton(Layout.BTN_EXIT_X, Layout.BTN_EXIT_Y,
+                Layout.BTN_EXIT_WIDTH, Layout.BTN_EXIT_HEIGHT,
+                SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON).image(),
+                SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON_HOVER).image());
         exitButton.setOnClick(() -> throwEvent(new ExitGameEvent(exitButton)));
-        super.buttons.add(exitButton);
+        super.getButtons().add(exitButton);
     }
 
     /**
@@ -136,7 +147,8 @@ public class MainMenu extends GuiLayer implements GameState {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
             gc.drawImage(menuBackground, menuScreenX, menuScreenY, menuScreenWidth, menuScreenHeight);
-            gc.drawImage(emberlineTitle, cs.toScreenX(Layout.TITLE_X), cs.toScreenY(Layout.TITLE_Y), Layout.TITLE_WIDTH * cs.getScale(), Layout.TITLE_HEIGHT * cs.getScale());
+            gc.drawImage(emberlineTitle, cs.toScreenX(Layout.TITLE_X), cs.toScreenY(Layout.TITLE_Y),
+                    Layout.TITLE_WIDTH * cs.getScale(), Layout.TITLE_HEIGHT * cs.getScale());
         }));
 
         super.render();

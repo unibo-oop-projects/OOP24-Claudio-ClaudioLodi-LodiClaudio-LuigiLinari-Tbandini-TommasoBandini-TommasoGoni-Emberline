@@ -1,5 +1,6 @@
 package dev.emberline.gui.event;
 
+import java.io.Serial;
 import java.util.EventObject;
 
 /**
@@ -10,6 +11,9 @@ import java.util.EventObject;
  * can define more specific behaviors and properties for various GUI events.
  */
 public abstract class GuiEvent extends EventObject {
+
+    @Serial
+    private static final long serialVersionUID = 3297500278070132241L;
 
     /**
      * Constructs a new {@code GuiEvent}.

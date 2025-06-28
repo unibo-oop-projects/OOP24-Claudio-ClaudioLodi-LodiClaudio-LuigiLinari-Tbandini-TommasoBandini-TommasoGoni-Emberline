@@ -2,6 +2,7 @@ package dev.emberline.game.world.statistics;
 
 import dev.emberline.core.components.Updatable;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -11,18 +12,13 @@ import java.io.Serializable;
  */
 public class Statistics implements Updatable, Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 493178187508275976L;
+
     private int enemiesKilled;
     private int wavesSurvived;
     private long timeInGame;
     private double totalDamage;
-
-    /**
-     * Constructs an instance of the {@code Statistics} class.
-     * @see Statistics
-     */
-    public Statistics() {
-
-    }
 
     /**
      * Sums the enemies that died in the current update

@@ -2,7 +2,6 @@ package dev.emberline.gui.towerdialog.stats;
 
 import dev.emberline.gui.towerdialog.stats.TowerStat.TowerStatType;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -125,14 +124,6 @@ public final class TowerStatsViewsBuilder {
     }
 
     /**
-     * Creates a new instance of the {@code TowerStatsViewsBuilder}.
-     * @see TowerStatsViewsBuilder
-     */
-    public TowerStatsViewsBuilder() {
-
-    }
-
-    /**
      * Adds stats from the given provider to the builder.
      *
      * @param provider the provider containing tower stats
@@ -165,23 +156,24 @@ public final class TowerStatsViewsBuilder {
      * @return an unmodifiable sorted List of tower stat views
      */
     public List<TowerStatView> build() {
-        final List<TowerStatView> views = new ArrayList<>();
-
         // Add NORMAL stat views
         // (stats that are in the stat map but not in the compared stats map or are in both but have the same value)
         final Stream<TowerStatView> normalStatViews = statsMap.values().stream()
                 .filter(stat -> !comparedStatsMap.containsKey(stat.type())
-                        || stat.value() == comparedStatsMap.get(stat.type()).value())
+                        || Math.abs(stat.value() - comparedStatsMap.get(stat.type()).value()) < 0.0001)
                 .map(stat -> new TowerStatView(stat, TowerStatView.Type.NORMAL));
+
         // Add COMPARED stat views (stats that are in both maps but have different values)
         final Stream<TowerStatView> comparedStatViews = statsMap.values().stream()
                 .filter(stat -> comparedStatsMap.containsKey(stat.type())
-                        && stat.value() != comparedStatsMap.get(stat.type()).value())
+                        && Math.abs(stat.value() - comparedStatsMap.get(stat.type()).value()) > 0.0001)
                 .map(stat -> new TowerStatView(stat, comparedStatsMap.get(stat.type())));
+
         // Add NEW stat views (compared stats that are not in the stats map)
         final Stream<TowerStatView> newStatViews = comparedStatsMap.values().stream()
                 .filter(stat -> !statsMap.containsKey(stat.type()))
                 .map(stat -> new TowerStatView(stat, TowerStatView.Type.NEW));
+
         // Combine all views into a single unmodifiable sorted list
         return Stream.of(normalStatViews, comparedStatViews, newStatViews)
                 .flatMap(stream -> stream)

@@ -1,9 +1,9 @@
 package dev.emberline.game.world.graphics;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import dev.emberline.core.render.CoordinateSystem;
@@ -11,6 +11,9 @@ import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
 import javafx.scene.canvas.GraphicsContext;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * The Fog class is responsible for rendering a layer of fog in the game environment. It is used to hide parts of the world
@@ -55,12 +58,15 @@ import javafx.scene.canvas.GraphicsContext;
  * <li>The `animationDelaySeconds` field defines the initial delay before the fog transition starts.</li>
  * </ul>
  */
-public class Fog implements Renderable {
+public final class Fog implements Renderable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 4864461952717171977L;
 
     private static final int FOG_SIDE_LENGTH = 2;
     private final Metadata metadata;
 
-    private long accumulatorNs = 0;
+    private long accumulatorNs;
     private long previousTimeNs = System.nanoTime();
 
     private static final double SECOND_IN_NS = 1e9;
@@ -70,7 +76,7 @@ public class Fog implements Renderable {
             @JsonProperty double fromY,
             @JsonProperty double toX,
             @JsonProperty double toY
-    ) {
+    ) implements Serializable {
     }
 
     private record Metadata(
@@ -81,7 +87,7 @@ public class Fog implements Renderable {
             @JsonProperty double dutyCycle,
             @JsonProperty double animationDurationSeconds,
             @JsonProperty double animationDelaySeconds
-    ) {
+    ) implements Serializable {
     }
 
     /**

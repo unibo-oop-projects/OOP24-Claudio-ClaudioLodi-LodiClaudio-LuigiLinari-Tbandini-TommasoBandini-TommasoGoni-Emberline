@@ -1,5 +1,6 @@
 package dev.emberline.utility;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,6 +12,8 @@ import java.util.Objects;
  */
 public class Pair<A, B> implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 56467219245623699L;
     private A x;
     private B y;
 

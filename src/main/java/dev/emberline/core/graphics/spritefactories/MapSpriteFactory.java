@@ -1,7 +1,7 @@
 package dev.emberline.core.graphics.spritefactories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.MapSpriteKey;
@@ -30,14 +30,6 @@ public final class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
     }
 
     /**
-     * Constructs a new {@code MapSpriteFactory} instance.
-     * @see MapSpriteFactory
-     */
-    public MapSpriteFactory() {
-
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -55,7 +47,7 @@ public final class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
             final int y = 0;
             frames[i - startFrame] = new WritableImage(mapAtlas.getPixelReader(), x, y, METADATA.mapLenght, METADATA.mapHeight);
         }
-        return new AnimatedSprite(frames, METADATA.frameTimeNs);
+        return new AnimatedSprite(frames, key, METADATA.frameTimeNs);
     }
 
     private static Image getMapAtlas(final String mapAtlasPath) {

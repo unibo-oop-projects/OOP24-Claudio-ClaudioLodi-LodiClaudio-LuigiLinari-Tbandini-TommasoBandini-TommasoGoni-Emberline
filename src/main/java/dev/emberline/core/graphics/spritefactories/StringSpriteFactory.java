@@ -1,7 +1,7 @@
 package dev.emberline.core.graphics.spritefactories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.SingleSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
@@ -35,14 +35,6 @@ public final class StringSpriteFactory implements SpriteFactory<StringSpriteKey>
                             @JsonProperty int atlasHeight, @JsonProperty int atlasWidth,
                             @JsonProperty int rows, @JsonProperty int columns,
                             @JsonProperty String charOrder) {
-    }
-
-    /**
-     * Constructs a new instance of {@code StringSpriteFactory}.
-     * @see StringSpriteFactory
-     */
-    public StringSpriteFactory() {
-
     }
 
     /**

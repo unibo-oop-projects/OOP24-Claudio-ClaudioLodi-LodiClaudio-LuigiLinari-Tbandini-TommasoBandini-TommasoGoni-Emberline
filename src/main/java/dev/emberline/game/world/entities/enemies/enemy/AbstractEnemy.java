@@ -7,6 +7,8 @@ import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
@@ -15,6 +17,9 @@ import java.util.Locale;
  * common properties and behaviors that all specific enemy types must implement.
  */
 public abstract class AbstractEnemy implements IEnemy {
+
+    @Serial
+    private static final long serialVersionUID = 2633064928656056204L;
 
     private final EnemyUpdateComponent updateComponent;
     private final EnemyRenderComponent renderComponent;
@@ -29,8 +34,12 @@ public abstract class AbstractEnemy implements IEnemy {
      * @param fullHealth the full health value of the enemy
      * @param speed the speed of the enemy in tile/ns
      */
-    protected record Metadata(@JsonProperty double tileWidth, @JsonProperty double tileHeight,
-                              @JsonProperty double fullHealth, @JsonProperty double speed) {
+    protected record Metadata(
+            @JsonProperty double tileWidth,
+            @JsonProperty double tileHeight,
+            @JsonProperty double fullHealth,
+            @JsonProperty double speed
+    ) {
     }
 
     /**
@@ -41,7 +50,7 @@ public abstract class AbstractEnemy implements IEnemy {
      * It also provides a utility for converting string representations of directions
      * into their corresponding enum values.
      */
-    public enum FacingDirection {
+    public enum FacingDirection implements Serializable {
         /**
          * Represents that the enemy is facing upwards.
          */
@@ -124,7 +133,8 @@ public abstract class AbstractEnemy implements IEnemy {
 
     /**
      * Returns the full health value of the enemy as described by its metadata.
-     * @return the full health value of the enemy as described by its metadata
+     *
+     * @return the full health value of the enemy as described by its metadata.
      */
     protected double getFullHealth() {
         return getMetadata().fullHealth;
@@ -212,26 +222,64 @@ public abstract class AbstractEnemy implements IEnemy {
         return updateComponent.getPosition();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double getRemainingDistanceToTarget() {
+        return updateComponent.getRemainingDistanceToTarget();
+    }
+
+    /**
+     * Returns the health of the enemy as a percentage.
+     * Used to communicate from the updateComponent to the renderComponent.
+     * @return the health of the enemy as a percentage.
+     */
     double getHealthPercentage() {
         return updateComponent.getHealthPercentage();
     }
 
+    /**
+     * Returns the current slow factor applied to the enemy.
+     * Used to communicate from the updateComponent to the renderComponent.
+     * @return the current slow factor applied to the enemy.
+     */
     double getSlowFactor() {
         return updateComponent.getSlowFactor();
     }
 
+    /**
+     * Returns the current {@code FacingDirection} of the enemy.
+     * Used to communicate from the updateComponent to the renderComponent.
+     * @return the current {@code FacingDirection} of the enemy.
+     */
     FacingDirection getFacingDirection() {
         return updateComponent.getFacingDirection();
     }
 
+    /**
+     * Returns the current {@code EnemyAppearance} of the enemy.
+     * Used to communicate from the updateComponent to the renderComponent.
+     * @return the current {@code EnemyAppearance} of the enemy.
+     */
     EnemyAnimation.EnemyAppearance getEnemyAppearance() {
         return updateComponent.getEnemyAppearance();
     }
 
+    /**
+     * Returns whether the dying animation has finished.
+     * Used to communicate from the renderComponent to the updateComponent.
+     * @return whether the dying animation has finished.
+     */
     boolean isDyingAnimationFinished() {
         return renderComponent.isDyingAnimationFinished();
     }
 
+    /**
+     * Returns the {@code Updatable} instance of the enemy's animation.
+     * Used to communicate from the renderComponent to the updateComponent.
+     * @return the {@code Updatable} instance of the enemy's animation.
+     */
     Updatable getAnimationUpdatable() {
         return renderComponent.getAnimationUpdatable();
     }

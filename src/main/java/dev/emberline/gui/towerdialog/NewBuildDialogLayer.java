@@ -54,7 +54,7 @@ public class NewBuildDialogLayer extends GuiLayer {
         this.tower = tower;
         buildButton = addBuildButton();
         buildButton.setOnClick(() -> throwEvent(new NewBuildEvent(buildButton, this.getTowerPreBuild())));
-        super.buttons.add(buildButton);
+        super.getButtons().add(buildButton);
     }
 
     /**
@@ -62,7 +62,7 @@ public class NewBuildDialogLayer extends GuiLayer {
      *
      * @return the associated {@code TowerPreBuild} object linked to this dialog layer.
      */
-    public TowerPreBuild getTowerPreBuild() {
+    public final TowerPreBuild getTowerPreBuild() {
         return tower;
     }
 

@@ -6,6 +6,7 @@ import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.game.world.statistics.Statistics;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -14,9 +15,11 @@ import java.util.List;
  */
 public class EnemiesManagerWithStats implements IEnemiesManager {
 
+    @Serial
+    private static final long serialVersionUID = 1323030008674166431L;
+
     private final EnemiesManager enemiesManager;
     private final Statistics statistics;
-    private int deadEnemies;
 
     /**
      * Constructs an {@code EnemiesManagerWithStats} instance wrapping {@code EnemiesManager}.
@@ -73,7 +76,7 @@ public class EnemiesManagerWithStats implements IEnemiesManager {
         enemiesManager.update(elapsed);
 
         final int alivePostUpdate = enemiesManager.getAliveEnemiesNumber();
-        deadEnemies = alivePreUpdate - alivePostUpdate;
-        statistics.updateEnemiesKilled(deadEnemies);
+
+        statistics.updateEnemiesKilled(alivePreUpdate - alivePostUpdate);
     }
 }

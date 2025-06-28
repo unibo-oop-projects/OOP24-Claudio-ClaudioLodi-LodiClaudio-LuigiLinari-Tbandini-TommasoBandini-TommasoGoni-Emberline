@@ -4,6 +4,7 @@ import dev.emberline.core.input.InputDispatcher;
 import dev.emberline.core.render.Renderer;
 import dev.emberline.core.update.Updater;
 import dev.emberline.game.GameRoot;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
@@ -21,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class GameLoop extends Thread {
     // GameLoop initialized only once
     private static GameLoop instance;
-    private static boolean initialized = false;
+    private static boolean initialized;
 
     // JavaFX Stage
     private final Stage stage;
@@ -36,7 +37,7 @@ public final class GameLoop extends Thread {
     private static final long NS_PER_UPDATE = (long) 1e9 / TICKS_PER_SECOND;
 
     // To stop the game loop
-    public final AtomicBoolean running = new AtomicBoolean(false);
+    private final AtomicBoolean running = new AtomicBoolean(false);
 
     // Game
     private final GameRoot gameRoot;
@@ -74,6 +75,10 @@ public final class GameLoop extends Thread {
      * @return the singleton instance of the {@code GameLoop}.
      * @throws IllegalStateException if the {@code GameLoop} has not been initialized by calling {@code init()}.
      */
+    @SuppressFBWarnings(
+            value = "MS_EXPOSE_REP",
+            justification = "This is a singleton pattern and the instance is managed internally."
+    )
     public static synchronized GameLoop getInstance() {
         if (!initialized) {
             throw new IllegalStateException("GameLoop not initialized yet. Call init() first.");
@@ -124,8 +129,8 @@ public final class GameLoop extends Thread {
     public Renderer getRenderer() {
         return renderer;
     }
-    
-    /*
+
+    /**
      * Sets the fullscreen mode of the game window.
      * @param fullscreen if true, the game will run in fullscreen mode; otherwise, it will run in windowed mode.
      */
@@ -133,5 +138,15 @@ public final class GameLoop extends Thread {
         Platform.runLater(() -> {
             stage.setFullScreen(fullscreen);
         });
+    }
+
+    /**
+     * Retrieves the current status of the game loop's running state.
+     * Setting this to false will stop the game loop.
+     *
+     * @return an {@link AtomicBoolean} representing whether the game loop is actively running.
+     */
+    public AtomicBoolean getRunning() {
+        return running;
     }
 }

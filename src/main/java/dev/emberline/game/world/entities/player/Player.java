@@ -1,9 +1,7 @@
 package dev.emberline.game.world.entities.player;
 
-import java.util.EventListener;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.event.EventHandler;
 import dev.emberline.game.model.EnchantmentInfo;
@@ -13,19 +11,27 @@ import dev.emberline.game.world.World;
 import dev.emberline.gui.event.GameOverEvent;
 import dev.emberline.gui.event.NewBuildEvent;
 import dev.emberline.gui.event.ResetTowerInfoEvent;
-import dev.emberline.gui.event.UpgradeTowerInfoEvent;
+import dev.emberline.gui.event.SetTowerAimTypeEvent;
 import dev.emberline.gui.event.SetTowerInfoEvent;
+import dev.emberline.gui.event.UpgradeTowerInfoEvent;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.EventListener;
 
 /**
  * Represents a player within the game, keeping track of the health,
  * gold and handling player-related game events such as building a tower.
  */
-public class Player implements EventListener {
+public class Player implements EventListener, Serializable {
+    @Serial
+    private static final long serialVersionUID = 3553209889364137174L;
+
     private int health;
     private int gold;
     private final World world;
 
-    private Metadata metadata = ConfigLoader.loadConfig("/world/player.json", Metadata.class);
+    private final Metadata metadata = ConfigLoader.loadConfig("/world/player.json", Metadata.class);
 
     private record Metadata(
             @JsonProperty int health,
@@ -93,6 +99,8 @@ public class Player implements EventListener {
     }
 
     @EventHandler
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleNewBuildEvent(final NewBuildEvent event) {
         if (!spendGold(event.getTowerPreBuild().getNewBuildCost())) {
             return;
@@ -101,6 +109,8 @@ public class Player implements EventListener {
     }
 
     @EventHandler
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleUpgradeEvent(final UpgradeTowerInfoEvent event) {
         final UpgradableInfo<?, ?> info = event.getUpgradableInfo();
         if (!spendGold(info.getUpgradeCost()) || !info.canUpgrade()) {
@@ -110,6 +120,8 @@ public class Player implements EventListener {
     }
 
     @EventHandler
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleResetEvent(final ResetTowerInfoEvent event) {
         final UpgradableInfo<?, ?> info = event.getUpgradableInfo();
         earnGold(event.getUpgradableInfo().getRefundValue());
@@ -117,6 +129,8 @@ public class Player implements EventListener {
     }
 
     @EventHandler
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleSetEvent(final SetTowerInfoEvent event) {
         final UpgradableInfo<?, ?> info = event.getUpgradableInfo();
         if (!info.canChangeType() || !spendGold(info.getUpgradeCost())) {
@@ -127,5 +141,12 @@ public class Player implements EventListener {
         } else if (info instanceof final EnchantmentInfo infoCast) {
             event.getTower().setUpgradableInfo(infoCast.getChangeType((EnchantmentInfo.Type) event.getType()));
         }
+    }
+
+    @EventHandler
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
+    private void handleSetAimTypeEvent(final SetTowerAimTypeEvent event) {
+        event.getTower().setAimType(event.getAimType());
     }
 }

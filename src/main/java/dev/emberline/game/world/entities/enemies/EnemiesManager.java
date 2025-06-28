@@ -1,11 +1,14 @@
 package dev.emberline.game.world.entities.enemies;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyWithStats;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,11 +18,32 @@ import java.util.List;
  */
 public class EnemiesManager implements IEnemiesManager {
 
+    @Serial
+    private static final long serialVersionUID = -413131806664877498L;
+
     private final EnemiesFactory enemiesFactory = new EnemiesFactory();
 
     private final SpatialHashGrid spatialHashGrid;
 
     private final World world;
+
+    private record WorldBounds(
+        @JsonProperty
+        int topLeftX,
+        @JsonProperty
+        int topLeftY,
+        @JsonProperty
+        int bottomRightX,
+        @JsonProperty
+        int bottomRightY
+    ) {
+        // Data validation
+        private WorldBounds {
+            if (topLeftX >= bottomRightX || topLeftY >= bottomRightY) {
+                throw new IllegalArgumentException("Invalid world bounds: " + this);
+            }
+        }
+    }
 
     /**
      * Constructs an instance of the EnemiesManager.
@@ -31,10 +55,10 @@ public class EnemiesManager implements IEnemiesManager {
     public EnemiesManager(final World world) {
         this.world = world;
 
-        //TODO
+        final WorldBounds worldBounds = ConfigLoader.loadConfig("/world/worldBounds.json", WorldBounds.class);
         this.spatialHashGrid = new SpatialHashGrid(
-                0, 0,
-                32, 18
+                worldBounds.topLeftX, worldBounds.topLeftY,
+                worldBounds.bottomRightX, worldBounds.bottomRightY
         );
     }
 
@@ -66,6 +90,10 @@ public class EnemiesManager implements IEnemiesManager {
         return spatialHashGrid.size() == 0;
     }
 
+    /**
+     * Returns the number of enemies currently inside the {@code EnemiesManager}.
+     * @return the number of enemies currently inside the {@code EnemiesManager}.
+     */
     int getAliveEnemiesNumber() {
         return spatialHashGrid.size();
     }

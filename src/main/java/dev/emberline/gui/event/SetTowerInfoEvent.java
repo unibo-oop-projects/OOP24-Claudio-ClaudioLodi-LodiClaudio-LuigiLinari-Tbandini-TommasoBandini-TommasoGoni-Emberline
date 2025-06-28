@@ -4,6 +4,8 @@ import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.model.UpgradableInfo.InfoType;
 import dev.emberline.game.world.buildings.tower.Tower;
 
+import java.io.Serial;
+
 /**
  * The {@code SetTowerInfoEvent} class represents an event triggered when
  * information about a tower and its upgradable attributes needs to be set or updated.
@@ -12,6 +14,8 @@ import dev.emberline.game.world.buildings.tower.Tower;
  */
 public class SetTowerInfoEvent extends GuiEvent {
 
+    @Serial
+    private static final long serialVersionUID = 519985352478449773L;
     private final Tower tower;
     private final UpgradableInfo<?, ?> upgradableInfo;
     private final InfoType type;

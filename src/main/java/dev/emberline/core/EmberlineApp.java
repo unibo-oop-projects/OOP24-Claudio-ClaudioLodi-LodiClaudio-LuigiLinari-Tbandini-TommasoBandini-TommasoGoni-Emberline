@@ -29,18 +29,6 @@ public class EmberlineApp extends Application {
     private static final long MIN_WINDOW_WIDTH = 400;
     private static final long MIN_WINDOW_HEIGHT = 400;
     private GameLoop gameLoop;
-    private AudioController audioController;
-
-    /**
-     * Constructs a new instance of the {@code EmberlineApp} class.
-     * This method will be called by the JavaFX runtime whenever {@code EmberlineApp}
-     * is launched.
-     * @see EmberlineApp
-     * @see Application
-     */
-    public EmberlineApp() {
-
-    }
 
     /**
      * The entry point for the JavaFX application. This method is called after the
@@ -93,18 +81,18 @@ public class EmberlineApp extends Application {
         this.gameLoop = GameLoop.getInstance();
         this.gameLoop.start();
         // Loops musical track of the game
-        this.audioController = new AudioController();
-        this.audioController.startSoundtrack();
+        final AudioController audioController = new AudioController();
+        audioController.startSoundtrack();
     }
 
     /**
      * Calling Platform.exit() is the preferred way to explicitly terminate a JavaFX Application.
-     * Directly calling System.exit(int) is an acceptable alternative, but doesn't allow the Application stop() method to run.
+     * Directly calling System.exit(int) is an acceptable alternative but doesn't allow the Application stop() method to run.
      */
     @Override
     public void stop() {
         if (gameLoop != null) {
-            gameLoop.running.set(false);
+            gameLoop.getRunning().set(false);
         }
     }
 }

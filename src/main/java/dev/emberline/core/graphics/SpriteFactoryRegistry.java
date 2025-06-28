@@ -1,14 +1,14 @@
 package dev.emberline.core.graphics;
 
 
+import dev.emberline.core.graphics.spritefactories.CrystalSpriteFactory;
 import dev.emberline.core.graphics.spritefactories.EnemySpriteFactory;
+import dev.emberline.core.graphics.spritefactories.MapSpriteFactory;
+import dev.emberline.core.graphics.spritefactories.ProjectileSpriteFactory;
 import dev.emberline.core.graphics.spritefactories.SingleSpriteFactory;
 import dev.emberline.core.graphics.spritefactories.SpriteFactory;
 import dev.emberline.core.graphics.spritefactories.StringSpriteFactory;
-import dev.emberline.core.graphics.spritefactories.ProjectileSpriteFactory;
-import dev.emberline.core.graphics.spritefactories.CrystalSpriteFactory;
 import dev.emberline.core.graphics.spritefactories.TowerSpriteFactory;
-import dev.emberline.core.graphics.spritefactories.MapSpriteFactory;
 import dev.emberline.core.graphics.spritekeys.SpriteKey;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ final class SpriteFactoryRegistry {
     }
 
     static <K extends SpriteKey> SpriteFactory<K> getFactory(final K key) {
-        final Class<?> keyType = key.getClass(); //todo check uf this is correct
+        final Class<?> keyType = key.getClass();
 
         for (final SpriteFactory<?> factory : FACTORIES) {
             if (factory.getKeyType().isAssignableFrom(keyType)) {

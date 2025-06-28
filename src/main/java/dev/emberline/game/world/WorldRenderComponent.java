@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;

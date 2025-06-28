@@ -1,10 +1,12 @@
 package dev.emberline.game.world.roads;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -13,8 +15,10 @@ import java.util.Optional;
  * The Roads class represents the navigable road network in a map, structured as a graph of nodes and edges.
  * It allows for determining the next road node from a given position and is initialized using a configuration file.
  */
-public class Roads {
+public class Roads implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = -8951416501747185886L;
     /**
      * graph data structure, represents the walkable roads on the map.
      */

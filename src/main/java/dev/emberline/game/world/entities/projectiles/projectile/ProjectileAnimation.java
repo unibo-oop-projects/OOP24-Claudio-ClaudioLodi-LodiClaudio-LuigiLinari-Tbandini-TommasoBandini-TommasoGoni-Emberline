@@ -6,18 +6,24 @@ import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.ProjectileSpriteKey;
 import javafx.scene.image.Image;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * The {@code ProjectileAnimation} class manages the visual representation of a projectile
  * by updating the current frame of an {@code AnimatedSprite} over time.
  * The type of projectile to be animated is determined by the
  * {@link dev.emberline.game.model.ProjectileInfo.Type} and {@link dev.emberline.game.model.EnchantmentInfo.Type}
  */
-public class ProjectileAnimation implements Updatable {
+public class ProjectileAnimation implements Updatable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 2472489217519183066L;
 
     private final AnimatedSprite projectileSprite;
 
-    private int frameIndex = 0;
-    private long accumulatedTimeNs = 0;
+    private int frameIndex;
+    private long accumulatedTimeNs;
 
     /**
      * Initializes a new instance of the {@code ProjectileAnimation} class for the specified projectile.

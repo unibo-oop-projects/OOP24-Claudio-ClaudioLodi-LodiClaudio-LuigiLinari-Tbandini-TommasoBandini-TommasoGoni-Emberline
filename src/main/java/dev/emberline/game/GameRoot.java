@@ -1,7 +1,5 @@
 package dev.emberline.game;
 
-import java.util.EventListener;
-
 import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
@@ -9,18 +7,20 @@ import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.event.EventHandler;
 import dev.emberline.game.world.World;
 import dev.emberline.gui.event.CloseOptionsEvent;
+import dev.emberline.gui.event.ExitGameEvent;
+import dev.emberline.gui.event.GameOverEvent;
 import dev.emberline.gui.event.OpenOptionsEvent;
 import dev.emberline.gui.event.SetMainMenuEvent;
 import dev.emberline.gui.event.SetStartEvent;
 import dev.emberline.gui.event.SetWorldEvent;
-import dev.emberline.gui.event.GameOverEvent;
-import dev.emberline.gui.event.ExitGameEvent;
 import dev.emberline.gui.menu.GameOver;
 import dev.emberline.gui.menu.MainMenu;
 import dev.emberline.gui.menu.Options;
 import dev.emberline.gui.saveselection.SaveSelection;
 import javafx.application.Platform;
 import javafx.scene.input.InputEvent;
+
+import java.util.EventListener;
 
 /**
  * The GameRoot class serves as the central node for managing the game states and
@@ -79,6 +79,8 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
 
     // Event Handlers
     @EventHandler
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleStartEvent(final SetStartEvent event) {
         currentState = saveSelection;
     }
@@ -90,15 +92,19 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     }
 
     @EventHandler
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleSetMainMenuEvent(final SetMainMenuEvent event) {
         currentState = mainMenu;
     }
 
     @EventHandler
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleOpenOptionsEvent(final OpenOptionsEvent event) {
         previousState = currentState;
 
-        if (previousState == mainMenu) {
+        if (previousState.equals(mainMenu)) {
             currentState = optionsFromMenu;
         } else {
             currentState = optionsFromGame;
@@ -106,17 +112,23 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     }
 
     @EventHandler
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleCloseOptionsEvent(final CloseOptionsEvent event) {
         currentState = previousState;
     }
 
     @EventHandler
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleGameOverEvent(final GameOverEvent event) {
         currentState = gameOver;
         gameOver.setStatistics(event.getStatistics());
     }
 
     @EventHandler
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleExitGameEvent(final ExitGameEvent event) {
         Platform.exit();
     }

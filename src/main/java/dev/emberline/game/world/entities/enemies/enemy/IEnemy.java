@@ -5,6 +5,7 @@ import dev.emberline.core.components.Updatable;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
  * @see Updatable
  * @see Renderable
  */
-public interface IEnemy extends Updatable, Renderable {
+public interface IEnemy extends Updatable, Renderable, Serializable {
 
     /**
      * Returns the height of the enemy in the world space.
@@ -74,22 +75,29 @@ public interface IEnemy extends Updatable, Renderable {
      * with {@code t} in [{@code 0}, {@code durationNs}] ns.
      * @param origin the position at {@code t=0}
      * @param velocity the velocity vector of the {@code UniformMotion}
-     * @param durationNs how much does the {@code UniformMotion} lasts`
+     * @param durationNs how much does the {@code UniformMotion} last
      */
     record UniformMotion(Vector2D origin, Vector2D velocity, long durationNs) {
     }
 
     /**
      * Returns all the uniform motions describing the enemy's movement starting from the current position of the enemy.
-     * @param timeNs time of truncation
+     * @param timeNs time of truncation.
      * @return All the uniform motions starting from the current position of the enemy.
      * That is described by a list of {@link UniformMotion}
      */
     List<UniformMotion> getMotionUntil(long timeNs);
 
     /**
-     * Retrieves the current position of the enemy in the world space.
-     * @return a {@code Vector2D} representing the current position of the enemy
+     * Retrieves the current center position of the enemy in the world space.
+     * @return a {@code Vector2D} representing the current center position of the enemy.
      */
     Vector2D getPosition();
+
+    /**
+     * Retrieves the remaining distance to the target destination.
+     *
+     * @return the remaining distance to the target in world units.
+     */
+    double getRemainingDistanceToTarget();
 }

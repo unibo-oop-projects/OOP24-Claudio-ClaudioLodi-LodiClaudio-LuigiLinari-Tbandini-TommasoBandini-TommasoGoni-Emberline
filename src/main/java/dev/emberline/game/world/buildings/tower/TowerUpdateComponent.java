@@ -5,10 +5,15 @@ import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
-class TowerUpdateComponent implements Updatable {
-    private long accumulatedTimeNs = 0;
+class TowerUpdateComponent implements Updatable, Serializable {
+    @Serial
+    private static final long serialVersionUID = 5273964472174671968L;
+
+    private long accumulatedTimeNs;
 
     private final World world;
     private final Tower tower;
@@ -40,15 +45,15 @@ class TowerUpdateComponent implements Updatable {
         // Shooting
         final IEnemiesManager enemiesManager = world.getEnemiesManager();
 
-        final List<IEnemy> toShoot = enemiesManager.getNear(
-                tower.firingWorldCenterLocation(),
+        final List<IEnemy> nearEnemies = enemiesManager.getNear(
+                tower.getPosition(),
                 tower.getProjectileInfo().getTowerRange()
         );
-        // Sort by aim preference (TODO)
+        final List<IEnemy> aimOrder = tower.getAimType().getAimStrategy().getOrder(tower, nearEnemies);
 
-        for (final IEnemy enemy : toShoot) {
+        for (final IEnemy enemyToShoot : aimOrder) {
             final boolean creationSucceeded = world.getProjectilesManager().addProjectile(
-                    tower.firingWorldCenterLocation(), enemy, tower.getProjectileInfo(), tower.getEnchantmentInfo()
+                    tower.getFiringWorldCenterLocation(), enemyToShoot, tower.getProjectileInfo(), tower.getEnchantmentInfo()
             );
 
             if (creationSucceeded) {

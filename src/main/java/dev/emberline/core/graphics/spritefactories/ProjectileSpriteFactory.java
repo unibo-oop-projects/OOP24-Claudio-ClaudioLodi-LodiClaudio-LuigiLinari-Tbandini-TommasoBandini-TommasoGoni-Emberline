@@ -1,7 +1,7 @@
 package dev.emberline.core.graphics.spritefactories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.ProjectileSpriteKey;
@@ -30,14 +30,6 @@ public final class ProjectileSpriteFactory implements SpriteFactory<ProjectileSp
     }
 
     /**
-     * Constructs a new {@code ProjectileSpriteFactory} instance.
-     * @see ProjectileSpriteFactory
-     */
-    public ProjectileSpriteFactory() {
-
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -58,7 +50,7 @@ public final class ProjectileSpriteFactory implements SpriteFactory<ProjectileSp
             frames[i] = new WritableImage(projectileAtals.getPixelReader(), x, y, METADATA.width, METADATA.height);
         }
 
-        return new AnimatedSprite(frames, METADATA.frameTimeNs);
+        return new AnimatedSprite(frames, key, METADATA.frameTimeNs);
     }
 
     private static Image getProjectileAtlas() {

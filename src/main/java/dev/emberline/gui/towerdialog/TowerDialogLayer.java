@@ -27,6 +27,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -39,17 +41,18 @@ import java.util.Objects;
  * This layer allows players to modify the tower's properties, such as projectiles,
  * enchantments, and aiming modes, as well as view stat comparisons.
  */
-public class TowerDialogLayer extends GuiLayer {
+public class TowerDialogLayer extends GuiLayer implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -5500028587999360489L;
+
     // The Tower linked to this dialog layer
     private final Tower tower;
     // The current state of what is displayed in the dialog
-    private EnchantmentInfo displayedEnchantment = null;
-    private ProjectileInfo displayedProjectile = null;
-    // Initial aim type is set to FIRST
-    private AimType displayedAimType = AimType.FIRST;
-    private AimType currentAimType = displayedAimType;
+    private EnchantmentInfo displayedEnchantment;
+    private ProjectileInfo displayedProjectile;
+    private AimType displayedAimType;
     // Tower Stats Views
-    private List<TowerStatView> statsViews = null;
+    private List<TowerStatView> statsViews;
     // Data to display on button hover
     private final Map<GuiButton, TowerStatsProvider> hoverData = new HashMap<>();
 
@@ -181,11 +184,11 @@ public class TowerDialogLayer extends GuiLayer {
 
     private void updateLayout() {
         // Clearing previous layout //
-        super.buttons.clear();
+        super.getButtons().clear();
         hoverData.clear();
         displayedEnchantment = Objects.requireNonNull(tower.getEnchantmentInfo(), "EnchantmentInfo cannot be null");
         displayedProjectile = Objects.requireNonNull(tower.getProjectileInfo(), "ProjectileInfo cannot be null");
-        displayedAimType = currentAimType;
+        displayedAimType = Objects.requireNonNull(tower.getAimType(), "AimType cannot be null");
 
         // Building stats
         rebuildStats();
@@ -205,7 +208,7 @@ public class TowerDialogLayer extends GuiLayer {
                 new ProjectileInfo.Type[]{ProjectileInfo.Type.SMALL, ProjectileInfo.Type.BIG},
                 Layout.Selector.TOTAL_HEIGHT
         );
-        for (final GuiButton button : buttons) {
+        for (final GuiButton button : super.getButtons()) {
             button.setOnMouseEnter(this::refreshHoverData);
             button.setOnMouseLeave(this::refreshHoverData);
         }
@@ -216,14 +219,12 @@ public class TowerDialogLayer extends GuiLayer {
                 Layout.AimButton.BTN_X, Layout.AimButton.BTN_Y,
                 Layout.AimButton.BTN_WIDTH, Layout.AimButton.BTN_HEIGHT,
                 SpriteLoader.loadSprite(SingleSpriteKey.AIM_BUTTON).image(),
-                currentAimType.displayName(), TextLayoutType.CENTER
+                displayedAimType.displayName(), TextLayoutType.CENTER
         );
         aimButton.setOnClick(() -> {
-            currentAimType = currentAimType.next();
-
-            throwEvent(new SetTowerAimTypeEvent(aimButton, currentAimType));
+            throwEvent(new SetTowerAimTypeEvent(aimButton, tower, displayedAimType.next()));
         });
-        buttons.add(aimButton);
+        super.getButtons().add(aimButton);
     }
 
     private <T extends UpgradableInfo.InfoType, S extends UpgradableInfo<T, S>> void addSelectorButtons(
@@ -241,7 +242,7 @@ public class TowerDialogLayer extends GuiLayer {
                 );
                 button.setOnClick(() -> throwEvent(new SetTowerInfoEvent(this, tower, element, typeValue)));
                 hoverData.put(button, (TowerStatsProvider) element.getChangeType(typeValue));
-                buttons.add(button);
+                super.getButtons().add(button);
             }
         } else { // otherwise, we add the upgrade and reset button
             GuiButton upgradeButton = new PricingGuiButton(
@@ -271,13 +272,13 @@ public class TowerDialogLayer extends GuiLayer {
             if (element.canUpgrade()) {
                 hoverData.put(upgradeButton, (TowerStatsProvider) element.getUpgrade());
             }
-            buttons.add(upgradeButton);
-            buttons.add(resetButton);
+            super.getButtons().add(upgradeButton);
+            super.getButtons().add(resetButton);
         }
     }
 
     private void refreshHoverData() {
-        for (final GuiButton button : buttons) {
+        for (final GuiButton button : super.getButtons()) {
             final TowerStatsProvider hoverStats = hoverData.get(button);
             if (button.isHovered()) {
                 if (hoverStats != null) {
@@ -294,13 +295,13 @@ public class TowerDialogLayer extends GuiLayer {
      */
     @Override
     public void render() {
-        if (displayedEnchantment != tower.getEnchantmentInfo()) {
+        if (!displayedEnchantment.equals(tower.getEnchantmentInfo())) {
             updateLayout();
         }
-        if (displayedProjectile != tower.getProjectileInfo()) {
+        if (!displayedProjectile.equals(tower.getProjectileInfo())) {
             updateLayout();
         }
-        if (displayedAimType != currentAimType) {
+        if (!displayedAimType.equals(tower.getAimType())) {
             updateLayout();
         }
 
