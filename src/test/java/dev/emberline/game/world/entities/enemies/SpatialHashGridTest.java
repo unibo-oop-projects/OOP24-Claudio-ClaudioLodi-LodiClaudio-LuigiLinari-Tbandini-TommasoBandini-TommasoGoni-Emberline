@@ -7,12 +7,15 @@ import dev.emberline.utility.Vector2D;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 class EnemyMock implements IEnemy {
+    @Serial
+    private static final long serialVersionUID = -882343261731098642L;
     private Vector2D position;
 
     @Override

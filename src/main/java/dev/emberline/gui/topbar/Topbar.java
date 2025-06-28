@@ -25,13 +25,11 @@ import java.util.EventListener;
  * This class also provides an options button that allows users to access the options menu.
  */
 public class Topbar extends GuiLayer implements EventListener {
+
     private int health;
     private int gold;
     private int wave;
     private final World world;
-    private Image healtImageString;
-    private Image goldImageString;
-    private Image waveImageString;
 
     private static final class Layout {
         // Background
@@ -63,25 +61,9 @@ public class Topbar extends GuiLayer implements EventListener {
      * @see Topbar
      */
     public Topbar(final World world) {
-        this(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT, world);
-        EventDispatcher.getInstance().registerListener(this);
-    }
-
-    /**
-     * Constructs an instance of the {@code Topbar} class with specified position, dimensions,
-     * and associated {@code World} instance.
-     *
-     * @param x      the x-coordinate of the top-left corner of the Topbar
-     * @param y      the y-coordinate of the top-left corner of the Topbar
-     * @param width  the width of the Topbar
-     * @param height the height of the Topbar
-     * @param world  the {@code World} instance associated with this {@code Topbar},
-     *               providing access to the game's state and data
-     * @see Topbar
-     */
-    protected Topbar(final double x, final double y, final double width, final double height, final World world) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         this.world = world;
+        EventDispatcher.getInstance().registerListener(this);
     }
 
     private void updateLayout() {
@@ -93,9 +75,7 @@ public class Topbar extends GuiLayer implements EventListener {
         health = world.getPlayer().getHealth();
         gold = world.getPlayer().getGold();
         wave = world.getWaveManager().getCurrentWaveIndex() + 1;
-        healtImageString = SpriteLoader.loadSprite(new StringSpriteKey("♥: " + health)).image();
-        goldImageString = SpriteLoader.loadSprite(new StringSpriteKey("$: " + gold)).image();
-        waveImageString = SpriteLoader.loadSprite(new StringSpriteKey("☠: " + wave)).image();
+
     }
 
     private void addOptionsButton() {
@@ -132,6 +112,10 @@ public class Topbar extends GuiLayer implements EventListener {
         final CoordinateSystem guics = renderer.getGuiCoordinateSystem();
 
         updateLayout();
+
+        final Image healtImageString = SpriteLoader.loadSprite(new StringSpriteKey("♥: " + health)).image();
+        final Image goldImageString = SpriteLoader.loadSprite(new StringSpriteKey("$: " + gold)).image();
+        final Image waveImageString = SpriteLoader.loadSprite(new StringSpriteKey("☠: " + wave)).image();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             // Background

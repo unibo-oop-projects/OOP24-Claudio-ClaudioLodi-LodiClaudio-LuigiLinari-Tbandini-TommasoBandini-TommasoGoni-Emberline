@@ -30,10 +30,8 @@ public class Tower extends Building implements TowerInfoProvider, Serializable {
     @Serial
     private static final long serialVersionUID = -8194111509090222110L;
 
-    private static String configsPath = "/sprites/towerAssets/tower.json";
-
-    private static Metadata metadata = ConfigLoader.loadConfig(
-            ConfigLoader.loadNode(configsPath).get("worldDimensions"), Metadata.class);
+    private static final Metadata METADATA = ConfigLoader.loadConfig(
+            ConfigLoader.loadNode("/sprites/towerAssets/tower.json").get("worldDimensions"), Metadata.class);
 
     private final World world;
     private final TowerUpdateComponent towerUpdateComponent;
@@ -97,7 +95,7 @@ public class Tower extends Building implements TowerInfoProvider, Serializable {
      */
     @Override
     public Vector2D getPosition() {
-        return locationBottomLeft.add(getWorldWidth()/2, metadata.baseHeight/2);
+        return locationBottomLeft.add(getWorldWidth() / 2, METADATA.baseHeight / 2);
     }
 
     /**
@@ -168,14 +166,14 @@ public class Tower extends Building implements TowerInfoProvider, Serializable {
     }
 
     public Vector2D getFiringWorldCenterLocation() {
-        return getWorldTopLeft().add(getWorldWidth() / 2, metadata.firingYOffsetTiles);
+        return getWorldTopLeft().add(getWorldWidth() / 2, METADATA.firingYOffsetTiles);
     }
 
     double getWorldWidth() {
-        return metadata.width;
+        return METADATA.width;
     }
 
     double getWorldHeight() {
-        return metadata.height.get(getProjectileInfo().type());
+        return METADATA.height.get(getProjectileInfo().type());
     }
 }

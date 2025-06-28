@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class GameLoop extends Thread {
     // GameLoop initialized only once
     private static GameLoop instance;
-    private static boolean initialized = false;
+    private static boolean initialized;
 
     // JavaFX Stage
     private final Stage stage;

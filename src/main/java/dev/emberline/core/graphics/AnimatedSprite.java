@@ -39,7 +39,7 @@ public class AnimatedSprite implements Sprite, Serializable {
         if (images == null || images.length == 0) {
             throw new IllegalArgumentException("Image array cannot be null or empty");
         }
-        this.images = images;
+        this.images = images.clone();
         this.key = spriteKey;
         this.frameTimeNs = frameTimeNs;
     }

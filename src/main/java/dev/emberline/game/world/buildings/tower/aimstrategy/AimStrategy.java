@@ -32,7 +32,7 @@ public abstract class AimStrategy {
      */
     public List<IEnemy> getOrder(final TowerInfoProvider towerInfoProvider, final List<IEnemy> enemies) {
         //mutable copy of enemies
-        List<IEnemy> enemiesCopy = new ArrayList<>(enemies);
+        final List<IEnemy> enemiesCopy = new ArrayList<>(enemies);
         enemiesCopy.sort((enemy1, enemy2) -> compareWithDeterministicTieBreaker(towerInfoProvider, enemy1, enemy2));
         return enemiesCopy;
     }
@@ -48,7 +48,7 @@ public abstract class AimStrategy {
      *         or zero if they are considered equal based on the targeting strategy.
      */
     private int compareWithDeterministicTieBreaker(final TowerInfoProvider towerInfoProvider, final IEnemy enemy1, final IEnemy enemy2) {
-        int comparison = compare(towerInfoProvider, enemy1, enemy2);
+        final int comparison = compare(towerInfoProvider, enemy1, enemy2);
         // If comparison is 0 (equal), use hashCode to break the tie deterministically.
         if (comparison == 0) {
             return Integer.compare(enemy1.hashCode(), enemy2.hashCode());
@@ -67,5 +67,5 @@ public abstract class AimStrategy {
      *         a positive integer if {@code enemy2} should be targeted before {@code enemy1},
      *         or zero if they are considered equal based on the targeting strategy.
      */
-    protected abstract int compare(final TowerInfoProvider towerInfoProvider, final IEnemy enemy1, final IEnemy enemy2);
+    protected abstract int compare(TowerInfoProvider towerInfoProvider, IEnemy enemy1, IEnemy enemy2);
 }

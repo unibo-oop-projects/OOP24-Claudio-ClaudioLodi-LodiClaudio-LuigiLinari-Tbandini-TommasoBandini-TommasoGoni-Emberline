@@ -1,5 +1,7 @@
 package dev.emberline.gui.event;
 
+import java.io.Serial;
+
 /**
  * Represents an event that signals the intention to exit the game.
  * <p>
@@ -7,6 +9,9 @@ package dev.emberline.gui.event;
  * or close the game, ensuring proper resource cleanup and shutdown processes.
  */
 public class ExitGameEvent extends GuiEvent {
+
+    @Serial
+    private static final long serialVersionUID = 4894294116991921674L;
 
     /**
      * Creates a new {@code ExitGameEvent}.

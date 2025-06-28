@@ -76,23 +76,23 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
 
     // Event Handlers
     @EventHandler
-    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
     private void handleStartEvent(final SetStartEvent event) {
         currentState = world;
     }
 
     @EventHandler
-    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
     private void handleSetMainMenuEvent(final SetMainMenuEvent event) {
         currentState = mainMenu;
     }
 
     @EventHandler
-    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
     private void handleOpenOptionsEvent(final OpenOptionsEvent event) {
         previousState = currentState;
 
-        if (previousState == mainMenu) {
+        if (previousState.equals(mainMenu)) {
             currentState = optionsFromMenu;
         } else {
             currentState = optionsFromGame;
@@ -100,20 +100,20 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     }
 
     @EventHandler
-    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
     private void handleCloseOptionsEvent(final CloseOptionsEvent event) {
         currentState = previousState;
     }
 
     @EventHandler
-    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
     private void handleGameOverEvent(final GameOverEvent event) {
         currentState = gameOver;
         gameOver.setStatistics(event.getStatistics());
     }
 
     @EventHandler
-    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
     private void handleExitGameEvent(final ExitGameEvent event) {
         Platform.exit();
     }

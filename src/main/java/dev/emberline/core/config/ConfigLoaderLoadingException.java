@@ -1,5 +1,7 @@
 package dev.emberline.core.config;
 
+import java.io.Serial;
+
 /**
  * An exception thrown to indicate that an error occurred during the
  * loading process when using the {@code ConfigLoader}.
@@ -8,6 +10,9 @@ package dev.emberline.core.config;
  * within the context of the {@code ConfigLoader}.
  */
 class ConfigLoaderLoadingException extends RuntimeException {
+
+    @Serial
+    private static final long serialVersionUID = 9027251156916662870L;
 
     /**
      * Constructs a new {@code ConfigLoaderLoadingException} with the specified detail message

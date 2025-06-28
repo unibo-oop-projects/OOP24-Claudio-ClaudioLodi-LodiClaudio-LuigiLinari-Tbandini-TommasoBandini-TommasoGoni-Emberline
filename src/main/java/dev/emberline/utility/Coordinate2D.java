@@ -2,6 +2,7 @@ package dev.emberline.utility;
 
 import org.apache.commons.geometry.euclidean.twod.Vector2D;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -9,6 +10,8 @@ import java.io.Serializable;
  */
 public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializable {
 
+    @Serial
+    private static final long serialVersionUID = -8436693110223056563L;
     /**
      * x coordinate.
      */

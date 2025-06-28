@@ -33,7 +33,10 @@ public class GuiLayer implements Renderable, Inputable {
      * The x-y coordinates of the top-left corner and dimensions of this GUI layer in the GUI
      * coordinate system.
      */
-    protected double x, y, width, height;
+    protected final double x;
+    protected final double y;
+    protected final double width;
+    protected final double height;
 
     /**
      * Constructs a new {@code GuiLayer} with the specified position and dimensions.

@@ -19,7 +19,7 @@ import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.EventListener;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,8 +27,8 @@ public class AudioController implements EventListener {
     private static final String METADATA_PATH = "/audio/audioController.json";
     private Media musicMedia;
     private final MediaPlayer musicPlayer;
-    private static Metadata metadata;
-    private final Map<SoundType, Media> cachedSfxMedia = new HashMap<>();
+    private static final Metadata METADATA = ConfigLoader.loadConfig(METADATA_PATH, Metadata.class);
+    private final Map<SoundType, Media> cachedSfxMedia = new EnumMap<>(SoundType.class);
 
     private record Metadata(
         @JsonProperty String MUSIC_PATH,
@@ -45,7 +45,6 @@ public class AudioController implements EventListener {
      */
     public AudioController() {
         EventDispatcher.getInstance().registerListener(this);
-        metadata = ConfigLoader.loadConfig(METADATA_PATH, Metadata.class);
 
         loadSoundtrack();
         musicPlayer = new MediaPlayer(musicMedia);
@@ -106,10 +105,9 @@ public class AudioController implements EventListener {
      * Requests to toggle the sound effects mute state.
      * This method dispatches an event that will be handled by the audio controller.
      * @param src the source of the event, typically the object that requested the mute toggle
-     * @param newMuteState the new mute state for the sound effects
      */
-    public static void requestToggleSfxMute(final Object src, final boolean newMuteState) {
-        EventDispatcher.getInstance().dispatchEvent(new ToggleSfxMuteEvent(src, newMuteState));
+    public static void requestToggleSfxMute(final Object src) {
+        EventDispatcher.getInstance().dispatchEvent(new ToggleSfxMuteEvent(src));
     }
 
     private void initializeSoundtrack() {
@@ -121,7 +119,7 @@ public class AudioController implements EventListener {
     }
 
     private void loadSoundtrack() {
-        final URL fileURL = Objects.requireNonNull(getClass().getResource(metadata.MUSIC_PATH));
+        final URL fileURL = Objects.requireNonNull(getClass().getResource(METADATA.MUSIC_PATH));
         musicMedia = new Media(fileURL.toExternalForm());
     }
 
@@ -129,9 +127,9 @@ public class AudioController implements EventListener {
         final SoundType type = event.getSoundType();
 
         return cachedSfxMedia.computeIfAbsent(type, t -> {
-            final String soundPath = metadata.SFX_PATHS.get(t);
+            final String soundPath = METADATA.SFX_PATHS.get(t);
             if (soundPath == null) {
-                throw new IllegalArgumentException("Sound type " + t + " not found in metadata.");
+                throw new IllegalArgumentException("Sound type " + t + " not found in METADATA.");
             }
             final URL fileURL = Objects.requireNonNull(getClass().getResource(soundPath));
             return new Media(fileURL.toExternalForm());
@@ -147,7 +145,7 @@ public class AudioController implements EventListener {
     }
 
     @EventHandler
-    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
     private void handleSFXSoundEvent(final SfxSoundEvent event) {
         Platform.runLater(() -> {
             playSfx(event);
@@ -155,7 +153,7 @@ public class AudioController implements EventListener {
     }
 
     @EventHandler
-    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
     private void handleSetMusicVolumeEvent(final SetMusicVolumeEvent event) {
         Platform.runLater(() -> {
             if (!musicPlayer.isMute()) {
@@ -170,17 +168,17 @@ public class AudioController implements EventListener {
      * @param event the {@link ToggleMusicMuteEvent} with the attached mute state
      */
     @EventHandler
-    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
     private void handleToggleMusicMuteEvent(final ToggleMusicMuteEvent event) {
         Platform.runLater(() -> {
             final double musicVolume = PreferencesManager.getDoublePreference(PreferenceKey.MUSIC_VOLUME);
-            musicPlayer.setMute(event.getMuteState());
+            musicPlayer.setMute(event.isMuted());
             musicPlayer.setVolume(musicVolume);
         });
     }
 
     @EventHandler
-    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
     private void handleSetSfxVolumeEvent(final SetMusicVolumeEvent event) {
         Platform.runLater(() -> {
             cachedSfxMedia.clear(); // Clear cache to reload SFX with new volume
@@ -188,7 +186,7 @@ public class AudioController implements EventListener {
     }
 
     @EventHandler
-    @SuppressWarnings("unused") // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
     private void handleToggleSfxMuteEvent(final ToggleMusicMuteEvent event) {
         Platform.runLater(() -> {
             cachedSfxMedia.clear(); // Clear cache to reload SFX with new mute state

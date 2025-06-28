@@ -49,7 +49,7 @@ class TowerUpdateComponent implements Updatable, Serializable {
                 tower.getPosition(),
                 tower.getProjectileInfo().getTowerRange()
         );
-        List<IEnemy> aimOrder = tower.getAimType().getAimStrategy().getOrder(tower, nearEnemies);
+        final List<IEnemy> aimOrder = tower.getAimType().getAimStrategy().getOrder(tower, nearEnemies);
 
         for (final IEnemy enemyToShoot : aimOrder) {
             final boolean creationSucceeded = world.getProjectilesManager().addProjectile(

@@ -3,6 +3,7 @@ package dev.emberline.core.event;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.EventObject;
@@ -17,6 +18,8 @@ class EventDispatcherTest {
     private final SubTestListener subListener2 = new SubTestListener("SubListener2");
 
     private static class TestEvent extends EventObject {
+        @Serial
+        private static final long serialVersionUID = 4060548425049958898L;
         private final String message;
         private TestEvent(final Object source, final String message) {
             super(source);
@@ -28,6 +31,9 @@ class EventDispatcherTest {
     }
 
     private static final class SubTestEvent extends TestEvent {
+        @Serial
+        private static final long serialVersionUID = 5124380818769694570L;
+
         private SubTestEvent(final Object source, final String message) {
             super(source, message);
         }

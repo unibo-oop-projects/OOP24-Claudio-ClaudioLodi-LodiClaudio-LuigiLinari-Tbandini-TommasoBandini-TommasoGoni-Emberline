@@ -4,23 +4,26 @@ import java.util.prefs.Preferences;
 
 public final class PreferencesManager {
 
-    private static Preferences prefs = Preferences.userRoot().node("dev.emberline.preferences");
+    private static final Preferences PREFS = Preferences.userRoot().node("dev.emberline.preferences");
 
     private PreferencesManager() {
     }
 
     public static Double getDoublePreference(final PreferenceKey key) {
-        double value = prefs.getDouble(key.getKey(), key.getDefaultDoubleValue());
+        final double value = PREFS.getDouble(key.getKey(), key.getDefaultDoubleValue());
         if (value == key.getDefaultDoubleValue()) {
-            prefs.putDouble(key.getKey(), value);
+            PREFS.putDouble(key.getKey(), value);
         }
         return value;
     }
 
+    // Since we are retrieving a preference, having "getBooleanPreference" seems more appropriate than
+    // "isBooleanPreference"
+    @SuppressWarnings("PMD.BooleanGetMethodName")
     public static Boolean getBooleanPreference(final PreferenceKey key) {
-        boolean value = prefs.getBoolean(key.getKey(), key.getDefaultBooleanValue());
+        final boolean value = PREFS.getBoolean(key.getKey(), key.getDefaultBooleanValue());
         if (value == key.getDefaultBooleanValue()) {
-            prefs.putBoolean(key.getKey(), value);
+            PREFS.putBoolean(key.getKey(), value);
         }
         return value;
     }
@@ -29,13 +32,13 @@ public final class PreferencesManager {
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        prefs.putDouble(key.getKey(), value);
+        PREFS.putDouble(key.getKey(), value);
     }
 
     public static void setBooleanPreference(final PreferenceKey key, final Boolean value) {
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        prefs.putBoolean(key.getKey(), value);
+        PREFS.putBoolean(key.getKey(), value);
     }
 }

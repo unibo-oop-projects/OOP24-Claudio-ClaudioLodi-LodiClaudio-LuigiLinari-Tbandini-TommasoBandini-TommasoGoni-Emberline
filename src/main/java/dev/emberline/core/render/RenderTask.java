@@ -9,9 +9,9 @@ package dev.emberline.core.render;
  */
 public class RenderTask implements Comparable<RenderTask>, Runnable {
     private final RenderPriority renderPriority;
-    private boolean zOrderEnabled = false;
-    private double zOrder = 0;
-    private long secondaryPriority = 0; //lower values get rendered first
+    private boolean zOrderEnabled;
+    private double zOrder;
+    private long secondaryPriority; //lower values get rendered first
     private final Runnable runnable;
 
     /**
