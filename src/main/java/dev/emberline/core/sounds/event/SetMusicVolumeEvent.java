@@ -13,6 +13,10 @@ public class SetMusicVolumeEvent extends SoundEvent {
         this.volume = volume;
     }
 
+    /**
+     * Retrieves the volume attached to the {@code SetMusicVolumeEvent}.
+     * @return a double representing the volume attached to the {@code SetMusicVolumeEvent}
+     */
     public double getVolume() {
         return volume;
     }

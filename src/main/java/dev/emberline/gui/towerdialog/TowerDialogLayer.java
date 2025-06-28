@@ -184,7 +184,7 @@ public class TowerDialogLayer extends GuiLayer implements Serializable {
 
     private void updateLayout() {
         // Clearing previous layout //
-        super.buttons.clear();
+        super.getButtons().clear();
         hoverData.clear();
         displayedEnchantment = Objects.requireNonNull(tower.getEnchantmentInfo(), "EnchantmentInfo cannot be null");
         displayedProjectile = Objects.requireNonNull(tower.getProjectileInfo(), "ProjectileInfo cannot be null");
@@ -208,7 +208,7 @@ public class TowerDialogLayer extends GuiLayer implements Serializable {
                 new ProjectileInfo.Type[]{ProjectileInfo.Type.SMALL, ProjectileInfo.Type.BIG},
                 Layout.Selector.TOTAL_HEIGHT
         );
-        for (final GuiButton button : buttons) {
+        for (final GuiButton button : super.getButtons()) {
             button.setOnMouseEnter(this::refreshHoverData);
             button.setOnMouseLeave(this::refreshHoverData);
         }
@@ -224,7 +224,7 @@ public class TowerDialogLayer extends GuiLayer implements Serializable {
         aimButton.setOnClick(() -> {
             throwEvent(new SetTowerAimTypeEvent(aimButton, tower, displayedAimType.next()));
         });
-        buttons.add(aimButton);
+        super.getButtons().add(aimButton);
     }
 
     private <T extends UpgradableInfo.InfoType, S extends UpgradableInfo<T, S>> void addSelectorButtons(
@@ -242,7 +242,7 @@ public class TowerDialogLayer extends GuiLayer implements Serializable {
                 );
                 button.setOnClick(() -> throwEvent(new SetTowerInfoEvent(this, tower, element, typeValue)));
                 hoverData.put(button, (TowerStatsProvider) element.getChangeType(typeValue));
-                buttons.add(button);
+                super.getButtons().add(button);
             }
         } else { // otherwise, we add the upgrade and reset button
             GuiButton upgradeButton = new PricingGuiButton(
@@ -272,13 +272,13 @@ public class TowerDialogLayer extends GuiLayer implements Serializable {
             if (element.canUpgrade()) {
                 hoverData.put(upgradeButton, (TowerStatsProvider) element.getUpgrade());
             }
-            buttons.add(upgradeButton);
-            buttons.add(resetButton);
+            super.getButtons().add(upgradeButton);
+            super.getButtons().add(resetButton);
         }
     }
 
     private void refreshHoverData() {
-        for (final GuiButton button : buttons) {
+        for (final GuiButton button : super.getButtons()) {
             final TowerStatsProvider hoverStats = hoverData.get(button);
             if (button.isHovered()) {
                 if (hoverStats != null) {

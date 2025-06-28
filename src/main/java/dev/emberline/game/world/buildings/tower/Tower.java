@@ -165,14 +165,27 @@ public class Tower extends Building implements TowerInfoProvider, Serializable {
         this.aimType = aimType;
     }
 
-    public Vector2D getFiringWorldCenterLocation() {
+    /**
+     * Retrieves the firing location in world coordinates.
+     * @return a {@code Vector2D} representing the firing location in world coordinates
+     */
+    Vector2D getFiringWorldCenterLocation() {
         return getWorldTopLeft().add(getWorldWidth() / 2, METADATA.firingYOffsetTiles);
     }
 
+    /**
+     * Returns the width of the tower in world space.
+     * @return the width of the tower in world space
+     */
     double getWorldWidth() {
         return METADATA.width;
     }
 
+    /**
+     * Returns the height of the tower in world space.
+     * Used to comm
+     * @return the height of the tower in world space
+     */
     double getWorldHeight() {
         return METADATA.height.get(getProjectileInfo().type());
     }

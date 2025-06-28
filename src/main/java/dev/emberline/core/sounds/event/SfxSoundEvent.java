@@ -21,6 +21,10 @@ public class SfxSoundEvent extends SoundEvent {
         this.soundType = soundType;
     }
 
+    /**
+     * Retrieves the sound type attached to the {@code SfxSoundEvent}.
+     * @return a double representing the sound type attached to the {@code SfxSoundEvent}.
+     */
     public SoundType getSoundType() {
         return soundType;
     }

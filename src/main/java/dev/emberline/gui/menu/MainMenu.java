@@ -100,7 +100,7 @@ public class MainMenu extends GuiLayer implements GameState {
                 SpriteLoader.loadSprite(SingleSpriteKey.START_SIGN_BUTTON).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.START_SIGN_BUTTON_HOVER).image());
         startButton.setOnClick(() -> throwEvent(new SetStartEvent(startButton)));
-        super.buttons.add(startButton);
+        super.getButtons().add(startButton);
     }
 
     // Options button
@@ -110,7 +110,7 @@ public class MainMenu extends GuiLayer implements GameState {
                 SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON_HOVER).image());
         optionsButton.setOnClick(() -> throwEvent(new OpenOptionsEvent(optionsButton)));
-        super.buttons.add(optionsButton);
+        super.getButtons().add(optionsButton);
     }
 
     // Exit button
@@ -120,7 +120,7 @@ public class MainMenu extends GuiLayer implements GameState {
                 SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON_HOVER).image());
         exitButton.setOnClick(() -> throwEvent(new ExitGameEvent(exitButton)));
-        super.buttons.add(exitButton);
+        super.getButtons().add(exitButton);
     }
 
     /**

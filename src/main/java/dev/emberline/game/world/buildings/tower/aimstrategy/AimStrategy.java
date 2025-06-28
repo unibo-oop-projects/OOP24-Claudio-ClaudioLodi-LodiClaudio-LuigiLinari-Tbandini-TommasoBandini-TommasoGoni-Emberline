@@ -47,7 +47,8 @@ public abstract class AimStrategy {
      *         a positive integer if {@code enemy2} should be targeted before {@code enemy1},
      *         or zero if they are considered equal based on the targeting strategy.
      */
-    private int compareWithDeterministicTieBreaker(final TowerInfoProvider towerInfoProvider, final IEnemy enemy1, final IEnemy enemy2) {
+    private int compareWithDeterministicTieBreaker(final TowerInfoProvider towerInfoProvider,
+                                                   final IEnemy enemy1, final IEnemy enemy2) {
         final int comparison = compare(towerInfoProvider, enemy1, enemy2);
         // If comparison is 0 (equal), use hashCode to break the tie deterministically.
         if (comparison == 0) {

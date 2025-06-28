@@ -12,6 +12,10 @@ public class ToggleMusicMuteEvent extends SoundEvent  {
         this.isMuted = isMuted;
     }
 
+    /**
+     * Retrieves the {@code isMuted} flag attached to the {@code SfxSoundEvent}.
+     * @return the {@code isMuted} flag attached to the {@code SfxSoundEvent}.
+     */
     public boolean isMuted() {
         return isMuted;
     }
