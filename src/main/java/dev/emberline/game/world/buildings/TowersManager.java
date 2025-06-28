@@ -33,8 +33,8 @@ public class TowersManager implements Updatable, Renderable, Inputable, Serializ
     @Serial
     private static final long serialVersionUID = 8310031147169513653L;
 
-    private TowerDialogLayer towerDialogLayer;
-    private NewBuildDialogLayer newBuildDialogLayer;
+    private transient TowerDialogLayer towerDialogLayer;
+    private transient NewBuildDialogLayer newBuildDialogLayer;
 
     private final Set<Building> buildings = new HashSet<>();
     private final Collection<TowerPreBuild> toBuild = new LinkedList<>();

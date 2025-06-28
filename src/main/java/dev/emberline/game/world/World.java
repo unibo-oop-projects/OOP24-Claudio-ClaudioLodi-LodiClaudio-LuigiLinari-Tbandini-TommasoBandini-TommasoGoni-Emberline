@@ -49,7 +49,7 @@ public class World implements GameState, Serializable {
     private final ProjectileHitListener projectileHitListener;
 
     private final Player player;
-    private final Topbar topbar;
+    private final transient Topbar topbar;
 
     /**
      * Creates a new instance of the World class and initializes the

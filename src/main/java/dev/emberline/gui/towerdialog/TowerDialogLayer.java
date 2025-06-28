@@ -41,10 +41,7 @@ import java.util.Objects;
  * This layer allows players to modify the tower's properties, such as projectiles,
  * enchantments, and aiming modes, as well as view stat comparisons.
  */
-public class TowerDialogLayer extends GuiLayer implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -5500028587999360489L;
-
+public class TowerDialogLayer extends GuiLayer {
     // The Tower linked to this dialog layer
     private final Tower tower;
     // The current state of what is displayed in the dialog
