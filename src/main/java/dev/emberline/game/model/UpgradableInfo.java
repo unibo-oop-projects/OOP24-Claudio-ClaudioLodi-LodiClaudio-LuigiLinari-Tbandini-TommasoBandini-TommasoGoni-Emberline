@@ -21,7 +21,7 @@ public interface UpgradableInfo<T extends UpgradableInfo.InfoType, SELF extends 
      * Implementations of this interface
      * must be used to define and identify every possible type of the relative {@code UpgradableInfo} object.
      */
-    interface InfoType {
+    interface InfoType extends Serializable {
     }
 
     /**

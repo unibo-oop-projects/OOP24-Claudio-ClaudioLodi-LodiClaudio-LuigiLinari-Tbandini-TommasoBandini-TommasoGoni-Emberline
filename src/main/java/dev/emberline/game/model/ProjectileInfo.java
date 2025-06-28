@@ -33,7 +33,7 @@ public record ProjectileInfo(
      * Represents the type of projectile in the game, influencing the projectile's behavior, such as damage, speed,
      * firing rate, and other attributes.
      */
-    public enum Type implements UpgradableInfo.InfoType, Serializable {
+    public enum Type implements UpgradableInfo.InfoType {
         /**
          * The default projectile type. It has no special properties and cannot be upgraded.
          */

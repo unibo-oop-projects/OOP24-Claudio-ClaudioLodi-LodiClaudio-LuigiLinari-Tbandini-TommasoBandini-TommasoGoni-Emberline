@@ -1,12 +1,14 @@
 package dev.emberline.utility;
 
+import java.io.Serializable;
+
 /**
  * The {@code Vector2D} interface represents a two-dimensional vector or
  * point in a Cartesian coordinate system. It provides methods for
  * performing various operations such as addition, subtraction,
  * normalization, and scalar products on vectors.
  */
-public interface Vector2D {
+public interface Vector2D extends Serializable {
 
     /**
      * Point or vector with both coordinates set to 0.

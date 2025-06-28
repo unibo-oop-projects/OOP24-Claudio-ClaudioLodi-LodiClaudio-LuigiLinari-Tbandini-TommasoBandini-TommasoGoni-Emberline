@@ -9,6 +9,8 @@ import dev.emberline.game.world.entities.projectiles.FlightPathNotFound;
 import dev.emberline.utility.Vector2D;
 
 import java.io.Serial;
+import java.io.Serializable;
+import java.util.function.Function;
 
 /**
  * Represents a projectile in the game world, that includes
@@ -16,14 +18,17 @@ import java.io.Serial;
  * a {@code start position} and a {@code target}.
  */
 public class Projectile implements IProjectile {
-
     @Serial
     private static final long serialVersionUID = 2993223252712274839L;
 
     private final ProjectileUpdateComponent updateComponent;
     private final ProjectileRenderComponent renderComponent;
 
-    record PositionAndRotation(Vector2D position, Double rotation) {
+    record PositionAndRotation(Vector2D position, Double rotation) implements Serializable {
+    }
+
+    interface SerializableFunction<A extends Serializable, B extends Serializable> extends Serializable {
+        B apply(A input);
     }
 
     /**

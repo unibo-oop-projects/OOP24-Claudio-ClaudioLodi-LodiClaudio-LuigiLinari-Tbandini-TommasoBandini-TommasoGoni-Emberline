@@ -5,6 +5,8 @@ import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.utility.Vector2D;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Optional;
 
 /**
@@ -12,12 +14,15 @@ import java.util.Optional;
  * The event contains details about the location of the hit, the damage caused,
  * the area affected by the damage, and any enchantment effects applied.
  */
-public class ProjectileHitEvent {
+public class ProjectileHitEvent implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -6188285582886786542L;
 
     private final Vector2D landingLocation;
     private final double damage;
-    private final Optional<Double> damageArea;
-    private final Optional<EnchantmentEffect> effect;
+    private final Double damageArea;
+    private final EnchantmentEffect effect;
 
     /**
      * Constructs a new ProjectileHitEvent.
@@ -29,8 +34,8 @@ public class ProjectileHitEvent {
     public ProjectileHitEvent(final Vector2D landingLocation, final ProjectileInfo projInfo, final EnchantmentInfo enchInfo) {
         this.landingLocation = landingLocation;
         this.damage = projInfo.getDamage();
-        this.damageArea = projInfo.getDamageArea();
-        this.effect = enchInfo.getEffect();
+        this.damageArea = projInfo.getDamageArea().isPresent() ? projInfo.getDamageArea().get() : null;
+        this.effect = enchInfo.getEffect().isPresent() ? enchInfo.getEffect().get() : null;
     }
 
     /**
@@ -56,7 +61,7 @@ public class ProjectileHitEvent {
      * @return the optional damage area affected by the projectile.
      **/
     public Optional<Double> getDamageArea() {
-        return damageArea;
+        return damageArea == null ? Optional.empty() : Optional.of(damageArea);
     }
 
     /**
@@ -68,6 +73,6 @@ public class ProjectileHitEvent {
      *         or an empty {@code Optional} if no effect is applied
      */
     public Optional<EnchantmentEffect> getEffect() {
-        return effect;
+        return effect == null ? Optional.empty() : Optional.of(effect);
     }
 }

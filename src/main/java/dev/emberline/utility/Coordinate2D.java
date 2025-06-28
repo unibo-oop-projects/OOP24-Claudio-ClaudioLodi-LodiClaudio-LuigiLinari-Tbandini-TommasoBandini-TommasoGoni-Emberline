@@ -2,12 +2,15 @@ package dev.emberline.utility;
 
 import org.apache.commons.geometry.euclidean.twod.Vector2D;
 
-import java.io.Serializable;
+import java.io.Serial;
 
 /**
  * A 2D geometric point that represents the x, y coordinates.
  */
-public class Coordinate2D implements dev.emberline.utility.Vector2D, Serializable {
+public class Coordinate2D implements dev.emberline.utility.Vector2D {
+
+    @Serial
+    private static final long serialVersionUID = -8436693110223056563L;
 
     /**
      * x coordinate.
