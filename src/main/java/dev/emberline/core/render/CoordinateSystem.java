@@ -31,7 +31,7 @@ public final class CoordinateSystem {
     }
 
     // Package private method; should only be called by the renderer
-    void update(final double screenWidth, final double screenHeight) {
+    synchronized void update(final double screenWidth, final double screenHeight) {
         final double regionCenterX = getRegionCenterX();
         final double regionCenterY = getRegionCenterY();
 
