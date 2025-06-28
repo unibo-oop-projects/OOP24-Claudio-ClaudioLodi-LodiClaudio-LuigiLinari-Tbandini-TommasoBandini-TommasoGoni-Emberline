@@ -8,7 +8,6 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 
 /**
  * The {@code ConfigLoader} class provides utility methods for loading configuration
@@ -42,9 +41,13 @@ public final class ConfigLoader {
         try {
             InputStream resourceStream = ConfigLoader.class.getResourceAsStream(resourcePath);
             JsonNode node = OBJECT_MAPPER.readTree(resourceStream);
-            Objects.requireNonNull(resourceStream).close();
+            // Ensure the resource stream is not null before closing it
+            if (resourceStream == null) {
+                throw new ConfigLoaderLoadingException("Resource not found: " + resourcePath);
+            }
+            resourceStream.close();
             return node;
-        } catch (final IOException | NullPointerException e) {
+        } catch (final IOException e) {
             throw new ConfigLoaderLoadingException("An error has occurred while reading or parsing the resource", e);
         }
     }

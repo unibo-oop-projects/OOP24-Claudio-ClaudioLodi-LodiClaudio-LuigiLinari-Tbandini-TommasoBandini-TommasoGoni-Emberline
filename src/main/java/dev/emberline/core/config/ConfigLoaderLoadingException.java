@@ -24,4 +24,13 @@ class ConfigLoaderLoadingException extends RuntimeException {
     ConfigLoaderLoadingException(final String message, final Throwable cause) {
         super(message, cause);
     }
+
+    /**
+     * Constructs a new {@code ConfigLoaderLoadingException} with the specified detail message.
+     *
+     * @param message the detail message, providing additional information about the error.
+     */
+    public ConfigLoaderLoadingException(String message) {
+        super(message);
+    }
 }
