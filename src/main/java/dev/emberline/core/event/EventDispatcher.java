@@ -1,5 +1,7 @@
 package dev.emberline.core.event;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import javax.annotation.concurrent.NotThreadSafe;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -38,6 +40,10 @@ public final class EventDispatcher {
         // Prevent instantiation from outside
     }
 
+    @SuppressFBWarnings(
+            value = "MS_EXPOSE_REP",
+            justification = "This is a singleton pattern and the instance is managed internally."
+    )
     public static synchronized EventDispatcher getInstance() {
         if (instance == null) {
             instance = new EventDispatcher();

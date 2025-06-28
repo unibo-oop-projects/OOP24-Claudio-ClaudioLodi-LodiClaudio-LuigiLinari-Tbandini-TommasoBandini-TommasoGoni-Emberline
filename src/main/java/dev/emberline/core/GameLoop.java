@@ -4,6 +4,7 @@ import dev.emberline.core.input.InputDispatcher;
 import dev.emberline.core.render.Renderer;
 import dev.emberline.core.update.Updater;
 import dev.emberline.game.GameRoot;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
@@ -74,6 +75,10 @@ public final class GameLoop extends Thread {
      * @return the singleton instance of the {@code GameLoop}.
      * @throws IllegalStateException if the {@code GameLoop} has not been initialized by calling {@code init()}.
      */
+    @SuppressFBWarnings(
+            value = "MS_EXPOSE_REP",
+            justification = "This is a singleton pattern and the instance is managed internally."
+    )
     public static synchronized GameLoop getInstance() {
         if (!initialized) {
             throw new IllegalStateException("GameLoop not initialized yet. Call init() first.");
