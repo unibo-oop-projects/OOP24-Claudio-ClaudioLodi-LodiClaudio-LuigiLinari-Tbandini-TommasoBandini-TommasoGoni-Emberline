@@ -100,7 +100,7 @@ public class GuiButton implements Inputable, Renderable {
      *
      * @param onClick A Runnable containing the code to execute when the button is clicked.
      */
-    public void setOnClick(final Runnable onClick) {
+    public final void setOnClick(final Runnable onClick) {
         this.onClick = onClick;
     }
 
