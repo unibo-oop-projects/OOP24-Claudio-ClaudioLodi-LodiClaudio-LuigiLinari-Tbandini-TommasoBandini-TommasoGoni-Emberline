@@ -28,17 +28,22 @@ public class WorldRenderComponent implements Renderable, Updatable, Serializable
     private final WorldBounds worldBounds;
     private final MapAnimation mapAnimation;
 
-    //world bounds
-    private record Coordinate(
-            @JsonProperty int x,
-            @JsonProperty int y
-    ) implements Serializable {
-    }
-
     private record WorldBounds(
-            @JsonProperty Coordinate topLeftBound,
-            @JsonProperty Coordinate bottomRightBound
-    ) implements Serializable {
+            @JsonProperty
+            int topLeftX,
+            @JsonProperty
+            int topLeftY,
+            @JsonProperty
+            int bottomRightX,
+            @JsonProperty
+            int bottomRightY
+    ) {
+        // Data validation
+        private WorldBounds {
+            if (topLeftX >= bottomRightX || topLeftY >= bottomRightY) {
+                throw new IllegalArgumentException("Invalid world bounds: " + this);
+            }
+        }
     }
 
     WorldRenderComponent(final IWaveManager waveManager) {
@@ -56,10 +61,10 @@ public class WorldRenderComponent implements Renderable, Updatable, Serializable
         final GraphicsContext gc = renderer.getGraphicsContext();
         final CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
-        final double mapScreenWidth = worldBounds.bottomRightBound.x * cs.getScale();
-        final double mapScreenHeight = worldBounds.bottomRightBound.y * cs.getScale();
-        final double mapScreenX = cs.toScreenX(worldBounds.topLeftBound.x);
-        final double mapScreenY = cs.toScreenY(worldBounds.topLeftBound.y);
+        final double mapScreenWidth = worldBounds.bottomRightX * cs.getScale();
+        final double mapScreenHeight = worldBounds.bottomRightY * cs.getScale();
+        final double mapScreenX = cs.toScreenX(worldBounds.topLeftX);
+        final double mapScreenY = cs.toScreenY(worldBounds.topLeftY);
 
         final Image currentFrame = mapAnimation.getImage();
 
