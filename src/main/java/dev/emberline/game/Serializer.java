@@ -1,12 +1,14 @@
 package dev.emberline.game;
 
+import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
+import javafx.scene.input.InputEvent;
 
 import java.io.*;
 
-public class Serializer implements Updatable, Renderable {
+public class Serializer implements Updatable, Renderable, Inputable {
 
     private final String fileName = "./save";
     private long acc = 0;
@@ -51,7 +53,18 @@ public class Serializer implements Updatable, Renderable {
 
     @Override
     public void update(long elapsed) {
-        if (!isSerialized) {
+        long nsToSeconds = 1_000_000_000;
+        acc += elapsed;
+        long tmp = acc / nsToSeconds;
+        if ((tmp >= 20 && tmp <= 30 )) {
+            if (tmp >= 25 && isSerialized) {
+                deserialize();
+                isSerialized = false;
+            } else if (tmp < 21 && !isSerialized) {
+                isSerialized = true;
+                serialize();
+            }
+        } else {
             world.update(elapsed);
         }
     }
@@ -60,6 +73,13 @@ public class Serializer implements Updatable, Renderable {
     public void render() {
         if (!isSerialized) {
             world.render();
+        }
+    }
+
+    @Override
+    public void processInput(InputEvent inputEvent) {
+        if (!isSerialized) {
+            world.processInput(inputEvent);
         }
     }
 }
