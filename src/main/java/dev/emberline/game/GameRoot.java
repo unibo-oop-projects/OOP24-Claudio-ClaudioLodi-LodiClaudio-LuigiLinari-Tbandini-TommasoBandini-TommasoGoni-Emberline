@@ -56,7 +56,10 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
      */
     @Override
     public void processInput(final InputEvent inputEvent) {
-        currentState.processInput(inputEvent);
+        if (currentState == world) {
+            worldSerializer.processInput(inputEvent);
+        } else
+            currentState.processInput(inputEvent);
     }
 
     /**
