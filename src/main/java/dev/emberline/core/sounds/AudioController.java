@@ -35,7 +35,8 @@ public class AudioController implements EventListener {
         @JsonProperty String MUSIC_PATH,
         @JsonProperty Map<SoundType, String> SFX_PATHS,
         @JsonProperty double STEP_VOLUME_AMOUNT
-    ) {}
+    ) {
+    }
 
     /**
      * Constructs an AudioController instance.

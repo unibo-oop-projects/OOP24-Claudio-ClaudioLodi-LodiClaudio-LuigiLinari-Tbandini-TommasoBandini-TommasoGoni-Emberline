@@ -104,7 +104,7 @@ public class GameOver extends GuiLayer implements GameState {
      * @see GameOver
      */
     public GameOver() {
-        this(ConfigLoader.loadConfig("/gui/gameOver/gameOverBounds.json", GameOverBounds.class));
+        this(ConfigLoader.loadConfig("/gui/guiBounds.json", GameOverBounds.class));
     }
 
     /**
@@ -182,7 +182,7 @@ public class GameOver extends GuiLayer implements GameState {
         
         final Image enemiesKilledLabel = SpriteLoader.loadSprite(new StringSpriteKey("Enemies killed:")).image();
         final Image wavesSurvivedLabel = SpriteLoader.loadSprite(new StringSpriteKey("Waves survived:")).image();
-        final Image totalDamageLabel = SpriteLoader.loadSprite(new StringSpriteKey("Total damage dealt:")).image();
+        final Image totalDamageLabel = SpriteLoader.loadSprite(new StringSpriteKey("Tot tower damage:")).image();
         final Image timeInGameLabel = SpriteLoader.loadSprite(new StringSpriteKey("Time in game:")).image();
 
         final Image enemiesKilledValue = SpriteLoader.loadSprite(new StringSpriteKey("" + enemiesKilled)).image();
@@ -227,17 +227,17 @@ public class GameOver extends GuiLayer implements GameState {
         addMainMenuButton();
         addExitButton();
 
-        final double menuScreenWidth = gameOverBounds.bottomRightBound.x * cs.getScale();
-        final double menuScreenHeight = gameOverBounds.bottomRightBound.y * cs.getScale();
-        final double menuScreenX = cs.toScreenX(gameOverBounds.topLeftBound.x);
-        final double menuScreenY = cs.toScreenY(gameOverBounds.topLeftBound.y);
+        final double gameOverScreenWidth = gameOverBounds.bottomRightBound.x * cs.getScale();
+        final double gameOverScreenHeight = gameOverBounds.bottomRightBound.y * cs.getScale();
+        final double gameOverScreenX = cs.toScreenX(gameOverBounds.topLeftBound.x);
+        final double gameOverScreenY = cs.toScreenY(gameOverBounds.topLeftBound.y);
 
         final Image gameOverBackground = SpriteLoader.loadSprite(SingleSpriteKey.GAME_OVER_BACKGROUND).image();
         final Image gameOverImage = SpriteLoader.loadSprite(SingleSpriteKey.GAME_OVER).image();
         final Image statisticsImage = SpriteLoader.loadSprite(SingleSpriteKey.STATISTICS).image();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
-            gc.drawImage(gameOverBackground, menuScreenX, menuScreenY, menuScreenWidth, menuScreenHeight);
+            gc.drawImage(gameOverBackground, gameOverScreenX, gameOverScreenY, gameOverScreenWidth, gameOverScreenHeight);
         }));
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {

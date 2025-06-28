@@ -83,7 +83,7 @@ public class MainMenu extends GuiLayer implements GameState {
      * @see MainMenu
      */
     public MainMenu() {
-        this(ConfigLoader.loadConfig("/gui/menu/menuBounds.json", MenuBounds.class));
+        this(ConfigLoader.loadConfig("/gui/guiBounds.json", MenuBounds.class));
     }
 
     private MainMenu(final MenuBounds menuBounds) {
@@ -131,7 +131,7 @@ public class MainMenu extends GuiLayer implements GameState {
         final double menuScreenX = cs.toScreenX(menuBounds.topLeftBound.x);
         final double menuScreenY = cs.toScreenY(menuBounds.topLeftBound.y);
 
-        final Image menuBackground = SpriteLoader.loadSprite(SingleSpriteKey.MENU_BACKGROUND).image();
+        final Image menuBackground = SpriteLoader.loadSprite(SingleSpriteKey.GUI_BACKGROUND).image();
         final Image emberlineTitle = SpriteLoader.loadSprite(SingleSpriteKey.EMBERLINE_TITLE).image();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
