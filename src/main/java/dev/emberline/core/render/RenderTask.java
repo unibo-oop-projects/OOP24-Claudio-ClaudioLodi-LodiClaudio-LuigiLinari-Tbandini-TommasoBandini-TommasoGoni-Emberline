@@ -1,5 +1,7 @@
 package dev.emberline.core.render;
 
+import java.util.Objects;
+
 /**
  * The RenderTask class encapsulates a {@link Runnable} intended for rendering in a
  * graphical or game application. It associates a priority and optional
@@ -69,6 +71,11 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
      */
     @Override
     public int compareTo(final RenderTask t1) {
+        //  Generally, the value of compareTo should return zero IF AND ONLY IF equals returns true.
+        if (this.equals(t1)) {
+            return 0;
+        }
+
         final int comparison = this.renderPriority.getPriority() - t1.renderPriority.getPriority();
         if (comparison != 0) {
             return comparison;
@@ -78,7 +85,38 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
         if (zOrderEnabled && zOrderComparison != 0) {
             return zOrderComparison;
         }
-        return secondaryComparison;
+        if (secondaryComparison != 0) {
+            return secondaryComparison;
+        }
+        // This is the last resort, we compare the hash codes of the runnables.
+        // This is not a perfect solution, but it should be extremely rare that two RenderTasks
+        // have the same render priority, secondary priority, z-order and runnable hashCode but are not equal.
+        return this.runnable.hashCode() - t1.runnable.hashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        RenderTask that = (RenderTask) o;
+        return (zOrderEnabled == that.zOrderEnabled
+                && Double.compare(zOrder, that.zOrder) == 0
+                && secondaryPriority == that.secondaryPriority
+                && renderPriority == that.renderPriority
+                && Objects.equals(runnable, that.runnable)
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(renderPriority, zOrderEnabled, zOrder, secondaryPriority, runnable);
     }
 
     private int comparisonToInt(final double comparison) {
