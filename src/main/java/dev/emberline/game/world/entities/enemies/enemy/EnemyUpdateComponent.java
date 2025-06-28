@@ -59,7 +59,7 @@ class EnemyUpdateComponent implements Updatable, Serializable {
         destinations.replaceAll(coordinate2D -> coordinate2D.subtract(0, enemy.getHeight() / 2));
 
         this.enemyState = EnemyState.WALKING;
-        this.velocity = destinations.get(destinationsIdx).subtract(position)
+        this.velocity = destinations.getFirst().subtract(position)
                 .normalize().multiply(enemy.getSpeed());
     }
 
