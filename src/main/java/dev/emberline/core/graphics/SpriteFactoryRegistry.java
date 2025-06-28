@@ -37,7 +37,7 @@ final class SpriteFactoryRegistry {
     }
 
     static <K extends SpriteKey> SpriteFactory<K> getFactory(final K key) {
-        final Class<?> keyType = key.getClass(); //todo check uf this is correct
+        final Class<?> keyType = key.getClass();
 
         for (final SpriteFactory<?> factory : FACTORIES) {
             if (factory.getKeyType().isAssignableFrom(keyType)) {
