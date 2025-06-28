@@ -63,17 +63,22 @@ public class MainMenu extends GuiLayer implements GameState {
         private static final double BTN_EXIT_Y = BTN_OPTIONS_Y + BTN_OPTIONS_HEIGHT - 0.25;
     }
 
-    // menu bounds
-    private record Coordinate(
-            @JsonProperty int x,
-            @JsonProperty int y
-    ) {
-    }
-
     private record MenuBounds(
-            @JsonProperty Coordinate topLeftBound,
-            @JsonProperty Coordinate bottomRightBound
+            @JsonProperty
+            int topLeftX,
+            @JsonProperty
+            int topLeftY,
+            @JsonProperty
+            int bottomRightX,
+            @JsonProperty
+            int bottomRightY
     ) {
+        // Data validation
+        private MenuBounds {
+            if (topLeftX >= bottomRightX || topLeftY >= bottomRightY) {
+                throw new IllegalArgumentException("Invalid menu bounds: " + this);
+            }
+        }
     }
 
     /**
@@ -88,8 +93,8 @@ public class MainMenu extends GuiLayer implements GameState {
     }
 
     private MainMenu(final MenuBounds menuBounds) {
-        super(menuBounds.topLeftBound.x, menuBounds.topLeftBound.y,
-        menuBounds.bottomRightBound.x - menuBounds.topLeftBound.x, menuBounds.bottomRightBound.y - menuBounds.topLeftBound.y);
+        super(menuBounds.topLeftX, menuBounds.topLeftY,
+        menuBounds.bottomRightX - menuBounds.topLeftX, menuBounds.bottomRightY - menuBounds.topLeftY);
         this.menuBounds = menuBounds;
     }
 
@@ -137,10 +142,10 @@ public class MainMenu extends GuiLayer implements GameState {
         addOptionsButton();
         addExitButton();
 
-        final double menuScreenWidth = menuBounds.bottomRightBound.x * cs.getScale();
-        final double menuScreenHeight = menuBounds.bottomRightBound.y * cs.getScale();
-        final double menuScreenX = cs.toScreenX(menuBounds.topLeftBound.x);
-        final double menuScreenY = cs.toScreenY(menuBounds.topLeftBound.y);
+        final double menuScreenWidth = (menuBounds.bottomRightX - menuBounds.topLeftX) * cs.getScale();
+        final double menuScreenHeight = (menuBounds.bottomRightY - menuBounds.topLeftY) * cs.getScale();
+        final double menuScreenX = cs.toScreenX(menuBounds.topLeftX);
+        final double menuScreenY = cs.toScreenY(menuBounds.topLeftY);
 
         final Image menuBackground = SpriteLoader.loadSprite(SingleSpriteKey.GUI_BACKGROUND).image();
         final Image emberlineTitle = SpriteLoader.loadSprite(SingleSpriteKey.EMBERLINE_TITLE).image();

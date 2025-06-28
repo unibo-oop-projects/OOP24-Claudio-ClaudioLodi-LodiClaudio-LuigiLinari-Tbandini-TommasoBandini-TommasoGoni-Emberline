@@ -28,7 +28,7 @@ import javafx.scene.image.Image;
  * the layout of buttons and the display of the background and window for the options menu.
  */
 public class Options extends GuiLayer implements GameState {
-    private final OptionsBounds bounds;
+    private final OptionsBounds optionsBounds;
     private final boolean showMenuButton;
 
     private static class Layout {
@@ -86,20 +86,27 @@ public class Options extends GuiLayer implements GameState {
         private static final ColorAdjust OPTIONS_WRITINGS = new ColorAdjust(0.15, 0.9, -0.3, 0);
     }
 
-    private record Coordinate(
-        @JsonProperty int x,
-        @JsonProperty int y
-    ) { }
-
-    private record OptionsBounds(
-        @JsonProperty Coordinate topLeftBound,
-        @JsonProperty Coordinate bottomRightBound
-    ) { }
-
+   private record OptionsBounds(
+            @JsonProperty
+            int topLeftX,
+            @JsonProperty
+            int topLeftY,
+            @JsonProperty
+            int bottomRightX,
+            @JsonProperty
+            int bottomRightY
+    ) {
+        // Data validation
+        private OptionsBounds {
+            if (topLeftX >= bottomRightX || topLeftY >= bottomRightY) {
+                throw new IllegalArgumentException("Invalid options optionsBounds: " + this);
+            }
+        }
+    }
     /**
      * Constructs an {@code Options} object by initializing it with the configuration
      * data loaded from a predefined JSON resource file. The configuration provides
-     * the bounds necessary for setting up the {@code Options} screen in the GUI.
+     * the optionsBounds necessary for setting up the {@code Options} screen in the GUI.
      *
      * @param showMenuButton a boolean representing whether the options menu should or should not
      *                       have a menu button
@@ -110,12 +117,12 @@ public class Options extends GuiLayer implements GameState {
         this(ConfigLoader.loadConfig("/gui/guiBounds.json", OptionsBounds.class), showMenuButton);
     }
 
-    private Options(final OptionsBounds bounds, final boolean showMenuButton) {
-        super(bounds.topLeftBound.x,
-                bounds.topLeftBound.y,
-                bounds.bottomRightBound.x - bounds.topLeftBound.x,
-                bounds.bottomRightBound.y - bounds.topLeftBound.y);
-        this.bounds = bounds;
+    private Options(final OptionsBounds optionsBounds, final boolean showMenuButton) {
+        super(optionsBounds.topLeftX,
+                optionsBounds.topLeftY,
+                optionsBounds.bottomRightX - optionsBounds.topLeftX,
+                optionsBounds.bottomRightY - optionsBounds.topLeftY);
+        this.optionsBounds = optionsBounds;
         this.showMenuButton = showMenuButton;
     }
 
@@ -414,10 +421,10 @@ public class Options extends GuiLayer implements GameState {
         final GraphicsContext gc = renderer.getGraphicsContext();
         final CoordinateSystem cs = renderer.getGuiCoordinateSystem();
 
-        final double optionsScreenWidth = bounds.bottomRightBound.x * cs.getScale();
-        final double optionsScreenHeight = bounds.bottomRightBound.y * cs.getScale();
-        final double optionsScreenX = cs.toScreenX(bounds.topLeftBound.x);
-        final double optionsScreenY = cs.toScreenY(bounds.topLeftBound.y);
+        final double optionsScreenWidth = (optionsBounds.bottomRightX - optionsBounds.topLeftX)* cs.getScale();
+        final double optionsScreenHeight = (optionsBounds.bottomRightY - optionsBounds.topLeftY) * cs.getScale();
+        final double optionsScreenX = cs.toScreenX(optionsBounds.topLeftX);
+        final double optionsScreenY = cs.toScreenY(optionsBounds.topLeftY);
 
         updateLayout();
 
