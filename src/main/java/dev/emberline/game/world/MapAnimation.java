@@ -44,6 +44,8 @@ public class MapAnimation implements Updatable, Serializable {
 
     private void updateAnimatedSprite() {
         if (waveManager.getCurrentWaveIndex() > currentWaveIndex) {
+            frameIndex = 0;
+            accumulatedTimeNs = 0;
             currentWaveIndex = waveManager.getCurrentWaveIndex();
             this.animatedSprite = (AnimatedSprite) SpriteLoader.loadSprite(
                     new MapSpriteKey(currentWaveIndex)
@@ -67,10 +69,6 @@ public class MapAnimation implements Updatable, Serializable {
      */
     @Override
     public void update(final long elapsed) {
-        if (isAnimationOver()) {
-            return;
-        }
-
         updateAnimatedSprite();
 
         final long frameTimeNs = animatedSprite.getFrameTimeNs();
