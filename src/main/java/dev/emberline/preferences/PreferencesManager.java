@@ -11,7 +11,7 @@ public final class PreferencesManager {
 
     public static Double getDoublePreference(final PreferenceKey key) {
         final double value = PREFS.getDouble(key.getKey(), key.getDefaultDoubleValue());
-        if (value == key.getDefaultDoubleValue()) {
+        if (Math.abs(value - key.getDefaultDoubleValue()) < 0.0001) {
             PREFS.putDouble(key.getKey(), value);
         }
         return value;
