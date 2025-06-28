@@ -1,5 +1,7 @@
 package dev.emberline.game.world.entities.enemies;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyWithStats;
@@ -25,6 +27,24 @@ public class EnemiesManager implements IEnemiesManager {
 
     private final World world;
 
+    private record WorldBounds(
+        @JsonProperty
+        int topLeftX,
+        @JsonProperty
+        int topLeftY,
+        @JsonProperty
+        int bottomRightX,
+        @JsonProperty
+        int bottomRightY
+    ) {
+        // Data validation
+        private WorldBounds {
+            if (topLeftX >= bottomRightX || topLeftY >= bottomRightY) {
+                throw new IllegalArgumentException("Invalid world bounds: " + this);
+            }
+        }
+    }
+
     /**
      * Constructs an instance of the EnemiesManager.
      * This manager operates within the specified game world and initializes
@@ -35,10 +55,10 @@ public class EnemiesManager implements IEnemiesManager {
     public EnemiesManager(final World world) {
         this.world = world;
 
-        //TODO
+        final WorldBounds worldBounds = ConfigLoader.loadConfig("/world/worldBounds.json", WorldBounds.class);
         this.spatialHashGrid = new SpatialHashGrid(
-                0, 0,
-                32, 18
+                worldBounds.topLeftX, worldBounds.topLeftY,
+                worldBounds.bottomRightX, worldBounds.bottomRightY
         );
     }
 
