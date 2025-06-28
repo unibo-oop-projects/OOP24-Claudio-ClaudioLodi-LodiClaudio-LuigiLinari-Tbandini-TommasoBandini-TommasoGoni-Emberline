@@ -1,5 +1,6 @@
 package dev.emberline.core.event;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Map;
 /**
  * TODO.
  */
+@NotThreadSafe
 public final class EventDispatcher {
     // Singleton instance of the EventDispatcher
     private static EventDispatcher instance;
