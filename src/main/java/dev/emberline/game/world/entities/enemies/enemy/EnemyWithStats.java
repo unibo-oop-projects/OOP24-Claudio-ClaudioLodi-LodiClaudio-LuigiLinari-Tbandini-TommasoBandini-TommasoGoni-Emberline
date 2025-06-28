@@ -3,6 +3,7 @@ package dev.emberline.game.world.entities.enemies.enemy;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.statistics.Statistics;
 import dev.emberline.utility.Vector2D;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -30,6 +31,12 @@ public class EnemyWithStats implements IEnemy, Serializable {
      *                 with statistical tracking functionality
      * @param statistics the {@link Statistics} object used to record and manage game-related data
      */
+    @SuppressFBWarnings(
+            value = {
+                    "EI_EXPOSE_REP2" //May expose internal representation by storing an externally mutable object into Renderer.canvas
+            },
+            justification = "This is intended behavior as this class is a decorator for IEnemy."
+    )
     public EnemyWithStats(final IEnemy newEnemy, final Statistics statistics) {
         this.enemy = newEnemy;
         this.statistics = statistics;
