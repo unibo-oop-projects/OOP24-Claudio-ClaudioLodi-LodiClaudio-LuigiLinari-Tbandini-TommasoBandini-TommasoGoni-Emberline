@@ -30,50 +30,18 @@ import java.util.Objects;
  * methods for registering event handlers for various mouse interactions.
  */
 public class GuiButton implements Inputable, Renderable {
-    /**
-     * Represents the normal state image of the GUI button.
-     */
-    protected final Image normalSprite;
 
-    /**
-     * Represents the sprite image to be displayed when the button is in a hovered state.
-     */
-    protected final Image hoverSprite; // Can be null
+    private final Image normalSprite;
+    private final Image hoverSprite; // Can be null
 
-    /**
-     * The x-coordinate of the top-left corner of the graphical button in the GUI coordinate system.
-     */
-    protected final double x;
+    private final double x;
+    private final double y;
+    private final double width;
+    private final double height;
 
-    /**
-     * Represents the top-left y-coordinate of the button in the GUI coordinate system.
-     */
-    protected final double y;
-
-    /**
-     * The width of the GUI button in the GUI coordinate system.
-     */
-    protected final double width;
-
-    /**
-     * Represents the height of the {@code GuiButton} in the GUI coordinate system.
-     */
-    protected final double height;
-
-    /**
-     * Defines the action to be executed when the button is clicked.
-     */
-    protected Runnable onClick;
-
-    /**
-     * Defines the action to be executed when the button enters the bounds of the {@code GuiButton}.
-     */
-    protected Runnable onMouseEnter;
-
-    /**
-     * Defines the action to be executed when the mouse leaves the bounds of the {@code GuiButton}.
-     */
-    protected Runnable onMouseLeave;
+    private Runnable onClick;
+    private Runnable onMouseEnter;
+    private Runnable onMouseLeave;
 
     /**
      * Indicates whether the button was previously in a hovered state.
@@ -215,7 +183,8 @@ public class GuiButton implements Inputable, Renderable {
             if (hovered && hoverSprite == null) {
                 gc.drawImage(normalSprite, screenX, screenY, screenWidth, screenHeight);
                 final Paint previousFill = gc.getFill();
-                gc.setFill(Color.rgb(10, 10, 10, 0.2));
+                final double alpha = 0.2;
+                gc.setFill(Color.rgb(10, 10, 10, alpha));
                 gc.fillRect(screenX, screenY, screenWidth, screenHeight);
                 gc.setFill(previousFill);
             } else {
@@ -256,5 +225,77 @@ public class GuiButton implements Inputable, Renderable {
             onMouseLeave.run();
         }
         wasHovered = hovered;
+    }
+
+    /**
+     * Returns the normal state image of the GUI button.
+     * @return the normal state image of the GUI button.
+     */
+    public Image getNormalSprite() {
+        return normalSprite;
+    }
+
+    /**
+     * Returns the sprite image to be displayed when the button is in a hovered state.
+     * @return the sprite image to be displayed when the button is in a hovered state.
+     */
+    public Image getHoverSprite() {
+        return hoverSprite;
+    }
+
+    /**
+     * Returns the x-coordinate of the top-left corner of the graphical button in the GUI coordinate system.
+     * @return the x-coordinate of the top-left corner of the graphical button in the GUI coordinate system.
+     */
+    public double getX() {
+        return x;
+    }
+
+    /**
+     * Returns the top-left y-coordinate of the button in the GUI coordinate system.
+     * @return the top-left y-coordinate of the button in the GUI coordinate system.
+     */
+    public double getY() {
+        return y;
+    }
+
+    /**
+     * Returns the width of the GUI button in the GUI coordinate system.
+     * @return the width of the GUI button in the GUI coordinate system.
+     */
+    public double getWidth() {
+        return width;
+    }
+
+    /**
+     * Returns the height of the {@code GuiButton} in the GUI coordinate system.
+     * @return the height of the {@code GuiButton} in the GUI coordinate system.
+     */
+    public double getHeight() {
+        return height;
+    }
+
+    /**
+     * Returns the action to be executed when the button is clicked.
+     * @return the action to be executed when the button is clicked.
+     */
+    public Runnable getOnClick() {
+        return onClick;
+    }
+
+    /**
+     * Returns the action to be executed when the button enters the bounds of the {@code GuiButton}.
+     * @return the action to be executed when the button enters the bounds of the {@code GuiButton}.
+     */
+    public Runnable getOnMouseEnter() {
+        return onMouseEnter;
+    }
+
+    /**
+     * Returns the action to be executed when the mouse leaves the bounds of the {@code GuiButton}.
+     * @return the action to be executed when the mouse leaves the bounds of the {@code GuiButton}.
+     */
+    public Runnable getOnMouseLeave() {
+        return onMouseLeave;
     }
 }

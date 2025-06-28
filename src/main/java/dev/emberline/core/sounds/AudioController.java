@@ -5,7 +5,7 @@ import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.event.EventHandler;
 import dev.emberline.core.sounds.event.SetMusicVolumeEvent;
-import dev.emberline.core.sounds.event.SetSfxVolumeEvent;
+import dev.emberline.core.sounds.event.RefreshSfxVolumeEvent;
 import dev.emberline.core.sounds.event.SfxSoundEvent;
 import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.core.sounds.event.ToggleMusicMuteEvent;
@@ -95,10 +95,9 @@ public class AudioController implements EventListener {
      * Requests to set the sound effects volume.
      * This method dispatches an event that will be handled by the audio controller.
      * @param src the source of the event, typically the object that requested the volume change
-     * @param newVolume the new volume level for the sound effects
      */
-    public static void requestSetSfxVolume(final Object src, final double newVolume) {
-        EventDispatcher.getInstance().dispatchEvent(new SetSfxVolumeEvent(src, newVolume));
+    public static void requestSetSfxVolume(final Object src) {
+        EventDispatcher.getInstance().dispatchEvent(new RefreshSfxVolumeEvent(src));
     }
 
     /**
@@ -145,7 +144,8 @@ public class AudioController implements EventListener {
     }
 
     @EventHandler
-    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleSFXSoundEvent(final SfxSoundEvent event) {
         Platform.runLater(() -> {
             playSfx(event);
@@ -153,7 +153,8 @@ public class AudioController implements EventListener {
     }
 
     @EventHandler
-    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleSetMusicVolumeEvent(final SetMusicVolumeEvent event) {
         Platform.runLater(() -> {
             if (!musicPlayer.isMute()) {
@@ -168,7 +169,8 @@ public class AudioController implements EventListener {
      * @param event the {@link ToggleMusicMuteEvent} with the attached mute state
      */
     @EventHandler
-    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleToggleMusicMuteEvent(final ToggleMusicMuteEvent event) {
         Platform.runLater(() -> {
             final double musicVolume = PreferencesManager.getDoublePreference(PreferenceKey.MUSIC_VOLUME);
@@ -178,7 +180,8 @@ public class AudioController implements EventListener {
     }
 
     @EventHandler
-    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleSetSfxVolumeEvent(final SetMusicVolumeEvent event) {
         Platform.runLater(() -> {
             cachedSfxMedia.clear(); // Clear cache to reload SFX with new volume
@@ -186,7 +189,8 @@ public class AudioController implements EventListener {
     }
 
     @EventHandler
-    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"}) // This method is used by the EventDispatcher and should not be removed.
+    // This method is used by the EventDispatcher and should not be removed.
+    @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleToggleSfxMuteEvent(final ToggleMusicMuteEvent event) {
         Platform.runLater(() -> {
             cachedSfxMedia.clear(); // Clear cache to reload SFX with new mute state

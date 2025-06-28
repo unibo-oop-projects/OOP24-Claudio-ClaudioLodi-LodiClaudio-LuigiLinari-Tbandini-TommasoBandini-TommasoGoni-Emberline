@@ -79,6 +79,9 @@ public class BurnEffect implements EnchantmentEffect {
         return isExpired;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TowerStat> getTowerStats() {
         return List.of(new TowerStat(TowerStatType.BURN_EFFECT, damagePerSecond),

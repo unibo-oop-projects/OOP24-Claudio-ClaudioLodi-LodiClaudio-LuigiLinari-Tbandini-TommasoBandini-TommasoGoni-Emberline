@@ -94,7 +94,8 @@ public class SetTowerAimTypeEvent extends GuiEvent {
     /**
      * Constructs a new {@code SetTowerAimTypeEvent}.
      *
-     * @param source  the object on which the event initially occurred
+     * @param source the object on which the event initially occurred
+     * @param tower the tower whose aim type needs to be changed
      * @param aimType the desired targeting mode for the tower
      * @see SetTowerInfoEvent
      */

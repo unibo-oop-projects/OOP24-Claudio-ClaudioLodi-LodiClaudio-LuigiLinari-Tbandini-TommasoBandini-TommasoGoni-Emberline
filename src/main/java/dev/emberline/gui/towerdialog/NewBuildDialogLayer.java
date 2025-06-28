@@ -54,7 +54,7 @@ public class NewBuildDialogLayer extends GuiLayer {
         this.tower = tower;
         buildButton = addBuildButton();
         buildButton.setOnClick(() -> throwEvent(new NewBuildEvent(buildButton, this.getTowerPreBuild())));
-        super.buttons.add(buildButton);
+        super.getButtons().add(buildButton);
     }
 
     /**

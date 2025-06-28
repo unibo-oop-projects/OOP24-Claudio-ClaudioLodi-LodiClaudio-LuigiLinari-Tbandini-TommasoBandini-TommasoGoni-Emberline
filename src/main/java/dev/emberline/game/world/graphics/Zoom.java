@@ -26,6 +26,8 @@ public final class Zoom implements Renderable, Serializable {
     private long accumulatorNs;
     private long previousTimeNs = System.nanoTime();
 
+    private static final double SECOND_IN_NS = 1e9;
+
     //zoom configuration
     private record Translation(
             @JsonProperty double fromX,
@@ -65,7 +67,7 @@ public final class Zoom implements Renderable, Serializable {
      * @return whether the animation sequence is complete.
      */
     public boolean isOver() {
-        return accumulatorNs >= metadata.animationDurationSeconds * 1e9;
+        return accumulatorNs >= metadata.animationDurationSeconds * SECOND_IN_NS;
     }
 
     /**
@@ -73,7 +75,7 @@ public final class Zoom implements Renderable, Serializable {
      */
     public void startAnimation() {
         previousTimeNs = System.nanoTime();
-        accumulatorNs = -(long) (metadata.animationDelaySeconds * 1e9);
+        accumulatorNs = -(long) (metadata.animationDelaySeconds * SECOND_IN_NS);
     }
 
     /**
@@ -85,7 +87,7 @@ public final class Zoom implements Renderable, Serializable {
         accumulatorNs += currentTimeNs - previousTimeNs;
         previousTimeNs = currentTimeNs;
         // todo: check finals
-        double t = Math.min(accumulatorNs / 1e9 / metadata.animationDurationSeconds, 1.0);
+        double t = Math.min(accumulatorNs / SECOND_IN_NS / metadata.animationDurationSeconds, 1.0);
         if (accumulatorNs < 0) { // Animation isn't started yet
             updateCS(metadata.topLeft.fromX, metadata.topLeft.fromY, metadata.bottomRight.fromX, metadata.bottomRight.fromY);
             return;
@@ -110,6 +112,7 @@ public final class Zoom implements Renderable, Serializable {
         if (x <= 0 || x >= 1) {
             return Math.clamp(x, 0, 1);
         }
-        return x < 0.5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
+        final double beforeHalfFactor = 20, afterHalfFactor = -20;
+        return x < 0.5 ? Math.pow(2, beforeHalfFactor * x - 10) / 2 : (2 - Math.pow(2, -afterHalfFactor * x + 10)) / 2;
     }
 }
