@@ -160,17 +160,20 @@ public final class TowerStatsViewsBuilder {
         // (stats that are in the stat map but not in the compared stats map or are in both but have the same value)
         final Stream<TowerStatView> normalStatViews = statsMap.values().stream()
                 .filter(stat -> !comparedStatsMap.containsKey(stat.type())
-                        || stat.value() == comparedStatsMap.get(stat.type()).value())
+                        || Math.abs(stat.value() - comparedStatsMap.get(stat.type()).value()) < 0.0001)
                 .map(stat -> new TowerStatView(stat, TowerStatView.Type.NORMAL));
+
         // Add COMPARED stat views (stats that are in both maps but have different values)
         final Stream<TowerStatView> comparedStatViews = statsMap.values().stream()
                 .filter(stat -> comparedStatsMap.containsKey(stat.type())
-                        && stat.value() != comparedStatsMap.get(stat.type()).value())
+                        && Math.abs(stat.value() - comparedStatsMap.get(stat.type()).value()) > 0.0001)
                 .map(stat -> new TowerStatView(stat, comparedStatsMap.get(stat.type())));
+
         // Add NEW stat views (compared stats that are not in the stats map)
         final Stream<TowerStatView> newStatViews = comparedStatsMap.values().stream()
                 .filter(stat -> !statsMap.containsKey(stat.type()))
                 .map(stat -> new TowerStatView(stat, TowerStatView.Type.NEW));
+
         // Combine all views into a single unmodifiable sorted list
         return Stream.of(normalStatViews, comparedStatViews, newStatViews)
                 .flatMap(stream -> stream)
