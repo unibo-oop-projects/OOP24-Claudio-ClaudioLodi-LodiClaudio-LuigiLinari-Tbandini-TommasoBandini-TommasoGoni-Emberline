@@ -3,6 +3,7 @@ package dev.emberline.core.render;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -73,6 +74,14 @@ public class Renderer {
      * @param canvas the Canvas object on where the draw calls are performed
      * @see Renderer
      */
+    @SuppressFBWarnings(
+            value = {
+                    "EI_EXPOSE_REP2" //May expose internal representation by storing an externally mutable object into Renderer.canvas
+            },
+            justification = "This is intended behavior, the canvas is "
+                    + "mutable and the Renderer reads its changes to keep "
+                    + "up with the internal rendering logic."
+    )
     public Renderer(final Renderable root, final Canvas canvas) {
         this.root = root;
         this.canvas = canvas;
