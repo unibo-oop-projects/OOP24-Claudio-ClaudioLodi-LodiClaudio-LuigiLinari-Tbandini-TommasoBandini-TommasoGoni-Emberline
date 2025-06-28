@@ -37,7 +37,7 @@
   "FOG_BOTTOM_LEFT":                { "filename": "/sprites/environment/fog.png",             "x": 64,  "y": 32, "width": 32, "height": 32 },
   "FOG_BOTTOM_RIGHT":               { "filename": "/sprites/environment/fog.png",             "x": 96,  "y": 32, "width": 32, "height": 32 },
   "FOG":                            { "filename": "/sprites/environment/fog.png",             "x": 160,  "y": 0, "width": 32, "height": 32 },
-  "MENU_BACKGROUND":                { "filename": "/gui/menu/menuBackground.png",             "x": 0,  "y": 0, "width": 1920, "height": 1080 },
+  "GUI_BACKGROUND":                { "filename": "/gui/guiBackground.png",             "x": 0,  "y": 0, "width": 1920, "height": 1080 },
   "START_SIGN_BUTTON":            { "filename": "/gui/buttons/startButtonSign1.png",        "x": 0,  "y": 0, "width": 112, "height": 48 },
   "START_SIGN_BUTTON_HOVER" :           { "filename": "/gui/buttons/startButtonSign2.png",        "x": 0,  "y": 0, "width": 112, "height": 48 },
   "OPTIONS_WINDOW_BACKGROUND":      { "filename": "/gui/options/optionsAtlas.png",            "x": 0,  "y": 0, "width": 128, "height": 112 },
@@ -66,5 +66,13 @@
   "STATISTICS":                    { "filename": "/gui/gameOver/statistics.png",             "x": 0,  "y": 0, "width": 141, "height": 116 },
   "TOPBAR_BACKGROUND":              { "filename": "/gui/topbar/topbarElements.png",           "x": 64,  "y": 0, "width": 144, "height": 16 },
   "TOPBAR_OPTIONS_BUTTON":        { "filename": "/gui/topbar/topbarElements.png",           "x": 6,  "y": 6, "width": 19, "height": 19 },
-  "TOPBAR_OPTIONS_BUTTON_HOVER":        { "filename": "/gui/topbar/topbarElements.png",           "x": 39,  "y": 6, "width": 19, "height": 19 }
+  "TOPBAR_OPTIONS_BUTTON_HOVER":        { "filename": "/gui/topbar/topbarElements.png",           "x": 39,  "y": 6, "width": 19, "height": 19 },
+  "SAVES_WINDOW_BACKGROUND":         { "filename": "/gui/gameSaves/gameSavesAtlas.png",     "x": 0,  "y": 0, "width": 128, "height": 111 },
+  "SAVES_DELETE_BUTTON":            { "filename": "/gui/gameSaves/gameSavesAtlas.png",     "x": 131,  "y": 4, "width": 21, "height": 21 },
+  "SAVES_DELETE_BUTTON_HOVER":      { "filename": "/gui/gameSaves/gameSavesAtlas.png",     "x": 131,  "y": 28, "width": 21, "height": 21 },
+  "SAVES_DELETE_BUTTON_DISABLED":   { "filename": "/gui/gameSaves/gameSavesAtlas.png",     "x": 131,  "y": 52, "width": 21, "height": 21 },
+  "NEW_SAVE_BUTTON":              { "filename": "/gui/gameSaves/gameSavesAtlas.png",     "x": 158,  "y": 4, "width": 69, "height": 21 },
+  "NEW_SAVE_BUTTON_HOVER":        { "filename": "/gui/gameSaves/gameSavesAtlas.png",     "x": 158,  "y": 28, "width": 69, "height": 21 },
+  "SAVE_BUTTON":                  { "filename": "/gui/gameSaves/gameSavesAtlas.png",     "x": 158,  "y": 52, "width": 69, "height": 21 },
+  "SAVE_BUTTON_HOVER":            { "filename": "/gui/gameSaves/gameSavesAtlas.png",     "x": 158,  "y": 76, "width": 69, "height": 21 }
 }
