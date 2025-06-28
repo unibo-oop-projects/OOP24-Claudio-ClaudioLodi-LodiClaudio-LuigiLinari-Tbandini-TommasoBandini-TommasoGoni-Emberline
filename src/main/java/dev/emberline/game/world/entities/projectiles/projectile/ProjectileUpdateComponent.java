@@ -14,7 +14,6 @@ import dev.emberline.utility.Vector2D;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 class ProjectileUpdateComponent implements Updatable, Serializable {
@@ -35,7 +34,7 @@ class ProjectileUpdateComponent implements Updatable, Serializable {
     private final long flightTime;
     private long currFlightTime;
 
-    private final Function<Long, Projectile.PositionAndRotation> getPositionAndRotationAt;
+    private final Projectile.SerializableFunction<Long, Projectile.PositionAndRotation> getPositionAndRotationAt;
     private Vector2D position;
     private Double rotation; // degrees since only used by javafx
 
@@ -48,8 +47,9 @@ class ProjectileUpdateComponent implements Updatable, Serializable {
 
     private final Projectile owner;
 
-    private record Trajectory(Function<Long, Projectile.PositionAndRotation> getPositionAndRotationAt,
-                              Long flightTime) {
+    private record Trajectory(
+            Projectile.SerializableFunction<Long, Projectile.PositionAndRotation> getPositionAndRotationAt, Long flightTime
+    ) implements Serializable {
     }
 
     ProjectileUpdateComponent(
@@ -214,7 +214,7 @@ class ProjectileUpdateComponent implements Updatable, Serializable {
         final Vector2D b1 = cEnd.subtract(cStart).normalize();
         final double signY = b1.getX() >= 0 ? +1 : -1;
         final Vector2D b2 = new Coordinate2D(-b1.getY(), b1.getX()).multiply(signY);
-        final Function<Vector2D, Vector2D> rotation = p -> new Coordinate2D(
+        final Projectile.SerializableFunction<Vector2D, Vector2D> rotation = p -> new Coordinate2D(
                 b1.getX() * p.getX() + b2.getX() * p.getY(),
                 b1.getY() * p.getX() + b2.getY() * p.getY()
         );
@@ -226,32 +226,38 @@ class ProjectileUpdateComponent implements Updatable, Serializable {
         final double angularVelocity = -(velocityMag / radius);
 
         final long timeInAir = (long) (scalingFactor * UNIT_ARC_LENGTH / velocityMag);
-        return new Trajectory(t -> {
-            if (t > flightTime) {
-                t = flightTime;
+        return new Trajectory(new Projectile.SerializableFunction<Long, Projectile.PositionAndRotation>() {
+            @Serial
+            private static final long serialVersionUID = 1244935556557246323L;
+
+            @Override
+            public Projectile.PositionAndRotation apply(Long aLong) {
+                if (aLong > flightTime) {
+                    aLong = flightTime;
+                }
+
+                final double theta = theta(aLong, START_THETA, angularVelocity);
+
+                // Compute the position on the scaled trajectory,
+                // rotate it and translate so that the starting point is cStart
+                Vector2D pos = rotation.apply(r(theta, radius, START_THETA)).add(cStart);
+
+                final Vector2D tangentTraj = rDerivative(theta, radius, angularVelocity);
+                final double tangentTrajAngle = Math.toDegrees(Math.atan2(tangentTraj.getY(), tangentTraj.getX()));
+                double angle;
+                // abs > 90 => II and III quadrant, the angle needs to be reflected
+                if (Math.abs(tranformationAngle) > 90) {
+                    angle = tranformationAngle - tangentTrajAngle;
+                } else {
+                    angle = tangentTrajAngle + tranformationAngle;
+                }
+
+                // conversion to world
+                pos = canonicalToWorld(pos);
+                angle *= -1; // the angles are positive counterclockwise in the screen coordinates
+
+                return new Projectile.PositionAndRotation(pos, angle);
             }
-
-            final double theta = theta(t, START_THETA, angularVelocity);
-
-            // Compute the position on the scaled trajectory,
-            // rotate it and translate so that the starting point is cStart
-            Vector2D pos = rotation.apply(r(theta, radius, START_THETA)).add(cStart);
-
-            final Vector2D tangentTraj = rDerivative(theta, radius, angularVelocity);
-            final double tangentTrajAngle = Math.toDegrees(Math.atan2(tangentTraj.getY(), tangentTraj.getX()));
-            double angle;
-            // abs > 90 => II and III quadrant, the angle needs to be reflected
-            if (Math.abs(tranformationAngle) > 90) {
-                angle = tranformationAngle - tangentTrajAngle;
-            } else {
-                angle = tangentTrajAngle + tranformationAngle;
-            }
-
-            // conversion to world
-            pos = canonicalToWorld(pos);
-            angle *= -1; // the angles are positive counterclockwise in the screen coordinates
-
-            return new Projectile.PositionAndRotation(pos, angle);
         }, timeInAir);
     }
 
