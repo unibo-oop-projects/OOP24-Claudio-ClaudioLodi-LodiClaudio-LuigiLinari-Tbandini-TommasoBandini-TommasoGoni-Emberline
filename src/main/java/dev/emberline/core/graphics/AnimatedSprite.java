@@ -31,6 +31,7 @@ public class AnimatedSprite implements Sprite, Serializable {
      *
      * @param images      an array of {@link Image} objects representing the frames of the animation;
      *                    must not be null or empty
+     * @param spriteKey   the sprite key associated with this animated sprite
      * @param frameTimeNs the duration in nanoseconds each frame is displayed; must be a positive integer
      * @throws IllegalArgumentException if the {@code images} array is null or empty
      */
@@ -38,7 +39,7 @@ public class AnimatedSprite implements Sprite, Serializable {
         if (images == null || images.length == 0) {
             throw new IllegalArgumentException("Image array cannot be null or empty");
         }
-        this.images = images;
+        this.images = images.clone();
         this.key = spriteKey;
         this.frameTimeNs = frameTimeNs;
     }
@@ -86,10 +87,10 @@ public class AnimatedSprite implements Sprite, Serializable {
     }
 
     @Serial
-    private void readObject(ObjectInputStream e) throws IOException, ClassNotFoundException {
+    private void readObject(final ObjectInputStream e) throws IOException, ClassNotFoundException {
         e.defaultReadObject();
 
-        AnimatedSprite animatedSprite = (AnimatedSprite) SpriteLoader.loadSpriteAfterSerialization(key);
+        final AnimatedSprite animatedSprite = (AnimatedSprite) SpriteLoader.loadSpriteAfterSerialization(key);
 
         images = new Image[animatedSprite.getFrameCount()];
 

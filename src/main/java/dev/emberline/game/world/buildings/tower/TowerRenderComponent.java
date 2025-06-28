@@ -1,9 +1,9 @@
 package dev.emberline.game.world.buildings.tower;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Renderable;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.CrystalSpriteKey;
@@ -76,8 +76,8 @@ class TowerRenderComponent implements Renderable, Serializable {
         final double screenWidth = cs.getScale() * tower.getWorldWidth();
         final double screenHeight = cs.getScale() * tower.getWorldHeight();
 
-        final double firingWorldCenterX = tower.firingWorldCenterLocation().getX();
-        final double firingWorldCenterY = tower.firingWorldCenterLocation().getY();
+        final double firingWorldCenterX = tower.getFiringWorldCenterLocation().getX();
+        final double firingWorldCenterY = tower.getFiringWorldCenterLocation().getY();
 
         final double crystalScreenX = cs.toScreenX(firingWorldCenterX - Metadata.CRYSTAL_WIDTH / 2);
         final double crystalScreenY = cs.toScreenY(firingWorldCenterY - Metadata.CRYSTAL_HEIGHT / 2)

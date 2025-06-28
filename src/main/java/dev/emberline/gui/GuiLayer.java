@@ -28,12 +28,16 @@ public class GuiLayer implements Renderable, Inputable {
      * {@code GuiLayer}, allowing centralized management of their input handling
      * and rendering logic.
      */
-    protected final List<GuiButton> buttons = new ArrayList<>();
+    private final List<GuiButton> buttons = new ArrayList<>();
+
     /**
      * The x-y coordinates of the top-left corner and dimensions of this GUI layer in the GUI
      * coordinate system.
      */
-    protected double x, y, width, height;
+    private final double x;
+    private final double y;
+    private final double width;
+    private final double height;
 
     /**
      * Constructs a new {@code GuiLayer} with the specified position and dimensions.
@@ -97,5 +101,45 @@ public class GuiLayer implements Renderable, Inputable {
         for (final GuiButton button : buttons) {
             button.render();
         }
+    }
+
+    /**
+     * Returns the buttons currently on the {@code GuiLayer}.
+     * @return the buttons currently on the {@code GuiLayer}.
+     */
+    protected List<GuiButton> getButtons() {
+        return buttons;
+    }
+
+    /**
+     * Returns the x coordinate of the top left corner of the {@code GuiLayer}.
+     * @return the x coordinate of the top left corner of the {@code GuiLayer}
+     */
+    protected double getX() {
+        return x;
+    }
+
+    /**
+     * Returns the y coordinate of the top left corner of the {@code GuiLayer}.
+     * @return the y coordinate of the top left corner of the {@code GuiLayer}
+     */
+    protected double getY() {
+        return y;
+    }
+
+    /**
+     * Returns the height of the {@code GuiLayer}.
+     * @return the height of the {@code GuiLayer}
+     */
+    protected double getHeight() {
+        return height;
+    }
+
+    /**
+     * Returns the width of the {@code GuiLayer}.
+     * @return the width of the {@code GuiLayer}
+     */
+    protected double getWidth() {
+        return width;
     }
 }

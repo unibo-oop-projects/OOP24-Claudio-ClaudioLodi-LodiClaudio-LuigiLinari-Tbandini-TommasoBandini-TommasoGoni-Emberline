@@ -1,7 +1,7 @@
 package dev.emberline.game.world.roads;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 

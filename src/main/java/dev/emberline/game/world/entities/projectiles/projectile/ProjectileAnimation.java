@@ -22,8 +22,8 @@ public class ProjectileAnimation implements Updatable, Serializable {
 
     private final AnimatedSprite projectileSprite;
 
-    private int frameIndex = 0;
-    private long accumulatedTimeNs = 0;
+    private int frameIndex;
+    private long accumulatedTimeNs;
 
     /**
      * Initializes a new instance of the {@code ProjectileAnimation} class for the specified projectile.

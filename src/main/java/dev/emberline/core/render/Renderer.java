@@ -3,6 +3,7 @@ package dev.emberline.core.render;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -44,8 +45,8 @@ public class Renderer {
     // JavaFX Canvas, only JavaFX thread can modify the scene graph, do not modify the scene graph from another thread
     private final Canvas canvas;
     // Last used canvas dimensions
-    private double lastUsedCanvasWidth = 0;
-    private double lastUsedCanvasHeight = 0;
+    private double lastUsedCanvasWidth;
+    private double lastUsedCanvasHeight;
 
     private final GraphicsContext gc;
     private final AtomicBoolean isRunningLater = new AtomicBoolean(false);
@@ -57,7 +58,7 @@ public class Renderer {
 
     // Rendering queue
     private final Queue<RenderTask> renderQueue = new PriorityBlockingQueue<>();
-    private long taskOrderingCounter = 0;
+    private long taskOrderingCounter;
 
     // drawtext centering height margin
     private static final double CENTER_TEXT_H_MARGIN = 0.07;
@@ -73,6 +74,12 @@ public class Renderer {
      * @param canvas the Canvas object on where the draw calls are performed
      * @see Renderer
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2", //May expose internal representation by storing an externally mutable object into Renderer.canvas
+            justification = "This is intended behavior, the canvas is "
+                    + "mutable and the Renderer reads its changes to keep "
+                    + "up with the internal rendering logic."
+    )
     public Renderer(final Renderable root, final Canvas canvas) {
         this.root = root;
         this.canvas = canvas;
@@ -205,16 +212,16 @@ public class Renderer {
      */
     public static void drawImageFit(
             final Image image, final GraphicsContext gc, final CoordinateSystem cs,
-            final double x, double y, final double width, final double height
+            final double x, final double y, final double width, final double height
     ) {
         final double scalingFactor = Math.min(width / image.getWidth(), height / image.getHeight());
-        y += (height - image.getHeight() * scalingFactor) / 2; // vertical centering
-        drawImage(image, gc, cs, x, y, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
+        final double newY = y + (height - image.getHeight() * scalingFactor) / 2; // vertical centering
+        drawImage(image, gc, cs, x, newY, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
     }
 
     /**
      * Draws an image on the specified {@code GraphicsContext}, with a fixed aspect ratio,
-     * aligned to the center of the given rectangular area in both axes
+     * aligned to the center of the given rectangular area in both axes.
      *
      * @param image  the {@code Image} to be drawn
      * @param gc     the {@code GraphicsContext} on which the image will be drawn
@@ -226,12 +233,12 @@ public class Renderer {
      */
     public static void drawImageFitCenter(
             final Image image, final GraphicsContext gc, final CoordinateSystem cs,
-            double x, double y, final double width, final double height
+            final double x, final double y, final double width, final double height
     ) {
         final double scalingFactor = Math.min(width / image.getWidth(), height / image.getHeight());
-        y += (height - image.getHeight() * scalingFactor) / 2; // vertical centering
-        x += (width - image.getWidth() * scalingFactor) / 2; // horizontal centering
-        drawImage(image, gc, cs, x, y, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
+        final double newY = y + (height - image.getHeight() * scalingFactor) / 2; // vertical centering
+        final double newX = x + (width - image.getWidth() * scalingFactor) / 2; // horizontal centering
+        drawImage(image, gc, cs, newX, newY, image.getWidth() * scalingFactor, image.getHeight() * scalingFactor);
     }
 
     /**
@@ -247,21 +254,22 @@ public class Renderer {
      * @param height the height of the area available for rendering the text in the coordinate system
      */
     public static void drawText(
-            String text, final GraphicsContext gc, final CoordinateSystem cs,
+            final String text, final GraphicsContext gc, final CoordinateSystem cs,
             final double x, final double y, final double width, final double height
     ) {
         final boolean gcImageSmoothing = gc.isImageSmoothing();
         final double areaInPixels = width * height * cs.getScale() * cs.getScale();
+        String formattedText = text;
         // Convert to uppercase if the area is too small
         if (areaInPixels < MIN_TEXT_AREA_PX_UPPERCASE) {
-            text = text.toUpperCase(Locale.US);
+            formattedText = text.toUpperCase(Locale.US);
         }
         // Use image smoothing if the area is too small
         if (height * cs.getScale() < MIN_TEXT_HEIGHT_PX_SMOOTH) {
             gc.setImageSmoothing(true);
         }
         // Fit image or stretch vertically
-        final Image image = SpriteLoader.loadSprite(new StringSpriteKey(text)).image();
+        final Image image = SpriteLoader.loadSprite(new StringSpriteKey(formattedText)).image();
         if (width / image.getWidth() < height / image.getHeight()) {
             drawImage(image, gc, cs, x, y + height * CENTER_TEXT_H_MARGIN, width, height * (1 - 2 * CENTER_TEXT_H_MARGIN));
         } else {

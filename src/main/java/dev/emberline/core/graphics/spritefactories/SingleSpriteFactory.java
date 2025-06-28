@@ -2,7 +2,7 @@ package dev.emberline.core.graphics.spritefactories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.SingleSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
@@ -24,14 +24,6 @@ public final class SingleSpriteFactory implements SpriteFactory<SingleSpriteKey>
     private record SpriteMetadata(@JsonProperty String filename,
                                   @JsonProperty int x, @JsonProperty int y,
                                   @JsonProperty int width, @JsonProperty int height) {
-    }
-
-    /**
-     * Constructs a new instance of the {@code SingleSpriteFactory}.
-     * @see SingleSpriteFactory
-     */
-    public SingleSpriteFactory() {
-
     }
 
     /**

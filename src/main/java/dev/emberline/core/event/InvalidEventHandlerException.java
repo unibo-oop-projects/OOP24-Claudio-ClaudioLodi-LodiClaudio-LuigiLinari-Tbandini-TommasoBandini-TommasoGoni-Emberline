@@ -24,7 +24,7 @@ class InvalidEventHandlerException extends RuntimeException {
      *
      * @param message the detail message explaining the reason for the exception.
      */
-    public InvalidEventHandlerException(final String message) {
+    InvalidEventHandlerException(final String message) {
         super(message);
     }
 }

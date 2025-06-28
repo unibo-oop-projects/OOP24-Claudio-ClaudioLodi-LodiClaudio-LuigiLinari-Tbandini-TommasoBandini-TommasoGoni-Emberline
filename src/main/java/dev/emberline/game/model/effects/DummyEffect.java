@@ -22,15 +22,6 @@ public class DummyEffect implements EnchantmentEffect {
     @Serial
     private static final long serialVersionUID = -1838578694017688121L;
 
-
-    /**
-     * Constructs a {@code DummyEffect} instance.
-     * @see DummyEffect
-     */
-    public DummyEffect() {
-
-    }
-
     /**
      * {@inheritDoc}
      */

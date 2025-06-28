@@ -38,7 +38,7 @@ class EnemyUpdateComponent implements Updatable, Serializable {
     private Vector2D velocity;
 
     private final List<Vector2D> destinations = new ArrayList<>();
-    private int destinationsIdx = 0;
+    private int destinationsIdx;
 
     EnemyUpdateComponent(final Vector2D spawnPoint, final World world, final AbstractEnemy enemy) {
         this.enemy = enemy;
@@ -59,7 +59,7 @@ class EnemyUpdateComponent implements Updatable, Serializable {
         destinations.replaceAll(coordinate2D -> coordinate2D.subtract(0, enemy.getHeight() / 2));
 
         this.enemyState = EnemyState.WALKING;
-        this.velocity = destinations.get(destinationsIdx).subtract(position)
+        this.velocity = destinations.getFirst().subtract(position)
                 .normalize().multiply(enemy.getSpeed());
     }
 
@@ -85,6 +85,9 @@ class EnemyUpdateComponent implements Updatable, Serializable {
             case WALKING -> walk(elapsed);
             case DYING -> dying();
             case DEAD -> {
+            }
+            default -> {
+                throw new IllegalStateException("The only handled enemy states are: WALKING, DYING and DEAD");
             }
         }
         enemy.getAnimationUpdatable().update(elapsed);
@@ -130,6 +133,22 @@ class EnemyUpdateComponent implements Updatable, Serializable {
             enemyMotion.add(new UniformMotion(curr, Vector2D.ZERO, time - durationAcc));
         }
         return enemyMotion;
+    }
+
+    /**
+     * @see IEnemy#getRemainingDistanceToTarget()
+     *
+     * @return the remaining distance to the target destination.
+     */
+    public double getRemainingDistanceToTarget() {
+        double remainingDistance = 0;
+        Vector2D currPosition = new Coordinate2D(position.getX(), position.getY());
+        for (int i = destinationsIdx; i < destinations.size(); ++i) {
+            final Vector2D currDestination = destinations.get(i);
+            remainingDistance += currPosition.distance(currDestination);
+            currPosition = new Coordinate2D(currDestination.getX(), currDestination.getY());
+        }
+        return remainingDistance;
     }
 
     void dealDamage(final double damage) {
@@ -204,7 +223,7 @@ class EnemyUpdateComponent implements Updatable, Serializable {
             final double overshootAmount = posToDest.magnitude();
 
             position = currDestination;
-            if (currDestination == destinations.getLast()) {
+            if (currDestination.equals(destinations.getLast())) {
                 attack();
                 return;
             }

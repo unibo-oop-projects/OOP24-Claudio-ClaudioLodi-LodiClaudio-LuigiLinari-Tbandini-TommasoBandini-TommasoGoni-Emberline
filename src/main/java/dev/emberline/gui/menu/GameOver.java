@@ -1,8 +1,8 @@
 package dev.emberline.gui.menu;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
@@ -31,12 +31,12 @@ import javafx.scene.image.Image;
  * It is responsible for triggering appropriate events for game state transitions
  * (e.g., exiting the game, returning to the main menu).
  */
-public class GameOver extends GuiLayer implements GameState {
+public final class GameOver extends GuiLayer implements GameState {
 
     private final GameOverBounds gameOverBounds;
     private Statistics statistics;
 
-    private static class Layout {
+    private static final class Layout {
         private static final double SCALE_FACTOR = 1.7;
         // Background
         private static final double BG_WIDTH = 32;
@@ -127,7 +127,7 @@ public class GameOver extends GuiLayer implements GameState {
                 SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON_HOVER).image());
         menuButton.setOnClick(() -> throwEvent(new SetMainMenuEvent(this)));
-        super.buttons.add(menuButton);
+        super.getButtons().add(menuButton);
     }
 
     // Exit button
@@ -137,22 +137,27 @@ public class GameOver extends GuiLayer implements GameState {
                 SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON_HOVER).image());
         exitButton.setOnClick(() -> throwEvent(new ExitGameEvent(exitButton)));
-        super.buttons.add(exitButton);
+        super.getButtons().add(exitButton);
     }
 
     private GameOver(final GameOverBounds gameOverBounds) {
-        super(gameOverBounds.topLeftBound.x, gameOverBounds.topLeftBound.y, gameOverBounds.bottomRightBound.x - gameOverBounds.topLeftBound.x, gameOverBounds.bottomRightBound.y - gameOverBounds.topLeftBound.y);
+        super(gameOverBounds.topLeftBound.x,
+                gameOverBounds.topLeftBound.y,
+                gameOverBounds.bottomRightBound.x - gameOverBounds.topLeftBound.x,
+                gameOverBounds.bottomRightBound.y - gameOverBounds.topLeftBound.y);
         this.gameOverBounds = gameOverBounds;
     }
 
     private void drawStringImage(final GraphicsContext gc, final CoordinateSystem cs, final Image img, 
                               final double x, final double y, final double maxWidth, final double maxHeight) {
-        if (img == null) return;
-        
+        if (img == null) {
+            return;
+        }
+
         final double ratio = img.getWidth() / img.getHeight();
         double targetWidth = maxWidth;
         double targetHeight = maxHeight;
-        
+
         // Adjust targetWidth and targetHeight to maintain aspect ratio
         if (targetWidth / targetHeight > ratio) {
             targetWidth = targetHeight * ratio;
@@ -160,7 +165,7 @@ public class GameOver extends GuiLayer implements GameState {
             targetHeight = targetWidth / ratio;
         }
 
-        double adjustedY = y - targetHeight;  // To allign to the bottom of the image
+        final double adjustedY = y - targetHeight;  // To allign to the bottom of the image
 
         Renderer.drawImage(img, gc, cs, x, adjustedY, targetWidth, targetHeight);
     }
@@ -168,48 +173,59 @@ public class GameOver extends GuiLayer implements GameState {
     private void drawStatisticText(final GraphicsContext gc, final CoordinateSystem cs) {
         gc.save();
         gc.setEffect(Colors.OPTIONS_WRITINGS);
-        
+
         final int enemiesKilled = statistics.getEnemiesKilled();
         final int wavesSurvived = statistics.getWavesSurvived();
         final double totalDamage = statistics.getTotalDamage();
-        final double timeInGame = statistics.getTimeInGame() / 1_000_000_000.0; 
-            
-        int hours = (int) timeInGame / 3600;
-        int minutes = (int) (timeInGame % 3600) / 60;
-        int seconds = (int) timeInGame % 60;
+        final double timeInGame = statistics.getTimeInGame() / 1_000_000_000.0;
 
-        String timeInGameFormatted = hours > 0 ? String.format("%02d:%02d:%02d", hours, minutes, seconds) : String.format("%02d:%02d", minutes, seconds);
-        
+        final int secondsInHour = 3600;
+        final int secondsInMinute = 60;
+        final int hours = (int) (timeInGame / secondsInHour);
+        final int minutes = (int) (timeInGame % secondsInHour) / secondsInMinute;
+        final int seconds = (int) timeInGame % secondsInMinute;
+
+        final String timeInGameFormatted = hours > 0
+                ? String.format("%02d:%02d:%02d", hours, minutes, seconds) : String.format("%02d:%02d", minutes, seconds);
+
         final Image enemiesKilledLabel = SpriteLoader.loadSprite(new StringSpriteKey("Enemies killed:")).image();
         final Image wavesSurvivedLabel = SpriteLoader.loadSprite(new StringSpriteKey("Waves survived:")).image();
         final Image totalDamageLabel = SpriteLoader.loadSprite(new StringSpriteKey("Total damage dealt:")).image();
         final Image timeInGameLabel = SpriteLoader.loadSprite(new StringSpriteKey("Time in game:")).image();
 
-        final Image enemiesKilledValue = SpriteLoader.loadSprite(new StringSpriteKey("" + enemiesKilled)).image();
-        final Image wavesSurvivedValue = SpriteLoader.loadSprite(new StringSpriteKey("" + wavesSurvived)).image();
+        final Image enemiesKilledValue = SpriteLoader.loadSprite(new StringSpriteKey(Integer.toString(enemiesKilled))).image();
+        final Image wavesSurvivedValue = SpriteLoader.loadSprite(new StringSpriteKey(Integer.toString(wavesSurvived))).image();
         final Image totalDamageValue = SpriteLoader.loadSprite(new StringSpriteKey(String.format("%.2f", totalDamage))).image();
         final Image timeInGameValue = SpriteLoader.loadSprite(new StringSpriteKey(timeInGameFormatted)).image();
 
         // Row 1: Enemies killed
         double currentY = Layout.STATISTICS_Y_START;
-        drawStringImage(gc, cs, enemiesKilledLabel, Layout.STATISTICS_LABEL_X, currentY, Layout.STATISTICS_MAX_LABEL_WIDTH, Layout.STATISTICS_MAX_LABEL_HEIGHT);
-        drawStringImage(gc, cs, enemiesKilledValue, Layout.STATISTICS_VALUE_X, currentY, Layout.STATISTICS_MAX_VALUE_WIDTH, Layout.STATISTICS_MAX_VALUE_HEIGHT);
+        drawStringImage(gc, cs, enemiesKilledLabel, Layout.STATISTICS_LABEL_X, currentY,
+                Layout.STATISTICS_MAX_LABEL_WIDTH, Layout.STATISTICS_MAX_LABEL_HEIGHT);
+        drawStringImage(gc, cs, enemiesKilledValue, Layout.STATISTICS_VALUE_X, currentY,
+                Layout.STATISTICS_MAX_VALUE_WIDTH, Layout.STATISTICS_MAX_VALUE_HEIGHT);
 
         // Row 2: Waves survived
         currentY += Layout.STATISTICS_ROW_HEIGHT;
-        drawStringImage(gc, cs, wavesSurvivedLabel, Layout.STATISTICS_LABEL_X, currentY, Layout.STATISTICS_MAX_LABEL_WIDTH, Layout.STATISTICS_MAX_LABEL_HEIGHT);
-        drawStringImage(gc, cs, wavesSurvivedValue, Layout.STATISTICS_VALUE_X, currentY, Layout.STATISTICS_MAX_VALUE_WIDTH, Layout.STATISTICS_MAX_VALUE_HEIGHT);
+        drawStringImage(gc, cs, wavesSurvivedLabel, Layout.STATISTICS_LABEL_X, currentY,
+                Layout.STATISTICS_MAX_LABEL_WIDTH, Layout.STATISTICS_MAX_LABEL_HEIGHT);
+        drawStringImage(gc, cs, wavesSurvivedValue, Layout.STATISTICS_VALUE_X, currentY,
+                Layout.STATISTICS_MAX_VALUE_WIDTH, Layout.STATISTICS_MAX_VALUE_HEIGHT);
 
-        
+
         // Row 3: Total damage dealt
         currentY += Layout.STATISTICS_ROW_HEIGHT;
-        drawStringImage(gc, cs, totalDamageLabel, Layout.STATISTICS_LABEL_X, currentY, Layout.STATISTICS_MAX_LABEL_WIDTH, Layout.STATISTICS_MAX_LABEL_HEIGHT);
-        drawStringImage(gc, cs, totalDamageValue, Layout.STATISTICS_VALUE_X, currentY, Layout.STATISTICS_MAX_VALUE_WIDTH, Layout.STATISTICS_MAX_VALUE_HEIGHT);
-        
+        drawStringImage(gc, cs, totalDamageLabel, Layout.STATISTICS_LABEL_X, currentY,
+                Layout.STATISTICS_MAX_LABEL_WIDTH, Layout.STATISTICS_MAX_LABEL_HEIGHT);
+        drawStringImage(gc, cs, totalDamageValue, Layout.STATISTICS_VALUE_X, currentY,
+                Layout.STATISTICS_MAX_VALUE_WIDTH, Layout.STATISTICS_MAX_VALUE_HEIGHT);
+
         // Row 4: Time in game
         currentY += Layout.STATISTICS_ROW_HEIGHT;
-        drawStringImage(gc, cs, timeInGameLabel, Layout.STATISTICS_LABEL_X, currentY, Layout.STATISTICS_MAX_LABEL_WIDTH, Layout.STATISTICS_MAX_LABEL_HEIGHT);
-        drawStringImage(gc, cs, timeInGameValue, Layout.STATISTICS_VALUE_X, currentY, Layout.STATISTICS_MAX_VALUE_WIDTH, Layout.STATISTICS_MAX_VALUE_HEIGHT);
+        drawStringImage(gc, cs, timeInGameLabel, Layout.STATISTICS_LABEL_X, currentY,
+                Layout.STATISTICS_MAX_LABEL_WIDTH, Layout.STATISTICS_MAX_LABEL_HEIGHT);
+        drawStringImage(gc, cs, timeInGameValue, Layout.STATISTICS_VALUE_X, currentY,
+                Layout.STATISTICS_MAX_VALUE_WIDTH, Layout.STATISTICS_MAX_VALUE_HEIGHT);
 
         gc.restore();
     }
@@ -241,8 +257,10 @@ public class GameOver extends GuiLayer implements GameState {
         }));
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
-            gc.drawImage(gameOverImage, cs.toScreenX(Layout.TITLE_X), cs.toScreenY(Layout.TITLE_Y), Layout.TITLE_WIDTH * cs.getScale(), Layout.TITLE_HEIGHT * cs.getScale());
-            gc.drawImage(statisticsImage, cs.toScreenX(Layout.STATISTICS_X), cs.toScreenY(Layout.STATISTICS_Y), Layout.STATISTICS_WIDTH * cs.getScale(), Layout.STATISTICS_HEIGHT * cs.getScale());
+            gc.drawImage(gameOverImage, cs.toScreenX(Layout.TITLE_X), cs.toScreenY(Layout.TITLE_Y),
+                    Layout.TITLE_WIDTH * cs.getScale(), Layout.TITLE_HEIGHT * cs.getScale());
+            gc.drawImage(statisticsImage, cs.toScreenX(Layout.STATISTICS_X), cs.toScreenY(Layout.STATISTICS_Y),
+                    Layout.STATISTICS_WIDTH * cs.getScale(), Layout.STATISTICS_HEIGHT * cs.getScale());
             drawStatisticText(gc, cs);
         }));
 

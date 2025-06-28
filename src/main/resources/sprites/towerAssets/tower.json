@@ -18,6 +18,7 @@
   },
   "worldDimensions": {
     "width": 2,
+    "baseHeight": 1,
     "firingYOffsetTiles": 0.3,
     "height": {
       "BIG": 2.25,

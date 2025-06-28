@@ -3,12 +3,16 @@ package dev.emberline.gui.event;
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.buildings.tower.Tower;
 
+import java.io.Serial;
+
 /**
  * Represents an event triggered during the process of upgrading a tower in the game's user interface.
  * This event provides information about the tower being upgraded and the upgrade details.
  */
 public class UpgradeTowerInfoEvent extends GuiEvent {
 
+    @Serial
+    private static final long serialVersionUID = 300873193545990018L;
     private final Tower tower;
     private final UpgradableInfo<?, ?> upgradableInfo;
 

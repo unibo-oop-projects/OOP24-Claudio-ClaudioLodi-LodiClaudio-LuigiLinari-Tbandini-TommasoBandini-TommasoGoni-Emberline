@@ -14,7 +14,6 @@ public class Pair<A, B> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 56467219245623699L;
-
     private A x;
     private B y;
 

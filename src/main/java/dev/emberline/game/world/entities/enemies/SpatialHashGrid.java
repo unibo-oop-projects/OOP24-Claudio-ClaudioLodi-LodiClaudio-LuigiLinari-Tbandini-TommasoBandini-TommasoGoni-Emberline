@@ -5,15 +5,15 @@ import dev.emberline.utility.Vector2D;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The SpatialHashGrid class is a data structure designed for efficient
@@ -34,10 +34,10 @@ public class SpatialHashGrid implements Iterable<IEnemy>, Serializable {
     private final int cols;
     private final int rows;
 
-    private final List<List<Set<IEnemy>>> spatialHashGrid;
+    private final List<List<Set<IEnemy>>> cellBuckets;
     private final Map<IEnemy, CellIdx> enemyCell = new HashMap<>();
 
-    private int size = 0;
+    private int size;
 
     private record CellIdx(int x, int y) implements Serializable {
     }
@@ -59,11 +59,11 @@ public class SpatialHashGrid implements Iterable<IEnemy>, Serializable {
         this.xMax = xMax;
         this.yMax = yMax;
 
-        this.spatialHashGrid = new ArrayList<>();
+        this.cellBuckets = new ArrayList<>();
         for (int x = 0; x < cols; x++) {
-            this.spatialHashGrid.add(new ArrayList<>());
+            this.cellBuckets.add(new ArrayList<>());
             for (int y = 0; y < rows; y++) {
-                spatialHashGrid.get(x).add(new HashSet<>());
+                cellBuckets.get(x).add(new HashSet<>());
             }
         }
     }
@@ -85,7 +85,7 @@ public class SpatialHashGrid implements Iterable<IEnemy>, Serializable {
         }
 
         final CellIdx cellIdx = getCellIdx(enemyLocation);
-        spatialHashGrid.get(cellIdx.x()).get(cellIdx.y()).add(enemy);
+        cellBuckets.get(cellIdx.x()).get(cellIdx.y()).add(enemy);
         enemyCell.put(enemy, cellIdx);
         size++;
     }
@@ -104,7 +104,7 @@ public class SpatialHashGrid implements Iterable<IEnemy>, Serializable {
             throw new IllegalArgumentException("Enemy isn't present in the spatial hash grid");
         }
 
-        spatialHashGrid.get(cellIdx.x()).get(cellIdx.y()).remove(enemy);
+        cellBuckets.get(cellIdx.x()).get(cellIdx.y()).remove(enemy);
         enemyCell.remove(enemy);
         size--;
     }
@@ -191,7 +191,7 @@ public class SpatialHashGrid implements Iterable<IEnemy>, Serializable {
                 if (!isInside(cellIdx)) {
                     continue;
                 }
-                for (final IEnemy enemy : spatialHashGrid.get(cellIdx.x()).get(cellIdx.y())) {
+                for (final IEnemy enemy : cellBuckets.get(cellIdx.x()).get(cellIdx.y())) {
                     final Vector2D pos = enemy.getPosition();
                     final double dstX = pos.getX() - location.getX();
                     final double dstY = pos.getY() - location.getY();

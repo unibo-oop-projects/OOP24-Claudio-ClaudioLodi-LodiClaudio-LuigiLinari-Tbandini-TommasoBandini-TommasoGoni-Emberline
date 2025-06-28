@@ -26,7 +26,7 @@ class EventHandlerInvocationException extends RuntimeException {
      * @param cause   the underlying cause of the exception, usually an exception
      *                thrown during the invocation process.
      */
-    public EventHandlerInvocationException(final String message, final Throwable cause) {
+    EventHandlerInvocationException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

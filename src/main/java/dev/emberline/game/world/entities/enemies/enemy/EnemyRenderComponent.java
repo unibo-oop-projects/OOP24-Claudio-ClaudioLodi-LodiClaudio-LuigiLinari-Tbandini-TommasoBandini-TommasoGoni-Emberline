@@ -15,7 +15,7 @@ import javafx.scene.paint.Paint;
 import java.io.Serial;
 import java.io.Serializable;
 
-public class EnemyRenderComponent implements Renderable, Serializable {
+class EnemyRenderComponent implements Renderable, Serializable {
     @Serial
     private static final long serialVersionUID = -288209243117357956L;
 
@@ -71,10 +71,20 @@ public class EnemyRenderComponent implements Renderable, Serializable {
         }).enableZOrder(position.getY() + enemy.getHeight() / 2));
     }
 
+    /**
+     * Returns whether the dying animation has finished.
+     * @return whether the dying animation has finished.
+     * @see AbstractEnemy#isDyingAnimationFinished()
+     */
     boolean isDyingAnimationFinished() {
         return enemyAnimation.isDyingAnimationFinished();
     }
 
+    /**
+     * Returns the {@code Updatable} instance of the enemy's animation.
+     * @return the {@code Updatable} instance of the enemy's animation.
+     * @see AbstractEnemy#getAnimationUpdatable()
+     */
     Updatable getAnimationUpdatable() {
         return enemyAnimation;
     }

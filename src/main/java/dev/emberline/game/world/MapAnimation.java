@@ -23,8 +23,8 @@ public class MapAnimation implements Updatable, Serializable {
     private final IWaveManager waveManager;
     private AnimatedSprite animatedSprite;
 
-    private int frameIndex = 0;
-    private long accumulatedTimeNs = 0;
+    private int frameIndex;
+    private long accumulatedTimeNs;
     private int currentWaveIndex = -1;
 
     /**
@@ -60,6 +60,11 @@ public class MapAnimation implements Updatable, Serializable {
         return animatedSprite.image(frameIndex);
     }
 
+    /**
+     * Updates the {@code MapAnimation} based on the elapsed time and current active wave.
+     *
+     * @param elapsed the time (in nanoseconds) since the last update
+     */
     @Override
     public void update(final long elapsed) {
         if (isAnimationOver()) {

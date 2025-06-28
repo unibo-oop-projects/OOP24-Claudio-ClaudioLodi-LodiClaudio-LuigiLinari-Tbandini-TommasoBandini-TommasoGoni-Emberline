@@ -25,9 +25,9 @@ public class SlowEffect implements EnchantmentEffect {
     private final double slowingFactor;
 
     private final long durationNs;
-    private long totalElapsed = 0;
+    private long totalElapsed;
 
-    private boolean isExpired = false;
+    private boolean isExpired;
 
     /**
      * Constructs a {@code SlowEffect} that applies a slowing effect to an enemy.

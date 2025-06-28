@@ -26,9 +26,9 @@ public class BurnEffect implements EnchantmentEffect {
 
     private final double duration;
     private final long durationNs;
-    private long totalElapsed = 0;
+    private long totalElapsed;
 
-    private boolean isExpired = false;
+    private boolean isExpired;
 
     /**
      * Constructs a {@code BurnEffect} that applies burn damage to an enemy over a specified duration.
@@ -79,6 +79,9 @@ public class BurnEffect implements EnchantmentEffect {
         return isExpired;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TowerStat> getTowerStats() {
         return List.of(new TowerStat(TowerStatType.BURN_EFFECT, damagePerSecond),

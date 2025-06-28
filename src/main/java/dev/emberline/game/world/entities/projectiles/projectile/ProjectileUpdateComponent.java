@@ -40,7 +40,7 @@ class ProjectileUpdateComponent implements Updatable, Serializable {
 
     private final ProjectileHitListener projectileHitListener;
     private final ProjectileHitEvent projectileHitEvent;
-    private boolean hasHit = false;
+    private boolean hasHit;
 
     private final ProjectileInfo projectileInfo;
     private final EnchantmentInfo enchantmentInfo;
@@ -57,8 +57,8 @@ class ProjectileUpdateComponent implements Updatable, Serializable {
             final ProjectileInfo projInfo, final EnchantmentInfo enchInfo,
             final World world, final Projectile owner
     ) throws FlightPathNotFound {
-        final double SECOND_IN_NS = 1e9;
-        this.velocityMag = projInfo.getProjectileSpeed() / SECOND_IN_NS; // Converted to tile/ns
+        final double secondInNs = 1e9;
+        this.velocityMag = projInfo.getProjectileSpeed() / secondInNs; // Converted to tile/ns
 
         final Vector2D prediction = enemyPrediction(start, target);
 

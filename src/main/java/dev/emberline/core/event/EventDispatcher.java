@@ -1,5 +1,8 @@
 package dev.emberline.core.event;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import javax.annotation.concurrent.NotThreadSafe;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -13,30 +16,35 @@ import java.util.Map;
 /**
  * TODO.
  */
+@NotThreadSafe
 public final class EventDispatcher {
     // Singleton instance of the EventDispatcher
     private static EventDispatcher instance;
 
     // Map to hold event handler methods and their corresponding listeners
     private final Map<EventHandlerMethod, List<EventListener>> eventHandlers = new HashMap<>();
-    
+
     private record EventHandlerMethod(Class<? extends EventObject> eventType, Method method) {
         private EventHandlerMethod {
             if (eventType == null || method == null) {
                 throw new IllegalArgumentException("Event type and method cannot be null");
             }
         }
-        
+
         private EventHandlerMethod(final Method method) {
             this(method.getParameterTypes()[0].asSubclass(EventObject.class), method);
         }
     }
-    
+
     private EventDispatcher() {
         // Prevent instantiation from outside
     }
 
-    public synchronized static EventDispatcher getInstance() {
+    @SuppressFBWarnings(
+            value = "MS_EXPOSE_REP",
+            justification = "This is a singleton pattern and the instance is managed internally."
+    )
+    public static synchronized EventDispatcher getInstance() {
         if (instance == null) {
             instance = new EventDispatcher();
         }
@@ -57,7 +65,7 @@ public final class EventDispatcher {
     }
 
     /**
-     * TODO
+     * TODO.
      * @param listener TODO.
      */
     public void unregisterListener(final EventListener listener) {

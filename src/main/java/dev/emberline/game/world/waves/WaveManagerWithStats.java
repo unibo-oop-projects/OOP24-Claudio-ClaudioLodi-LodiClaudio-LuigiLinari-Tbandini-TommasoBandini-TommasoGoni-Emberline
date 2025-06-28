@@ -27,11 +27,17 @@ public class WaveManagerWithStats implements IWaveManager {
         statistics = world.getStatistics();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Wave getWave() {
         return waveManager.getWave();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getCurrentWaveIndex() {
         return waveManager.getCurrentWaveIndex();
@@ -54,6 +60,10 @@ public class WaveManagerWithStats implements IWaveManager {
         }
     }
 
+    /**
+     * Renders the wave manager.
+     * @see WaveManager#render()
+     */
     @Override
     public void render() {
         waveManager.render();

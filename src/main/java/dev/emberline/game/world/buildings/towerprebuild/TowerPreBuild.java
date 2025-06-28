@@ -1,8 +1,8 @@
 package dev.emberline.game.world.buildings.towerprebuild;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
 import dev.emberline.core.GameLoop;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import dev.emberline.core.render.CoordinateSystem;

@@ -1,7 +1,7 @@
 package dev.emberline.core.graphics.spritefactories;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.MapSpriteKey;
@@ -24,14 +24,6 @@ public final class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
     private record Metadata(@JsonProperty String wavesFolder,
                             @JsonProperty String mapFolder, @JsonProperty String mapFile,
                             @JsonProperty int frameTimeNs, @JsonProperty Waves[] waves) {
-    }
-
-    /**
-     * Constructs a new {@code MapSpriteFactory} instance.
-     * @see MapSpriteFactory
-     */
-    public MapSpriteFactory() {
-
     }
 
     /**
