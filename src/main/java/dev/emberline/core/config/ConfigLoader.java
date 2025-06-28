@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * The {@code ConfigLoader} class provides utility methods for loading configuration
@@ -38,8 +40,11 @@ public final class ConfigLoader {
      */
     public static JsonNode loadNode(final String resourcePath) {
         try {
-            return OBJECT_MAPPER.readTree(ConfigLoader.class.getResourceAsStream(resourcePath));
-        } catch (final IOException e) {
+            InputStream resourceStream = ConfigLoader.class.getResourceAsStream(resourcePath);
+            JsonNode node = OBJECT_MAPPER.readTree(resourceStream);
+            Objects.requireNonNull(resourceStream).close();
+            return node;
+        } catch (final IOException | NullPointerException e) {
             throw new ConfigLoaderLoadingException("An error has occurred while reading or parsing the resource", e);
         }
     }
