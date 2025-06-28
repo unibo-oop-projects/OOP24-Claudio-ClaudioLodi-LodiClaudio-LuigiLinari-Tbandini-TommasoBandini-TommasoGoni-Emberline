@@ -87,12 +87,12 @@ public class EmberlineApp extends Application {
 
     /**
      * Calling Platform.exit() is the preferred way to explicitly terminate a JavaFX Application.
-     * Directly calling System.exit(int) is an acceptable alternative, but doesn't allow the Application stop() method to run.
+     * Directly calling System.exit(int) is an acceptable alternative but doesn't allow the Application stop() method to run.
      */
     @Override
     public void stop() {
         if (gameLoop != null) {
-            gameLoop.running.set(false);
+            gameLoop.getRunning().set(false);
         }
     }
 }

@@ -36,7 +36,7 @@ public final class GameLoop extends Thread {
     private static final long NS_PER_UPDATE = (long) 1e9 / TICKS_PER_SECOND;
 
     // To stop the game loop
-    public final AtomicBoolean running = new AtomicBoolean(false);
+    private final AtomicBoolean running = new AtomicBoolean(false);
 
     // Game
     private final GameRoot gameRoot;
@@ -133,5 +133,15 @@ public final class GameLoop extends Thread {
         Platform.runLater(() -> {
             stage.setFullScreen(fullscreen);
         });
+    }
+
+    /**
+     * Retrieves the current status of the game loop's running state.
+     * Setting this to false will stop the game loop.
+     *
+     * @return an {@link AtomicBoolean} representing whether the game loop is actively running.
+     */
+    public AtomicBoolean getRunning() {
+        return running;
     }
 }
