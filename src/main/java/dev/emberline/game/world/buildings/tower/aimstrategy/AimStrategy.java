@@ -3,6 +3,8 @@ package dev.emberline.game.world.buildings.tower.aimstrategy;
 import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +18,10 @@ import java.util.List;
  * In case of a tie in the comparison result, a deterministic tiebreaking mechanism is used
  * based on the hash codes of the enemies to ensure a consistent order across runs.
  */
-public abstract class AimStrategy {
+public abstract class AimStrategy implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -5749181421601555493L;
 
     /**
      * Determines the order in which a given Tower should target a list of enemies.

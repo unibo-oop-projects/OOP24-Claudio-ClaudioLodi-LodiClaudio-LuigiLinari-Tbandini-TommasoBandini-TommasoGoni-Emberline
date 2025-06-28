@@ -4,12 +4,18 @@ import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.world.buildings.tower.aimstrategy.AimStrategy;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * A concrete implementation of the {@code AimStrategy} that determines the targeting order
  * based on the remaining distance of enemies to their target.
  * The enemy with the smaller remaining distance is prioritized.
  */
-public final class FirstAimStrategy extends AimStrategy {
+public final class FirstAimStrategy extends AimStrategy implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 7211515223843137487L;
+
     /**
      * Compares two enemies based on their remaining distance to their target.
      * The enemy with the smaller remaining distance is prioritized.

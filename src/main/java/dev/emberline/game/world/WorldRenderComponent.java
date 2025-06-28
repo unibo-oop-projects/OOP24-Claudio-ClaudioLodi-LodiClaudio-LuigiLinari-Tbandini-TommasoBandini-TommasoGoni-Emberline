@@ -37,7 +37,7 @@ public class WorldRenderComponent implements Renderable, Updatable, Serializable
             int bottomRightX,
             @JsonProperty
             int bottomRightY
-    ) {
+    ) implements Serializable {
         // Data validation
         private WorldBounds {
             if (topLeftX >= bottomRightX || topLeftY >= bottomRightY) {

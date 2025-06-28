@@ -9,13 +9,19 @@ import dev.emberline.utility.Vector2D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * An abstract representation of a building within the game world.
  * A building represents an object that can be clicked, updated and rendered.
  * Classes that extend this will have to implement the getters for the bounds and
  * the logic when the building gets clicked.
  */
-public abstract class Building implements Renderable, Updatable, Inputable {
+public abstract class Building implements Renderable, Updatable, Inputable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -4273087203030876279L;
 
     /**
      * Returns the top-left corner of the building's bounding box in the world

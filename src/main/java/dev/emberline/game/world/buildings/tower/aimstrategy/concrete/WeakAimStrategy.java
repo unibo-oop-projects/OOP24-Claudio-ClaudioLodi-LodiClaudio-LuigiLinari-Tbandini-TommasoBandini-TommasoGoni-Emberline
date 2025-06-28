@@ -4,12 +4,18 @@ import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.world.buildings.tower.aimstrategy.AimStrategy;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * A concrete implementation of the {@code AimStrategy} that determines the targeting order
  * based on the health of the enemies.
  * The enemy with the lowest health is prioritized.
  */
-public class WeakAimStrategy extends AimStrategy {
+public class WeakAimStrategy extends AimStrategy implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -6647522414244576981L;
 
     /**
      * Compares two enemies based on their health.

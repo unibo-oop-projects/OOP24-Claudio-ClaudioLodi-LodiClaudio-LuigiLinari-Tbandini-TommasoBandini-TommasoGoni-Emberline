@@ -4,12 +4,18 @@ import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.world.buildings.tower.aimstrategy.AimStrategy;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * A concrete implementation of the {@code AimStrategy} that determines the targeting order
  * based on the distance between the tower and the enemies.
  * The enemy closer to the tower is prioritized.
  */
-public final class CloseAimStrategy extends AimStrategy {
+public final class CloseAimStrategy extends AimStrategy implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -2850713378131297136L;
+
     /**
      * Compares two enemies based on their distance from the tower's current position.
      * The enemy closer to the tower is prioritized.
