@@ -55,7 +55,7 @@ public final class EventDispatcher {
      * TODO.
      * @param listener TODO.
      */
-    public void registerListener(final EventListener listener) {
+    public final void registerListener(final EventListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("Listener cannot be null");
         }
@@ -97,7 +97,7 @@ public final class EventDispatcher {
     Event handlers are supposed to be private because they are invoked by the dispatcher
     and should not be part of the public API. */
     @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
-    public void dispatchEvent(final EventObject event) {
+    public final void dispatchEvent(final EventObject event) {
         if (event == null) {
             throw new IllegalArgumentException("Event cannot be null");
         }
