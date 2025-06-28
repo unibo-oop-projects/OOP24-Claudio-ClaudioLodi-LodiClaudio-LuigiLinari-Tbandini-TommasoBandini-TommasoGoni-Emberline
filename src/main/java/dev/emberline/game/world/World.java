@@ -17,6 +17,8 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -49,7 +51,8 @@ public class World implements GameState, Serializable {
     private final ProjectileHitListener projectileHitListener;
 
     private final Player player;
-    private final transient Topbar topbar;
+
+    private transient Topbar topbar;
 
     /**
      * Creates a new instance of the World class and initializes the
@@ -181,5 +184,12 @@ public class World implements GameState, Serializable {
         ) {
                 EventDispatcher.getInstance().dispatchEvent(new OpenOptionsEvent(this));
         }
+    }
+
+    @Serial
+    private void readObject(final ObjectInputStream e) throws IOException, ClassNotFoundException {
+        e.defaultReadObject();
+
+        topbar = new Topbar(this);
     }
 }
