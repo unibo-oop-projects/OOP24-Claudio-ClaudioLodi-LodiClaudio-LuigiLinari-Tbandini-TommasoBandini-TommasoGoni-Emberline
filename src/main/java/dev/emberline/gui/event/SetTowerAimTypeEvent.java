@@ -9,6 +9,7 @@ import dev.emberline.game.world.buildings.tower.aimstrategy.concrete.StrongAimSt
 import dev.emberline.game.world.buildings.tower.aimstrategy.concrete.WeakAimStrategy;
 
 import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * Represents an event triggered to set the aim preference of a tower in the game.
@@ -28,7 +29,7 @@ public class SetTowerAimTypeEvent extends GuiEvent {
      * Represents the different targeting modes a tower can have for selecting its targets.
      * Each mode defines a distinct strategy for determining which enemy target to prioritize.
      */
-    public enum AimType {
+    public enum AimType implements Serializable {
         /**
          * Represents the "First" targeting mode in the tower's targeting strategy.
          * The "First" mode prioritizes selecting the enemy closest to its endpoint.
