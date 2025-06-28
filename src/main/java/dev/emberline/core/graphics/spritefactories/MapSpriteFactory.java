@@ -6,7 +6,9 @@ import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.Sprite;
 import dev.emberline.core.graphics.spritekeys.MapSpriteKey;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -16,14 +18,15 @@ import java.util.Objects;
  */
 public final class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
 
-    private static final Metadata METADATA = ConfigLoader.loadConfig("/world/waves/map.json", Metadata.class);
+    private static final Metadata METADATA = ConfigLoader.loadConfig("/sprites/map/map.json", Metadata.class);
 
-    private record Waves(@JsonProperty String wave, @JsonProperty int frames) {
+    private record Waves(@JsonProperty int wave, @JsonProperty int startFrame, 
+                         @JsonProperty int endFrame, @JsonProperty int frames) {
     }
 
-    private record Metadata(@JsonProperty String wavesFolder,
-                            @JsonProperty String mapFolder, @JsonProperty String mapFile,
-                            @JsonProperty int frameTimeNs, @JsonProperty Waves[] waves) {
+    private record Metadata(@JsonProperty String fileName, @JsonProperty int mapLenght, 
+                            @JsonProperty int mapHeight, @JsonProperty int frameTimeNs,
+                            @JsonProperty Waves[] waves) {
     }
 
     /**
@@ -39,21 +42,24 @@ public final class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
      */
     @Override
     public Sprite loadSprite(final MapSpriteKey key) {
-        final String wave = String.valueOf(key.waveNumber());
         final int frameNumber = METADATA.waves[key.waveNumber()].frames;
+        final int startFrame = METADATA.waves[key.waveNumber()].startFrame;
+        final int endFrame = METADATA.waves[key.waveNumber()].endFrame;
+        
+        final String mapAtlasPath = String.format(METADATA.fileName.toLowerCase(Locale.US));
+        final Image mapAtlas = getMapAtlas(mapAtlasPath);
+        
         final Image[] frames = new Image[frameNumber];
-
-        for (int i = 0; i < frameNumber; i++) {
-            frames[i] = getMapAtlas(wave, String.valueOf(i));
+        for (int i = startFrame; i <= endFrame; ++i) {
+            final int x = i * METADATA.mapLenght;
+            final int y = 0;
+            frames[i - startFrame] = new WritableImage(mapAtlas.getPixelReader(), x, y, METADATA.mapLenght, METADATA.mapHeight);
         }
         return new AnimatedSprite(frames, METADATA.frameTimeNs);
     }
 
-    private static Image getMapAtlas(final String wave, final String frame) {
-        return new Image(Objects.requireNonNull(
-                MapSpriteFactory.class.getResourceAsStream(
-                        METADATA.wavesFolder + wave + METADATA.mapFolder + frame + METADATA.mapFile
-                )));
+    private static Image getMapAtlas(final String mapAtlasPath) {
+        return new Image(Objects.requireNonNull(MapSpriteFactory.class.getResourceAsStream(mapAtlasPath)));
     }
 
     /**

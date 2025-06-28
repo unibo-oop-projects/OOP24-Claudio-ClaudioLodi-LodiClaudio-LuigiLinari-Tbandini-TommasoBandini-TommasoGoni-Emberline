@@ -1,10 +1,6 @@
 {
-  "topLeftBound": {
-    "x": 0,
-    "y": 0
-  },
-  "bottomRightBound": {
-    "x": 32,
-    "y": 18
-  }
+  "topLeftX": 0,
+  "topLeftY": 0,
+  "bottomRightX": 37,
+  "bottomRightY": 26
 }

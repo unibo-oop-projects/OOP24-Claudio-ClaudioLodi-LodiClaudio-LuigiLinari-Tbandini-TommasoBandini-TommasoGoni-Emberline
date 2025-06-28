@@ -38,6 +38,8 @@ public class MapAnimation implements Updatable {
 
     private void updateAnimatedSprite() {
         if (waveManager.getCurrentWaveIndex() > currentWaveIndex) {
+            frameIndex = 0;
+            accumulatedTimeNs = 0;
             currentWaveIndex = waveManager.getCurrentWaveIndex();
             this.animatedSprite = (AnimatedSprite) SpriteLoader.loadSprite(
                     new MapSpriteKey(currentWaveIndex)
@@ -56,17 +58,15 @@ public class MapAnimation implements Updatable {
 
     @Override
     public void update(final long elapsed) {
-        if (isAnimationOver()) {
-            return;
-        }
-
-        updateAnimatedSprite();
+        accumulatedTimeNs += elapsed;
 
         final long frameTimeNs = animatedSprite.getFrameTimeNs();
-        accumulatedTimeNs += elapsed;
+
         while (!isAnimationOver() && accumulatedTimeNs >= frameTimeNs) {
             accumulatedTimeNs -= frameTimeNs;
             frameIndex++;
         }
+
+        updateAnimatedSprite();
     }
 }
