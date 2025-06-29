@@ -32,7 +32,7 @@ import java.util.EventListener;
  */
 public class GameRoot implements Inputable, Updatable, Renderable, EventListener {
     // Navigation States
-    private final World world = new World();
+    private World world = new World();
     private final MainMenu mainMenu = new MainMenu();
     private final Options optionsFromGame = new Options(true);
     private final Options optionsFromMenu = new Options(false);
@@ -41,7 +41,9 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     private GameState currentState;
     private GameState previousState;
 
-    private final Serializer worldSerializer = new Serializer(world);
+    private long acc = 0;
+    private boolean isSerialized;
+    private final Serializer worldSerializer = new Serializer();
     /**
      * Constructs a new instance of {@code GameRoot} and initializes the main menu
      * as the current game state.
@@ -56,9 +58,7 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
      */
     @Override
     public void processInput(final InputEvent inputEvent) {
-        if (currentState == world) {
-            worldSerializer.processInput(inputEvent);
-        } else
+        if (!isSerialized)
             currentState.processInput(inputEvent);
     }
 
@@ -67,10 +67,20 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
      */
     @Override
     public void update(final long elapsed) {
-        if (currentState == world) {
-            worldSerializer.update(elapsed);
-        } else
+        long nsToSeconds = 1_000_000_000;
+        acc += elapsed;
+        long tmp = acc / nsToSeconds;
+        if ((tmp >= 15 && tmp <= 30 )) {
+            if (tmp >= 16 && isSerialized) {
+                world = worldSerializer.getDeserializedWorld();
+                isSerialized = false;
+            } else if (tmp < 16 && !isSerialized) {
+                isSerialized = true;
+                worldSerializer.serialize(world);
+            }
+        } else {
             currentState.update(elapsed);
+        }
     }
 
     /**
@@ -78,9 +88,7 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
      */
     @Override
     public void render() {
-        if (currentState == world) {
-            worldSerializer.render();
-        } else
+        if (!isSerialized)
             currentState.render();
     }
 
