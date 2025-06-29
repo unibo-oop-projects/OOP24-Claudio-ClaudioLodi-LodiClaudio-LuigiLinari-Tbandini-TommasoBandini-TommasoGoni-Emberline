@@ -1,25 +1,23 @@
 package dev.emberline.game;
 
-import dev.emberline.core.components.Inputable;
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
-import javafx.scene.input.InputEvent;
 
 import java.io.*;
 
-public class Serializer implements Updatable, Renderable, Inputable {
+/**
+ * Utility class that should be used to serialize the world - save the game.
+ * It works by calling 2 different methods, one to save, the other to load the game.
+ */
+public class Serializer {
 
     private final String fileName = "./save";
-    private long acc = 0;
-    private boolean isSerialized;
-    World world;
 
-    public Serializer(World world) {
-        this.world = world;
-    }
-
-    public void serialize() {
+    /**
+     * Serializes the World.
+     *
+     * @param world is the reference to the instance of the World class to serialize.
+     */
+    public void serialize(World world) {
         try {
             FileOutputStream file = new FileOutputStream(fileName);
             ObjectOutputStream out = new ObjectOutputStream(file);
@@ -35,7 +33,13 @@ public class Serializer implements Updatable, Renderable, Inputable {
         }
     }
 
-    public void deserialize() {
+    /**
+     * Deserializes the specified World saving and returns a reference to it.
+     *
+     * @return the reference to the new unserialized world.
+     */
+    public World getDeserializedWorld() {
+        World world = null;
         try {
             FileInputStream file = new FileInputStream(fileName);
             ObjectInputStream in = new ObjectInputStream(file);
@@ -49,37 +53,6 @@ public class Serializer implements Updatable, Renderable, Inputable {
                 System.out.println(x);
             }
         }
-    }
-
-    @Override
-    public void update(long elapsed) {
-        long nsToSeconds = 1_000_000_000;
-        acc += elapsed;
-        long tmp = acc / nsToSeconds;
-        if ((tmp >= 20 && tmp <= 30 )) {
-            if (tmp >= 25 && isSerialized) {
-                deserialize();
-                isSerialized = false;
-            } else if (tmp < 21 && !isSerialized) {
-                isSerialized = true;
-                serialize();
-            }
-        } else {
-            world.update(elapsed);
-        }
-    }
-
-    @Override
-    public void render() {
-        if (!isSerialized) {
-            world.render();
-        }
-    }
-
-    @Override
-    public void processInput(InputEvent inputEvent) {
-        if (!isSerialized) {
-            world.processInput(inputEvent);
-        }
+        return world;
     }
 }
