@@ -1,7 +1,7 @@
 package dev.emberline.gui.saveselection;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.ConfigLoader;
+import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
@@ -20,7 +20,7 @@ import javafx.scene.image.Image;
 
 
 public class SaveSelection extends GuiLayer implements GameState {
-    private final SaveSelectionBounds bounds;
+    private final SaveSelectionBounds saveSelectionBounds;
 
     private static class Layout {
         // Background
@@ -58,29 +58,35 @@ public class SaveSelection extends GuiLayer implements GameState {
         private static final ColorAdjust SAVES_WRITINGS = new ColorAdjust(0.15, 0.9, -0.3, 0);
     }
 
-    private record Coordinate(
-        @JsonProperty int x,
-        @JsonProperty int y
-    ) {
-    }
-
     private record SaveSelectionBounds(
-        @JsonProperty Coordinate topLeftBound,
-        @JsonProperty Coordinate bottomRightBound
+            @JsonProperty
+            int topLeftX,
+            @JsonProperty
+            int topLeftY,
+            @JsonProperty
+            int bottomRightX,
+            @JsonProperty
+            int bottomRightY
     ) {
+        // Data validation
+        private SaveSelectionBounds {
+            if (topLeftX >= bottomRightX || topLeftY >= bottomRightY) {
+                throw new IllegalArgumentException("Invalid save selection saveSelectionBounds: " + this);
+            }
+        }
     }
 
     public SaveSelection() {
         this(ConfigLoader.loadConfig("/gui/guiBounds.json", SaveSelectionBounds.class));
     }
 
-    private SaveSelection(final SaveSelectionBounds bounds) {
-        super(bounds.topLeftBound.x, bounds.topLeftBound.y, bounds.bottomRightBound.x - bounds.topLeftBound.x, bounds.bottomRightBound.y - bounds.topLeftBound.y);
-        this.bounds = bounds;
+    private SaveSelection(final SaveSelectionBounds saveSelectionBounds) {
+        super(saveSelectionBounds.topLeftX, saveSelectionBounds.topLeftY, saveSelectionBounds.bottomRightX - saveSelectionBounds.topLeftX, saveSelectionBounds.bottomRightY - saveSelectionBounds.topLeftY);
+        this.saveSelectionBounds = saveSelectionBounds;
     }
 
     private void updateLayout(final GraphicsContext gc, final CoordinateSystem cs) {
-        super.buttons.clear();
+        super.getButtons().clear();
 
         addSaveSlot(gc, cs, Layout.NEW_SAVE_BUTTON_Y);
         addSaveSlot(gc, cs, Layout.NEW_SAVE_BUTTON_Y + Layout.BTN_HEIGHT + 0.3);
@@ -112,7 +118,7 @@ public class SaveSelection extends GuiLayer implements GameState {
         newSaveSlotButton.setOnClick(() -> {
             throwEvent(new SetWorldEvent(newSaveSlotButton));
         });
-        super.buttons.add(newSaveSlotButton);
+        super.getButtons().add(newSaveSlotButton);
 
         // Create the delete save button
         final GuiButton deleteSaveButton = new GuiButton(
@@ -125,7 +131,7 @@ public class SaveSelection extends GuiLayer implements GameState {
         );
         deleteSaveButton.setOnClick(() -> {
         });
-        super.buttons.add(deleteSaveButton);
+        super.getButtons().add(deleteSaveButton);
     }
 
     private void addBackButton() {
@@ -138,7 +144,7 @@ public class SaveSelection extends GuiLayer implements GameState {
             SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON_HOVER).image()
         );
         backButton.setOnClick(() -> throwEvent(new SetMainMenuEvent(this)));
-        super.buttons.add(backButton);
+        super.getButtons().add(backButton);
     }
 
     // TODO add text to the save slots
@@ -157,10 +163,10 @@ public class SaveSelection extends GuiLayer implements GameState {
         final GraphicsContext gc = renderer.getGraphicsContext();
         final CoordinateSystem cs = renderer.getGuiCoordinateSystem();
 
-        final double guiScreenWidth = bounds.bottomRightBound.x * cs.getScale();
-        final double guiScreenHeight = bounds.bottomRightBound.y * cs.getScale();
-        final double guiScreenX = cs.toScreenX(bounds.topLeftBound.x);
-        final double guiScreenY = cs.toScreenY(bounds.topLeftBound.y);
+        final double guiScreenWidth = saveSelectionBounds.bottomRightX * cs.getScale();
+        final double guiScreenHeight = saveSelectionBounds.bottomRightY * cs.getScale();
+        final double guiScreenX = cs.toScreenX(saveSelectionBounds.topLeftX);
+        final double guiScreenY = cs.toScreenY(saveSelectionBounds.topLeftY);
 
         updateLayout(gc, cs);
 
