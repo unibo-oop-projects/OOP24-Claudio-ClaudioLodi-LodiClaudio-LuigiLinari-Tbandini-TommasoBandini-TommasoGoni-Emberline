@@ -26,8 +26,8 @@ public class Wave implements Updatable, Renderable, Serializable {
     private final World world;
     private final Roads roads;
     private final Spawnpoints spawnpoints;
-    //private final Zoom zoom;
-    //private final Fog fog;
+    private final Zoom zoom;
+    private final Fog fog;
     private boolean firstRender;
 
     // In nanoseconds, keeps track of the total time elapsed from the start of the wave
@@ -43,8 +43,8 @@ public class Wave implements Updatable, Renderable, Serializable {
         this.world = world;
         this.roads = new Roads(waveDirectoryPath);
         this.spawnpoints = new Spawnpoints(waveDirectoryPath);
-        //this.zoom = new Zoom(waveDirectoryPath);
-        //this.fog = new Fog(waveDirectoryPath);
+        this.zoom = new Zoom(waveDirectoryPath);
+        this.fog = new Fog(waveDirectoryPath);
     }
 
     /**
@@ -96,14 +96,14 @@ public class Wave implements Updatable, Renderable, Serializable {
             startWaveAnimations();
             firstRender = true;
         }
-      /*  fog.render();
+        fog.render();
         if (!zoom.isOver()) {
             zoom.render();
-        }*/
+        }
     }
 
     private void startWaveAnimations() {
-        /*zoom.startAnimation();
-        fog.startAnimation();*/
+        zoom.startAnimation();
+        fog.startAnimation();
     }
 }
