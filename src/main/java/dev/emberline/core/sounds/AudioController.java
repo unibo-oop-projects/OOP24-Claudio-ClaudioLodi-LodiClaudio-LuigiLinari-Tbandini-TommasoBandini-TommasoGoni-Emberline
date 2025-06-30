@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.event.EventHandler;
-import dev.emberline.core.sounds.event.SetMusicVolumeEvent;
 import dev.emberline.core.sounds.event.RefreshSfxVolumeEvent;
+import dev.emberline.core.sounds.event.SetMusicVolumeEvent;
 import dev.emberline.core.sounds.event.SfxSoundEvent;
 import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.core.sounds.event.ToggleMusicMuteEvent;
@@ -18,8 +18,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.EventListener;
 import java.util.EnumMap;
+import java.util.EventListener;
 import java.util.Map;
 import java.util.Objects;
 
@@ -43,11 +43,15 @@ public class AudioController implements EventListener {
      * and sets up the media player for the soundtrack.
      */
     public AudioController() {
-        EventDispatcher.getInstance().registerListener(this);
+        registerEvents();
 
         loadSoundtrack();
         musicPlayer = new MediaPlayer(musicMedia);
         initializeSoundtrack();
+    }
+
+    private void registerEvents() {
+        EventDispatcher.getInstance().registerListener(this);
     }
 
     /**

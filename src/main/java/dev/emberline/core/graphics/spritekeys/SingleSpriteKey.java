@@ -374,35 +374,55 @@ public enum SingleSpriteKey implements SpriteKey {
      * Represents the key used to identify and cache the sprite asset for
      * the saves delete button.
      */
-    SAVES_DELETE_BUTTON,
+    DELETE_SAVE_SLOT_BUTTON,
     /**
      * Represents the key used to identify and cache the sprite asset for
      * the saves delete button hover.
      */
-    SAVES_DELETE_BUTTON_HOVER,
+    DELETE_SAVE_SLOT_BUTTON_HOVER,
     /**
      * Represents the key used to identify and cache the sprite asset for
      * the saves delete button disabled.
      */
-    SAVES_DELETE_BUTTON_DISABLED,
+    DELETE_SAVE_SLOT_BUTTON_DISABLED,
     /**
      * Represents the key used to identify and cache the sprite asset for
      * the new save button.
      */
-    NEW_SAVE_BUTTON,
+    NEW_SAVE_SLOT_BUTTON,
     /**
      * Represents the key used to identify and cache the sprite asset for
      * the new save button hover.
      */
-    NEW_SAVE_BUTTON_HOVER,
+    NEW_SAVE_SLOT_BUTTON_HOVER,
     /**
      * Represents the key used to identify and cache the sprite asset for
      * the save button.
      */
-    SAVE_BUTTON,
+    SAVE_SLOT_1,
     /**
      * Represents the key used to identify and cache the sprite asset for
      * the save button hover.
      */
-    SAVE_BUTTON_HOVER
+    SAVE_SLOT_1_HOVER,
+    /**
+     * Represents the key used to identify and cache the sprite asset for
+     * the save button 2.
+     */
+    SAVE_SLOT_2,
+    /**
+     * Represents the key used to identify and cache the sprite asset for
+     * the save button 2 hover.
+     */
+    SAVE_SLOT_2_HOVER,
+    /**
+     * Represents the key used to identify and cache the sprite asset for
+     * the save button 3.
+     */
+    SAVE_SLOT_3,
+    /**
+     * Represents the key used to identify and cache the sprite asset for
+     * the save button 3 hover.
+     */
+    SAVE_SLOT_3_HOVER
 }

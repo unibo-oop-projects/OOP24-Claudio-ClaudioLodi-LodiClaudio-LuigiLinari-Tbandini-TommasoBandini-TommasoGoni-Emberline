@@ -1,8 +1,9 @@
 package dev.emberline.gui.saveselection;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.GameLoop;
+import dev.emberline.core.config.ConfigLoader;
+import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import dev.emberline.core.render.CoordinateSystem;
@@ -10,17 +11,36 @@ import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
 import dev.emberline.game.GameState;
+import dev.emberline.game.Serializer;
+import dev.emberline.game.world.World;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.SetMainMenuEvent;
-import dev.emberline.gui.event.SetWorldEvent;
+import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 
 public class SaveSelection extends GuiLayer implements GameState {
     private final SaveSelectionBounds saveSelectionBounds;
+    private final Serializer worldSerializer = new Serializer();
+    private static final String SAVE_DIRECTORY = "saves/";
+    
+    public enum Saves {
+        SAVE1("save1"),
+        SAVE2("save2"),
+        SAVE3("save3");
+
+        public final String displayName;
+
+        Saves(String displayName) {
+            this.displayName = displayName;
+        }
+    }
 
     private static class Layout {
         // Background
@@ -85,53 +105,72 @@ public class SaveSelection extends GuiLayer implements GameState {
         this.saveSelectionBounds = saveSelectionBounds;
     }
 
-    private void updateLayout(final GraphicsContext gc, final CoordinateSystem cs) {
+    private void updateLayout() {
         super.getButtons().clear();
 
-        addSaveSlot(gc, cs, Layout.NEW_SAVE_BUTTON_Y);
-        addSaveSlot(gc, cs, Layout.NEW_SAVE_BUTTON_Y + Layout.BTN_HEIGHT + 0.3);
-        addSaveSlot(gc, cs, Layout.NEW_SAVE_BUTTON_Y + 2 * (Layout.BTN_HEIGHT + 0.3));
+        addSaveSlot(Layout.NEW_SAVE_BUTTON_Y, Saves.SAVE1);
+        addSaveSlot(Layout.NEW_SAVE_BUTTON_Y + Layout.BTN_HEIGHT + 0.3, Saves.SAVE2);
+        addSaveSlot(Layout.NEW_SAVE_BUTTON_Y + 2 * (Layout.BTN_HEIGHT + 0.3), Saves.SAVE3);
 
         addBackButton();
     }
 
-    private void addSaveSlot(final GraphicsContext gc, final CoordinateSystem cs, final double currY) {
-        // TODO Get the save slot data somehow
-        Image newSaveButtonImage = SpriteLoader.loadSprite(SingleSpriteKey.NEW_SAVE_BUTTON).image();
-        Image newSaveButtonHoverImage = SpriteLoader.loadSprite(SingleSpriteKey.NEW_SAVE_BUTTON_HOVER).image();
-        Image saveButtonImage = SpriteLoader.loadSprite(SingleSpriteKey.SAVE_BUTTON).image();
-        Image saveButtonHoverImage = SpriteLoader.loadSprite(SingleSpriteKey.SAVE_BUTTON_HOVER).image();
+    private void addSaveSlot(final double currY, final Saves save) {
+        boolean saveExists = saveExists(save);
+        
+        Image saveSlotImage = saveExists ? 
+            SpriteLoader.loadSprite(getSaveButtonSpriteKey(save, false)).image() : 
+            SpriteLoader.loadSprite(SingleSpriteKey.NEW_SAVE_SLOT_BUTTON).image();
+        Image saveSlotHoverImage = saveExists ?
+            SpriteLoader.loadSprite(getSaveButtonSpriteKey(save, true)).image() : 
+            SpriteLoader.loadSprite(SingleSpriteKey.NEW_SAVE_SLOT_BUTTON_HOVER).image();
+        
+        Image deleteSaveSlotImage = saveExists ? 
+            SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON).image() : 
+            SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON_DISABLED).image();
+        Image deleteSaveSlotHoverImage = saveExists ?
+            SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON_HOVER).image() :
+            SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON_DISABLED).image();
 
-        Image deleteSaveButtonImage = SpriteLoader.loadSprite(SingleSpriteKey.SAVES_DELETE_BUTTON).image();
-        Image deleteSaveButtonHoverImage = SpriteLoader.loadSprite(SingleSpriteKey.SAVES_DELETE_BUTTON_HOVER).image();
-        Image deleteSaveButtonDisabledImage = SpriteLoader.loadSprite(SingleSpriteKey.SAVES_DELETE_BUTTON_DISABLED).image();
- 
-        // Create the save slot button
-        final GuiButton newSaveSlotButton = new GuiButton(
+        final GuiButton saveSlotButton = new GuiButton(
             Layout.NEW_SAVE_BUTTON_X, 
             currY, 
             Layout.NEW_SAVE_BUTTON_WIDTH, 
-            Layout.BTN_HEIGHT, 
-            newSaveButtonImage,
-            newSaveButtonHoverImage
+            Layout.BTN_HEIGHT,
+            saveSlotImage,
+            saveSlotHoverImage
         );
-        newSaveSlotButton.setOnClick(() -> {
-            throwEvent(new SetWorldEvent(newSaveSlotButton));
+        saveSlotButton.setOnClick(() -> {
+            EventDispatcher.getInstance().unregisterAllListeners();
+            World world = saveExists ?
+                worldSerializer.getDeserializedWorld(save.displayName) : 
+                new World();
+            GameLoop.getInstance().getGameRoot().setWorld(world, save);
         });
-        super.getButtons().add(newSaveSlotButton);
+        super.getButtons().add(saveSlotButton);
 
-        // Create the delete save button
-        final GuiButton deleteSaveButton = new GuiButton(
+        final GuiButton deleteSaveSlotButton = new GuiButton(
             Layout.DELETE_BTN_X, 
             currY, 
             Layout.DELETE_BTN_WIDTH, 
-            Layout.BTN_HEIGHT, 
-            deleteSaveButtonImage, 
-            deleteSaveButtonHoverImage
+            Layout.BTN_HEIGHT,
+            deleteSaveSlotImage,
+            deleteSaveSlotHoverImage
         );
-        deleteSaveButton.setOnClick(() -> {
+        deleteSaveSlotButton.setOnClick(() -> {
+            if (saveExists) {
+                Platform.runLater(() -> {
+                    try {  
+                        Files.deleteIfExists(Path.of(SAVE_DIRECTORY + save.displayName));
+                        updateLayout();
+                        
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
         });
-        super.getButtons().add(deleteSaveButton);
+        super.getButtons().add(deleteSaveSlotButton);
     }
 
     private void addBackButton() {
@@ -147,12 +186,17 @@ public class SaveSelection extends GuiLayer implements GameState {
         super.getButtons().add(backButton);
     }
 
-    // TODO add text to the save slots
-    // private void drawSavesText(final GraphicsContext gc, final CoordinateSystem cs) {
-    //     gc.save();
-    //     gc.setEffect(Colors.OPTIONS_WRITINGS);
-    //     gc.restore();
-    // }
+    private boolean saveExists(final Saves slot) {
+        return Files.exists(Path.of(SAVE_DIRECTORY + slot.displayName));
+    }
+
+    private SingleSpriteKey getSaveButtonSpriteKey(Saves slot, boolean hover) {
+        return switch (slot) {
+            case SAVE1 -> (hover ? SingleSpriteKey.SAVE_SLOT_1_HOVER : SingleSpriteKey.SAVE_SLOT_1);
+            case SAVE2 -> (hover ? SingleSpriteKey.SAVE_SLOT_2_HOVER : SingleSpriteKey.SAVE_SLOT_2);
+            case SAVE3 -> (hover ? SingleSpriteKey.SAVE_SLOT_3_HOVER : SingleSpriteKey.SAVE_SLOT_3);
+        };
+    }
 
     /**
      * {@inheritDoc}
@@ -168,7 +212,7 @@ public class SaveSelection extends GuiLayer implements GameState {
         final double guiScreenX = cs.toScreenX(saveSelectionBounds.topLeftX);
         final double guiScreenY = cs.toScreenY(saveSelectionBounds.topLeftY);
 
-        updateLayout(gc, cs);
+        updateLayout();
 
         final Image guiBackground = SpriteLoader.loadSprite(SingleSpriteKey.GUI_BACKGROUND).image();
         final Image windowBackground = SpriteLoader.loadSprite(SingleSpriteKey.SAVES_WINDOW_BACKGROUND).image();
