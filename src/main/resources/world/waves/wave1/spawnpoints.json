@@ -1,6 +1,6 @@
 [
   {
-    "x": 8,
+    "x": 9,
     "y": 15,
     "spawnSequences": [
       {
@@ -24,8 +24,8 @@
     ]
   },
   {
-    "x": 29,
-    "y": 11,
+    "x": 25,
+    "y": 7,
     "spawnSequences": [
       {
         "firstSpawnTimeNs": 0,
@@ -33,6 +33,22 @@
         "enemies": [
           "ogre",
           "ogre"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 27,
+    "y": 19,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 0,
+        "spawnIntervalNs": 100000000,
+        "enemies": [
+          "ogre",
+          "ogre",
+          "pig",
+          "pig"
         ]
       }
     ]

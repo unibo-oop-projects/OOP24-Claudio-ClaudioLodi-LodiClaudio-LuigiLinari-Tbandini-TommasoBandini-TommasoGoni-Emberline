@@ -1,7 +1,20 @@
 [
   {
-    "x": 8,
+    "x": 9,
     "y": 15,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 0,
+        "spawnIntervalNs": 1000000000,
+        "enemies": [
+          "pig"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 25,
+    "y": 7,
     "spawnSequences": [
       {
         "firstSpawnTimeNs": 0,
@@ -11,23 +24,10 @@
         ]
       },
       {
-        "firstSpawnTimeNs": 3000000000,
-        "spawnIntervalNs": 500000000,
-        "enemies": [
-          "pig"
-        ]
-      }
-    ]
-  },
-  {
-    "x": 29,
-    "y": 11,
-    "spawnSequences": [
-      {
-        "firstSpawnTimeNs": 0,
+        "firstSpawnTimeNs": 2000000000,
         "spawnIntervalNs": 1000000000,
         "enemies": [
-          "pig"
+          "pig", "ogre"
         ]
       }
     ]
