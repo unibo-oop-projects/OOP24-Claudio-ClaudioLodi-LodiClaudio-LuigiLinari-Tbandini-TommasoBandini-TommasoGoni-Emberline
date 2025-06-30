@@ -69,13 +69,15 @@ public class MapAnimation implements Updatable, Serializable {
      */
     @Override
     public void update(final long elapsed) {
-        updateAnimatedSprite();
+        accumulatedTimeNs += elapsed;
 
         final long frameTimeNs = animatedSprite.getFrameTimeNs();
-        accumulatedTimeNs += elapsed;
+
         while (!isAnimationOver() && accumulatedTimeNs >= frameTimeNs) {
             accumulatedTimeNs -= frameTimeNs;
             frameIndex++;
         }
+
+        updateAnimatedSprite();
     }
 }

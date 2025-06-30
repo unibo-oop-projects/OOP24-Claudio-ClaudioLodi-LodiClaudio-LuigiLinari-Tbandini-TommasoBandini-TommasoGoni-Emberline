@@ -134,7 +134,6 @@ public class World implements GameState, Serializable {
         return statistics;
     }
 
-
     /**
      * Updates the state of the world and its various components.
      *

@@ -84,17 +84,22 @@ public final class GameOver extends GuiLayer implements GameState {
         private static final ColorAdjust OPTIONS_WRITINGS = new ColorAdjust(0.15, 0.9, 0.5, 0);
     }
 
-    // GameOver bounds
-    private record Coordinate(
-        @JsonProperty int x,
-        @JsonProperty int y
-    ) {
-    }
-
     private record GameOverBounds(
-        @JsonProperty Coordinate topLeftBound,
-        @JsonProperty Coordinate bottomRightBound
+            @JsonProperty
+            int topLeftX,
+            @JsonProperty
+            int topLeftY,
+            @JsonProperty
+            int bottomRightX,
+            @JsonProperty
+            int bottomRightY
     ) {
+        // Data validation
+        private GameOverBounds {
+            if (topLeftX >= bottomRightX || topLeftY >= bottomRightY) {
+                throw new IllegalArgumentException("Invalid game over bounds: " + this);
+            }
+        }
     }
 
     /**
@@ -104,7 +109,7 @@ public final class GameOver extends GuiLayer implements GameState {
      * @see GameOver
      */
     public GameOver() {
-        this(ConfigLoader.loadConfig("/gui/gameOver/gameOverBounds.json", GameOverBounds.class));
+        this(ConfigLoader.loadConfig("/gui/guiBounds.json", GameOverBounds.class));
     }
 
     /**
@@ -141,10 +146,9 @@ public final class GameOver extends GuiLayer implements GameState {
     }
 
     private GameOver(final GameOverBounds gameOverBounds) {
-        super(gameOverBounds.topLeftBound.x,
-                gameOverBounds.topLeftBound.y,
-                gameOverBounds.bottomRightBound.x - gameOverBounds.topLeftBound.x,
-                gameOverBounds.bottomRightBound.y - gameOverBounds.topLeftBound.y);
+        super(gameOverBounds.topLeftX, gameOverBounds.topLeftY, 
+             gameOverBounds.bottomRightX - gameOverBounds.topLeftX,
+             gameOverBounds.bottomRightY - gameOverBounds.topLeftY);
         this.gameOverBounds = gameOverBounds;
     }
 
@@ -190,7 +194,7 @@ public final class GameOver extends GuiLayer implements GameState {
 
         final Image enemiesKilledLabel = SpriteLoader.loadSprite(new StringSpriteKey("Enemies killed:")).image();
         final Image wavesSurvivedLabel = SpriteLoader.loadSprite(new StringSpriteKey("Waves survived:")).image();
-        final Image totalDamageLabel = SpriteLoader.loadSprite(new StringSpriteKey("Total damage dealt:")).image();
+        final Image totalDamageLabel = SpriteLoader.loadSprite(new StringSpriteKey("Tot tower damage:")).image();
         final Image timeInGameLabel = SpriteLoader.loadSprite(new StringSpriteKey("Time in game:")).image();
 
         final Image enemiesKilledValue = SpriteLoader.loadSprite(new StringSpriteKey(Integer.toString(enemiesKilled))).image();
@@ -243,17 +247,17 @@ public final class GameOver extends GuiLayer implements GameState {
         addMainMenuButton();
         addExitButton();
 
-        final double menuScreenWidth = gameOverBounds.bottomRightBound.x * cs.getScale();
-        final double menuScreenHeight = gameOverBounds.bottomRightBound.y * cs.getScale();
-        final double menuScreenX = cs.toScreenX(gameOverBounds.topLeftBound.x);
-        final double menuScreenY = cs.toScreenY(gameOverBounds.topLeftBound.y);
+        final double gameOverScreenWidth = (gameOverBounds.bottomRightX - gameOverBounds.topLeftX) * cs.getScale();
+        final double gameOverScreenHeight = (gameOverBounds.bottomRightY - gameOverBounds.topLeftY)* cs.getScale();
+        final double gameOverScreenX = cs.toScreenX(gameOverBounds.topLeftX);
+        final double gameOverScreenY = cs.toScreenY(gameOverBounds.topLeftY);
 
         final Image gameOverBackground = SpriteLoader.loadSprite(SingleSpriteKey.GAME_OVER_BACKGROUND).image();
         final Image gameOverImage = SpriteLoader.loadSprite(SingleSpriteKey.GAME_OVER).image();
         final Image statisticsImage = SpriteLoader.loadSprite(SingleSpriteKey.STATISTICS).image();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
-            gc.drawImage(gameOverBackground, menuScreenX, menuScreenY, menuScreenWidth, menuScreenHeight);
+            gc.drawImage(gameOverBackground, gameOverScreenX, gameOverScreenY, gameOverScreenWidth, gameOverScreenHeight);
         }));
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {

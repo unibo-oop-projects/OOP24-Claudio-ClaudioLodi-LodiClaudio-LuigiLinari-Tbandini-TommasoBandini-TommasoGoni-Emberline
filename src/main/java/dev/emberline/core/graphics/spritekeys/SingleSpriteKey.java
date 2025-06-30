@@ -210,9 +210,9 @@ public enum SingleSpriteKey implements SpriteKey {
     // Main Menu
     /**
      * Represents the key used to identify and cache the sprite asset for
-     * the menu background.
+     * the gui background.
      */
-    MENU_BACKGROUND,
+    GUI_BACKGROUND,
     /**
      * Represents the key used to identify and cache the sprite asset for
      * the emberline title.
@@ -362,5 +362,47 @@ public enum SingleSpriteKey implements SpriteKey {
      * Represents the key used to identify and cache the sprite asset for
      * the options checkbox empty hover.
      */
-    OPTIONS_CHECKBOX_EMPTY_HOVER
+    OPTIONS_CHECKBOX_EMPTY_HOVER,
+
+    // Saves
+    /**
+     * Represents the key used to identify and cache the sprite asset for
+     * the saves window background.
+     */
+    SAVES_WINDOW_BACKGROUND,
+    /**
+     * Represents the key used to identify and cache the sprite asset for
+     * the saves delete button.
+     */
+    SAVES_DELETE_BUTTON,
+    /**
+     * Represents the key used to identify and cache the sprite asset for
+     * the saves delete button hover.
+     */
+    SAVES_DELETE_BUTTON_HOVER,
+    /**
+     * Represents the key used to identify and cache the sprite asset for
+     * the saves delete button disabled.
+     */
+    SAVES_DELETE_BUTTON_DISABLED,
+    /**
+     * Represents the key used to identify and cache the sprite asset for
+     * the new save button.
+     */
+    NEW_SAVE_BUTTON,
+    /**
+     * Represents the key used to identify and cache the sprite asset for
+     * the new save button hover.
+     */
+    NEW_SAVE_BUTTON_HOVER,
+    /**
+     * Represents the key used to identify and cache the sprite asset for
+     * the save button.
+     */
+    SAVE_BUTTON,
+    /**
+     * Represents the key used to identify and cache the sprite asset for
+     * the save button hover.
+     */
+    SAVE_BUTTON_HOVER
 }

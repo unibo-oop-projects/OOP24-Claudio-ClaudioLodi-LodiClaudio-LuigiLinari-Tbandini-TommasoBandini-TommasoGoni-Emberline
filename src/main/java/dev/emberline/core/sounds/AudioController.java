@@ -35,7 +35,6 @@ public class AudioController implements EventListener {
         @JsonProperty Map<SoundType, String> SFX_PATHS,
         @JsonProperty double STEP_VOLUME_AMOUNT
     ) {
-
     }
 
     /**

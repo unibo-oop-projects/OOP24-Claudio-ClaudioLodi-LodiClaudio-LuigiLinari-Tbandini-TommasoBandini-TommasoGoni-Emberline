@@ -12,9 +12,11 @@ import dev.emberline.gui.event.GameOverEvent;
 import dev.emberline.gui.event.OpenOptionsEvent;
 import dev.emberline.gui.event.SetMainMenuEvent;
 import dev.emberline.gui.event.SetStartEvent;
+import dev.emberline.gui.event.SetWorldEvent;
 import dev.emberline.gui.menu.GameOver;
 import dev.emberline.gui.menu.MainMenu;
 import dev.emberline.gui.menu.Options;
+import dev.emberline.gui.saveselection.SaveSelection;
 import javafx.application.Platform;
 import javafx.scene.input.InputEvent;
 
@@ -36,6 +38,7 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     private final MainMenu mainMenu = new MainMenu();
     private final Options optionsFromGame = new Options(true);
     private final Options optionsFromMenu = new Options(false);
+    private final SaveSelection saveSelection = new SaveSelection();
     private final GameOver gameOver = new GameOver();
 
     private GameState currentState;
@@ -97,7 +100,13 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     // This method is used by the EventDispatcher and should not be removed.
     @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleStartEvent(final SetStartEvent event) {
+        currentState = saveSelection;
+    }
+
+    @EventHandler
+    private void handleSetWorldEvent(final SetWorldEvent event) {
         currentState = world;
+        // world.setSave(event.getSave());
     }
 
     @EventHandler

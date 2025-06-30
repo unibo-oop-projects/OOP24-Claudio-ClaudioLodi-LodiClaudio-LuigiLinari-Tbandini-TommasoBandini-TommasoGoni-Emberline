@@ -28,65 +28,54 @@ import javafx.scene.image.Image;
  * the layout of buttons and the display of the background and window for the options menu.
  */
 public class Options extends GuiLayer implements GameState {
-    private final OptionsBounds bounds;
+    private final OptionsBounds optionsBounds;
     private final boolean showMenuButton;
 
-    private static final class Layout {
-        // Background
+    private static class Layout {
         private static final double BG_WIDTH = 32;
         private static final double BG_HEIGHT = 18;
 
-        // Title and window
         private static final double SCALE = 1.8;
         private static final double WINDOW_BG_WIDTH = 7 * SCALE;
         private static final double WINDOW_BG_HEIGHT = 5 * SCALE;
         private static final double WINDOW_BG_X = (BG_WIDTH - WINDOW_BG_WIDTH) / 2;
         private static final double WINDOW_BG_Y = (BG_HEIGHT - WINDOW_BG_HEIGHT) / 2 - 2;
 
-        // Button scaling
         private static final double BTN_SCALE = 0.45;
         private static final double BTN_WIDTH = 1.3 * BTN_SCALE;
         private static final double BTN_HEIGHT = 1.3 * BTN_SCALE;
 
-        // Row dimensions
         private static final double ROW_HEIGHT = BTN_HEIGHT;
         private static final double ROW_PADDING = 4.5 * BTN_SCALE;
         private static final double ROW_START_X = WINDOW_BG_X + ROW_PADDING;
         private static final double ROW_WIDTH = WINDOW_BG_WIDTH - 1 * ROW_PADDING;
 
-        // Vertical spacing
         private static final double VERTICAL_SPACING = 1 * BTN_SCALE;
         private static final double FIRST_ROW_OFFSET_Y = 1.65 * SCALE;
 
-        // Layout elementi per riga
         private static final double LABEL_WIDTH = ROW_WIDTH * 0.45;
         private static final double CONTROLS_WIDTH = ROW_WIDTH * 0.55;
         private static final double CONTROLS_START_X = ROW_START_X + LABEL_WIDTH;
 
-        // Controlli volume
         private static final double PERCENTAGE_WIDTH = CONTROLS_WIDTH * 0.4;
         private static final double BUTTON_SPACING = 0.1 * BTN_SCALE;
         private static final double MINUS_OFFSET_X = PERCENTAGE_WIDTH + BUTTON_SPACING;
         private static final double PLUS_OFFSET_X = MINUS_OFFSET_X + BTN_WIDTH + BUTTON_SPACING;
 
-        // Controlli checkbox
         private static final double CHECKBOX_OFFSET_X = (CONTROLS_WIDTH - BTN_WIDTH) / 2;
 
-        // Posizioni Y delle righe
         private static final double MUSIC_VOLUME_Y = WINDOW_BG_Y + FIRST_ROW_OFFSET_Y;
         private static final double MUSIC_CHECKBOX_Y = MUSIC_VOLUME_Y + ROW_HEIGHT + VERTICAL_SPACING;
         private static final double SFX_VOLUME_Y = MUSIC_CHECKBOX_Y + ROW_HEIGHT + VERTICAL_SPACING;
         private static final double SFX_CHECKBOX_Y = SFX_VOLUME_Y + ROW_HEIGHT + VERTICAL_SPACING;
         private static final double FULLSCREEN_CHECKBOX_Y = SFX_CHECKBOX_Y + ROW_HEIGHT + VERTICAL_SPACING;
 
-        // Navigation buttons
         private static final double NAV_SCALE_FACTOR = 1.7;
         private static final double BTN_BACK_HEIGHT = 1.5 * NAV_SCALE_FACTOR;
         private static final double BTN_BACK_WIDTH = 3.5 * NAV_SCALE_FACTOR;
         private static final double BTN_BACK_X = (BG_WIDTH - BTN_BACK_WIDTH) / 2;
         private static final double BTN_BACK_Y = WINDOW_BG_Y + WINDOW_BG_HEIGHT - 0.1;
 
-        // Menu button
         private static final double BTN_MENU_HEIGHT = 1.5 * NAV_SCALE_FACTOR;
         private static final double BTN_MENU_WIDTH = 3.5 * NAV_SCALE_FACTOR;
         private static final double BTN_MENU_X = (BG_WIDTH - BTN_MENU_WIDTH) / 2;
@@ -97,20 +86,27 @@ public class Options extends GuiLayer implements GameState {
         private static final ColorAdjust OPTIONS_WRITINGS = new ColorAdjust(0.15, 0.9, -0.3, 0);
     }
 
-    private record Coordinate(
-        @JsonProperty int x,
-        @JsonProperty int y
-    ) { }
-
-    private record OptionsBounds(
-        @JsonProperty Coordinate topLeftBound,
-        @JsonProperty Coordinate bottomRightBound
-    ) { }
-
+   private record OptionsBounds(
+            @JsonProperty
+            int topLeftX,
+            @JsonProperty
+            int topLeftY,
+            @JsonProperty
+            int bottomRightX,
+            @JsonProperty
+            int bottomRightY
+    ) {
+        // Data validation
+        private OptionsBounds {
+            if (topLeftX >= bottomRightX || topLeftY >= bottomRightY) {
+                throw new IllegalArgumentException("Invalid options optionsBounds: " + this);
+            }
+        }
+    }
     /**
      * Constructs an {@code Options} object by initializing it with the configuration
      * data loaded from a predefined JSON resource file. The configuration provides
-     * the bounds necessary for setting up the {@code Options} screen in the GUI.
+     * the optionsBounds necessary for setting up the {@code Options} screen in the GUI.
      *
      * @param showMenuButton a boolean representing whether the options menu should or should not
      *                       have a menu button
@@ -118,15 +114,15 @@ public class Options extends GuiLayer implements GameState {
      * @see Options
      */
     public Options(final boolean showMenuButton) {
-        this(ConfigLoader.loadConfig("/gui/options/optionsBounds.json", OptionsBounds.class), showMenuButton);
+        this(ConfigLoader.loadConfig("/gui/guiBounds.json", OptionsBounds.class), showMenuButton);
     }
 
-    private Options(final OptionsBounds bounds, final boolean showMenuButton) {
-        super(bounds.topLeftBound.x,
-                bounds.topLeftBound.y,
-                bounds.bottomRightBound.x - bounds.topLeftBound.x,
-                bounds.bottomRightBound.y - bounds.topLeftBound.y);
-        this.bounds = bounds;
+    private Options(final OptionsBounds optionsBounds, final boolean showMenuButton) {
+        super(optionsBounds.topLeftX,
+                optionsBounds.topLeftY,
+                optionsBounds.bottomRightX - optionsBounds.topLeftX,
+                optionsBounds.bottomRightY - optionsBounds.topLeftY);
+        this.optionsBounds = optionsBounds;
         this.showMenuButton = showMenuButton;
     }
 
@@ -425,18 +421,18 @@ public class Options extends GuiLayer implements GameState {
         final GraphicsContext gc = renderer.getGraphicsContext();
         final CoordinateSystem cs = renderer.getGuiCoordinateSystem();
 
-        final double menuScreenWidth = bounds.bottomRightBound.x * cs.getScale();
-        final double menuScreenHeight = bounds.bottomRightBound.y * cs.getScale();
-        final double menuScreenX = cs.toScreenX(bounds.topLeftBound.x);
-        final double menuScreenY = cs.toScreenY(bounds.topLeftBound.y);
+        final double optionsScreenWidth = (optionsBounds.bottomRightX - optionsBounds.topLeftX)* cs.getScale();
+        final double optionsScreenHeight = (optionsBounds.bottomRightY - optionsBounds.topLeftY) * cs.getScale();
+        final double optionsScreenX = cs.toScreenX(optionsBounds.topLeftX);
+        final double optionsScreenY = cs.toScreenY(optionsBounds.topLeftY);
 
         updateLayout();
 
-        final Image menuBackground = SpriteLoader.loadSprite(SingleSpriteKey.MENU_BACKGROUND).image();
+        final Image optionsBackground = SpriteLoader.loadSprite(SingleSpriteKey.GUI_BACKGROUND).image();
         final Image windowBackground = SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_WINDOW_BACKGROUND).image();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
-            gc.drawImage(menuBackground, menuScreenX, menuScreenY, menuScreenWidth, menuScreenHeight);
+            gc.drawImage(optionsBackground, optionsScreenX, optionsScreenY, optionsScreenWidth, optionsScreenHeight);
             gc.drawImage(windowBackground, cs.toScreenX(Layout.WINDOW_BG_X), cs.toScreenY(Layout.WINDOW_BG_Y), 
                         Layout.WINDOW_BG_WIDTH * cs.getScale(), Layout.WINDOW_BG_HEIGHT * cs.getScale());
         }));

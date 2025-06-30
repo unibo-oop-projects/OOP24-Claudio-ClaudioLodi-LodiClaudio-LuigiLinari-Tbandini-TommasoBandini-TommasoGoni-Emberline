@@ -61,8 +61,8 @@ public class WorldRenderComponent implements Renderable, Updatable, Serializable
         final GraphicsContext gc = renderer.getGraphicsContext();
         final CoordinateSystem cs = renderer.getWorldCoordinateSystem();
 
-        final double mapScreenWidth = worldBounds.bottomRightX * cs.getScale();
-        final double mapScreenHeight = worldBounds.bottomRightY * cs.getScale();
+        final double mapScreenWidth = (worldBounds.bottomRightX - worldBounds.topLeftX) * cs.getScale();
+        final double mapScreenHeight = (worldBounds.bottomRightY - worldBounds.topLeftY) * cs.getScale();
         final double mapScreenX = cs.toScreenX(worldBounds.topLeftX);
         final double mapScreenY = cs.toScreenY(worldBounds.topLeftY);
 
