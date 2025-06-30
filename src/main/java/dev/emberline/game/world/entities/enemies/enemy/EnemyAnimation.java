@@ -24,7 +24,7 @@ public class EnemyAnimation implements Updatable, Serializable {
     private final AbstractEnemy enemy;
     private AnimatedSprite animatedSprite;
     private EnemyAppearance enemyAppearance = EnemyAppearance.NORMAL;
-    private AbstractEnemy.FacingDirection facingDirection = AbstractEnemy.FacingDirection.RIGHT;
+    private AbstractEnemy.FacingDirection facingDirection;
 
     private int frameIndex;
     private long accumulatedTimeNs;
