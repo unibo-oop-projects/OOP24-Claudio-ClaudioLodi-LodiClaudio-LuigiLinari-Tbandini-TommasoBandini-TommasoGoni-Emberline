@@ -105,17 +105,17 @@ public class SaveSelection extends GuiLayer implements GameState {
         this.saveSelectionBounds = saveSelectionBounds;
     }
 
-    private void updateLayout(final GraphicsContext gc, final CoordinateSystem cs) {
+    private void updateLayout() {
         super.getButtons().clear();
 
-        addSaveSlot(gc, cs, Layout.NEW_SAVE_BUTTON_Y, Saves.SAVE1);
-        addSaveSlot(gc, cs, Layout.NEW_SAVE_BUTTON_Y + Layout.BTN_HEIGHT + 0.3, Saves.SAVE2);
-        addSaveSlot(gc, cs, Layout.NEW_SAVE_BUTTON_Y + 2 * (Layout.BTN_HEIGHT + 0.3), Saves.SAVE3);
+        addSaveSlot(Layout.NEW_SAVE_BUTTON_Y, Saves.SAVE1);
+        addSaveSlot(Layout.NEW_SAVE_BUTTON_Y + Layout.BTN_HEIGHT + 0.3, Saves.SAVE2);
+        addSaveSlot(Layout.NEW_SAVE_BUTTON_Y + 2 * (Layout.BTN_HEIGHT + 0.3), Saves.SAVE3);
 
         addBackButton();
     }
 
-    private void addSaveSlot(final GraphicsContext gc, final CoordinateSystem cs, final double currY, final Saves save) {
+    private void addSaveSlot(final double currY, final Saves save) {
         boolean saveExists = saveExists(save);
         
         Image saveSlotImage = saveExists ? 
@@ -161,7 +161,7 @@ public class SaveSelection extends GuiLayer implements GameState {
                 Platform.runLater(() -> {
                     try {  
                         Files.deleteIfExists(Path.of(SAVE_DIRECTORY + save.displayName));
-                        updateLayout(gc, cs);
+                        updateLayout();
                         
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -211,7 +211,7 @@ public class SaveSelection extends GuiLayer implements GameState {
         final double guiScreenX = cs.toScreenX(saveSelectionBounds.topLeftX);
         final double guiScreenY = cs.toScreenY(saveSelectionBounds.topLeftY);
 
-        updateLayout(gc, cs);
+        updateLayout();
 
         final Image guiBackground = SpriteLoader.loadSprite(SingleSpriteKey.GUI_BACKGROUND).image();
         final Image windowBackground = SpriteLoader.loadSprite(SingleSpriteKey.SAVES_WINDOW_BACKGROUND).image();
