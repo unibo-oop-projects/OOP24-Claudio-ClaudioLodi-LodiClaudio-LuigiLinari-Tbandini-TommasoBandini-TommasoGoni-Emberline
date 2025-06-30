@@ -85,6 +85,14 @@ public final class EventDispatcher {
     }
 
     /**
+     * Unregisters all event listeners from the dispatcher.
+     * This method clears the internal map of event handlers and their associated listeners.
+     */
+    public void unregisterAllListeners() {
+        eventHandlers.clear();
+    }
+
+    /**
      * Dispatches the specified event to all registered event listeners that have
      * handlers for the type of event being dispatched. There is no guarantee on the
      * order in which the event handlers are called.

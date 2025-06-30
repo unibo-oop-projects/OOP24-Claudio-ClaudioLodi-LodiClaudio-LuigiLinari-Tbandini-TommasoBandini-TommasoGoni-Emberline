@@ -8,7 +8,6 @@ import dev.emberline.core.graphics.spritekeys.MapSpriteKey;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
-import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -38,7 +37,7 @@ public final class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
         final int startFrame = METADATA.waves[key.waveNumber()].startFrame;
         final int endFrame = METADATA.waves[key.waveNumber()].endFrame;
         
-        final String mapAtlasPath = String.format(METADATA.fileName.toLowerCase(Locale.US));
+        final String mapAtlasPath = String.format(METADATA.fileName);
         final Image mapAtlas = getMapAtlas(mapAtlasPath);
         
         final Image[] frames = new Image[frameNumber];

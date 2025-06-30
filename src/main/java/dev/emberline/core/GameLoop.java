@@ -131,6 +131,15 @@ public final class GameLoop extends Thread {
     }
 
     /**
+     * Retrieves the current instance of the {@code GameRoot}.
+     *
+     * @return the {@code GameRoot} associated with the game loop.
+     */
+    public GameRoot getGameRoot() {
+        return gameRoot;
+    }
+
+    /**
      * Sets the fullscreen mode of the game window.
      * @param fullscreen if true, the game will run in fullscreen mode; otherwise, it will run in windowed mode.
      */
