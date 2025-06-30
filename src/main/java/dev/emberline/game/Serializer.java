@@ -9,17 +9,21 @@ import java.io.*;
  * It works by calling 2 different methods, one to save, the other to load the game.
  */
 public class Serializer {
-
-    private final String fileName = "./save";
+    private static final String SAVE_PATH = "./saves/";
 
     /**
      * Serializes the World.
      *
      * @param world is the reference to the instance of the World class to serialize.
      */
-    public void serialize(World world) {
+    public void serialize(World world, String fileName) {
         try {
-            FileOutputStream file = new FileOutputStream(fileName);
+            File dir = new File(SAVE_PATH);
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+            
+            FileOutputStream file = new FileOutputStream(SAVE_PATH + fileName);
             ObjectOutputStream out = new ObjectOutputStream(file);
 
             out.writeObject(world);
@@ -38,10 +42,10 @@ public class Serializer {
      *
      * @return the reference to the new unserialized world.
      */
-    public World getDeserializedWorld() {
+    public World getDeserializedWorld(String save) {
         World world = null;
         try {
-            FileInputStream file = new FileInputStream(fileName);
+            FileInputStream file = new FileInputStream(SAVE_PATH + save);
             ObjectInputStream in = new ObjectInputStream(file);
 
             world = (World) in.readObject();

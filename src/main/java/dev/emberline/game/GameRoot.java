@@ -17,6 +17,7 @@ import dev.emberline.gui.menu.GameOver;
 import dev.emberline.gui.menu.MainMenu;
 import dev.emberline.gui.menu.Options;
 import dev.emberline.gui.saveselection.SaveSelection;
+import dev.emberline.gui.saveselection.SaveSelection.Saves;
 import javafx.application.Platform;
 import javafx.scene.input.InputEvent;
 
@@ -34,7 +35,9 @@ import java.util.EventListener;
  */
 public class GameRoot implements Inputable, Updatable, Renderable, EventListener {
     // Navigation States
-    private World world = new World();
+    private World world;
+    private final Serializer worldSerializer = new Serializer();
+    private Saves activeSaveSlot;
     private final MainMenu mainMenu = new MainMenu();
     private final Options optionsFromGame = new Options(true);
     private final Options optionsFromMenu = new Options(false);
@@ -44,7 +47,6 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     private GameState currentState;
     private GameState previousState;
 
-    private final Serializer worldSerializer = new Serializer();
     /**
      * Constructs a new instance of {@code GameRoot} and initializes the main menu
      * as the current game state.
@@ -88,14 +90,19 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
 
     @EventHandler
     private void handleSetWorldEvent(final SetWorldEvent event) {
-        currentState = world;
-        // world.setSave(event.getSave());
+        activeSaveSlot = event.getSave();
+        world = event.getWorld();
+        currentState = event.getWorld();
     }
 
     @EventHandler
     // This method is used by the EventDispatcher and should not be removed.
     @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleSetMainMenuEvent(final SetMainMenuEvent event) {
+        // Save the world if exiting from the game by the options in game
+        if (currentState == optionsFromGame) { 
+            worldSerializer.serialize(world, activeSaveSlot.displayName);
+        }
         currentState = mainMenu;
     }
 
