@@ -5,6 +5,7 @@ import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.event.EventHandler;
+import dev.emberline.core.sounds.AudioController;
 import dev.emberline.game.world.World;
 import dev.emberline.gui.event.CloseOptionsEvent;
 import dev.emberline.gui.event.ExitGameEvent;
@@ -12,7 +13,6 @@ import dev.emberline.gui.event.GameOverEvent;
 import dev.emberline.gui.event.OpenOptionsEvent;
 import dev.emberline.gui.event.SetMainMenuEvent;
 import dev.emberline.gui.event.SetStartEvent;
-import dev.emberline.gui.event.SetWorldEvent;
 import dev.emberline.gui.menu.GameOver;
 import dev.emberline.gui.menu.MainMenu;
 import dev.emberline.gui.menu.Options;
@@ -37,6 +37,7 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     // Navigation States
     private World world;
     private final Serializer worldSerializer = new Serializer();
+    private final AudioController audioController = new AudioController();
     private Saves activeSaveSlot;
     private final MainMenu mainMenu = new MainMenu();
     private final Options optionsFromGame = new Options(true);
@@ -52,7 +53,13 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
      * as the current game state.
      */
     public GameRoot() {
+        registerEvents();
+        audioController.startSoundtrack();
+
         currentState = mainMenu;
+    }
+
+    private void registerEvents() {
         EventDispatcher.getInstance().registerListener(this);
     }
 
@@ -88,11 +95,12 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
         currentState = saveSelection;
     }
 
-    @EventHandler
-    private void handleSetWorldEvent(final SetWorldEvent event) {
-        activeSaveSlot = event.getSave();
-        world = event.getWorld();
-        currentState = event.getWorld();
+    public void setWorld(final World world, final Saves save) {
+        EventDispatcher.getInstance().registerListener(this);
+        EventDispatcher.getInstance().registerListener(audioController);
+        this.activeSaveSlot = save;
+        this.currentState = world;
+        this.world = world;
     }
 
     @EventHandler

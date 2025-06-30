@@ -62,7 +62,13 @@ public class Topbar extends GuiLayer implements EventListener {
      */
     public Topbar(final World world) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
+
+        registerEvents();
+
         this.world = world;
+    }
+
+    private void registerEvents() {
         EventDispatcher.getInstance().registerListener(this);
     }
 
@@ -126,4 +132,13 @@ public class Topbar extends GuiLayer implements EventListener {
 
         super.render();
     }
+
+    // TODO when TopBar will be Sereializable
+    /*
+    @Serial
+    private void readObject(final ObjectInputStream e) throws IOException, ClassNotFoundException {
+        e.defaultReadObject();
+        registerEvents();
+    }
+    */
 }

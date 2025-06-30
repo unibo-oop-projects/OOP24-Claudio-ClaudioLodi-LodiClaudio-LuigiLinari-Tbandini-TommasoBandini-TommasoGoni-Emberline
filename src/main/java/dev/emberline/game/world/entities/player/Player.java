@@ -15,6 +15,8 @@ import dev.emberline.gui.event.SetTowerAimTypeEvent;
 import dev.emberline.gui.event.SetTowerInfoEvent;
 import dev.emberline.gui.event.UpgradeTowerInfoEvent;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.EventListener;
@@ -45,10 +47,14 @@ public class Player implements EventListener, Serializable {
      * @param world the {@code World} instance that this player belongs to
      */
     public Player(final World world) {
+        registerEvents();
+
         this.health = metadata.health;
         this.gold = metadata.gold;
         this.world = world;
+    }
 
+    private void registerEvents() {
         EventDispatcher.getInstance().registerListener(this);
     }
 
@@ -148,5 +154,11 @@ public class Player implements EventListener, Serializable {
     @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleSetAimTypeEvent(final SetTowerAimTypeEvent event) {
         event.getTower().setAimType(event.getAimType());
+    }
+
+    @Serial
+    private void readObject(final ObjectInputStream e) throws IOException, ClassNotFoundException {
+        e.defaultReadObject();
+        registerEvents();
     }
 }

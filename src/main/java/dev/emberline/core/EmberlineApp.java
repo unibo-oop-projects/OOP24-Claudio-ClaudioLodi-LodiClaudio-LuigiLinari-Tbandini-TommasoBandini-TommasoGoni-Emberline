@@ -1,7 +1,6 @@
 package dev.emberline.core;
 
 import dev.emberline.core.input.InputDispatcher;
-import dev.emberline.core.sounds.AudioController;
 import dev.emberline.preferences.PreferenceKey;
 import dev.emberline.preferences.PreferencesManager;
 import javafx.application.Application;
@@ -80,9 +79,6 @@ public class EmberlineApp extends Application {
         GameLoop.init(stage, canvas);
         this.gameLoop = GameLoop.getInstance();
         this.gameLoop.start();
-        // Loops musical track of the game
-        final AudioController audioController = new AudioController();
-        audioController.startSoundtrack();
     }
 
     /**

@@ -1,11 +1,9 @@
 package dev.emberline.gui.saveselection;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.GameLoop;
+import dev.emberline.core.config.ConfigLoader;
+import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import dev.emberline.core.render.CoordinateSystem;
@@ -18,11 +16,13 @@ import dev.emberline.game.world.World;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.SetMainMenuEvent;
-import dev.emberline.gui.event.SetWorldEvent;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 
 public class SaveSelection extends GuiLayer implements GameState {
@@ -141,10 +141,11 @@ public class SaveSelection extends GuiLayer implements GameState {
             saveSlotHoverImage
         );
         saveSlotButton.setOnClick(() -> {
+            EventDispatcher.getInstance().unregisterAllListeners();
             World world = saveExists ?
                 worldSerializer.getDeserializedWorld(save.displayName) : 
                 new World();
-            throwEvent(new SetWorldEvent(saveSlotButton, world, save));
+            GameLoop.getInstance().getGameRoot().setWorld(world, save);
         });
         super.getButtons().add(saveSlotButton);
 
