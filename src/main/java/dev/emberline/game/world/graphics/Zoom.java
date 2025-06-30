@@ -115,4 +115,17 @@ public final class Zoom implements Renderable, Serializable {
         final double beforeHalfFactor = 20, afterHalfFactor = -20;
         return x < 0.5 ? Math.pow(2, beforeHalfFactor * x - 10) / 2 : (2 - Math.pow(2, afterHalfFactor * x + 10)) / 2;
     }
+
+    @Serial
+    private Object readResolve() {
+        if (isOver()) {
+            updateCS(
+                    metadata.topLeft.toX,
+                    metadata.topLeft.toY,
+                    metadata.bottomRight.toX,
+                    metadata.bottomRight.toY
+            );
+        }
+        return this;
+    }
 }
