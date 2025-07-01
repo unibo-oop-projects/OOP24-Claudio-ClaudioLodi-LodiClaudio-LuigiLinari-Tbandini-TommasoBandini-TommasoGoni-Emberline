@@ -1,9 +1,5 @@
 package dev.emberline.game.world.buildings;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.*;
-
 import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
@@ -20,6 +16,10 @@ import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Manages the lifecycle and interactions of towers and pre-built tower in the world.
@@ -53,7 +53,7 @@ public class TowersManager implements Updatable, Renderable, Inputable, Serializ
      *
      * @param towerToLoad of the tower.
      */
-    public void addTowersToBuild(List<TowerToLoad> towerToLoad) {
+    public void addTowersToBuild(final List<TowerToLoad> towerToLoad) {
         buildings.addAll(towerToLoad
                 .stream()
                 .map(tower -> new TowerPreBuild(

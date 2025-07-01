@@ -16,9 +16,7 @@ public class TowerLoader implements Serializable {
     @Serial
     private static final long serialVersionUID = 4377537553748556262L;
 
-    private final static String TOWERLOADER_CONFIG_NAME = "towers.json";
-
-    private final TowerToLoad[] METADATA;
+    private final TowerToLoad[] metadata;
 
     /**
      * Record class that encapsulates the informations about where to spawn the towers.
@@ -37,7 +35,9 @@ public class TowerLoader implements Serializable {
      * @param wavePath the path of the directory containing the wave files
      */
     public TowerLoader(final String wavePath) {
-        METADATA = ConfigLoader.loadConfig(wavePath + TOWERLOADER_CONFIG_NAME, TowerToLoad[].class);
+        final String TOWERLOADER_CONFIG_NAME = "towers.json";
+        
+        metadata = ConfigLoader.loadConfig(wavePath + TOWERLOADER_CONFIG_NAME, TowerToLoad[].class);
     }
 
     /**
@@ -46,6 +46,6 @@ public class TowerLoader implements Serializable {
      * @return the list of towers to build in the current wave
      */
     public List<TowerToLoad> getTowers() {
-        return List.copyOf(Arrays.asList(METADATA));
+        return List.copyOf(Arrays.asList(metadata));
     }
 }

@@ -54,7 +54,7 @@ public class Options extends GuiLayer implements GameState {
         }
     }
 
-    private record Layout (
+    private record Layout(
             @JsonProperty 
             double bgWidth,
             @JsonProperty 

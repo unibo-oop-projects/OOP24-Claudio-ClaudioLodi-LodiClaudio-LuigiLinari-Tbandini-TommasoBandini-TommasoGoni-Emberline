@@ -4,7 +4,6 @@ import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.buildings.towerloader.TowerLoader;
-import dev.emberline.game.world.buildings.towerloader.TowerLoader.TowerToLoad;
 import dev.emberline.game.world.graphics.Fog;
 import dev.emberline.game.world.graphics.Zoom;
 import dev.emberline.game.world.roads.Roads;
