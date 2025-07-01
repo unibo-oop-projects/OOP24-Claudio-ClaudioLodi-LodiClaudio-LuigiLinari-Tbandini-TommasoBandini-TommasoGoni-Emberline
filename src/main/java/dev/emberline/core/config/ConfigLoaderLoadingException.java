@@ -30,7 +30,7 @@ class ConfigLoaderLoadingException extends RuntimeException {
      *
      * @param message the detail message, providing additional information about the error.
      */
-    public ConfigLoaderLoadingException(String message) {
+    ConfigLoaderLoadingException(final String message) {
         super(message);
     }
 }

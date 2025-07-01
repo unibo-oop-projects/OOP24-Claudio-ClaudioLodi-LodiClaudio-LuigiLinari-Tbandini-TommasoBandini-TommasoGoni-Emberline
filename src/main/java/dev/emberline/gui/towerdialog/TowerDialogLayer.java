@@ -27,8 +27,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;

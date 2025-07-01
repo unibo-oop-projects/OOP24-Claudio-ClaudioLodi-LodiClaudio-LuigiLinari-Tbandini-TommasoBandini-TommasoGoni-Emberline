@@ -20,16 +20,17 @@ public class Serializer {
      * Serializes the World.
      *
      * @param world is the reference to the instance of the World class to serialize.
+     * @param filename is the name of the file to save the serialized world to.
      */
-    public void serialize(World world, String fileName) {
+    public void serialize(final World world, final String filename) {
         try {
-            File dir = new File(SAVE_PATH);
-            if (!dir.exists()) {
-                dir.mkdir();
+            final File saveDir = new File(SAVE_PATH);
+            if (!saveDir.exists()) {
+                saveDir.mkdir();
             }
-            
-            FileOutputStream file = new FileOutputStream(SAVE_PATH + fileName);
-            ObjectOutputStream out = new ObjectOutputStream(file);
+
+            final FileOutputStream file = new FileOutputStream(SAVE_PATH + filename);
+            final ObjectOutputStream out = new ObjectOutputStream(file);
 
             out.writeObject(world);
             out.close();
@@ -45,9 +46,10 @@ public class Serializer {
     /**
      * Deserializes the specified World saving and returns a reference to it.
      *
+     * @param save is the name of the file to load the serialized world from.
      * @return the reference to the new unserialized world.
      */
-    public World getDeserializedWorld(String save) {
+    public World getDeserializedWorld(final String save) {
         World world = null;
         try {
             FileInputStream file = new FileInputStream(SAVE_PATH + save);
@@ -57,9 +59,9 @@ public class Serializer {
             in.close();
             file.close();
         } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("deserialization issue from: " + ex.getMessage());
+            System.err.println("deserialization issue from: " + ex.getMessage());
             for (var x : ex.getStackTrace()) {
-                System.out.println(x);
+                System.err.println(x);
             }
         }
         return world;

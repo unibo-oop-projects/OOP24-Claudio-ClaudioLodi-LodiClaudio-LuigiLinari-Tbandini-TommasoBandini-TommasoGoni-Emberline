@@ -10,7 +10,6 @@ import dev.emberline.utility.Vector2D;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.function.Function;
 
 /**
  * Represents a projectile in the game world, that includes

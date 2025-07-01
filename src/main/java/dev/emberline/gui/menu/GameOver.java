@@ -248,7 +248,7 @@ public final class GameOver extends GuiLayer implements GameState {
         addExitButton();
 
         final double gameOverScreenWidth = (gameOverBounds.bottomRightX - gameOverBounds.topLeftX) * cs.getScale();
-        final double gameOverScreenHeight = (gameOverBounds.bottomRightY - gameOverBounds.topLeftY)* cs.getScale();
+        final double gameOverScreenHeight = (gameOverBounds.bottomRightY - gameOverBounds.topLeftY) * cs.getScale();
         final double gameOverScreenX = cs.toScreenX(gameOverBounds.topLeftX);
         final double gameOverScreenY = cs.toScreenY(gameOverBounds.topLeftY);
 

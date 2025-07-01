@@ -5,7 +5,6 @@ import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.gui.towerdialog.stats.TowerStat;
 import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

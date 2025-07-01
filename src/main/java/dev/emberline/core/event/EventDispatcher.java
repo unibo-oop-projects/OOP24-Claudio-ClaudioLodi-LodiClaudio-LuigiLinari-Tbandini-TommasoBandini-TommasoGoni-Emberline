@@ -40,6 +40,12 @@ public final class EventDispatcher {
         // Prevent instantiation from outside
     }
 
+    /**
+     * Returns the singleton instance of the EventDispatcher.
+     * This method is synchronized to ensure thread safety when accessing the singleton instance.
+     *
+     * @return the singleton instance of EventDispatcher
+     */
     @SuppressFBWarnings(
             value = "MS_EXPOSE_REP",
             justification = "This is a singleton pattern and the instance is managed internally."

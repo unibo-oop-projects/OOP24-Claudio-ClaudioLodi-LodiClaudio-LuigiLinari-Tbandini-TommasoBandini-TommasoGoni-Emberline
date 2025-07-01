@@ -39,8 +39,8 @@ public final class ConfigLoader {
      */
     public static JsonNode loadNode(final String resourcePath) {
         try {
-            InputStream resourceStream = ConfigLoader.class.getResourceAsStream(resourcePath);
-            JsonNode node = OBJECT_MAPPER.readTree(resourceStream);
+            final InputStream resourceStream = ConfigLoader.class.getResourceAsStream(resourcePath);
+            final JsonNode node = OBJECT_MAPPER.readTree(resourceStream);
             // Ensure the resource stream is not null before closing it
             if (resourceStream == null) {
                 throw new ConfigLoaderLoadingException("Resource not found: " + resourcePath);

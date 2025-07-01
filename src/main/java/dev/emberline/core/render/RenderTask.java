@@ -98,17 +98,16 @@ public class RenderTask implements Comparable<RenderTask>, Runnable {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        RenderTask that = (RenderTask) o;
-        return (zOrderEnabled == that.zOrderEnabled
+        final RenderTask that = (RenderTask) o;
+        return zOrderEnabled == that.zOrderEnabled
                 && Double.compare(zOrder, that.zOrder) == 0
                 && secondaryPriority == that.secondaryPriority
                 && renderPriority == that.renderPriority
-                && Objects.equals(runnable, that.runnable)
-        );
+                && Objects.equals(runnable, that.runnable);
     }
 
     /**

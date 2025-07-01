@@ -1,4 +1,4 @@
-package dev.emberline.gui.saveselection;
+package dev.emberline.gui.menu;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.GameLoop;
@@ -18,35 +18,60 @@ import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.SetMainMenuEvent;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-
+/**
+ * The {@code SaveSelection} class represents a GUI layer for selecting and managing game saves.
+ * It allows players to create new saves, delete existing ones, and load saved games.
+ * The saves are stored in a specified directory and can be serialized/deserialized using the {@link Serializer}.
+ */
 public class SaveSelection extends GuiLayer implements GameState {
     private final SaveSelectionBounds saveSelectionBounds;
     private final Serializer worldSerializer = new Serializer();
     private static final String SAVE_DIRECTORY = "saves/";
-    
+
+    /**
+     * Enum representing the available save slots.
+     * Each enum constant corresponds to a save slot and contains a display name used for identification.
+     */
     public enum Saves {
+        /**
+         * First save slot.
+         */
         SAVE1("save1"),
+        /**
+         * Second save slot.
+         */
         SAVE2("save2"),
+        /**
+         * Third save slot.
+         */
         SAVE3("save3");
 
-        public final String displayName;
+        private final String displayName;
 
-        Saves(String displayName) {
+        Saves(final String displayName) {
             this.displayName = displayName;
+        }
+
+        /**
+         * @return the display name of the save slot
+         */
+        public String getDisplayName() {
+            return displayName;
         }
     }
 
-    private static class Layout {
+    private final static class Layout {
         // Background
         private static final double BG_WIDTH = 32;
         private static final double BG_HEIGHT = 18;
-        
+
         // Title and window
         private static final double SCALE = 1.8;
         private static final double WINDOW_BG_WIDTH = 7 * SCALE;
@@ -57,36 +82,31 @@ public class SaveSelection extends GuiLayer implements GameState {
         // Button scaling
         private static final double BUTTON_SCALE_FACTOR = 1.6;
         private static final double NEW_SAVE_BUTTON_WIDTH = BUTTON_SCALE_FACTOR * 3.28;
-        private static final double DELETE_BTN_WIDTH = BUTTON_SCALE_FACTOR ;
+        private static final double DELETE_BTN_WIDTH = BUTTON_SCALE_FACTOR;
         private static final double BTN_HEIGHT = BUTTON_SCALE_FACTOR;
 
         // Save buttons
         private static final double NEW_SAVE_BUTTON_X = WINDOW_BG_X + 2.7;
         private static final double NEW_SAVE_BUTTON_Y = WINDOW_BG_Y + 2.8;
         private static final double DELETE_BTN_X = WINDOW_BG_X + WINDOW_BG_WIDTH - DELETE_BTN_WIDTH - 2.5;
-        private static final double DELETE_BTN_Y = WINDOW_BG_Y + 2.7;
 
         // Navigation buttons
         private static final double NAV_SCALE_FACTOR = 1.7;
         private static final double BTN_BACK_HEIGHT = 1.5 * NAV_SCALE_FACTOR;
         private static final double BTN_BACK_WIDTH = 3.5 * NAV_SCALE_FACTOR;
         private static final double BTN_BACK_X = (BG_WIDTH - BTN_BACK_WIDTH) / 2;
-        private static final double BTN_BACK_Y = WINDOW_BG_Y + WINDOW_BG_HEIGHT - 0.1;
-    }
-
-    private static final class Colors {
-        private static final ColorAdjust SAVES_WRITINGS = new ColorAdjust(0.15, 0.9, -0.3, 0);
+        private static final double BTN_BACK_Y = WINDOW_BG_Y + WINDOW_BG_HEIGHT;
     }
 
     private record SaveSelectionBounds(
-            @JsonProperty
-            int topLeftX,
-            @JsonProperty
-            int topLeftY,
-            @JsonProperty
-            int bottomRightX,
-            @JsonProperty
-            int bottomRightY
+        @JsonProperty
+        int topLeftX,
+        @JsonProperty
+        int topLeftY,
+        @JsonProperty
+        int bottomRightX,
+        @JsonProperty
+        int bottomRightY
     ) {
         // Data validation
         private SaveSelectionBounds {
@@ -96,12 +116,17 @@ public class SaveSelection extends GuiLayer implements GameState {
         }
     }
 
+    /**
+     * Constructs a new {@code SaveSelection} instance using the default save selection bounds loaded from a configuration file.
+     */
     public SaveSelection() {
         this(ConfigLoader.loadConfig("/gui/guiBounds.json", SaveSelectionBounds.class));
     }
 
     private SaveSelection(final SaveSelectionBounds saveSelectionBounds) {
-        super(saveSelectionBounds.topLeftX, saveSelectionBounds.topLeftY, saveSelectionBounds.bottomRightX - saveSelectionBounds.topLeftX, saveSelectionBounds.bottomRightY - saveSelectionBounds.topLeftY);
+        super(saveSelectionBounds.topLeftX, saveSelectionBounds.topLeftY, 
+              saveSelectionBounds.bottomRightX - saveSelectionBounds.topLeftX, 
+              saveSelectionBounds.bottomRightY - saveSelectionBounds.topLeftY);
         this.saveSelectionBounds = saveSelectionBounds;
     }
 
@@ -116,25 +141,25 @@ public class SaveSelection extends GuiLayer implements GameState {
     }
 
     private void addSaveSlot(final double currY, final Saves save) {
-        boolean saveExists = saveExists(save);
-        
-        Image saveSlotImage = saveExists ? 
-            SpriteLoader.loadSprite(getSaveButtonSpriteKey(save, false)).image() : 
-            SpriteLoader.loadSprite(SingleSpriteKey.NEW_SAVE_SLOT_BUTTON).image();
-        Image saveSlotHoverImage = saveExists ?
-            SpriteLoader.loadSprite(getSaveButtonSpriteKey(save, true)).image() : 
-            SpriteLoader.loadSprite(SingleSpriteKey.NEW_SAVE_SLOT_BUTTON_HOVER).image();
-        
-        Image deleteSaveSlotImage = saveExists ? 
-            SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON).image() : 
-            SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON_DISABLED).image();
-        Image deleteSaveSlotHoverImage = saveExists ?
-            SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON_HOVER).image() :
-            SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON_DISABLED).image();
+        final boolean saveExists = saveExists(save);
+
+        final Image saveSlotImage = saveExists
+            ? SpriteLoader.loadSprite(getSaveButtonSpriteKey(save, false)).image()
+            : SpriteLoader.loadSprite(SingleSpriteKey.NEW_SAVE_SLOT_BUTTON).image();
+        final Image saveSlotHoverImage = saveExists
+            ? SpriteLoader.loadSprite(getSaveButtonSpriteKey(save, true)).image()
+            : SpriteLoader.loadSprite(SingleSpriteKey.NEW_SAVE_SLOT_BUTTON_HOVER).image();
+
+        final Image deleteSaveSlotImage = saveExists
+            ? SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON).image()
+            : SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON_DISABLED).image();
+        final Image deleteSaveSlotHoverImage = saveExists
+            ? SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON_HOVER).image()
+            : SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON_DISABLED).image();
 
         final GuiButton saveSlotButton = new GuiButton(
             Layout.NEW_SAVE_BUTTON_X, 
-            currY, 
+            currY,
             Layout.NEW_SAVE_BUTTON_WIDTH, 
             Layout.BTN_HEIGHT,
             saveSlotImage,
@@ -142,9 +167,9 @@ public class SaveSelection extends GuiLayer implements GameState {
         );
         saveSlotButton.setOnClick(() -> {
             EventDispatcher.getInstance().unregisterAllListeners();
-            World world = saveExists ?
-                worldSerializer.getDeserializedWorld(save.displayName) : 
-                new World();
+            final World world = saveExists 
+                ? worldSerializer.getDeserializedWorld(save.displayName)
+                : new World();
             GameLoop.getInstance().getGameRoot().setWorld(world, save);
         });
         super.getButtons().add(saveSlotButton);
@@ -160,12 +185,11 @@ public class SaveSelection extends GuiLayer implements GameState {
         deleteSaveSlotButton.setOnClick(() -> {
             if (saveExists) {
                 Platform.runLater(() -> {
-                    try {  
+                    try {
                         Files.deleteIfExists(Path.of(SAVE_DIRECTORY + save.displayName));
                         updateLayout();
-                        
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } catch (IOException e) {
+                        throw new UncheckedIOException("Failed to delete save file: " + save.displayName, e);
                     }
                 });
             }
@@ -190,11 +214,11 @@ public class SaveSelection extends GuiLayer implements GameState {
         return Files.exists(Path.of(SAVE_DIRECTORY + slot.displayName));
     }
 
-    private SingleSpriteKey getSaveButtonSpriteKey(Saves slot, boolean hover) {
+    private SingleSpriteKey getSaveButtonSpriteKey(final Saves slot, final boolean hover) {
         return switch (slot) {
-            case SAVE1 -> (hover ? SingleSpriteKey.SAVE_SLOT_1_HOVER : SingleSpriteKey.SAVE_SLOT_1);
-            case SAVE2 -> (hover ? SingleSpriteKey.SAVE_SLOT_2_HOVER : SingleSpriteKey.SAVE_SLOT_2);
-            case SAVE3 -> (hover ? SingleSpriteKey.SAVE_SLOT_3_HOVER : SingleSpriteKey.SAVE_SLOT_3);
+            case SAVE1 -> hover ? SingleSpriteKey.SAVE_SLOT_1_HOVER : SingleSpriteKey.SAVE_SLOT_1;
+            case SAVE2 -> hover ? SingleSpriteKey.SAVE_SLOT_2_HOVER : SingleSpriteKey.SAVE_SLOT_2;
+            case SAVE3 -> hover ? SingleSpriteKey.SAVE_SLOT_3_HOVER : SingleSpriteKey.SAVE_SLOT_3;
         };
     }
 

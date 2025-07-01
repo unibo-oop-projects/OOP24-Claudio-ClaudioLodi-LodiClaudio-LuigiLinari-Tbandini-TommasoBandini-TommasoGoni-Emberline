@@ -35,23 +35,25 @@ public class Spawnpoints implements Serializable {
     private static final String SPAWNPOINT_CONFIG_FILENAME = "spawnpoints.json";
 
     // Single spawnpoint configuration
-    private record SpawnSequence (
-        @JsonProperty
-        long firstSpawnTimeNs,
-        @JsonProperty
-        long spawnIntervalNs,
-        @JsonProperty
-        EnemyType[] enemies
-    ) implements Serializable { }
+    private record SpawnSequence(
+            @JsonProperty
+            long firstSpawnTimeNs,
+            @JsonProperty
+            long spawnIntervalNs,
+            @JsonProperty
+            EnemyType[] enemies
+    ) implements Serializable {
+    }
 
-    private record Spawnpoint (
-        @JsonProperty
-        double x,
-        @JsonProperty
-        double y,
-        @JsonProperty
-        SpawnSequence[] spawnSequences
-    ) implements Serializable { }
+    private record Spawnpoint(
+            @JsonProperty
+            double x,
+            @JsonProperty
+            double y,
+            @JsonProperty
+            SpawnSequence[] spawnSequences
+    ) implements Serializable {
+    }
 
     /**
      * Single enemy identified by these 3 parameters.

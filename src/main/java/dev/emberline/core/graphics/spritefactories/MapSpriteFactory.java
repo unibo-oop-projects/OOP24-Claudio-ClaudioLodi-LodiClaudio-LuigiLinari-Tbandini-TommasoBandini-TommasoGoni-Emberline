@@ -23,7 +23,7 @@ public final class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
                          @JsonProperty int endFrame, @JsonProperty int frames) {
     }
 
-    private record Metadata(@JsonProperty String fileName, @JsonProperty int mapLenght, 
+    private record Metadata(@JsonProperty String filename, @JsonProperty int mapLenght, 
                             @JsonProperty int mapHeight, @JsonProperty int frameTimeNs,
                             @JsonProperty Waves[] waves) {
     }
@@ -36,11 +36,11 @@ public final class MapSpriteFactory implements SpriteFactory<MapSpriteKey> {
         final int frameNumber = METADATA.waves[key.waveNumber()].frames;
         final int startFrame = METADATA.waves[key.waveNumber()].startFrame;
         final int endFrame = METADATA.waves[key.waveNumber()].endFrame;
-        
-        final String mapAtlasPath = String.format(METADATA.fileName);
+
+        final String mapAtlasPath = String.format(METADATA.filename);
         final Image mapAtlas = getMapAtlas(mapAtlasPath);
-        
         final Image[] frames = new Image[frameNumber];
+
         for (int i = startFrame; i <= endFrame; ++i) {
             final int x = i * METADATA.mapLenght;
             final int y = 0;
