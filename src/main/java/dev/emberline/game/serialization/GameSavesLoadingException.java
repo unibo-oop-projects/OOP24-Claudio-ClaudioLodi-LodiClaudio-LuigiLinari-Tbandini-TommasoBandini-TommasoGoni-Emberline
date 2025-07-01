@@ -17,7 +17,7 @@ class GameSavesLoadingException extends RuntimeException {
      *
      * @param ex the Exception that was originally thrown.
      */
-    public GameSavesLoadingException(final Exception ex) {
+    GameSavesLoadingException(final Exception ex) {
         super(ex);
     }
 }
