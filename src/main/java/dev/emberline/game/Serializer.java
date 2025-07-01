@@ -1,6 +1,9 @@
 package dev.emberline.game;
 
 import dev.emberline.game.world.World;
+import net.harawata.appdirs.AppDirs;
+import net.harawata.appdirs.AppDirsException;
+import net.harawata.appdirs.AppDirsFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +17,18 @@ import java.io.ObjectOutputStream;
  * It works by calling 2 different methods, one to save, the other to load the game.
  */
 public class Serializer {
-    private static final String SAVE_PATH = "./saves/";
+    private static final AppDirs appDirs = AppDirsFactory.getInstance();
+    private static final String SAVE_PATH = appDirs
+            .getUserDataDir("Emberline", "1.0", null) + "/";
+
+    /**
+     * Getter for the save path.
+     *
+     * @return the save path.
+     */
+    public String getSavePath() {
+        return SAVE_PATH;
+    }
 
     /**
      * Serializes the World.
@@ -26,9 +40,9 @@ public class Serializer {
         try {
             final File saveDir = new File(SAVE_PATH);
             if (!saveDir.exists()) {
-                saveDir.mkdir();
+                System.out.println(saveDir.mkdirs());
             }
-
+            System.out.println(saveDir);
             final FileOutputStream file = new FileOutputStream(SAVE_PATH + filename);
             final ObjectOutputStream out = new ObjectOutputStream(file);
 

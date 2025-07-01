@@ -12,7 +12,7 @@ plugins {
      * The runnable jar will be found in build/libs/projectname-all.jar
      */
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("org.danilopianini.gradle-java-qa") version "1.75.0"
+    //id("org.danilopianini.gradle-java-qa") version "1.75.0"
 }
 
 repositories {
@@ -38,6 +38,7 @@ dependencies {
     implementation("org.apache.commons:commons-geometry-euclidean:1.0")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
     implementation("com.fasterxml.jackson.module:jackson-module-parameter-names:2.19.0")
+    implementation("net.harawata:appdirs:1.4.0")
     testImplementation("org.mockito:mockito-core:5.+")
     testImplementation("org.assertj:assertj-core:4.0.0-M1")
 

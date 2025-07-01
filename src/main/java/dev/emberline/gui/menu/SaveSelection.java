@@ -34,7 +34,6 @@ public class SaveSelection extends GuiLayer implements GameState {
     private final SaveSelectionBounds bounds;
     private final Layout layout;
     private final Serializer worldSerializer = new Serializer();
-    private static final String SAVE_DIRECTORY = "saves/";
 
     /**
      * Enum representing the available save slots.
@@ -194,7 +193,7 @@ public class SaveSelection extends GuiLayer implements GameState {
             if (saveExists) {
                 Platform.runLater(() -> {
                     try {
-                        Files.deleteIfExists(Path.of(SAVE_DIRECTORY + save.displayName));
+                        Files.deleteIfExists(Path.of(worldSerializer.getSavePath() + save.displayName));
                         updateLayout();
                     } catch (IOException e) {
                         throw new UncheckedIOException("Failed to delete save file: " + save.displayName, e);
@@ -219,7 +218,7 @@ public class SaveSelection extends GuiLayer implements GameState {
     }
 
     private boolean saveExists(final Saves slot) {
-        return Files.exists(Path.of(SAVE_DIRECTORY + slot.displayName));
+        return Files.exists(Path.of(worldSerializer.getSavePath() + slot.displayName));
     }
 
     private SingleSpriteKey getSaveButtonSpriteKey(final Saves slot, final boolean hover) {
