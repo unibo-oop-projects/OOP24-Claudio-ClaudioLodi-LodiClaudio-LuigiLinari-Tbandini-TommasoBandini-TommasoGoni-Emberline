@@ -1,8 +1,7 @@
-package dev.emberline.game;
+package dev.emberline.game.serialization;
 
 import dev.emberline.game.world.World;
 import net.harawata.appdirs.AppDirs;
-import net.harawata.appdirs.AppDirsException;
 import net.harawata.appdirs.AppDirsFactory;
 
 import java.io.File;
@@ -17,8 +16,8 @@ import java.io.ObjectOutputStream;
  * It works by calling 2 different methods, one to save, the other to load the game.
  */
 public class Serializer {
-    private static final AppDirs appDirs = AppDirsFactory.getInstance();
-    private static final String SAVE_PATH = appDirs
+    private static final AppDirs APP_DIRS = AppDirsFactory.getInstance();
+    private static final String SAVE_PATH = APP_DIRS
             .getUserDataDir("Emberline", "1.0", null) + "/";
 
     /**
@@ -40,20 +39,18 @@ public class Serializer {
         try {
             final File saveDir = new File(SAVE_PATH);
             if (!saveDir.exists()) {
-                System.out.println(saveDir.mkdirs());
+                saveDir.mkdirs();
             }
-            System.out.println(saveDir);
+
             final FileOutputStream file = new FileOutputStream(SAVE_PATH + filename);
             final ObjectOutputStream out = new ObjectOutputStream(file);
 
             out.writeObject(world);
+
             out.close();
             file.close();
         } catch (IOException ex) {
-            System.out.println("serialization issue from: " + ex.getMessage());
-            for (var x : ex.getStackTrace()) {
-                System.out.println(x);
-            }
+            throw new GameSavesSavingException(ex);
         }
     }
 
@@ -64,19 +61,17 @@ public class Serializer {
      * @return the reference to the new unserialized world.
      */
     public World getDeserializedWorld(final String save) {
-        World world = null;
+        final World world;
         try {
-            FileInputStream file = new FileInputStream(SAVE_PATH + save);
-            ObjectInputStream in = new ObjectInputStream(file);
+            final FileInputStream file = new FileInputStream(SAVE_PATH + save);
+            final ObjectInputStream in = new ObjectInputStream(file);
 
             world = (World) in.readObject();
+
             in.close();
             file.close();
         } catch (IOException | ClassNotFoundException ex) {
-            System.err.println("deserialization issue from: " + ex.getMessage());
-            for (var x : ex.getStackTrace()) {
-                System.err.println(x);
-            }
+            throw new GameSavesLoadingException(ex);
         }
         return world;
     }

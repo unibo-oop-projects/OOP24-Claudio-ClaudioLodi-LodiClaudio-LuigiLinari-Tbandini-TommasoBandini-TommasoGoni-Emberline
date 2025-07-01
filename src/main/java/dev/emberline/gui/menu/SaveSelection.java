@@ -11,7 +11,7 @@ import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
 import dev.emberline.game.GameState;
-import dev.emberline.game.Serializer;
+import dev.emberline.game.serialization.Serializer;
 import dev.emberline.game.world.World;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
