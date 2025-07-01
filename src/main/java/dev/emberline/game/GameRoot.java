@@ -6,6 +6,7 @@ import dev.emberline.core.components.Updatable;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.event.EventHandler;
 import dev.emberline.core.sounds.AudioController;
+import dev.emberline.game.serialization.Serializer;
 import dev.emberline.game.world.World;
 import dev.emberline.gui.event.CloseOptionsEvent;
 import dev.emberline.gui.event.ExitGameEvent;
