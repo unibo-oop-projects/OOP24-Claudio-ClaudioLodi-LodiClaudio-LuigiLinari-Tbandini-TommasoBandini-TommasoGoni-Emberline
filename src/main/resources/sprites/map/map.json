@@ -1,5 +1,5 @@
 {
-  "fileName": "/sprites/map/mapAtlas.png",
+  "filename": "/sprites/map/mapAtlas.png",
   "mapLenght": 592,
   "mapHeight": 416,
   "frameTimeNs": 1000000000,

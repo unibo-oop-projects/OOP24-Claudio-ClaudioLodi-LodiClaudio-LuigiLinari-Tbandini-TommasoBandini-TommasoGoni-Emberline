@@ -16,12 +16,13 @@ import dev.emberline.gui.event.SetStartEvent;
 import dev.emberline.gui.menu.GameOver;
 import dev.emberline.gui.menu.MainMenu;
 import dev.emberline.gui.menu.Options;
-import dev.emberline.gui.saveselection.SaveSelection;
-import dev.emberline.gui.saveselection.SaveSelection.Saves;
+import dev.emberline.gui.menu.SaveSelection;
+import dev.emberline.gui.menu.SaveSelection.Saves;
 import javafx.application.Platform;
 import javafx.scene.input.InputEvent;
 
 import java.util.EventListener;
+import java.util.Objects;
 
 /**
  * The GameRoot class serves as the central node for managing the game states and
@@ -95,6 +96,13 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
         currentState = saveSelection;
     }
 
+    /**
+     * Sets the current world and active save slot for the game.
+     * This method is called when the game is initialized or when a new world is loaded.
+     *
+     * @param world the current game world
+     * @param save  the active save slot
+     */
     public void setWorld(final World world, final Saves save) {
         EventDispatcher.getInstance().registerListener(this);
         EventDispatcher.getInstance().registerListener(audioController);
@@ -108,8 +116,8 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
     @SuppressWarnings({"unused", "PMD.AvoidDuplicateLiterals"})
     private void handleSetMainMenuEvent(final SetMainMenuEvent event) {
         // Save the world if exiting from the game by the options in game
-        if (currentState == optionsFromGame) { 
-            worldSerializer.serialize(world, activeSaveSlot.displayName);
+        if (Objects.equals(currentState, optionsFromGame)) { 
+            worldSerializer.serialize(world, activeSaveSlot.getDisplayName());
         }
         currentState = mainMenu;
     }

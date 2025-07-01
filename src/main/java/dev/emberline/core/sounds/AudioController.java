@@ -23,6 +23,10 @@ import java.util.EventListener;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Handles game audio playback, including background music and sound effects.
+ * Integrates with the event system to respond to volume and mute changes.
+ */
 public class AudioController implements EventListener {
     private static final String METADATA_PATH = "/audio/audioController.json";
     private Media musicMedia;
@@ -121,7 +125,7 @@ public class AudioController implements EventListener {
     }
 
     private void loadSoundtrack() {
-        final URL fileURL = Objects.requireNonNull(getClass().getResource(METADATA.MUSIC_PATH));
+        final URL fileURL = Objects.requireNonNull(AudioController.class.getResource(METADATA.MUSIC_PATH));
         musicMedia = new Media(fileURL.toExternalForm());
     }
 
