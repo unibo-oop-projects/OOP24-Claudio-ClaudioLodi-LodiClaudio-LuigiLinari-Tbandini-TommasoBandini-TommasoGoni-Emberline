@@ -39,14 +39,14 @@ public final class ConfigLoader {
      */
     public static JsonNode loadNode(final String resourcePath) {
         try {
-            final InputStream resourceStream = ConfigLoader.class.getResourceAsStream(resourcePath);
-            final JsonNode node = OBJECT_MAPPER.readTree(resourceStream);
-            // Ensure the resource stream is not null before closing it
-            if (resourceStream == null) {
-                throw new ConfigLoaderLoadingException("Resource not found: " + resourcePath);
+            try (InputStream resourceStream = ConfigLoader.class.getResourceAsStream(resourcePath)) {
+                final JsonNode node = OBJECT_MAPPER.readTree(resourceStream);
+                // Ensure the resource stream is not null before closing it
+                if (resourceStream == null) {
+                    throw new ConfigLoaderLoadingException("Resource not found: " + resourcePath);
+                }
+                return node;
             }
-            resourceStream.close();
-            return node;
         } catch (final IOException e) {
             throw new ConfigLoaderLoadingException("An error has occurred while reading or parsing the resource", e);
         }
