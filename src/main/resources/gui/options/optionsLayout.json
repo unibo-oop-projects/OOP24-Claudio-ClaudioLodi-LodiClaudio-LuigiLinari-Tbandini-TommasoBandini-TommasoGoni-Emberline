@@ -1,49 +1,28 @@
 {
-  "bgWidth": 32,
-  "bgHeight": 18,
-
   "windowBgWidth": 12.6,
   "windowBgHeight": 9.0,
   "windowBgX": 9.7,
   "windowBgY": 2.5,
-
-  "btnScale": 0.45,
   "btnWidth": 0.585,          
   "btnHeight": 0.585,         
-
   "rowHeight": 0.585,
   "rowPadding": 2.025,        
   "rowStartX": 11.725,        
-  "rowWidth": 10.575,         
-
-  "verticalSpacing": 0.45,    
-  "firstRowOffsetY": 2.97,    
-
-  "labelWidth": 4.75875,      
-  "controlsWidth": 5.81625,   
+  "rowWidth": 10.575,
+  "labelWidth": 4.75875,       
   "controlsStartX": 16.48375, 
-
-  "percentageWidth": 2.3265,  
-  "buttonSpacing": 0.045,     
+  "percentageWidth": 2.3265,   
   "minusOffsetX": 2.3715,     
   "plusOffsetX": 3.001,       
-
   "checkboxOffsetX": 2.615625,
-
   "musicVolumeY": 5.47,       
   "musicCheckboxY": 6.505,    
   "sfxVolumeY": 7.54,         
   "sfxCheckboxY": 8.575,      
   "fullscreenCheckboxY": 9.61,
-
-  "navScaleFactor": 1.7,
-  "btnBackHeight": 2.55,      
-  "btnBackWidth": 5.95,       
-  "btnBackX": 13.025,         
+  "btnNavHeight": 2.55,
+  "btnNavWidth": 5.95,
+  "btnNavX": 13.025,         
   "btnBackY": 11.4,           
-
-  "btnMenuHeight": 2.55,
-  "btnMenuWidth": 5.95,
-  "btnMenuX": 13.025,
   "btnMenuY": 13.75           
 }
