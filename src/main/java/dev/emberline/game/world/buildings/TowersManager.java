@@ -1,5 +1,9 @@
 package dev.emberline.game.world.buildings;
 
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.*;
+
 import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
@@ -8,6 +12,7 @@ import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.game.world.Building;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.buildings.tower.Tower;
+import dev.emberline.game.world.buildings.towerloader.TowerLoader.TowerToLoad;
 import dev.emberline.game.world.buildings.towerprebuild.TowerPreBuild;
 import dev.emberline.gui.towerdialog.NewBuildDialogLayer;
 import dev.emberline.gui.towerdialog.TowerDialogLayer;
@@ -15,13 +20,6 @@ import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
 
 /**
  * Manages the lifecycle and interactions of towers and pre-built tower in the world.
@@ -48,13 +46,20 @@ public class TowersManager implements Updatable, Renderable, Inputable, Serializ
      */
     public TowersManager(final World world) {
         this.world = world;
+    }
 
-        // TODO
-        buildings.add(new TowerPreBuild(new Coordinate2D(10, 10), this));
-        buildings.add(new TowerPreBuild(new Coordinate2D(5, 5), this));
-        buildings.add(new TowerPreBuild(new Coordinate2D(18, 10), this));
-        buildings.add(new TowerPreBuild(new Coordinate2D(20, 7), this));
-        buildings.add(new TowerPreBuild(new Coordinate2D(5, 15), this));
+    /**
+     * Adds the new {@code TowerPreBuild} instances, form the new wave, to the existing buildings.
+     *
+     * @param towerToLoad of the tower.
+     */
+    public void addTowersToBuild(List<TowerToLoad> towerToLoad) {
+        buildings.addAll(towerToLoad
+                .stream()
+                .map(tower -> new TowerPreBuild(
+                        new Coordinate2D(tower.x(), tower.y()), this))
+                .toList()
+        );
     }
 
     /**

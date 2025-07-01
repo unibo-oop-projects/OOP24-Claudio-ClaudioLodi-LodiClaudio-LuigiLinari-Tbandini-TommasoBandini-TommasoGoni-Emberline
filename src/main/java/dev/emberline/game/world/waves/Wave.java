@@ -3,6 +3,8 @@ package dev.emberline.game.world.waves;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
 import dev.emberline.game.world.World;
+import dev.emberline.game.world.buildings.towerloader.TowerLoader;
+import dev.emberline.game.world.buildings.towerloader.TowerLoader.TowerToLoad;
 import dev.emberline.game.world.graphics.Fog;
 import dev.emberline.game.world.graphics.Zoom;
 import dev.emberline.game.world.roads.Roads;
@@ -26,9 +28,11 @@ public class Wave implements Updatable, Renderable, Serializable {
     private final World world;
     private final Roads roads;
     private final Spawnpoints spawnpoints;
+    private final TowerLoader towerLoader;
     private final Zoom zoom;
     private final Fog fog;
     private boolean firstRender;
+    private boolean firstUpdate;
 
     // In nanoseconds, keeps track of the total time elapsed from the start of the wave
     private long accumulatorNs;
@@ -43,6 +47,7 @@ public class Wave implements Updatable, Renderable, Serializable {
         this.world = world;
         this.roads = new Roads(waveDirectoryPath);
         this.spawnpoints = new Spawnpoints(waveDirectoryPath);
+        this.towerLoader = new TowerLoader(waveDirectoryPath);
         this.zoom = new Zoom(waveDirectoryPath);
         this.fog = new Fog(waveDirectoryPath);
     }
@@ -76,8 +81,13 @@ public class Wave implements Updatable, Renderable, Serializable {
         }
     }
 
+    private void sendTowers() {
+        world.getTowersManager().addTowersToBuild(towerLoader.getTowers());
+    }
+
     /**
      * Sends to the EnemyManager the new enemies to spawn based on the elapsed time.
+     * Sends the towers to build to the TowerManager when this wave starts.
      *
      * @param elapsed time in nanoseconds since the last update call
      */
@@ -85,6 +95,10 @@ public class Wave implements Updatable, Renderable, Serializable {
     public void update(final long elapsed) {
         accumulatorNs += elapsed;
         sendEnemies();
+        if (!firstUpdate) {
+            sendTowers();
+            firstUpdate = true;
+        }
     }
 
     /**
