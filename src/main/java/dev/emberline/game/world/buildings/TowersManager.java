@@ -2,7 +2,11 @@ package dev.emberline.game.world.buildings;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
@@ -53,7 +57,7 @@ public class TowersManager implements Updatable, Renderable, Inputable, Serializ
      *
      * @param towerToLoad of the tower.
      */
-    public void addTowersToBuild(List<TowerToLoad> towerToLoad) {
+    public void addTowersToBuild(final List<TowerToLoad> towerToLoad) {
         buildings.addAll(towerToLoad
                 .stream()
                 .map(tower -> new TowerPreBuild(
