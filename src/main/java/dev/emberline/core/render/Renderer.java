@@ -148,7 +148,7 @@ public class Renderer {
      */
     public void addRenderTask(final RenderTask renderTask) {
         renderTask.setSecondaryPriority(taskOrderingCounter++);
-        renderQueue.offer(Objects.requireNonNull(renderTask));
+        renderQueue.add(Objects.requireNonNull(renderTask));
     }
 
     /**
@@ -156,6 +156,9 @@ public class Renderer {
      *
      * @return the {@code GraphicsContext} used by the renderer.
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP", // TODO
+            justification = "")
     public GraphicsContext getGraphicsContext() {
         return gc;
     }
@@ -165,6 +168,9 @@ public class Renderer {
      *
      * @return the {@code CoordinateSystem} instance representing the world coordinate system.
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP", // TODO
+            justification = "")
     public CoordinateSystem getWorldCoordinateSystem() {
         return worldCoordinateSystem;
     }
@@ -174,6 +180,9 @@ public class Renderer {
      *
      * @return the {@code CoordinateSystem} instance representing the GUI coordinate system.
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP", // TODO
+            justification = "")
     public CoordinateSystem getGuiCoordinateSystem() {
         return guiCoordinateSystem;
     }
