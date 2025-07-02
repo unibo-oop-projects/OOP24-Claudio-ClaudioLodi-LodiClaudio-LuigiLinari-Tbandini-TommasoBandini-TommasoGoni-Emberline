@@ -133,7 +133,7 @@ public class Spawnpoints implements Serializable {
      * @param timeNs time in nanoseconds
      * @return list of enemies
      */
-    public List<EnemyToSpawn> retrieveEnemiesToSpawnNanoseconds(final long timeNs) {
+    public List<EnemyToSpawn> retrieveEnemiesToSpawn(final long timeNs) {
         final List<EnemyToSpawn> result = new ArrayList<>();
         while (!spawnQueue.isEmpty() && spawnQueue.peek().spawnTimeNs <= timeNs) {
             result.add(spawnQueue.poll());

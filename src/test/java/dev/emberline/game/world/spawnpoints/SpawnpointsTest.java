@@ -22,7 +22,7 @@ class SpawnpointsTest {
         List<Spawnpoints.EnemyToSpawn> expected;
 
         long spawnTime = 0;
-        retrieved = spawnpoints.retrieveEnemiesToSpawnNanoseconds(spawnTime);
+        retrieved = spawnpoints.retrieveEnemiesToSpawn(spawnTime);
         expected = List.of(
                 new Spawnpoints.EnemyToSpawn(spawnTime, spawnPoint1, EnemyType.PIG),
                 new Spawnpoints.EnemyToSpawn(spawnTime, spawnPoint2, EnemyType.OGRE)
@@ -31,7 +31,7 @@ class SpawnpointsTest {
 
         final long threeSeconds = 3_000_000_000L;
         spawnTime = threeSeconds;
-        retrieved = spawnpoints.retrieveEnemiesToSpawnNanoseconds(spawnTime);
+        retrieved = spawnpoints.retrieveEnemiesToSpawn(spawnTime);
         expected = List.of(
                 new Spawnpoints.EnemyToSpawn(spawnTime, spawnPoint1, EnemyType.PIG)
         );

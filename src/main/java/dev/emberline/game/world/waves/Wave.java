@@ -70,7 +70,7 @@ public class Wave implements Updatable, Renderable, Serializable {
     }
 
     private void sendEnemies() {
-        final List<EnemyToSpawn> enemiesToSpawn = spawnpoints.retrieveEnemiesToSpawnNanoseconds(accumulatorNs);
+        final List<EnemyToSpawn> enemiesToSpawn = spawnpoints.retrieveEnemiesToSpawn(accumulatorNs);
 
         for (final EnemyToSpawn enemyToSpawn : enemiesToSpawn) {
             world.getEnemiesManager().addEnemy(
