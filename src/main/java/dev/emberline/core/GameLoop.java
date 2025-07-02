@@ -150,12 +150,9 @@ public final class GameLoop extends Thread {
     }
 
     /**
-     * Retrieves the current status of the game loop's running state.
-     * Setting this to false will stop the game loop.
-     *
-     * @return an {@link AtomicBoolean} representing whether the game loop is actively running.
+     * Stops the gameloop.
      */
-    public AtomicBoolean getRunning() {
-        return running;
+    public void stopGameLoop() {
+        running.set(false);
     }
 }

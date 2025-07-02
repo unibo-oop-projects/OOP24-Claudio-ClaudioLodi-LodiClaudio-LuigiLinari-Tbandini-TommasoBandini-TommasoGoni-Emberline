@@ -88,7 +88,7 @@ public class EmberlineApp extends Application {
     @Override
     public void stop() {
         if (gameLoop != null) {
-            gameLoop.getRunning().set(false);
+            gameLoop.stopGameLoop();
         }
     }
 }
