@@ -2,6 +2,7 @@ package dev.emberline.gui.event;
 
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.buildings.tower.Tower;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.Serial;
 
@@ -25,6 +26,11 @@ public class ResetTowerInfoEvent extends GuiEvent {
      * @param upgradableInfo the {@code UpgradableInfo} associated with the tower that needs to be reset
      * @see ResetTowerInfoEvent
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "We need the actual reference to the tower for linking the event "
+                            + "to the tower itself, making a copy would defeat the purpose."
+    )
     public ResetTowerInfoEvent(final Object source, final Tower tower, final UpgradableInfo<?, ?> upgradableInfo) {
         super(source);
         this.tower = tower;
@@ -36,6 +42,10 @@ public class ResetTowerInfoEvent extends GuiEvent {
      *
      * @return the tower associated with this event.
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "We need to retrive the tower reference attached to this event"
+    )
     public Tower getTower() {
         return tower;
     }
