@@ -31,7 +31,8 @@ import java.nio.file.Path;
  * The saves are stored in a specified directory and can be serialized/deserialized using the {@link Serializer}.
  */
 public class SaveSelection extends GuiLayer implements GameState {
-    private final SaveSelectionBounds saveSelectionBounds;
+    private final SaveSelectionBounds bounds;
+    private final Layout layout;
     private final Serializer worldSerializer = new Serializer();
 
     /**
@@ -66,35 +67,40 @@ public class SaveSelection extends GuiLayer implements GameState {
         }
     }
 
-    private final static class Layout {
-        // Background
-        private static final double BG_WIDTH = 32;
-        private static final double BG_HEIGHT = 18;
-
-        // Title and window
-        private static final double SCALE = 1.8;
-        private static final double WINDOW_BG_WIDTH = 7 * SCALE;
-        private static final double WINDOW_BG_HEIGHT = 5 * SCALE;
-        private static final double WINDOW_BG_X = (BG_WIDTH - WINDOW_BG_WIDTH) / 2;
-        private static final double WINDOW_BG_Y = (BG_HEIGHT - WINDOW_BG_HEIGHT) / 2 - 2;
-
-        // Button scaling
-        private static final double BUTTON_SCALE_FACTOR = 1.6;
-        private static final double NEW_SAVE_BUTTON_WIDTH = BUTTON_SCALE_FACTOR * 3.28;
-        private static final double DELETE_BTN_WIDTH = BUTTON_SCALE_FACTOR;
-        private static final double BTN_HEIGHT = BUTTON_SCALE_FACTOR;
-
-        // Save buttons
-        private static final double NEW_SAVE_BUTTON_X = WINDOW_BG_X + 2.7;
-        private static final double NEW_SAVE_BUTTON_Y = WINDOW_BG_Y + 2.8;
-        private static final double DELETE_BTN_X = WINDOW_BG_X + WINDOW_BG_WIDTH - DELETE_BTN_WIDTH - 2.5;
-
-        // Navigation buttons
-        private static final double NAV_SCALE_FACTOR = 1.7;
-        private static final double BTN_BACK_HEIGHT = 1.5 * NAV_SCALE_FACTOR;
-        private static final double BTN_BACK_WIDTH = 3.5 * NAV_SCALE_FACTOR;
-        private static final double BTN_BACK_X = (BG_WIDTH - BTN_BACK_WIDTH) / 2;
-        private static final double BTN_BACK_Y = WINDOW_BG_Y + WINDOW_BG_HEIGHT;
+    private record Layout(
+            @JsonProperty 
+            double windowBgWidth,
+            @JsonProperty 
+            double windowBgHeight,
+            @JsonProperty 
+            double windowBgX,
+            @JsonProperty 
+            double windowBgY,
+            @JsonProperty 
+            double saveSlotWidth,
+            @JsonProperty 
+            double deleteBtnWidth,
+            @JsonProperty 
+            double btnHeight,
+            @JsonProperty 
+            double saveSlotX,
+            @JsonProperty 
+            double firstSlotY,
+            @JsonProperty 
+            double secondSlotY,
+            @JsonProperty 
+            double thirdSlotY,
+            @JsonProperty 
+            double deleteBtnX,
+            @JsonProperty 
+            double btnBackHeight,
+            @JsonProperty 
+            double btnBackWidth,
+            @JsonProperty 
+            double btnBackX,
+            @JsonProperty 
+            double btnBackY
+    ){
     }
 
     private record SaveSelectionBounds(
@@ -110,7 +116,7 @@ public class SaveSelection extends GuiLayer implements GameState {
         // Data validation
         private SaveSelectionBounds {
             if (topLeftX >= bottomRightX || topLeftY >= bottomRightY) {
-                throw new IllegalArgumentException("Invalid save selection saveSelectionBounds: " + this);
+                throw new IllegalArgumentException("Invalid save selection bounds: " + this);
             }
         }
     }
@@ -119,22 +125,24 @@ public class SaveSelection extends GuiLayer implements GameState {
      * Constructs a new {@code SaveSelection} instance using the default save selection bounds loaded from a configuration file.
      */
     public SaveSelection() {
-        this(ConfigLoader.loadConfig("/gui/guiBounds.json", SaveSelectionBounds.class));
+        this(ConfigLoader.loadConfig("/gui/guiBounds.json", SaveSelectionBounds.class),
+             ConfigLoader.loadConfig("/gui/saveSelection/saveSelectionLayout.json", Layout.class));
     }
 
-    private SaveSelection(final SaveSelectionBounds saveSelectionBounds) {
-        super(saveSelectionBounds.topLeftX, saveSelectionBounds.topLeftY, 
-              saveSelectionBounds.bottomRightX - saveSelectionBounds.topLeftX, 
-              saveSelectionBounds.bottomRightY - saveSelectionBounds.topLeftY);
-        this.saveSelectionBounds = saveSelectionBounds;
+    private SaveSelection(final SaveSelectionBounds bounds, final Layout layout) {
+        super(bounds.topLeftX, bounds.topLeftY, 
+              bounds.bottomRightX - bounds.topLeftX, 
+              bounds.bottomRightY - bounds.topLeftY);
+        this.bounds = bounds;
+        this.layout = layout;
     }
 
     private void updateLayout() {
         super.getButtons().clear();
 
-        addSaveSlot(Layout.NEW_SAVE_BUTTON_Y, Saves.SAVE1);
-        addSaveSlot(Layout.NEW_SAVE_BUTTON_Y + Layout.BTN_HEIGHT + 0.3, Saves.SAVE2);
-        addSaveSlot(Layout.NEW_SAVE_BUTTON_Y + 2 * (Layout.BTN_HEIGHT + 0.3), Saves.SAVE3);
+        addSaveSlot(layout.firstSlotY, Saves.SAVE1);
+        addSaveSlot(layout.secondSlotY, Saves.SAVE2);
+        addSaveSlot(layout.thirdSlotY, Saves.SAVE3);
 
         addBackButton();
     }
@@ -157,10 +165,10 @@ public class SaveSelection extends GuiLayer implements GameState {
             : SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON_DISABLED).image();
 
         final GuiButton saveSlotButton = new GuiButton(
-            Layout.NEW_SAVE_BUTTON_X, 
+            layout.saveSlotX, 
             currY,
-            Layout.NEW_SAVE_BUTTON_WIDTH, 
-            Layout.BTN_HEIGHT,
+            layout.saveSlotWidth, 
+            layout.btnHeight,
             saveSlotImage,
             saveSlotHoverImage
         );
@@ -174,10 +182,10 @@ public class SaveSelection extends GuiLayer implements GameState {
         super.getButtons().add(saveSlotButton);
 
         final GuiButton deleteSaveSlotButton = new GuiButton(
-            Layout.DELETE_BTN_X, 
+            layout.deleteBtnX, 
             currY, 
-            Layout.DELETE_BTN_WIDTH, 
-            Layout.BTN_HEIGHT,
+            layout.deleteBtnWidth, 
+            layout.btnHeight,
             deleteSaveSlotImage,
             deleteSaveSlotHoverImage
         );
@@ -198,10 +206,10 @@ public class SaveSelection extends GuiLayer implements GameState {
 
     private void addBackButton() {
         final GuiButton backButton = new GuiButton(
-            Layout.BTN_BACK_X,
-            Layout.BTN_BACK_Y, 
-            Layout.BTN_BACK_WIDTH,
-            Layout.BTN_BACK_HEIGHT, 
+            layout.btnBackX,
+            layout.btnBackY, 
+            layout.btnBackWidth,
+            layout.btnBackHeight, 
             SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON).image(), 
             SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON_HOVER).image()
         );
@@ -230,10 +238,10 @@ public class SaveSelection extends GuiLayer implements GameState {
         final GraphicsContext gc = renderer.getGraphicsContext();
         final CoordinateSystem cs = renderer.getGuiCoordinateSystem();
 
-        final double guiScreenWidth = saveSelectionBounds.bottomRightX * cs.getScale();
-        final double guiScreenHeight = saveSelectionBounds.bottomRightY * cs.getScale();
-        final double guiScreenX = cs.toScreenX(saveSelectionBounds.topLeftX);
-        final double guiScreenY = cs.toScreenY(saveSelectionBounds.topLeftY);
+        final double guiScreenWidth = (bounds.bottomRightX - bounds.topLeftX) * cs.getScale();
+        final double guiScreenHeight = (bounds.bottomRightY - bounds.topLeftY) * cs.getScale();
+        final double guiScreenX = cs.toScreenX(bounds.topLeftX);
+        final double guiScreenY = cs.toScreenY(bounds.topLeftY);
 
         updateLayout();
 
@@ -242,8 +250,8 @@ public class SaveSelection extends GuiLayer implements GameState {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
             gc.drawImage(guiBackground, guiScreenX, guiScreenY, guiScreenWidth, guiScreenHeight);
-            gc.drawImage(windowBackground, cs.toScreenX(Layout.WINDOW_BG_X), cs.toScreenY(Layout.WINDOW_BG_Y), 
-                        Layout.WINDOW_BG_WIDTH * cs.getScale(), Layout.WINDOW_BG_HEIGHT * cs.getScale());
+            gc.drawImage(windowBackground, cs.toScreenX(layout.windowBgX), cs.toScreenY(layout.windowBgY), 
+                        layout.windowBgWidth * cs.getScale(), layout.windowBgHeight * cs.getScale());
         }));
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {

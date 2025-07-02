@@ -33,55 +33,59 @@ import javafx.scene.image.Image;
  */
 public final class GameOver extends GuiLayer implements GameState {
 
-    private final GameOverBounds gameOverBounds;
+    private final GameOverBounds bounds;
+    private final Layout layout;
     private Statistics statistics;
+    private static final ColorAdjust OPTIONS_TEXT_COLOR = new ColorAdjust(0.15, 0.9, 0.5, 0);
 
-    private static final class Layout {
-        private static final double SCALE_FACTOR = 1.7;
-        // Background
-        private static final double BG_WIDTH = 32;
-        private static final double BG_HEIGHT = 18;
-        // Title
-        private static final double TITLE_WIDTH = 17;
-        private static final double TITLE_HEIGHT = 5;
-        private static final double TITLE_X = (BG_WIDTH - TITLE_WIDTH) / 2;
-        private static final double TITLE_Y = (BG_HEIGHT - TITLE_HEIGHT) / 2 - 3.5;
-        // Statistics
-        private static final double STATISTICS_REAL_HEIGHT = 116;
-        private static final double STATISTICS_REAL_WIDTH = 141;
-        private static final double STATISTICS_HEIGHT = 7;
-        private static final double STATISTICS_WIDTH =  STATISTICS_HEIGHT * (STATISTICS_REAL_WIDTH / STATISTICS_REAL_HEIGHT);
-        private static final double STATISTICS_X = (BG_WIDTH - STATISTICS_WIDTH) / 2.8 - 0.07;
-        private static final double STATISTICS_Y = TITLE_Y + TITLE_HEIGHT - 0.05 * SCALE_FACTOR;
-
-        private static final double STATISTICS_MAX_LABEL_WIDTH = STATISTICS_WIDTH / 2;
-        private static final double STATISTICS_MAX_LABEL_HEIGHT = 1.5;
-        private static final double STATISTICS_MAX_VALUE_WIDTH = 2.3;
-        private static final double STATISTICS_MAX_VALUE_HEIGHT = 0.35;
-        private static final double STATISTICS_LABEL_X = STATISTICS_X + STATISTICS_WIDTH / 10;
-        private static final double STATISTICS_VALUE_X = STATISTICS_LABEL_X + STATISTICS_MAX_LABEL_WIDTH + 0.5;
-
-        private static final double STATISTICS_Y_START = STATISTICS_Y * 1.39;
-        private static final double STATISTICS_ROW_HEIGHT = STATISTICS_MAX_VALUE_HEIGHT * 3.0;
-
-        // Menu Button
-        private static final double BTN_REAL_HEIGHT = 48;
-        private static final double BTN_REAL_WIDTH = 112;
-        private static final double WITDH_RATIO = BTN_REAL_WIDTH / STATISTICS_REAL_WIDTH;
-        private static final double HEIGHT_RATIO = BTN_REAL_HEIGHT / STATISTICS_REAL_HEIGHT;
-        private static final double BTN_MENU_WIDTH = STATISTICS_WIDTH * WITDH_RATIO;
-        private static final double BTN_MENU_HEIGHT = STATISTICS_HEIGHT * HEIGHT_RATIO;
-        private static final double BTN_MENU_X = (BG_WIDTH - BTN_MENU_WIDTH) / 1.5 + 0.07;
-        private static final double BTN_MENU_Y = TITLE_Y + TITLE_HEIGHT - 0.05 * SCALE_FACTOR;
-        // Exit Button
-        private static final double BTN_EXIT_HEIGHT = BTN_MENU_HEIGHT;
-        private static final double BTN_EXIT_WIDTH = BTN_MENU_WIDTH;
-        private static final double BTN_EXIT_X = BTN_MENU_X;
-        private static final double BTN_EXIT_Y = BTN_MENU_Y + BTN_MENU_HEIGHT - 0.25;
-    }
-
-    private static final class Colors {
-        private static final ColorAdjust OPTIONS_WRITINGS = new ColorAdjust(0.15, 0.9, 0.5, 0);
+    private record Layout(
+        @JsonProperty 
+        double titleWidth,
+        @JsonProperty 
+        double titleHeight,
+        @JsonProperty 
+        double titleX,
+        @JsonProperty 
+        double titleY,
+        @JsonProperty 
+        double statisticsBgHeight,
+        @JsonProperty 
+        double statisticsBgWidth,
+        @JsonProperty 
+        double statisticsBgX,
+        @JsonProperty 
+        double statisticsBgY,
+        @JsonProperty 
+        double statisticsMaxLabelWidth,
+        @JsonProperty 
+        double statisticsMaxLabelHeight,
+        @JsonProperty 
+        double statisticsMaxValueWidth,
+        @JsonProperty 
+        double statisticsMaxValueHeight,
+        @JsonProperty 
+        double statisticsLabelX,
+        @JsonProperty 
+        double statisticsValueX,
+        @JsonProperty 
+        double statisticsFirstRowY,
+        @JsonProperty 
+        double statisticsSecondRowY,
+        @JsonProperty 
+        double statisticsThirdRowY,
+        @JsonProperty 
+        double statisticsFourthRowY,
+        @JsonProperty 
+        double navBtnHeight,
+        @JsonProperty 
+        double navBtnWidth,
+        @JsonProperty 
+        double navBtnX,
+        @JsonProperty 
+        double btnMenuY,
+        @JsonProperty 
+        double btnExitY
+    ){
     }
 
     private record GameOverBounds(
@@ -109,7 +113,16 @@ public final class GameOver extends GuiLayer implements GameState {
      * @see GameOver
      */
     public GameOver() {
-        this(ConfigLoader.loadConfig("/gui/guiBounds.json", GameOverBounds.class));
+        this(ConfigLoader.loadConfig("/gui/guiBounds.json", GameOverBounds.class),
+             ConfigLoader.loadConfig("/gui/gameOver/gameOverLayout.json", Layout.class));
+    }
+
+    private GameOver(final GameOverBounds bounds, final Layout layout) {
+        super(bounds.topLeftX, bounds.topLeftY, 
+             bounds.bottomRightX - bounds.topLeftX,
+             bounds.bottomRightY - bounds.topLeftY);
+        this.bounds = bounds;
+        this.layout = layout;
     }
 
     /**
@@ -127,8 +140,8 @@ public final class GameOver extends GuiLayer implements GameState {
 
     // Menu button
     private void addMainMenuButton() {
-        final GuiButton menuButton = new GuiButton(Layout.BTN_MENU_X,
-                Layout.BTN_MENU_Y, Layout.BTN_MENU_WIDTH, Layout.BTN_MENU_HEIGHT,
+        final GuiButton menuButton = new GuiButton(layout.navBtnX,
+                layout.btnMenuY, layout.navBtnWidth, layout.navBtnHeight,
                 SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON_HOVER).image());
         menuButton.setOnClick(() -> throwEvent(new SetMainMenuEvent(this)));
@@ -137,26 +150,16 @@ public final class GameOver extends GuiLayer implements GameState {
 
     // Exit button
     private void addExitButton() {
-        final GuiButton exitButton = new GuiButton(Layout.BTN_EXIT_X,
-                Layout.BTN_EXIT_Y, Layout.BTN_EXIT_WIDTH, Layout.BTN_EXIT_HEIGHT,
+        final GuiButton exitButton = new GuiButton(layout.navBtnX,
+                layout.btnExitY, layout.navBtnWidth, layout.navBtnHeight,
                 SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON_HOVER).image());
         exitButton.setOnClick(() -> throwEvent(new ExitGameEvent(exitButton)));
         super.getButtons().add(exitButton);
     }
 
-    private GameOver(final GameOverBounds gameOverBounds) {
-        super(gameOverBounds.topLeftX, gameOverBounds.topLeftY, 
-             gameOverBounds.bottomRightX - gameOverBounds.topLeftX,
-             gameOverBounds.bottomRightY - gameOverBounds.topLeftY);
-        this.gameOverBounds = gameOverBounds;
-    }
-
     private void drawStringImage(final GraphicsContext gc, final CoordinateSystem cs, final Image img, 
                               final double x, final double y, final double maxWidth, final double maxHeight) {
-        if (img == null) {
-            return;
-        }
 
         final double ratio = img.getWidth() / img.getHeight();
         double targetWidth = maxWidth;
@@ -169,25 +172,25 @@ public final class GameOver extends GuiLayer implements GameState {
             targetHeight = targetWidth / ratio;
         }
 
-        final double adjustedY = y - targetHeight;  // To allign to the bottom of the image
+        final double adjustedY = y - targetHeight;  // To allign text at the bottom of the image
 
         Renderer.drawImage(img, gc, cs, x, adjustedY, targetWidth, targetHeight);
     }
 
-    private void drawStatisticText(final GraphicsContext gc, final CoordinateSystem cs) {
+    private void drawStatisticsText(final GraphicsContext gc, final CoordinateSystem cs) {
         gc.save();
-        gc.setEffect(Colors.OPTIONS_WRITINGS);
+        gc.setEffect(OPTIONS_TEXT_COLOR);
 
         final int enemiesKilled = statistics.getEnemiesKilled();
         final int wavesSurvived = statistics.getWavesSurvived();
         final double totalDamage = statistics.getTotalDamage();
-        final double timeInGame = statistics.getTimeInGame() / 1_000_000_000.0;
+        final int timeInGame = (int) (statistics.getTimeInGame() / 1_000_000_000.0);    // Convert nanoseconds to seconds
 
         final int secondsInHour = 3600;
         final int secondsInMinute = 60;
-        final int hours = (int) (timeInGame / secondsInHour);
-        final int minutes = (int) (timeInGame % secondsInHour) / secondsInMinute;
-        final int seconds = (int) timeInGame % secondsInMinute;
+        final int hours = timeInGame / secondsInHour;
+        final int minutes = timeInGame % secondsInHour / secondsInMinute;
+        final int seconds = timeInGame % secondsInMinute;
 
         final String timeInGameFormatted = hours > 0
                 ? String.format("%02d:%02d:%02d", hours, minutes, seconds) : String.format("%02d:%02d", minutes, seconds);
@@ -203,33 +206,28 @@ public final class GameOver extends GuiLayer implements GameState {
         final Image timeInGameValue = SpriteLoader.loadSprite(new StringSpriteKey(timeInGameFormatted)).image();
 
         // Row 1: Enemies killed
-        double currentY = Layout.STATISTICS_Y_START;
-        drawStringImage(gc, cs, enemiesKilledLabel, Layout.STATISTICS_LABEL_X, currentY,
-                Layout.STATISTICS_MAX_LABEL_WIDTH, Layout.STATISTICS_MAX_LABEL_HEIGHT);
-        drawStringImage(gc, cs, enemiesKilledValue, Layout.STATISTICS_VALUE_X, currentY,
-                Layout.STATISTICS_MAX_VALUE_WIDTH, Layout.STATISTICS_MAX_VALUE_HEIGHT);
+        drawStringImage(gc, cs, enemiesKilledLabel, layout.statisticsLabelX, layout.statisticsFirstRowY,
+                layout.statisticsMaxLabelWidth, layout.statisticsMaxLabelHeight);
+        drawStringImage(gc, cs, enemiesKilledValue, layout.statisticsValueX, layout.statisticsFirstRowY,
+                layout.statisticsMaxValueWidth, layout.statisticsMaxValueHeight);
 
         // Row 2: Waves survived
-        currentY += Layout.STATISTICS_ROW_HEIGHT;
-        drawStringImage(gc, cs, wavesSurvivedLabel, Layout.STATISTICS_LABEL_X, currentY,
-                Layout.STATISTICS_MAX_LABEL_WIDTH, Layout.STATISTICS_MAX_LABEL_HEIGHT);
-        drawStringImage(gc, cs, wavesSurvivedValue, Layout.STATISTICS_VALUE_X, currentY,
-                Layout.STATISTICS_MAX_VALUE_WIDTH, Layout.STATISTICS_MAX_VALUE_HEIGHT);
-
+        drawStringImage(gc, cs, wavesSurvivedLabel, layout.statisticsLabelX, layout.statisticsSecondRowY,
+                layout.statisticsMaxLabelWidth, layout.statisticsMaxLabelHeight);
+        drawStringImage(gc, cs, wavesSurvivedValue, layout.statisticsValueX, layout.statisticsSecondRowY,
+                layout.statisticsMaxValueWidth, layout.statisticsMaxValueHeight);
 
         // Row 3: Total damage dealt
-        currentY += Layout.STATISTICS_ROW_HEIGHT;
-        drawStringImage(gc, cs, totalDamageLabel, Layout.STATISTICS_LABEL_X, currentY,
-                Layout.STATISTICS_MAX_LABEL_WIDTH, Layout.STATISTICS_MAX_LABEL_HEIGHT);
-        drawStringImage(gc, cs, totalDamageValue, Layout.STATISTICS_VALUE_X, currentY,
-                Layout.STATISTICS_MAX_VALUE_WIDTH, Layout.STATISTICS_MAX_VALUE_HEIGHT);
+        drawStringImage(gc, cs, totalDamageLabel, layout.statisticsLabelX, layout.statisticsThirdRowY,
+                layout.statisticsMaxLabelWidth, layout.statisticsMaxLabelHeight);
+        drawStringImage(gc, cs, totalDamageValue, layout.statisticsValueX, layout.statisticsThirdRowY,
+                layout.statisticsMaxValueWidth, layout.statisticsMaxValueHeight);
 
         // Row 4: Time in game
-        currentY += Layout.STATISTICS_ROW_HEIGHT;
-        drawStringImage(gc, cs, timeInGameLabel, Layout.STATISTICS_LABEL_X, currentY,
-                Layout.STATISTICS_MAX_LABEL_WIDTH, Layout.STATISTICS_MAX_LABEL_HEIGHT);
-        drawStringImage(gc, cs, timeInGameValue, Layout.STATISTICS_VALUE_X, currentY,
-                Layout.STATISTICS_MAX_VALUE_WIDTH, Layout.STATISTICS_MAX_VALUE_HEIGHT);
+        drawStringImage(gc, cs, timeInGameLabel, layout.statisticsLabelX, layout.statisticsFourthRowY,
+                layout.statisticsMaxLabelWidth, layout.statisticsMaxLabelHeight);
+        drawStringImage(gc, cs, timeInGameValue, layout.statisticsValueX, layout.statisticsFourthRowY,
+                layout.statisticsMaxValueWidth, layout.statisticsMaxValueHeight);
 
         gc.restore();
     }
@@ -247,10 +245,10 @@ public final class GameOver extends GuiLayer implements GameState {
         addMainMenuButton();
         addExitButton();
 
-        final double gameOverScreenWidth = (gameOverBounds.bottomRightX - gameOverBounds.topLeftX) * cs.getScale();
-        final double gameOverScreenHeight = (gameOverBounds.bottomRightY - gameOverBounds.topLeftY) * cs.getScale();
-        final double gameOverScreenX = cs.toScreenX(gameOverBounds.topLeftX);
-        final double gameOverScreenY = cs.toScreenY(gameOverBounds.topLeftY);
+        final double gameOverScreenWidth = (bounds.bottomRightX - bounds.topLeftX) * cs.getScale();
+        final double gameOverScreenHeight = (bounds.bottomRightY - bounds.topLeftY) * cs.getScale();
+        final double gameOverScreenX = cs.toScreenX(bounds.topLeftX);
+        final double gameOverScreenY = cs.toScreenY(bounds.topLeftY);
 
         final Image gameOverBackground = SpriteLoader.loadSprite(SingleSpriteKey.GAME_OVER_BACKGROUND).image();
         final Image gameOverImage = SpriteLoader.loadSprite(SingleSpriteKey.GAME_OVER).image();
@@ -261,11 +259,11 @@ public final class GameOver extends GuiLayer implements GameState {
         }));
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
-            gc.drawImage(gameOverImage, cs.toScreenX(Layout.TITLE_X), cs.toScreenY(Layout.TITLE_Y),
-                    Layout.TITLE_WIDTH * cs.getScale(), Layout.TITLE_HEIGHT * cs.getScale());
-            gc.drawImage(statisticsImage, cs.toScreenX(Layout.STATISTICS_X), cs.toScreenY(Layout.STATISTICS_Y),
-                    Layout.STATISTICS_WIDTH * cs.getScale(), Layout.STATISTICS_HEIGHT * cs.getScale());
-            drawStatisticText(gc, cs);
+            gc.drawImage(gameOverImage, cs.toScreenX(layout.titleX), cs.toScreenY(layout.titleY),
+                    layout.titleWidth * cs.getScale(), layout.titleHeight * cs.getScale());
+            gc.drawImage(statisticsImage, cs.toScreenX(layout.statisticsBgX), cs.toScreenY(layout.statisticsBgY),
+                    layout.statisticsBgWidth * cs.getScale(), layout.statisticsBgHeight * cs.getScale());
+            drawStatisticsText(gc, cs);
         }));
 
         super.render();

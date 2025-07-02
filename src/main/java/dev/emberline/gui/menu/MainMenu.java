@@ -33,34 +33,31 @@ import javafx.scene.image.Image;
  */
 public class MainMenu extends GuiLayer implements GameState {
 
-    private final MenuBounds menuBounds;
+    private final MenuBounds bounds;
+    private final Layout layout;
 
-    private static final class Layout {
-        // Background
-        private static final double BG_WIDTH = 32;
-        private static final double BG_HEIGHT = 18;
-        // Title
-        private static final double TITLE_WIDTH = 17;
-        private static final double TITLE_HEIGHT = 5;
-        private static final double TITLE_X = (BG_WIDTH - TITLE_WIDTH) / 2;
-        private static final double TITLE_Y = (BG_HEIGHT - TITLE_HEIGHT) / 2 - 3.5;
-
-        // Start Button
-        private static final double SCALE_FACTOR = 1.7;
-        private static final double BTN_START_HEIGHT = 1.5 * SCALE_FACTOR;
-        private static final double BTN_START_WIDTH = 3.5 * SCALE_FACTOR;
-        private static final double BTN_START_X = (BG_WIDTH - BTN_START_WIDTH) / 2;
-        private static final double BTN_START_Y = TITLE_Y + TITLE_HEIGHT - 0.05 * SCALE_FACTOR;
-        // Options Button
-        private static final double BTN_OPTIONS_HEIGHT = 1.5 * SCALE_FACTOR;
-        private static final double BTN_OPTIONS_WIDTH = 3.5 * SCALE_FACTOR;
-        private static final double BTN_OPTIONS_X = (BG_WIDTH - BTN_OPTIONS_WIDTH) / 2;
-        private static final double BTN_OPTIONS_Y = BTN_START_Y + BTN_START_HEIGHT - 0.25;
-        // Exit Button
-        private static final double BTN_EXIT_HEIGHT = 1.5 * SCALE_FACTOR;
-        private static final double BTN_EXIT_WIDTH = 3.5 * SCALE_FACTOR;
-        private static final double BTN_EXIT_X = (BG_WIDTH - BTN_EXIT_WIDTH) / 2;
-        private static final double BTN_EXIT_Y = BTN_OPTIONS_Y + BTN_OPTIONS_HEIGHT - 0.25;
+    private record Layout(
+            @JsonProperty 
+            double titleWidth,
+            @JsonProperty 
+            double titleHeight,
+            @JsonProperty 
+            double titleX,
+            @JsonProperty 
+            double titleY,
+            @JsonProperty 
+            double navBtnHeight,
+            @JsonProperty 
+            double navBtnWidth,
+            @JsonProperty 
+            double navBtnX,
+            @JsonProperty 
+            double navStartBtnY,
+            @JsonProperty 
+            double navOptionsBtnY,
+            @JsonProperty 
+            double navExitBtnY
+    ){
     }
 
     private record MenuBounds(
@@ -89,19 +86,21 @@ public class MainMenu extends GuiLayer implements GameState {
      * @see MainMenu
      */
     public MainMenu() {
-        this(ConfigLoader.loadConfig("/gui/guiBounds.json", MenuBounds.class));
+        this(ConfigLoader.loadConfig("/gui/guiBounds.json", MenuBounds.class),
+             ConfigLoader.loadConfig("/gui/menu/mainMenuLayout.json", Layout.class));
     }
 
-    private MainMenu(final MenuBounds menuBounds) {
-        super(menuBounds.topLeftX, menuBounds.topLeftY,
-        menuBounds.bottomRightX - menuBounds.topLeftX, menuBounds.bottomRightY - menuBounds.topLeftY);
-        this.menuBounds = menuBounds;
+    private MainMenu(final MenuBounds bounds, final Layout layout) {
+        super(bounds.topLeftX, bounds.topLeftY,
+        bounds.bottomRightX - bounds.topLeftX, bounds.bottomRightY - bounds.topLeftY);
+        this.bounds = bounds;
+        this.layout = layout;
     }
 
     // Start button
     private void addStartButton() {
-        final GuiButton startButton = new GuiButton(Layout.BTN_START_X, Layout.BTN_START_Y,
-                Layout.BTN_START_WIDTH, Layout.BTN_START_HEIGHT,
+        final GuiButton startButton = new GuiButton(layout.navBtnX, layout.navStartBtnY,
+                layout.navBtnWidth, layout.navBtnHeight,
                 SpriteLoader.loadSprite(SingleSpriteKey.START_SIGN_BUTTON).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.START_SIGN_BUTTON_HOVER).image());
         startButton.setOnClick(() -> throwEvent(new SetStartEvent(startButton)));
@@ -110,8 +109,8 @@ public class MainMenu extends GuiLayer implements GameState {
 
     // Options button
     private void addOptionsButton() {
-        final GuiButton optionsButton = new GuiButton(Layout.BTN_OPTIONS_X, Layout.BTN_OPTIONS_Y,
-                Layout.BTN_OPTIONS_WIDTH, Layout.BTN_OPTIONS_HEIGHT,
+        final GuiButton optionsButton = new GuiButton(layout.navBtnX, layout.navOptionsBtnY,
+                layout.navBtnWidth, layout.navBtnHeight,
                 SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_SIGN_BUTTON_HOVER).image());
         optionsButton.setOnClick(() -> throwEvent(new OpenOptionsEvent(optionsButton)));
@@ -120,8 +119,8 @@ public class MainMenu extends GuiLayer implements GameState {
 
     // Exit button
     private void addExitButton() {
-        final GuiButton exitButton = new GuiButton(Layout.BTN_EXIT_X, Layout.BTN_EXIT_Y,
-                Layout.BTN_EXIT_WIDTH, Layout.BTN_EXIT_HEIGHT,
+        final GuiButton exitButton = new GuiButton(layout.navBtnX, layout.navExitBtnY,
+                layout.navBtnWidth, layout.navBtnHeight,
                 SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON_HOVER).image());
         exitButton.setOnClick(() -> throwEvent(new ExitGameEvent(exitButton)));
@@ -133,7 +132,6 @@ public class MainMenu extends GuiLayer implements GameState {
      */
     @Override
     public void render() {
-        // Render background
         final Renderer renderer = GameLoop.getInstance().getRenderer();
         final GraphicsContext gc = renderer.getGraphicsContext();
         final CoordinateSystem cs = renderer.getGuiCoordinateSystem();
@@ -142,18 +140,18 @@ public class MainMenu extends GuiLayer implements GameState {
         addOptionsButton();
         addExitButton();
 
-        final double menuScreenWidth = (menuBounds.bottomRightX - menuBounds.topLeftX) * cs.getScale();
-        final double menuScreenHeight = (menuBounds.bottomRightY - menuBounds.topLeftY) * cs.getScale();
-        final double menuScreenX = cs.toScreenX(menuBounds.topLeftX);
-        final double menuScreenY = cs.toScreenY(menuBounds.topLeftY);
+        final double menuScreenWidth = (bounds.bottomRightX - bounds.topLeftX) * cs.getScale();
+        final double menuScreenHeight = (bounds.bottomRightY - bounds.topLeftY) * cs.getScale();
+        final double menuScreenX = cs.toScreenX(bounds.topLeftX);
+        final double menuScreenY = cs.toScreenY(bounds.topLeftY);
 
         final Image menuBackground = SpriteLoader.loadSprite(SingleSpriteKey.GUI_BACKGROUND).image();
         final Image emberlineTitle = SpriteLoader.loadSprite(SingleSpriteKey.EMBERLINE_TITLE).image();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
             gc.drawImage(menuBackground, menuScreenX, menuScreenY, menuScreenWidth, menuScreenHeight);
-            gc.drawImage(emberlineTitle, cs.toScreenX(Layout.TITLE_X), cs.toScreenY(Layout.TITLE_Y),
-                    Layout.TITLE_WIDTH * cs.getScale(), Layout.TITLE_HEIGHT * cs.getScale());
+            gc.drawImage(emberlineTitle, cs.toScreenX(layout.titleX), cs.toScreenY(layout.titleY),
+                    layout.titleWidth * cs.getScale(), layout.titleHeight * cs.getScale());
         }));
 
         super.render();

@@ -28,12 +28,61 @@ import javafx.scene.image.Image;
  * the layout of buttons and the display of the background and window for the options menu.
  */
 public class Options extends GuiLayer implements GameState {
-    private final OptionsBounds optionsBounds;
+    private final OptionsBounds bounds;
     private final Layout layout;
     private final boolean showMenuButton;
+    private static final ColorAdjust OPTIONS_TEXT_COLOR = new ColorAdjust(0.15, 0.9, -0.3, 0);
 
-    private static final class Colors {
-        private static final ColorAdjust OPTIONS_WRITINGS = new ColorAdjust(0.15, 0.9, -0.3, 0);
+    private record Layout(
+            @JsonProperty
+            double windowBgWidth,
+            @JsonProperty
+            double windowBgHeight,
+            @JsonProperty
+            double windowBgX,
+            @JsonProperty
+            double windowBgY,
+            @JsonProperty
+            double minusOffsetX,
+            @JsonProperty
+            double plusOffsetX,
+            @JsonProperty
+            double checkboxOffsetX,
+            @JsonProperty
+            double controlsStartX,
+            @JsonProperty
+            double musicVolumeY,
+            @JsonProperty
+            double btnWidth,
+            @JsonProperty
+            double btnHeight,
+            @JsonProperty
+            double musicCheckboxY,
+            @JsonProperty
+            double sfxVolumeY,
+            @JsonProperty
+            double sfxCheckboxY,
+            @JsonProperty
+            double fullscreenCheckboxY,
+            @JsonProperty
+            double btnNavX,
+            @JsonProperty
+            double btnBackY,
+            @JsonProperty
+            double btnMenuY,
+            @JsonProperty
+            double btnNavHeight,
+            @JsonProperty
+            double btnNavWidth,
+            @JsonProperty
+            double labelWidth,
+            @JsonProperty
+            double rowStartX,
+            @JsonProperty
+            double rowHeight,
+            @JsonProperty
+            double percentageWidth
+    ) {
     }
 
     private record OptionsBounds(
@@ -49,93 +98,15 @@ public class Options extends GuiLayer implements GameState {
         // Data validation
         private OptionsBounds {
             if (topLeftX >= bottomRightX || topLeftY >= bottomRightY) {
-                throw new IllegalArgumentException("Invalid options optionsBounds: " + this);
+                throw new IllegalArgumentException("Invalid options bounds: " + this);
             }
         }
-    }
-
-    private record Layout(
-            @JsonProperty 
-            double bgWidth,
-            @JsonProperty 
-            double bgHeight,
-            @JsonProperty 
-            double windowBgWidth,
-            @JsonProperty 
-            double windowBgHeight,
-            @JsonProperty 
-            double windowBgX,
-            @JsonProperty 
-            double windowBgY,
-            @JsonProperty 
-            double btnScale,
-            @JsonProperty 
-            double btnWidth,
-            @JsonProperty 
-            double btnHeight,
-            @JsonProperty 
-            double rowHeight,
-            @JsonProperty 
-            double rowPadding,
-            @JsonProperty 
-            double rowStartX,
-            @JsonProperty 
-            double rowWidth,
-            @JsonProperty 
-            double verticalSpacing,
-            @JsonProperty 
-            double firstRowOffsetY,
-            @JsonProperty 
-            double labelWidth,
-            @JsonProperty 
-            double controlsWidth,
-            @JsonProperty 
-            double controlsStartX,
-            @JsonProperty 
-            double percentageWidth,
-            @JsonProperty 
-            double buttonSpacing,
-            @JsonProperty 
-            double minusOffsetX,
-            @JsonProperty 
-            double plusOffsetX,
-            @JsonProperty 
-            double checkboxOffsetX,
-            @JsonProperty 
-            double musicVolumeY,
-            @JsonProperty 
-            double musicCheckboxY,
-            @JsonProperty 
-            double sfxVolumeY,
-            @JsonProperty 
-            double sfxCheckboxY,
-            @JsonProperty 
-            double fullscreenCheckboxY,
-            @JsonProperty 
-            double navScaleFactor,
-            @JsonProperty 
-            double btnBackHeight,
-            @JsonProperty 
-            double btnBackWidth,
-            @JsonProperty 
-            double btnBackX,
-            @JsonProperty 
-            double btnBackY,
-            @JsonProperty 
-            double btnMenuHeight,
-            @JsonProperty 
-            double btnMenuWidth,
-            @JsonProperty 
-            double btnMenuX,
-            @JsonProperty 
-            double btnMenuY
-    ) {
     }
 
     /**
      * Constructs an {@code Options} object by initializing it with the configuration
      * data loaded from a predefined JSON resource file. The configuration provides
-     * the optionsBounds necessary for setting up the {@code Options} screen in the GUI.
+     * the bounds necessary for setting up the {@code Options} screen in the GUI.
      *
      * @param showMenuButton a boolean representing whether the options menu should or should not
      *                       have a menu button
@@ -144,15 +115,15 @@ public class Options extends GuiLayer implements GameState {
      */
     public Options(final boolean showMenuButton) {
         this(ConfigLoader.loadConfig("/gui/guiBounds.json", OptionsBounds.class),
-             ConfigLoader.loadConfig("/gui/options/options.json", Layout.class), showMenuButton);
+             ConfigLoader.loadConfig("/gui/options/optionsLayout.json", Layout.class), showMenuButton);
     }
 
-    private Options(final OptionsBounds optionsBounds, final Layout layout, final boolean showMenuButton) {
-        super(optionsBounds.topLeftX,
-                optionsBounds.topLeftY,
-                optionsBounds.bottomRightX - optionsBounds.topLeftX,
-                optionsBounds.bottomRightY - optionsBounds.topLeftY);
-        this.optionsBounds = optionsBounds;
+    private Options(final OptionsBounds bounds, final Layout layout, final boolean showMenuButton) {
+        super(bounds.topLeftX,
+                bounds.topLeftY,
+                bounds.bottomRightX - bounds.topLeftX,
+                bounds.bottomRightY - bounds.topLeftY);
+        this.bounds = bounds;
         this.showMenuButton = showMenuButton;
         this.layout = layout;
     }
@@ -203,7 +174,7 @@ public class Options extends GuiLayer implements GameState {
             final boolean volumeBound, final int volumeToSet) {
         final GuiButton musicVolumeControl = new GuiButton(
                 layout.controlsStartX + xOffset,
-                layout.musicVolumeY + (layout.rowHeight - layout.btnHeight) / 2,
+                layout.musicVolumeY,
                 layout.btnWidth,
                 layout.btnHeight,
                 buttonImage,
@@ -232,7 +203,7 @@ public class Options extends GuiLayer implements GameState {
 
         final GuiButton musicMuteCheckbox = new GuiButton(
             layout.controlsStartX + layout.checkboxOffsetX,
-            layout.musicCheckboxY + (layout.rowHeight - layout.btnHeight) / 2,
+            layout.musicCheckboxY,
             layout.btnWidth,
             layout.btnHeight,
             checkboxImage,
@@ -265,7 +236,7 @@ public class Options extends GuiLayer implements GameState {
 
         final GuiButton sfxMinusVolumeControl = new GuiButton(
             layout.controlsStartX + layout.minusOffsetX, 
-            layout.sfxVolumeY + (layout.rowHeight - layout.btnHeight) / 2, 
+            layout.sfxVolumeY,
             layout.btnWidth, 
             layout.btnHeight,
             minusButton,
@@ -283,7 +254,7 @@ public class Options extends GuiLayer implements GameState {
 
         final GuiButton sfxPlusVolumeControl = new GuiButton(
             layout.controlsStartX + layout.plusOffsetX, 
-            layout.sfxVolumeY + (layout.rowHeight - layout.btnHeight) / 2, 
+            layout.sfxVolumeY,
             layout.btnWidth, 
             layout.btnHeight,
             plusButton,
@@ -312,7 +283,7 @@ public class Options extends GuiLayer implements GameState {
 
         final GuiButton sfxMuteCheckbox = new GuiButton(
             layout.controlsStartX + layout.checkboxOffsetX,
-            layout.sfxCheckboxY + (layout.rowHeight - layout.btnHeight) / 2,
+            layout.sfxCheckboxY,
             layout.btnWidth,
             layout.btnHeight,
             checkboxImage,
@@ -337,7 +308,7 @@ public class Options extends GuiLayer implements GameState {
 
         final GuiButton fullscreenCheckbox = new GuiButton(
             layout.controlsStartX + layout.checkboxOffsetX,
-            layout.fullscreenCheckboxY + (layout.rowHeight - layout.btnHeight) / 2,
+            layout.fullscreenCheckboxY,
             layout.btnWidth,
             layout.btnHeight,
             checkboxImage,
@@ -353,10 +324,10 @@ public class Options extends GuiLayer implements GameState {
 
     private void addCloseOptionsButton() {
         final GuiButton backButton = new GuiButton(
-            layout.btnBackX,
+            layout.btnNavX,
             layout.btnBackY, 
-            layout.btnBackWidth,
-            layout.btnBackHeight, 
+            layout.btnNavWidth,
+            layout.btnNavHeight,
             SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON).image(), 
             SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON_HOVER).image()
         );
@@ -366,10 +337,10 @@ public class Options extends GuiLayer implements GameState {
 
     private void addMenuOptionsButton() {
         final GuiButton menuButton = new GuiButton(
-            layout.btnMenuX,
+            layout.btnNavX,
             layout.btnMenuY, 
-            layout.btnMenuWidth,
-            layout.btnMenuHeight, 
+            layout.btnNavWidth,
+            layout.btnNavHeight,
             SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON).image(), 
             SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON_HOVER).image()
         );
@@ -379,10 +350,7 @@ public class Options extends GuiLayer implements GameState {
 
     private void drawStringImage(final GraphicsContext gc, final CoordinateSystem cs, final Image img, 
                                final double x, final double y, final double maxWidth, final double maxHeight,
-                               final boolean centerHorizontally, final boolean centerVertically) {
-        if (img == null) {
-            return;
-        }
+                               final boolean centerHorizontally) {
 
         final double ratio = img.getWidth() / img.getHeight();
         double targetWidth = maxWidth;
@@ -394,15 +362,13 @@ public class Options extends GuiLayer implements GameState {
             targetHeight = targetWidth / ratio;
         }
 
-        double finalX = x;
-        double finalY = y;
+        // Center vertically
+        final double finalY = y + (maxHeight - targetHeight) / 2;
 
+        // Center horizontally if required
+        double finalX = x;
         if (centerHorizontally) {
             finalX = x + (maxWidth - targetWidth) / 2;
-        }
-
-        if (centerVertically) {
-            finalY = y + (maxHeight - targetHeight) / 2;
         }
 
         Renderer.drawImage(img, gc, cs, finalX, finalY, targetWidth, targetHeight);
@@ -410,36 +376,36 @@ public class Options extends GuiLayer implements GameState {
 
     private void drawOptionsText(final GraphicsContext gc, final CoordinateSystem cs) {
         gc.save();
-        gc.setEffect(Colors.OPTIONS_WRITINGS);
+        gc.setEffect(OPTIONS_TEXT_COLOR);
         final Image musicVolumeLabel = SpriteLoader.loadSprite(new StringSpriteKey("Music")).image();
         drawStringImage(gc, cs, musicVolumeLabel, layout.rowStartX, layout.musicVolumeY,
-                layout.labelWidth, layout.rowHeight, false, true);
+                layout.labelWidth, layout.rowHeight, false);
 
         final Integer musicVolumeValue = (int) (PreferencesManager.getDoublePreference(PreferenceKey.MUSIC_VOLUME) * 100);
         final Image musicVolume = SpriteLoader.loadSprite(new StringSpriteKey(musicVolumeValue.toString() + "%")).image();
         drawStringImage(gc, cs, musicVolume, layout.controlsStartX, layout.musicVolumeY,
-                layout.percentageWidth, layout.rowHeight, true, true);
+                layout.percentageWidth, layout.rowHeight, true);
 
         final Image musicMuteLabel = SpriteLoader.loadSprite(new StringSpriteKey("Mute music")).image();
         drawStringImage(gc, cs, musicMuteLabel, layout.rowStartX, layout.musicCheckboxY,
-                layout.labelWidth, layout.rowHeight, false, true);
+                layout.labelWidth, layout.rowHeight, false);
 
         final Image sfxVolumeLabel = SpriteLoader.loadSprite(new StringSpriteKey("SFX")).image();
         drawStringImage(gc, cs, sfxVolumeLabel, layout.rowStartX, layout.sfxVolumeY,
-                layout.labelWidth, layout.rowHeight, false, true);
+                layout.labelWidth, layout.rowHeight, false);
 
         final Integer sfxVolumeValue = (int) (PreferencesManager.getDoublePreference(PreferenceKey.SFX_VOLUME) * 100);
         final Image sfxVolume = SpriteLoader.loadSprite(new StringSpriteKey(sfxVolumeValue.toString() + "%")).image();
         drawStringImage(gc, cs, sfxVolume, layout.controlsStartX, layout.sfxVolumeY,
-                layout.percentageWidth, layout.rowHeight, true, true);
+                layout.percentageWidth, layout.rowHeight, true);
 
         final Image sfxMuteLabel = SpriteLoader.loadSprite(new StringSpriteKey("Mute SFX")).image();
         drawStringImage(gc, cs, sfxMuteLabel, layout.rowStartX, layout.sfxCheckboxY,
-                layout.labelWidth, layout.rowHeight, false, true);
+                layout.labelWidth, layout.rowHeight, false);
 
         final Image fullscreenLabel = SpriteLoader.loadSprite(new StringSpriteKey("Fullscreen")).image();
         drawStringImage(gc, cs, fullscreenLabel, layout.rowStartX, layout.fullscreenCheckboxY,
-                layout.labelWidth, layout.rowHeight, false, true);
+                layout.labelWidth, layout.rowHeight, false);
         gc.restore();
     }
 
@@ -452,10 +418,10 @@ public class Options extends GuiLayer implements GameState {
         final GraphicsContext gc = renderer.getGraphicsContext();
         final CoordinateSystem cs = renderer.getGuiCoordinateSystem();
 
-        final double optionsScreenWidth = (optionsBounds.bottomRightX - optionsBounds.topLeftX) * cs.getScale();
-        final double optionsScreenHeight = (optionsBounds.bottomRightY - optionsBounds.topLeftY) * cs.getScale();
-        final double optionsScreenX = cs.toScreenX(optionsBounds.topLeftX);
-        final double optionsScreenY = cs.toScreenY(optionsBounds.topLeftY);
+        final double optionsScreenWidth = (bounds.bottomRightX - bounds.topLeftX) * cs.getScale();
+        final double optionsScreenHeight = (bounds.bottomRightY - bounds.topLeftY) * cs.getScale();
+        final double optionsScreenX = cs.toScreenX(bounds.topLeftX);
+        final double optionsScreenY = cs.toScreenY(bounds.topLeftY);
 
         updateLayout();
 

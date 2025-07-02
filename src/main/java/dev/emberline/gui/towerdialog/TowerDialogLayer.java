@@ -59,84 +59,69 @@ public class TowerDialogLayer extends GuiLayer {
      * @see Renderer#getGuiCoordinateSystem()
      */
     private static final class Layout {
-        // Background
+
         private static final double BG_WIDTH = 9.2;
         private static final double BG_HEIGHT = 15.34;
-        private static final double BG_X = Renderer.GUICS_WIDTH * 0.98 - BG_WIDTH;
+        private static final double BG_X = 22.16;
         private static final double BG_Y = 1.5;
-        // Title
-        private static final double TITLE_HEIGHT = 2 * 0.52;
-        private static final double TITLE_Y = BG_Y + 2;
 
-        // stats
         private static final class Stats {
-            // stats total area (with background image)
-            private static final double WIDTH = 79. / 10.4;
-            private static final double HEIGHT = 51. / 9.5;
-            private static final double X = BG_X + (BG_WIDTH - WIDTH) / 2;
-            private static final double Y = TITLE_Y + TITLE_HEIGHT + BG_HEIGHT * 0.008;
-            // stats effective overlay area
-            private static final double OVR_WIDTH = WIDTH * 0.9;
-            private static final double OVR_HEIGHT = HEIGHT * 0.75;
-            private static final double OVR_X = X + (WIDTH - OVR_WIDTH) / 2;
-            private static final double OVR_Y = Y + (HEIGHT - OVR_HEIGHT) / 3.1;
-            // stats overlay padding
-            private static final double H_MARGIN = OVR_WIDTH * 0.055;
-            private static final double V_MARGIN = OVR_HEIGHT * 0.04;
-            // stats columns and rows
+
+            private static final double WIDTH = 7.5961;
+            private static final double HEIGHT = 5.3684;
+            private static final double X = 22.961;
+            private static final double Y = 4.662;
+
+            private static final double OVR_WIDTH = 6.83649;
+            private static final double OVR_HEIGHT = 4.0263;
+            private static final double OVR_X = 23.3408;
+            private static final double OVR_Y = 5.0949;
+
+            private static final double H_MARGIN = 0.376;
+            private static final double V_MARGIN = 0.1610;
+
             private static final int COLUMNS = 2;
             private static final int ROWS = 3;
-            // Single stat view layout
-            private static final double SV_ICON_V_MARGIN_FACTOR = 0.05; // vertical margin relative to the width
-            private static final double SV_ICON_H_MARGIN_FACTOR = 0.5; // horizontal margin relative to the vertical margin
-            private static final double SV_TITLE_HEIGHT_FACTOR = 0.475; // title height relative to the height of the stat view
-            private static final double SV_VALUE_WIDTH_FACTOR = 0.5; // value width relative to the title width
+
+            private static final double SV_ICON_V_MARGIN_FACTOR = 0.05;
+            private static final double SV_ICON_H_MARGIN_FACTOR = 0.5;
+            private static final double SV_TITLE_HEIGHT_FACTOR = 0.475;
+            private static final double SV_VALUE_WIDTH_FACTOR = 0.5;
         }
 
-        // Selectors
         private static final class Selector {
-            private static final double TOP_MARGIN = 0.2;
-            private static final double INNER_MARGIN = 0.1;
-            private static final double WIDTH = 7.3;
-            private static final double HEIGHT = 2;
             private static final double NAME_HEIGHT = 0.5;
-            private static final double NAME_Y = Stats.Y + Stats.HEIGHT
-                                        + AimButton.BTN_HEIGHT + TOP_MARGIN + AimButton.TOP_MARGIN;
-            private static final double X = Stats.X + (Stats.WIDTH - WIDTH) / 2;
-            private static final double Y = NAME_Y + NAME_HEIGHT + INNER_MARGIN;
-            private static final double NAME_ICON_SIDE = NAME_HEIGHT * 1.7;
-            private static final double NAME_ICON_X = X + WIDTH - NAME_ICON_SIDE;
-            private static final double NAME_ICON_Y = NAME_Y + (NAME_HEIGHT - NAME_ICON_SIDE) / 2;
-            private static final double NAME_WIDTH = WIDTH - NAME_ICON_SIDE - INNER_MARGIN;
-            private static final double TOTAL_HEIGHT = NAME_HEIGHT + HEIGHT + INNER_MARGIN + TOP_MARGIN;
-            private static final double UPGRADE_BTN_MARGIN = 0.1;
-            private static final double UPGRADE_BTN_SIDE = HEIGHT - 2 * INNER_MARGIN;
-            private static final double UPGRADE_BTN_X = X;
-            private static final double UPGRADE_BTN_Y = Y + (HEIGHT - UPGRADE_BTN_SIDE) / 2;
-            private static final double RESET_BTN_MARGIN = 0.1;
-            private static final double RESET_BTN_WIDTH = UPGRADE_BTN_SIDE;
-            private static final double RESET_BTN_HEIGHT = UPGRADE_BTN_SIDE;
-            private static final double RESET_BTN_X = X + WIDTH - RESET_BTN_WIDTH;
-            private static final double RESET_BTN_Y = Y + (HEIGHT - RESET_BTN_HEIGHT) / 2;
-            private static final double UPGRADE_WIDTH = WIDTH - UPGRADE_BTN_MARGIN - UPGRADE_BTN_SIDE
-                                        - RESET_BTN_WIDTH - RESET_BTN_MARGIN;
-            private static final double UPGRADE_HEIGHT = HEIGHT - 2 * INNER_MARGIN;
-            private static final double UPGRADE_X = UPGRADE_BTN_X + UPGRADE_BTN_SIDE + UPGRADE_BTN_MARGIN;
-            private static final double UPGRADE_Y = Y + (HEIGHT - UPGRADE_HEIGHT) / 2;
-            private static final double LEVEL_MARKER_WIDTH = UPGRADE_WIDTH / 4.3;
-            private static final double TYPE_BTN_HEIGHT = HEIGHT - 2 * INNER_MARGIN;
-            private static final double TYPE_BTN_WIDTH = WIDTH / 2 - INNER_MARGIN;
-            private static final double TYPE_BTN_X = X + INNER_MARGIN;
-            private static final double TYPE_BTN_Y = Y + (HEIGHT - TYPE_BTN_HEIGHT) / 2;
-            private static final double TYPE_BTN_2_X = TYPE_BTN_X + TYPE_BTN_WIDTH + INNER_MARGIN;
+            private static final double NAME_Y = 11.03;
+            private static final double X = 23.109;
+            private static final double NAME_ICON_SIDE = 0.85;
+            private static final double NAME_ICON_X = 29.559;
+            private static final double NAME_ICON_Y = 10.8549;
+            private static final double NAME_WIDTH = 6.35;
+            private static final double TOTAL_HEIGHT = 2.8;
+            private static final double UPGRADE_BTN_SIDE = 1.8;
+            private static final double UPGRADE_BTN_X = 23.109;
+            private static final double UPGRADE_BTN_Y = 11.729;
+            private static final double RESET_BTN_WIDTH = 1.8;
+            private static final double RESET_BTN_HEIGHT = 1.8;
+            private static final double RESET_BTN_X = 28.609;
+            private static final double RESET_BTN_Y = 11.729;
+            private static final double UPGRADE_WIDTH = 3.5;
+            private static final double UPGRADE_HEIGHT = 1.8;
+            private static final double UPGRADE_X = 25;
+            private static final double UPGRADE_Y = 11.729;
+            private static final double LEVEL_MARKER_WIDTH = 0.8139;
+            private static final double TYPE_BTN_HEIGHT = 1.8;
+            private static final double TYPE_BTN_WIDTH = 3.55;
+            private static final double TYPE_BTN_X = 23.209;
+            private static final double TYPE_BTN_Y = 11.729;
+            private static final double TYPE_BTN_2_X = 26.859;
         }
 
         private static final class AimButton {
-            private static final double TOP_MARGIN = -0.2;
             private static final double BTN_WIDTH = 4;
             private static final double BTN_HEIGHT = 1;
-            private static final double BTN_X = Stats.X + (Stats.WIDTH - BTN_WIDTH) / 2;
-            private static final double BTN_Y = Stats.Y + Stats.HEIGHT + TOP_MARGIN;
+            private static final double BTN_X = 24.759;
+            private static final double BTN_Y = 9.8304;
         }
     }
 
