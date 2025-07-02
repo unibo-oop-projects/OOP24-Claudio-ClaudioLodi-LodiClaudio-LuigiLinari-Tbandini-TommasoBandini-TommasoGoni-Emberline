@@ -85,7 +85,7 @@ public final class GameOver extends GuiLayer implements GameState {
         double btnMenuY,
         @JsonProperty 
         double btnExitY
-    ){
+    ) {
     }
 
     private record GameOverBounds(
