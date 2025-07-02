@@ -13,6 +13,7 @@ import dev.emberline.game.world.waves.IWaveManager;
 import dev.emberline.game.world.waves.WaveManagerWithStats;
 import dev.emberline.gui.event.OpenOptionsEvent;
 import dev.emberline.gui.topbar.Topbar;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -79,14 +80,6 @@ public class World implements GameState, Serializable {
     }
 
     /**
-     * Returns the {@code Topbar} instance associated with the World.
-     * @return the {@code Topbar} instance associated with the World.
-     */
-    public Topbar getTopbar() {
-        return topbar;
-    }
-
-    /**
      * Returns the {@code ProjectilesManager} instance associated with the World.
      * @return the {@code ProjectilesManager} instance associated with the World.
      */
@@ -98,6 +91,10 @@ public class World implements GameState, Serializable {
      * Returns the {@code TowersManager} instance associated with the World.
      * @return the {@code TowersManager} instance associated with the World.
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "When the towers manager is requested, World has to give its attached instance."
+    )
     public TowersManager getTowersManager() {
         return towersManager;
     }
@@ -106,6 +103,10 @@ public class World implements GameState, Serializable {
      * Returns the {@code IEnemiesManager} instance associated with the World.
      * @return the {@code IEnemiesManager} instance associated with the World.
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "When the enemies manager is requested, World has to give its attached instance."
+    )
     public IEnemiesManager getEnemiesManager() {
         return enemiesManager;
     }
