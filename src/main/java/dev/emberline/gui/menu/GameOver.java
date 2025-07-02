@@ -181,7 +181,7 @@ public final class GameOver extends GuiLayer implements GameState {
         gc.save();
         gc.setEffect(OPTIONS_TEXT_COLOR);
 
-        final int enemiesKilled = statistics.getEnemiesKilled();
+        final int enemiesKilled = statistics.getEnemiesFought();
         final int wavesSurvived = statistics.getWavesSurvived();
         final double totalDamage = statistics.getTotalDamage();
         final int timeInGame = (int) (statistics.getTimeInGame() / 1_000_000_000.0);    // Convert nanoseconds to seconds

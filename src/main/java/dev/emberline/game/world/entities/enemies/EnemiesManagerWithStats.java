@@ -77,6 +77,6 @@ public class EnemiesManagerWithStats implements IEnemiesManager {
 
         final int alivePostUpdate = enemiesManager.getAliveEnemiesNumber();
 
-        statistics.updateEnemiesKilled(alivePreUpdate - alivePostUpdate);
+        statistics.updateEnemiesFought(alivePreUpdate - alivePostUpdate);
     }
 }
