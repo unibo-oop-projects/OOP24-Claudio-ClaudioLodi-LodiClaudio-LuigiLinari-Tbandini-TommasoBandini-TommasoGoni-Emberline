@@ -236,7 +236,7 @@ public class Options extends GuiLayer implements GameState {
 
         final GuiButton sfxMinusVolumeControl = new GuiButton(
             layout.controlsStartX + layout.minusOffsetX, 
-            layout.sfxVolumeY, 
+            layout.sfxVolumeY,
             layout.btnWidth, 
             layout.btnHeight,
             minusButton,
@@ -254,7 +254,7 @@ public class Options extends GuiLayer implements GameState {
 
         final GuiButton sfxPlusVolumeControl = new GuiButton(
             layout.controlsStartX + layout.plusOffsetX, 
-            layout.sfxVolumeY, 
+            layout.sfxVolumeY,
             layout.btnWidth, 
             layout.btnHeight,
             plusButton,
@@ -327,7 +327,7 @@ public class Options extends GuiLayer implements GameState {
             layout.btnNavX,
             layout.btnBackY, 
             layout.btnNavWidth,
-            layout.btnNavHeight, 
+            layout.btnNavHeight,
             SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON).image(), 
             SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON_HOVER).image()
         );
@@ -340,7 +340,7 @@ public class Options extends GuiLayer implements GameState {
             layout.btnNavX,
             layout.btnMenuY, 
             layout.btnNavWidth,
-            layout.btnNavHeight, 
+            layout.btnNavHeight,
             SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON).image(), 
             SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON_HOVER).image()
         );

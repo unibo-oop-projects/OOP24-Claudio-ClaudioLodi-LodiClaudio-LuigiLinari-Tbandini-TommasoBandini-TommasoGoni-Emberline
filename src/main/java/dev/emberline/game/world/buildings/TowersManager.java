@@ -1,13 +1,5 @@
 package dev.emberline.game.world.buildings;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import dev.emberline.core.components.Inputable;
 import dev.emberline.core.components.Renderable;
 import dev.emberline.core.components.Updatable;
@@ -24,6 +16,14 @@ import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
+import java.util.List;
 
 /**
  * Manages the lifecycle and interactions of towers and pre-built tower in the world.
