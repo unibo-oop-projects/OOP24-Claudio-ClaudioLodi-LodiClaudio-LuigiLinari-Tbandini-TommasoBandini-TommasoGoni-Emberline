@@ -4,6 +4,7 @@ import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.entities.enemies.IEnemiesManager;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -25,6 +26,10 @@ public class ProjectileHitListener implements Serializable {
      *
      * @param enemiesManager the {@code EnemiesManager} associated with the listener
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "The enemies pool has to be on track with the latest state of the game."
+    )
     public ProjectileHitListener(final IEnemiesManager enemiesManager) {
         this.enemiesManager = enemiesManager;
     }
