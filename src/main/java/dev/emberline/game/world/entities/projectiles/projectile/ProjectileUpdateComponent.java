@@ -226,17 +226,15 @@ class ProjectileUpdateComponent implements Updatable, Serializable {
         final double angularVelocity = -(velocityMag / radius);
 
         final long timeInAir = (long) (scalingFactor * UNIT_ARC_LENGTH / velocityMag);
-        return new Trajectory(new Projectile.SerializableFunction<Long, Projectile.PositionAndRotation>() {
+        return new Trajectory(new Projectile.SerializableFunction<>() {
             @Serial
             private static final long serialVersionUID = 1244935556557246323L;
 
             @Override
-            public Projectile.PositionAndRotation apply(Long aLong) {
-                if (aLong > flightTime) {
-                    aLong = flightTime;
-                }
+            public Projectile.PositionAndRotation apply(final Long t) {
+                final long time = Math.clamp(t, 0, flightTime);
 
-                final double theta = theta(aLong, START_THETA, angularVelocity);
+                final double theta = theta(time, START_THETA, angularVelocity);
 
                 // Compute the position on the scaled trajectory,
                 // rotate it and translate so that the starting point is cStart

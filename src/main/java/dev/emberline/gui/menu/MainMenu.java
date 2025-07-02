@@ -57,7 +57,7 @@ public class MainMenu extends GuiLayer implements GameState {
             double navOptionsBtnY,
             @JsonProperty 
             double navExitBtnY
-    ){
+    ) {
     }
 
     private record MenuBounds(

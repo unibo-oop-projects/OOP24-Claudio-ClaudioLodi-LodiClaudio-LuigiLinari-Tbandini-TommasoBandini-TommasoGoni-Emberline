@@ -98,9 +98,9 @@ public class SaveSelection extends GuiLayer implements GameState {
             double btnBackWidth,
             @JsonProperty 
             double btnBackX,
-            @JsonProperty 
+            @JsonProperty
             double btnBackY
-    ){
+    ) {
     }
 
     private record SaveSelectionBounds(

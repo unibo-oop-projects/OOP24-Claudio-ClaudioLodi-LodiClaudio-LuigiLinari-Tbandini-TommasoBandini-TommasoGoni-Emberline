@@ -228,26 +228,10 @@ public class GuiButton implements Inputable, Renderable {
     }
 
     /**
-     * Returns the normal state image of the GUI button.
-     * @return the normal state image of the GUI button.
-     */
-    public Image getNormalSprite() {
-        return normalSprite;
-    }
-
-    /**
-     * Returns the sprite image to be displayed when the button is in a hovered state.
-     * @return the sprite image to be displayed when the button is in a hovered state.
-     */
-    public Image getHoverSprite() {
-        return hoverSprite;
-    }
-
-    /**
      * Returns the x-coordinate of the top-left corner of the graphical button in the GUI coordinate system.
      * @return the x-coordinate of the top-left corner of the graphical button in the GUI coordinate system.
      */
-    public double getX() {
+    public final double getX() {
         return x;
     }
 
@@ -255,7 +239,7 @@ public class GuiButton implements Inputable, Renderable {
      * Returns the top-left y-coordinate of the button in the GUI coordinate system.
      * @return the top-left y-coordinate of the button in the GUI coordinate system.
      */
-    public double getY() {
+    public final double getY() {
         return y;
     }
 
@@ -263,7 +247,7 @@ public class GuiButton implements Inputable, Renderable {
      * Returns the width of the GUI button in the GUI coordinate system.
      * @return the width of the GUI button in the GUI coordinate system.
      */
-    public double getWidth() {
+    public final double getWidth() {
         return width;
     }
 
@@ -271,7 +255,7 @@ public class GuiButton implements Inputable, Renderable {
      * Returns the height of the {@code GuiButton} in the GUI coordinate system.
      * @return the height of the {@code GuiButton} in the GUI coordinate system.
      */
-    public double getHeight() {
+    public final double getHeight() {
         return height;
     }
 
@@ -279,7 +263,7 @@ public class GuiButton implements Inputable, Renderable {
      * Returns the action to be executed when the button is clicked.
      * @return the action to be executed when the button is clicked.
      */
-    public Runnable getOnClick() {
+    public final Runnable getOnClick() {
         return onClick;
     }
 
@@ -287,7 +271,7 @@ public class GuiButton implements Inputable, Renderable {
      * Returns the action to be executed when the button enters the bounds of the {@code GuiButton}.
      * @return the action to be executed when the button enters the bounds of the {@code GuiButton}.
      */
-    public Runnable getOnMouseEnter() {
+    public final Runnable getOnMouseEnter() {
         return onMouseEnter;
     }
 
@@ -295,7 +279,7 @@ public class GuiButton implements Inputable, Renderable {
      * Returns the action to be executed when the mouse leaves the bounds of the {@code GuiButton}.
      * @return the action to be executed when the mouse leaves the bounds of the {@code GuiButton}.
      */
-    public Runnable getOnMouseLeave() {
+    public final Runnable getOnMouseLeave() {
         return onMouseLeave;
     }
 }

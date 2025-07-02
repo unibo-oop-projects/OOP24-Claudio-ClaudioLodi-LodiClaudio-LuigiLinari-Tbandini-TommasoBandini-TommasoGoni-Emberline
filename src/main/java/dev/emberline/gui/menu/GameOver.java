@@ -39,53 +39,53 @@ public final class GameOver extends GuiLayer implements GameState {
     private static final ColorAdjust OPTIONS_TEXT_COLOR = new ColorAdjust(0.15, 0.9, 0.5, 0);
 
     private record Layout(
-        @JsonProperty 
-        double titleWidth,
-        @JsonProperty 
-        double titleHeight,
-        @JsonProperty 
-        double titleX,
-        @JsonProperty 
-        double titleY,
-        @JsonProperty 
-        double statisticsBgHeight,
-        @JsonProperty 
-        double statisticsBgWidth,
-        @JsonProperty 
-        double statisticsBgX,
-        @JsonProperty 
-        double statisticsBgY,
-        @JsonProperty 
-        double statisticsMaxLabelWidth,
-        @JsonProperty 
-        double statisticsMaxLabelHeight,
-        @JsonProperty 
-        double statisticsMaxValueWidth,
-        @JsonProperty 
-        double statisticsMaxValueHeight,
-        @JsonProperty 
-        double statisticsLabelX,
-        @JsonProperty 
-        double statisticsValueX,
-        @JsonProperty 
-        double statisticsFirstRowY,
-        @JsonProperty 
-        double statisticsSecondRowY,
-        @JsonProperty 
-        double statisticsThirdRowY,
-        @JsonProperty 
-        double statisticsFourthRowY,
-        @JsonProperty 
-        double navBtnHeight,
-        @JsonProperty 
-        double navBtnWidth,
-        @JsonProperty 
-        double navBtnX,
-        @JsonProperty 
-        double btnMenuY,
-        @JsonProperty 
-        double btnExitY
-    ){
+            @JsonProperty 
+            double titleWidth,
+            @JsonProperty 
+            double titleHeight,
+            @JsonProperty 
+            double titleX,
+            @JsonProperty 
+            double titleY,
+            @JsonProperty 
+            double statisticsBgHeight,
+            @JsonProperty 
+            double statisticsBgWidth,
+            @JsonProperty 
+            double statisticsBgX,
+            @JsonProperty 
+            double statisticsBgY,
+            @JsonProperty 
+            double statisticsMaxLabelWidth,
+            @JsonProperty 
+            double statisticsMaxLabelHeight,
+            @JsonProperty 
+            double statisticsMaxValueWidth,
+            @JsonProperty 
+            double statisticsMaxValueHeight,
+            @JsonProperty 
+            double statisticsLabelX,
+            @JsonProperty 
+            double statisticsValueX,
+            @JsonProperty 
+            double statisticsFirstRowY,
+            @JsonProperty 
+            double statisticsSecondRowY,
+            @JsonProperty 
+            double statisticsThirdRowY,
+            @JsonProperty 
+            double statisticsFourthRowY,
+            @JsonProperty 
+            double navBtnHeight,
+            @JsonProperty 
+            double navBtnWidth,
+            @JsonProperty 
+            double navBtnX,
+            @JsonProperty 
+            double btnMenuY,
+            @JsonProperty 
+            double btnExitY
+    ) {
     }
 
     private record GameOverBounds(
