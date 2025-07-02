@@ -108,6 +108,9 @@ public class EnemiesManager implements IEnemiesManager {
         for (final IEnemy enemy : spatialHashGrid) {
             if (enemy.isDead()) {
                 toRemove.add(enemy);
+                if (enemy.getHealth() <= 0) {
+                    world.getPlayer().earnGold(enemy.getGoldReward());
+                }
             } else {
                 enemy.update(elapsed);
                 toUpdate.add(enemy);

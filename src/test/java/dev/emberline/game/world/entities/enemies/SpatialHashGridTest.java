@@ -90,6 +90,11 @@ class EnemyMock implements IEnemy {
     public void setPosition(final Vector2D position) {
         this.position = position;
     }
+
+    @Override
+    public int getGoldReward() {
+        throw new UnsupportedOperationException();
+    }
 }
 
 class SpatialHashGridTest {

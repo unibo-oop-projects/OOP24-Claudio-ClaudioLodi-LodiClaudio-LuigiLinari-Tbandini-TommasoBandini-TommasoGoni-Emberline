@@ -18,7 +18,8 @@
   "metadata": {
     "tileWidth": 1,
     "tileHeight": 1,
-    "fullHealth": 1000,
-    "speed": 0.000000001
+    "fullHealth": 10,
+    "speed": 0.000000001,
+    "goldReward": 50
   }
 }

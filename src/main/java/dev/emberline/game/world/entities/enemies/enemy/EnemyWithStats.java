@@ -148,4 +148,12 @@ public class EnemyWithStats implements IEnemy, Serializable {
     public void update(final long elapsed) {
         enemy.update(elapsed);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getGoldReward() {
+        return enemy.getGoldReward();
+    }
 }

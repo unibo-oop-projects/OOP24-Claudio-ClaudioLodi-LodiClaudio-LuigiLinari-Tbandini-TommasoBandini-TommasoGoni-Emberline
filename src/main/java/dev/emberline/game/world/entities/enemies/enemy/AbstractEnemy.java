@@ -38,7 +38,8 @@ public abstract class AbstractEnemy implements IEnemy {
             @JsonProperty double tileWidth,
             @JsonProperty double tileHeight,
             @JsonProperty double fullHealth,
-            @JsonProperty double speed
+            @JsonProperty double speed,
+            @JsonProperty int goldReward
     ) {
     }
 
@@ -129,6 +130,16 @@ public abstract class AbstractEnemy implements IEnemy {
     @Override
     public double getHeight() {
         return getMetadata().tileHeight;
+    }
+
+    /**
+     * Returns the gold reward for defeating this enemy.
+     *
+     * @return the amount of gold reward
+     */
+    @Override
+    public int getGoldReward() {
+        return getMetadata().goldReward;
     }
 
     /**

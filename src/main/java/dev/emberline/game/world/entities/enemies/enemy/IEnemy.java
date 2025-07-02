@@ -71,6 +71,13 @@ public interface IEnemy extends Updatable, Renderable, Serializable {
     boolean isHittable();
 
     /**
+     * Returns the gold reward for defeating this enemy.
+     *
+     * @return the amount of gold reward
+     */
+    int getGoldReward();
+
+    /**
      * Uniform motion ({@code origin} + {@code velocity} * {@code t})
      * with {@code t} in [{@code 0}, {@code durationNs}] ns.
      * @param origin the position at {@code t=0}
