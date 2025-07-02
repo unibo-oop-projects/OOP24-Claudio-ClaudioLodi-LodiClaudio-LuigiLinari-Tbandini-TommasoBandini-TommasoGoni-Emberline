@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * The {@code AnimatedSprite} class represents a sprite composed of multiple frames,
@@ -39,7 +40,7 @@ public class AnimatedSprite implements Sprite, Serializable {
         if (images == null || images.length == 0) {
             throw new IllegalArgumentException("Image array cannot be null or empty");
         }
-        this.images = images.clone(); // Shallow copy of the array, Image instances assumed immutable
+        this.images = Arrays.copyOf(images, images.length);
         this.key = spriteKey;
         this.frameTimeNs = frameTimeNs;
     }
