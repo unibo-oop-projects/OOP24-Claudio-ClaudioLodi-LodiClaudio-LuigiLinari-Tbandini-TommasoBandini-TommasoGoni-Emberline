@@ -23,6 +23,7 @@ import dev.emberline.gui.towerdialog.TextGuiButton.TextLayoutType;
 import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
 import dev.emberline.gui.towerdialog.stats.TowerStatsViewsBuilder;
 import dev.emberline.gui.towerdialog.stats.TowerStatsViewsBuilder.TowerStatView;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -147,6 +148,10 @@ public class TowerDialogLayer extends GuiLayer {
      * @param tower the tower instance for which the dialog layer is being created
      * @see TowerDialogLayer
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "The tower reference is needed to link the dialog layer to the tower instance."
+    )
     public TowerDialogLayer(final Tower tower) {
         super(Layout.BG_X, Layout.BG_Y, Layout.BG_WIDTH, Layout.BG_HEIGHT);
         this.tower = tower;
@@ -158,6 +163,10 @@ public class TowerDialogLayer extends GuiLayer {
      *
      * @return the tower instance associated with this dialog layer.
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "We need to retrieve the tower reference attached to this dialog layer."
+    )
     public Tower getTower() {
         return tower;
     }
