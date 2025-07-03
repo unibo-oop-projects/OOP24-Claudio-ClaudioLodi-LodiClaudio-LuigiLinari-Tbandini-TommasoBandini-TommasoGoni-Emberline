@@ -58,7 +58,7 @@ public class Wave implements Updatable, Renderable, Serializable {
      * @return next node to go to
      */
     public Optional<Vector2D> getNext(final Vector2D pos) {
-        return roads.getNextNode(pos);
+        return roads.getNext(pos);
     }
 
     /**

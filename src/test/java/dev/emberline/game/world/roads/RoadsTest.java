@@ -13,40 +13,40 @@ class RoadsTest {
     private final Roads roads = new Roads(ROADS_PATH);
 
     @Test
-    void testGetNextNodeDifferentWeights() {
+    void testGetNextDifferentWeights() {
         final Vector2D zeroZero = new Coordinate2D(0.5, 0.5);
         final Vector2D oneZero = new Coordinate2D(1.5, 0.5);
         final Vector2D zeroOne = new Coordinate2D(0.5, 1.5);
         Optional<Vector2D> next;
 
-        next = roads.getNextNode(zeroZero);
+        next = roads.getNext(zeroZero);
         Assertions.assertTrue(next.isPresent());
         Assertions.assertEquals(next.get(), oneZero);
 
-        next = roads.getNextNode(zeroZero);
+        next = roads.getNext(zeroZero);
         Assertions.assertTrue(next.isPresent());
         Assertions.assertEquals(next.get(), zeroOne);
 
-        next = roads.getNextNode(zeroZero);
+        next = roads.getNext(zeroZero);
         Assertions.assertTrue(next.isPresent());
         Assertions.assertEquals(next.get(), zeroOne);
 
-        next = roads.getNextNode(zeroZero);
+        next = roads.getNext(zeroZero);
         Assertions.assertTrue(next.isPresent());
         Assertions.assertEquals(next.get(), oneZero);
     }
 
     @Test
-    void testGetNextNodeWithZeroWeight() {
+    void testGetNextWithZeroWeight() {
         final Vector2D oneOne = new Coordinate2D(1.5, 1.5);
         final Vector2D twoOne = new Coordinate2D(2.5, 1.5);
         Optional<Vector2D> next;
 
-        next = roads.getNextNode(oneOne);
+        next = roads.getNext(oneOne);
         Assertions.assertTrue(next.isPresent());
         Assertions.assertEquals(next.get(), twoOne);
 
-        next = roads.getNextNode(oneOne);
+        next = roads.getNext(oneOne);
         Assertions.assertTrue(next.isPresent());
         Assertions.assertEquals(next.get(), twoOne);
     }
@@ -58,9 +58,9 @@ class RoadsTest {
         final Vector2D twoOne = new Coordinate2D(2.5, 1.5);
         final Vector2D oneTwo = new Coordinate2D(1.5, 2.5);
 
-        Assertions.assertFalse(roads.getNextNode(oneZero).isPresent());
-        Assertions.assertFalse(roads.getNextNode(zeroOne).isPresent());
-        Assertions.assertFalse(roads.getNextNode(twoOne).isPresent());
-        Assertions.assertFalse(roads.getNextNode(oneTwo).isPresent());
+        Assertions.assertFalse(roads.getNext(oneZero).isPresent());
+        Assertions.assertFalse(roads.getNext(zeroOne).isPresent());
+        Assertions.assertFalse(roads.getNext(twoOne).isPresent());
+        Assertions.assertFalse(roads.getNext(oneTwo).isPresent());
     }
 }

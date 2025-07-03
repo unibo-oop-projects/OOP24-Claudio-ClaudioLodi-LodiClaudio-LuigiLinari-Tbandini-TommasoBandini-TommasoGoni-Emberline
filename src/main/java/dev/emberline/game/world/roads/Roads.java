@@ -59,7 +59,7 @@ public class Roads implements Serializable {
      * @param pos is the current position.
      * @return the next node of the graph based on the current state.
      */
-    public Optional<Vector2D> getNextNode(final Vector2D pos) {
+    public Optional<Vector2D> getNext(final Vector2D pos) {
         return posToNode.get(pos).getNext();
     }
 
