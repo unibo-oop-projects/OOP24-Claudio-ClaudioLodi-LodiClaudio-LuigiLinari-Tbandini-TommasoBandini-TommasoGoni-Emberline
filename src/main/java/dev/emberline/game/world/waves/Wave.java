@@ -24,6 +24,8 @@ public class Wave implements Updatable, Renderable, Serializable {
     @Serial
     private static final long serialVersionUID = 7347475266212681012L;
 
+    private static final long timeBeforeStart = 7_000_000_000L;
+
     private final World world;
     private final Roads roads;
     private final Spawnpoints spawnpoints;
@@ -70,7 +72,7 @@ public class Wave implements Updatable, Renderable, Serializable {
     }
 
     private void sendEnemies() {
-        final List<EnemyToSpawn> enemiesToSpawn = spawnpoints.retrieveEnemiesToSpawn(accumulatorNs);
+        final List<EnemyToSpawn> enemiesToSpawn = spawnpoints.retrieveEnemiesToSpawn(accumulatorNs - timeBeforeStart);
 
         for (final EnemyToSpawn enemyToSpawn : enemiesToSpawn) {
             world.getEnemiesManager().addEnemy(
@@ -93,7 +95,9 @@ public class Wave implements Updatable, Renderable, Serializable {
     @Override
     public void update(final long elapsed) {
         accumulatorNs += elapsed;
-        sendEnemies();
+        if (accumulatorNs >= timeBeforeStart) {
+            sendEnemies();
+        }
         if (!firstUpdate) {
             sendTowers();
             firstUpdate = true;
