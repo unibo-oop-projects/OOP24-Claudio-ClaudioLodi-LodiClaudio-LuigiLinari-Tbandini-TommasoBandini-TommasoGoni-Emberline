@@ -6,7 +6,7 @@ import dev.emberline.game.world.statistics.Statistics;
 import java.io.Serial;
 
 /**
- * This class is a decorator for the Wavemanager.
+ * This class is a decorator for the WaveManager.
  * Its purpose is to gather stats (ex: enemies killed)
  */
 public class WaveManagerWithStats implements IWaveManager {
@@ -16,6 +16,8 @@ public class WaveManagerWithStats implements IWaveManager {
 
     private final IWaveManager waveManager;
     private final Statistics statistics;
+    private int nWavePre;
+    private boolean hasWon;
 
     /**
      * Constructs a new instance of {@code WaveManagerWithStats}.
@@ -44,20 +46,29 @@ public class WaveManagerWithStats implements IWaveManager {
     }
 
     /**
-     * Updates the Wavemanager.
-     * Keeps record of the last wave reached.
+     * {@inheritDoc}
+     */
+    @Override
+    public int getNumberOfWaves() {
+        return waveManager.getNumberOfWaves();
+    }
+
+    /**
+     * Updates the WaveManager.
+     * Updates the statistics class with the last wave reached.
      *
      * @param elapsed the time elapsed in nanoseconds since the last update call
      */
     @Override
     public void update(final long elapsed) {
-        final int nWavePreUpdate = getCurrentWaveIndex();
-        waveManager.update(elapsed);
-        final int nWavePostUpdate = getCurrentWaveIndex();
+        final int nWavePost = getCurrentWaveIndex();
 
-        if (nWavePostUpdate - nWavePreUpdate > 0) {
+        if (nWavePost - nWavePre > 0 || (nWavePost + 1 == getNumberOfWaves() && getWave().isOver())) {
             statistics.updateWavesSurvived();
         }
+        nWavePre = nWavePost;
+
+        waveManager.update(elapsed);
     }
 
     /**

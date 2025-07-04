@@ -22,4 +22,9 @@ public interface IWaveManager extends Updatable, Renderable, Serializable {
      */
     int getCurrentWaveIndex();
 
+    /**
+     * Returns the total number of waves.
+     * @return the total number of waves.
+     */
+    int getNumberOfWaves();
 }

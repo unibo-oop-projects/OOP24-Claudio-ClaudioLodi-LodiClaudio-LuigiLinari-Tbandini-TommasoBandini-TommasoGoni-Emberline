@@ -64,6 +64,14 @@ public class WaveManager implements IWaveManager {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getNumberOfWaves() {
+        return waves.size();
+    }
+
+    /**
      * Updates the current wave and check weather it is over.
      *
      * @param elapsed the time elapsed in nanoseconds since the last update call
