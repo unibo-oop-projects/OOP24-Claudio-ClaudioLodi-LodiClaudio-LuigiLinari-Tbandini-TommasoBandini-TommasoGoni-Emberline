@@ -29,8 +29,8 @@ import javafx.scene.image.Image;
  */
 public class Options extends GuiLayer implements GameState {
     private final OptionsBounds bounds;
-    private final Layout layout;
     private final boolean showMenuButton;
+    private static final Layout LAYOUT = ConfigLoader.loadConfig("/gui/options/optionsLayout.json", Layout.class);
     private static final ColorAdjust OPTIONS_TEXT_COLOR = new ColorAdjust(0.15, 0.9, -0.3, 0);
 
     private record Layout(
@@ -114,18 +114,16 @@ public class Options extends GuiLayer implements GameState {
      * @see Options
      */
     public Options(final boolean showMenuButton) {
-        this(ConfigLoader.loadConfig("/gui/guiBounds.json", OptionsBounds.class),
-             ConfigLoader.loadConfig("/gui/options/optionsLayout.json", Layout.class), showMenuButton);
+        this(ConfigLoader.loadConfig("/gui/guiBounds.json", OptionsBounds.class), showMenuButton);
     }
 
-    private Options(final OptionsBounds bounds, final Layout layout, final boolean showMenuButton) {
+    private Options(final OptionsBounds bounds, final boolean showMenuButton) {
         super(bounds.topLeftX,
                 bounds.topLeftY,
                 bounds.bottomRightX - bounds.topLeftX,
                 bounds.bottomRightY - bounds.topLeftY);
         this.bounds = bounds;
         this.showMenuButton = showMenuButton;
-        this.layout = layout;
     }
 
     private void updateLayout() {
@@ -160,11 +158,11 @@ public class Options extends GuiLayer implements GameState {
             plusButtonHover = SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_PLUS_BUTTON_DISABLED).image();
         }
 
-        final GuiButton musicMinusVolumeControl = createMusicVolumeControlButton(layout.minusOffsetX,
+        final GuiButton musicMinusVolumeControl = createMusicVolumeControlButton(LAYOUT.minusOffsetX,
                 minusButton, minusButtonHover, musicVolume - 10 < 0, musicVolume - 10);
         super.getButtons().add(musicMinusVolumeControl);
 
-        final GuiButton musicPlusVolumeControl = createMusicVolumeControlButton(layout.plusOffsetX,
+        final GuiButton musicPlusVolumeControl = createMusicVolumeControlButton(LAYOUT.plusOffsetX,
                 plusButton, plusButtonHover, musicVolume + 10 > 100, musicVolume + 10);
         super.getButtons().add(musicPlusVolumeControl);
     }
@@ -173,10 +171,10 @@ public class Options extends GuiLayer implements GameState {
             final double xOffset, final Image buttonImage, final Image buttonHoverImage,
             final boolean volumeBound, final int volumeToSet) {
         final GuiButton musicVolumeControl = new GuiButton(
-                layout.controlsStartX + xOffset,
-                layout.musicVolumeY,
-                layout.btnWidth,
-                layout.btnHeight,
+                LAYOUT.controlsStartX + xOffset,
+                LAYOUT.musicVolumeY,
+                LAYOUT.btnWidth,
+                LAYOUT.btnHeight,
                 buttonImage,
                 buttonHoverImage
         );
@@ -202,10 +200,10 @@ public class Options extends GuiLayer implements GameState {
                 : SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_CHECKBOX_EMPTY_HOVER).image();
 
         final GuiButton musicMuteCheckbox = new GuiButton(
-            layout.controlsStartX + layout.checkboxOffsetX,
-            layout.musicCheckboxY,
-            layout.btnWidth,
-            layout.btnHeight,
+            LAYOUT.controlsStartX + LAYOUT.checkboxOffsetX,
+            LAYOUT.musicCheckboxY,
+            LAYOUT.btnWidth,
+            LAYOUT.btnHeight,
             checkboxImage,
             checkboxHoverImage
         );
@@ -235,10 +233,10 @@ public class Options extends GuiLayer implements GameState {
         }
 
         final GuiButton sfxMinusVolumeControl = new GuiButton(
-            layout.controlsStartX + layout.minusOffsetX, 
-            layout.sfxVolumeY,
-            layout.btnWidth, 
-            layout.btnHeight,
+            LAYOUT.controlsStartX + LAYOUT.minusOffsetX, 
+            LAYOUT.sfxVolumeY,
+            LAYOUT.btnWidth, 
+            LAYOUT.btnHeight,
             minusButton,
             minusButtonHover
         );
@@ -253,10 +251,10 @@ public class Options extends GuiLayer implements GameState {
         super.getButtons().add(sfxMinusVolumeControl);
 
         final GuiButton sfxPlusVolumeControl = new GuiButton(
-            layout.controlsStartX + layout.plusOffsetX, 
-            layout.sfxVolumeY,
-            layout.btnWidth, 
-            layout.btnHeight,
+            LAYOUT.controlsStartX + LAYOUT.plusOffsetX, 
+            LAYOUT.sfxVolumeY,
+            LAYOUT.btnWidth, 
+            LAYOUT.btnHeight,
             plusButton,
             plusButtonHover
         );
@@ -282,10 +280,10 @@ public class Options extends GuiLayer implements GameState {
                 : SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_CHECKBOX_EMPTY_HOVER).image();
 
         final GuiButton sfxMuteCheckbox = new GuiButton(
-            layout.controlsStartX + layout.checkboxOffsetX,
-            layout.sfxCheckboxY,
-            layout.btnWidth,
-            layout.btnHeight,
+            LAYOUT.controlsStartX + LAYOUT.checkboxOffsetX,
+            LAYOUT.sfxCheckboxY,
+            LAYOUT.btnWidth,
+            LAYOUT.btnHeight,
             checkboxImage,
             checkboxHoverImage
         );
@@ -307,10 +305,10 @@ public class Options extends GuiLayer implements GameState {
                 : SpriteLoader.loadSprite(SingleSpriteKey.OPTIONS_CHECKBOX_EMPTY_HOVER).image();
 
         final GuiButton fullscreenCheckbox = new GuiButton(
-            layout.controlsStartX + layout.checkboxOffsetX,
-            layout.fullscreenCheckboxY,
-            layout.btnWidth,
-            layout.btnHeight,
+            LAYOUT.controlsStartX + LAYOUT.checkboxOffsetX,
+            LAYOUT.fullscreenCheckboxY,
+            LAYOUT.btnWidth,
+            LAYOUT.btnHeight,
             checkboxImage,
             checkboxHoverImage
         );
@@ -324,10 +322,10 @@ public class Options extends GuiLayer implements GameState {
 
     private void addCloseOptionsButton() {
         final GuiButton backButton = new GuiButton(
-            layout.btnNavX,
-            layout.btnBackY, 
-            layout.btnNavWidth,
-            layout.btnNavHeight,
+            LAYOUT.btnNavX,
+            LAYOUT.btnBackY, 
+            LAYOUT.btnNavWidth,
+            LAYOUT.btnNavHeight,
             SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON).image(), 
             SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON_HOVER).image()
         );
@@ -337,10 +335,10 @@ public class Options extends GuiLayer implements GameState {
 
     private void addMenuOptionsButton() {
         final GuiButton menuButton = new GuiButton(
-            layout.btnNavX,
-            layout.btnMenuY, 
-            layout.btnNavWidth,
-            layout.btnNavHeight,
+            LAYOUT.btnNavX,
+            LAYOUT.btnMenuY, 
+            LAYOUT.btnNavWidth,
+            LAYOUT.btnNavHeight,
             SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON).image(), 
             SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON_HOVER).image()
         );
@@ -378,34 +376,34 @@ public class Options extends GuiLayer implements GameState {
         gc.save();
         gc.setEffect(OPTIONS_TEXT_COLOR);
         final Image musicVolumeLabel = SpriteLoader.loadSprite(new StringSpriteKey("Music")).image();
-        drawStringImage(gc, cs, musicVolumeLabel, layout.rowStartX, layout.musicVolumeY,
-                layout.labelWidth, layout.rowHeight, false);
+        drawStringImage(gc, cs, musicVolumeLabel, LAYOUT.rowStartX, LAYOUT.musicVolumeY,
+                LAYOUT.labelWidth, LAYOUT.rowHeight, false);
 
         final Integer musicVolumeValue = (int) (PreferencesManager.getDoublePreference(PreferenceKey.MUSIC_VOLUME) * 100);
         final Image musicVolume = SpriteLoader.loadSprite(new StringSpriteKey(musicVolumeValue.toString() + "%")).image();
-        drawStringImage(gc, cs, musicVolume, layout.controlsStartX, layout.musicVolumeY,
-                layout.percentageWidth, layout.rowHeight, true);
+        drawStringImage(gc, cs, musicVolume, LAYOUT.controlsStartX, LAYOUT.musicVolumeY,
+                LAYOUT.percentageWidth, LAYOUT.rowHeight, true);
 
         final Image musicMuteLabel = SpriteLoader.loadSprite(new StringSpriteKey("Mute music")).image();
-        drawStringImage(gc, cs, musicMuteLabel, layout.rowStartX, layout.musicCheckboxY,
-                layout.labelWidth, layout.rowHeight, false);
+        drawStringImage(gc, cs, musicMuteLabel, LAYOUT.rowStartX, LAYOUT.musicCheckboxY,
+                LAYOUT.labelWidth, LAYOUT.rowHeight, false);
 
         final Image sfxVolumeLabel = SpriteLoader.loadSprite(new StringSpriteKey("SFX")).image();
-        drawStringImage(gc, cs, sfxVolumeLabel, layout.rowStartX, layout.sfxVolumeY,
-                layout.labelWidth, layout.rowHeight, false);
+        drawStringImage(gc, cs, sfxVolumeLabel, LAYOUT.rowStartX, LAYOUT.sfxVolumeY,
+                LAYOUT.labelWidth, LAYOUT.rowHeight, false);
 
         final Integer sfxVolumeValue = (int) (PreferencesManager.getDoublePreference(PreferenceKey.SFX_VOLUME) * 100);
         final Image sfxVolume = SpriteLoader.loadSprite(new StringSpriteKey(sfxVolumeValue.toString() + "%")).image();
-        drawStringImage(gc, cs, sfxVolume, layout.controlsStartX, layout.sfxVolumeY,
-                layout.percentageWidth, layout.rowHeight, true);
+        drawStringImage(gc, cs, sfxVolume, LAYOUT.controlsStartX, LAYOUT.sfxVolumeY,
+                LAYOUT.percentageWidth, LAYOUT.rowHeight, true);
 
         final Image sfxMuteLabel = SpriteLoader.loadSprite(new StringSpriteKey("Mute SFX")).image();
-        drawStringImage(gc, cs, sfxMuteLabel, layout.rowStartX, layout.sfxCheckboxY,
-                layout.labelWidth, layout.rowHeight, false);
+        drawStringImage(gc, cs, sfxMuteLabel, LAYOUT.rowStartX, LAYOUT.sfxCheckboxY,
+                LAYOUT.labelWidth, LAYOUT.rowHeight, false);
 
         final Image fullscreenLabel = SpriteLoader.loadSprite(new StringSpriteKey("Fullscreen")).image();
-        drawStringImage(gc, cs, fullscreenLabel, layout.rowStartX, layout.fullscreenCheckboxY,
-                layout.labelWidth, layout.rowHeight, false);
+        drawStringImage(gc, cs, fullscreenLabel, LAYOUT.rowStartX, LAYOUT.fullscreenCheckboxY,
+                LAYOUT.labelWidth, LAYOUT.rowHeight, false);
         gc.restore();
     }
 
@@ -430,8 +428,8 @@ public class Options extends GuiLayer implements GameState {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
             gc.drawImage(optionsBackground, optionsScreenX, optionsScreenY, optionsScreenWidth, optionsScreenHeight);
-            gc.drawImage(windowBackground, cs.toScreenX(layout.windowBgX), cs.toScreenY(layout.windowBgY), 
-                        layout.windowBgWidth * cs.getScale(), layout.windowBgHeight * cs.getScale());
+            gc.drawImage(windowBackground, cs.toScreenX(LAYOUT.windowBgX), cs.toScreenY(LAYOUT.windowBgY), 
+                        LAYOUT.windowBgWidth * cs.getScale(), LAYOUT.windowBgHeight * cs.getScale());
         }));
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {

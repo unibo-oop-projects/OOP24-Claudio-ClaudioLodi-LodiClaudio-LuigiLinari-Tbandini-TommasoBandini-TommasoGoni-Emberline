@@ -54,17 +54,10 @@ public class TowerDialogLayer extends GuiLayer {
     // Data to display on button hover
     private final Map<GuiButton, TowerStatsProvider> hoverData = new HashMap<>();
     // Layout constants for the GUI elements
-    private static final Layout layout = ConfigLoader.loadConfig("/sprites/ui/towerDialogLayerLayout.json", Layout.class);
+    private static final Layout LAYOUT = ConfigLoader.loadConfig("/sprites/ui/towerDialogLayerLayout.json", Layout.class);
 
-    /**
-     * Defines layout constants used for specifying GUI element dimensions.
-     * The numbers are relative to the GUI coordinate system.
-     *
-     * @see dev.emberline.core.render.CoordinateSystem
-     * @see Renderer#getGuiCoordinateSystem()
-     */
     private record Layout(
-            @JsonProperty        
+            @JsonProperty
             double bgWidth, 
             @JsonProperty
             double bgHeight, 
@@ -192,7 +185,7 @@ public class TowerDialogLayer extends GuiLayer {
             justification = "The tower reference is needed to link the dialog layer to the tower instance."
     )
     public TowerDialogLayer(final Tower tower) {
-        super(layout.bgX, layout.bgY, layout.bgWidth, layout.bgHeight);
+        super(LAYOUT.bgX, LAYOUT.bgY, LAYOUT.bgWidth, LAYOUT.bgHeight);
         this.tower = tower;
         updateLayout();
     }
@@ -211,7 +204,7 @@ public class TowerDialogLayer extends GuiLayer {
     }
 
     private void updateLayout() {
-        // Clearing previous layout //
+        // Clearing previous LAYOUT //
         super.getButtons().clear();
         hoverData.clear();
         displayedEnchantment = Objects.requireNonNull(tower.getEnchantmentInfo(), "EnchantmentInfo cannot be null");
@@ -234,7 +227,7 @@ public class TowerDialogLayer extends GuiLayer {
                 new Image[]{SpriteLoader.loadSprite(SingleSpriteKey.SMALL_BUTTON).image(),
                             SpriteLoader.loadSprite(SingleSpriteKey.BIG_BUTTON).image()},
                 new ProjectileInfo.Type[]{ProjectileInfo.Type.SMALL, ProjectileInfo.Type.BIG},
-                layout.selectorTotalHeight
+                LAYOUT.selectorTotalHeight
         );
         for (final GuiButton button : super.getButtons()) {
             button.setOnMouseEnter(this::refreshHoverData);
@@ -244,8 +237,8 @@ public class TowerDialogLayer extends GuiLayer {
 
     private void addAimButton() {
         final GuiButton aimButton = new TextGuiButton(
-                layout.aimBtnX, layout.aimBtnY,
-                layout.aimBtnWidth, layout.aimBtnHeight,
+                LAYOUT.aimBtnX, LAYOUT.aimBtnY,
+                LAYOUT.aimBtnWidth, LAYOUT.aimBtnHeight,
                 SpriteLoader.loadSprite(SingleSpriteKey.AIM_BUTTON).image(),
                 displayedAimType.displayName(), TextLayoutType.CENTER
         );
@@ -260,12 +253,12 @@ public class TowerDialogLayer extends GuiLayer {
     ) {
         // if the current element can change type, we add the two type buttons
         if (element.canChangeType()) {
-            final double[] x = {layout.selectorTypeBtnX, layout.selectorTypeBtn2X};
-            final double y = layout.selectorTypeBtnY + yOffset;
+            final double[] x = {LAYOUT.selectorTypeBtnX, LAYOUT.selectorTypeBtn2X};
+            final double y = LAYOUT.selectorTypeBtnY + yOffset;
             for (int t = 0; t < typeValues.length; ++t) {
                 final T typeValue = typeValues[t];
                 final GuiButton button = new PricingGuiButton(
-                        x[t], y, layout.selectorTypeBtnWidth, layout.selectorTypeBtnHeight,
+                        x[t], y, LAYOUT.selectorTypeBtnWidth, LAYOUT.selectorTypeBtnHeight,
                         typeImages[t], -element.getUpgradeCost(), TextLayoutType.LEFT
                 );
                 button.setOnClick(() -> throwEvent(new SetTowerInfoEvent(this, tower, element, typeValue)));
@@ -274,24 +267,24 @@ public class TowerDialogLayer extends GuiLayer {
             }
         } else { // otherwise, we add the upgrade and reset button
             GuiButton upgradeButton = new PricingGuiButton(
-                    layout.selectorUpgradeBtnX, layout.selectorUpgradeBtnY + yOffset,
-                    layout.selectorUpgradeBtnSide, layout.selectorUpgradeBtnSide,
+                    LAYOUT.selectorUpgradeBtnX, LAYOUT.selectorUpgradeBtnY + yOffset,
+                    LAYOUT.selectorUpgradeBtnSide, LAYOUT.selectorUpgradeBtnSide,
                     SpriteLoader.loadSprite(SingleSpriteKey.UPGRADE_BUTTON).image(),
                     -element.getUpgradeCost(), TextLayoutType.BOTTOM
             );
             // On the last level, disable the upgrade button
             if (!element.canUpgrade()) {
                 upgradeButton = new TextGuiButton(
-                        layout.selectorUpgradeBtnX, layout.selectorUpgradeBtnY + yOffset,
-                        layout.selectorUpgradeBtnSide, layout.selectorUpgradeBtnSide,
+                        LAYOUT.selectorUpgradeBtnX, LAYOUT.selectorUpgradeBtnY + yOffset,
+                        LAYOUT.selectorUpgradeBtnSide, LAYOUT.selectorUpgradeBtnSide,
                         SpriteLoader.loadSprite(SingleSpriteKey.DISABLED_UPGRADE_BUTTON).image(),
                         SpriteLoader.loadSprite(SingleSpriteKey.DISABLED_UPGRADE_BUTTON).image(),
                         "MAX", TextLayoutType.CENTER
                 );
             }
             final GuiButton resetButton = new PricingGuiButton(
-                    layout.selectorResetBtnX, layout.selectorResetBtnY + yOffset,
-                    layout.selectorResetBtnWidth, layout.selectorResetBtnHeight,
+                    LAYOUT.selectorResetBtnX, LAYOUT.selectorResetBtnY + yOffset,
+                    LAYOUT.selectorResetBtnWidth, LAYOUT.selectorResetBtnHeight,
                     SpriteLoader.loadSprite(SingleSpriteKey.CANCEL_BUTTON).image(),
                     element.getRefundValue(), TextLayoutType.BOTTOM
             );
@@ -340,15 +333,15 @@ public class TowerDialogLayer extends GuiLayer {
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             // Background
             Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.TDL_BACKGROUND).image(),
-                                gc, guics, layout.bgX, layout.bgY, layout.bgWidth, layout.bgHeight);
+                                gc, guics, LAYOUT.bgX, LAYOUT.bgY, LAYOUT.bgWidth, LAYOUT.bgHeight);
             // Stats Background
             Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.STATS_BACKGROUND).image(),
-                                gc, guics, layout.statsX, layout.statsY, layout.statsWidth, layout.statsHeight);
+                                gc, guics, LAYOUT.statsX, LAYOUT.statsY, LAYOUT.statsWidth, LAYOUT.statsHeight);
             // Stats Overlay
             drawStatsOverlay(statsViews, gc, guics);
 
             drawSelector(gc, guics, "Enchantment:", displayedEnchantment, 0);
-            drawSelector(gc, guics, "Projectile:", displayedProjectile, layout.selectorTotalHeight);
+            drawSelector(gc, guics, "Projectile:", displayedProjectile, LAYOUT.selectorTotalHeight);
         }));
 
         super.render();
@@ -383,15 +376,15 @@ public class TowerDialogLayer extends GuiLayer {
         final String statValueStr = new DecimalFormat("0.##").format(statValue);
         // Value color effect
         final ColorAdjust valueColor = statView.getType() == TowerStatView.Type.NEW ? Colors.STAT_NEW_VALUE : Colors.STAT_VALUE;
-        // layout
-        final double iconVMargin = width * layout.statsSvIconVMarginFactor;
-        final double iconHMargin = iconVMargin * layout.statsSvIconHMarginFactor;
+        // Layout
+        final double iconVMargin = width * LAYOUT.statsSvIconVMarginFactor;
+        final double iconHMargin = iconVMargin * LAYOUT.statsSvIconHMarginFactor;
         final double iconSide = height - 2 * iconVMargin;
         final double titleX = x + iconSide + iconHMargin;
         final double titleWidth = width - iconSide - iconHMargin;
-        final double titleHeight = height * layout.statsSvTitleHeightFactor;
+        final double titleHeight = height * LAYOUT.statsSvTitleHeightFactor;
         final double valueY = y + titleHeight;
-        final double valueWidth = titleWidth * layout.statsSvValueWidthFactor;
+        final double valueWidth = titleWidth * LAYOUT.statsSvValueWidthFactor;
         final double valueHeight = height - titleHeight;
         // Icon
         Renderer.drawImage(statView.getStat().type().getIcon(), gc, cs, x, y + iconVMargin, iconSide, iconSide);
@@ -417,17 +410,17 @@ public class TowerDialogLayer extends GuiLayer {
             final GraphicsContext gc, final CoordinateSystem cs
     ) {
         final int nStatsViews = statsViews.size();
-        final int statsRows = Math.max(layout.statsRows, (int) Math.ceil((double) nStatsViews / layout.statsColumns));
-        final double totVPadding = (statsRows - 1) * layout.statsVMargin;
-        final double totHPadding = (layout.statsColumns - 1) * layout.statsHMargin;
-        final double statHeight = (layout.statsOvrHeight - totVPadding) / statsRows;
-        final double statWidth = (layout.statsOvrWidth - totHPadding) / layout.statsColumns;
+        final int statsRows = Math.max(LAYOUT.statsRows, (int) Math.ceil((double) nStatsViews / LAYOUT.statsColumns));
+        final double totVPadding = (statsRows - 1) * LAYOUT.statsVMargin;
+        final double totHPadding = (LAYOUT.statsColumns - 1) * LAYOUT.statsHMargin;
+        final double statHeight = (LAYOUT.statsOvrHeight - totVPadding) / statsRows;
+        final double statWidth = (LAYOUT.statsOvrWidth - totHPadding) / LAYOUT.statsColumns;
 
         for (int i = 0; i < nStatsViews; i++) {
-            final int row = i / layout.statsColumns;
-            final int col = i % layout.statsColumns;
-            final double x = layout.statsOvrX + col * (statWidth + layout.statsHMargin);
-            final double y = layout.statsOvrY + row * (statHeight + layout.statsVMargin);
+            final int row = i / LAYOUT.statsColumns;
+            final int col = i % LAYOUT.statsColumns;
+            final double x = LAYOUT.statsOvrX + col * (statWidth + LAYOUT.statsHMargin);
+            final double y = LAYOUT.statsOvrY + row * (statHeight + LAYOUT.statsVMargin);
             drawStatView(statsViews.get(i), gc, cs, x, y, statWidth, statHeight);
         }
     }
@@ -440,25 +433,25 @@ public class TowerDialogLayer extends GuiLayer {
         // Title
         gc.save();
         gc.setEffect(Colors.SELECTOR_TITLE);
-        Renderer.drawText(title, gc, cs, layout.selectorX, layout.selectorNameY + verticalOffset,
-                layout.selectorNameWidth, layout.selectorNameHeight);
+        Renderer.drawText(title, gc, cs, LAYOUT.selectorX, LAYOUT.selectorNameY + verticalOffset,
+                LAYOUT.selectorNameWidth, LAYOUT.selectorNameHeight);
         gc.restore();
         // Should we draw the selector?
         if (info.canChangeType()) {
             return;
         }
         // Name icon
-        Renderer.drawImage(getIcon(info), gc, cs, layout.selectorNameIconX,
-                layout.selectorNameIconY + verticalOffset,
-                layout.selectorNameIconSide, layout.selectorNameIconSide);
+        Renderer.drawImage(getIcon(info), gc, cs, LAYOUT.selectorNameIconX,
+                LAYOUT.selectorNameIconY + verticalOffset,
+                LAYOUT.selectorNameIconSide, LAYOUT.selectorNameIconSide);
         // Upgrade selector
-        final double emptySpace = layout.selectorUpgradeWidth - layout.selectorLevelMarkerWidth * info.getMaxLevel();
+        final double emptySpace = LAYOUT.selectorUpgradeWidth - LAYOUT.selectorLevelMarkerWidth * info.getMaxLevel();
         for (int i = 0; i < info.getMaxLevel(); ++i) {
-            final double x = layout.selectorUpgradeX
-                    + i * (emptySpace / (info.getMaxLevel() - 1) + layout.selectorLevelMarkerWidth);
-            final double y = layout.selectorUpgradeY + verticalOffset;
-            final double width = layout.selectorLevelMarkerWidth;
-            final double height = layout.selectorUpgradeHeight;
+            final double x = LAYOUT.selectorUpgradeX
+                    + i * (emptySpace / (info.getMaxLevel() - 1) + LAYOUT.selectorLevelMarkerWidth);
+            final double y = LAYOUT.selectorUpgradeY + verticalOffset;
+            final double width = LAYOUT.selectorLevelMarkerWidth;
+            final double height = LAYOUT.selectorUpgradeHeight;
             final Image sprite = i < info.level() ? SpriteLoader.loadSprite(SingleSpriteKey.FULL_UPGRADE_LEVEL).image()
                     : SpriteLoader.loadSprite(SingleSpriteKey.EMPTY_UPGRADE_LEVEL).image();
             Renderer.drawImage(sprite, gc, cs, x, y, width, height);

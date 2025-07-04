@@ -34,8 +34,8 @@ import javafx.scene.image.Image;
 public final class GameOver extends GuiLayer implements GameState {
 
     private final GameOverBounds bounds;
-    private final Layout layout;
     private Statistics statistics;
+    private static final Layout LAYOUT = ConfigLoader.loadConfig("/gui/gameOver/gameOverLayout.json", Layout.class);
     private static final ColorAdjust OPTIONS_TEXT_COLOR = new ColorAdjust(0.15, 0.9, 0.5, 0);
 
     private record Layout(
@@ -113,16 +113,14 @@ public final class GameOver extends GuiLayer implements GameState {
      * @see GameOver
      */
     public GameOver() {
-        this(ConfigLoader.loadConfig("/gui/guiBounds.json", GameOverBounds.class),
-             ConfigLoader.loadConfig("/gui/gameOver/gameOverLayout.json", Layout.class));
+        this(ConfigLoader.loadConfig("/gui/guiBounds.json", GameOverBounds.class));
     }
 
-    private GameOver(final GameOverBounds bounds, final Layout layout) {
+    private GameOver(final GameOverBounds bounds) {
         super(bounds.topLeftX, bounds.topLeftY, 
              bounds.bottomRightX - bounds.topLeftX,
              bounds.bottomRightY - bounds.topLeftY);
         this.bounds = bounds;
-        this.layout = layout;
     }
 
     /**
@@ -140,8 +138,8 @@ public final class GameOver extends GuiLayer implements GameState {
 
     // Menu button
     private void addMainMenuButton() {
-        final GuiButton menuButton = new GuiButton(layout.navBtnX,
-                layout.btnMenuY, layout.navBtnWidth, layout.navBtnHeight,
+        final GuiButton menuButton = new GuiButton(LAYOUT.navBtnX,
+                LAYOUT.btnMenuY, LAYOUT.navBtnWidth, LAYOUT.navBtnHeight,
                 SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.MENU_SIGN_BUTTON_HOVER).image());
         menuButton.setOnClick(() -> throwEvent(new SetMainMenuEvent(this)));
@@ -150,8 +148,8 @@ public final class GameOver extends GuiLayer implements GameState {
 
     // Exit button
     private void addExitButton() {
-        final GuiButton exitButton = new GuiButton(layout.navBtnX,
-                layout.btnExitY, layout.navBtnWidth, layout.navBtnHeight,
+        final GuiButton exitButton = new GuiButton(LAYOUT.navBtnX,
+                LAYOUT.btnExitY, LAYOUT.navBtnWidth, LAYOUT.navBtnHeight,
                 SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON).image(),
                 SpriteLoader.loadSprite(SingleSpriteKey.EXIT_SIGN_BUTTON_HOVER).image());
         exitButton.setOnClick(() -> throwEvent(new ExitGameEvent(exitButton)));
@@ -206,28 +204,28 @@ public final class GameOver extends GuiLayer implements GameState {
         final Image timeInGameValue = SpriteLoader.loadSprite(new StringSpriteKey(timeInGameFormatted)).image();
 
         // Row 1: Enemies Fought
-        drawStringImage(gc, cs, enemiesFoughtLabel, layout.statisticsLabelX, layout.statisticsFirstRowY,
-                layout.statisticsMaxLabelWidth, layout.statisticsMaxLabelHeight);
-        drawStringImage(gc, cs, enemiesFoughtValue, layout.statisticsValueX, layout.statisticsFirstRowY,
-                layout.statisticsMaxValueWidth, layout.statisticsMaxValueHeight);
+        drawStringImage(gc, cs, enemiesFoughtLabel, LAYOUT.statisticsLabelX, LAYOUT.statisticsFirstRowY,
+                LAYOUT.statisticsMaxLabelWidth, LAYOUT.statisticsMaxLabelHeight);
+        drawStringImage(gc, cs, enemiesFoughtValue, LAYOUT.statisticsValueX, LAYOUT.statisticsFirstRowY,
+                LAYOUT.statisticsMaxValueWidth, LAYOUT.statisticsMaxValueHeight);
 
         // Row 2: Waves survived
-        drawStringImage(gc, cs, wavesSurvivedLabel, layout.statisticsLabelX, layout.statisticsSecondRowY,
-                layout.statisticsMaxLabelWidth, layout.statisticsMaxLabelHeight);
-        drawStringImage(gc, cs, wavesSurvivedValue, layout.statisticsValueX, layout.statisticsSecondRowY,
-                layout.statisticsMaxValueWidth, layout.statisticsMaxValueHeight);
+        drawStringImage(gc, cs, wavesSurvivedLabel, LAYOUT.statisticsLabelX, LAYOUT.statisticsSecondRowY,
+                LAYOUT.statisticsMaxLabelWidth, LAYOUT.statisticsMaxLabelHeight);
+        drawStringImage(gc, cs, wavesSurvivedValue, LAYOUT.statisticsValueX, LAYOUT.statisticsSecondRowY,
+                LAYOUT.statisticsMaxValueWidth, LAYOUT.statisticsMaxValueHeight);
 
         // Row 3: Total damage dealt
-        drawStringImage(gc, cs, totalDamageLabel, layout.statisticsLabelX, layout.statisticsThirdRowY,
-                layout.statisticsMaxLabelWidth, layout.statisticsMaxLabelHeight);
-        drawStringImage(gc, cs, totalDamageValue, layout.statisticsValueX, layout.statisticsThirdRowY,
-                layout.statisticsMaxValueWidth, layout.statisticsMaxValueHeight);
+        drawStringImage(gc, cs, totalDamageLabel, LAYOUT.statisticsLabelX, LAYOUT.statisticsThirdRowY,
+                LAYOUT.statisticsMaxLabelWidth, LAYOUT.statisticsMaxLabelHeight);
+        drawStringImage(gc, cs, totalDamageValue, LAYOUT.statisticsValueX, LAYOUT.statisticsThirdRowY,
+                LAYOUT.statisticsMaxValueWidth, LAYOUT.statisticsMaxValueHeight);
 
         // Row 4: Time in game
-        drawStringImage(gc, cs, timeInGameLabel, layout.statisticsLabelX, layout.statisticsFourthRowY,
-                layout.statisticsMaxLabelWidth, layout.statisticsMaxLabelHeight);
-        drawStringImage(gc, cs, timeInGameValue, layout.statisticsValueX, layout.statisticsFourthRowY,
-                layout.statisticsMaxValueWidth, layout.statisticsMaxValueHeight);
+        drawStringImage(gc, cs, timeInGameLabel, LAYOUT.statisticsLabelX, LAYOUT.statisticsFourthRowY,
+                LAYOUT.statisticsMaxLabelWidth, LAYOUT.statisticsMaxLabelHeight);
+        drawStringImage(gc, cs, timeInGameValue, LAYOUT.statisticsValueX, LAYOUT.statisticsFourthRowY,
+                LAYOUT.statisticsMaxValueWidth, LAYOUT.statisticsMaxValueHeight);
 
         gc.restore();
     }
@@ -259,10 +257,10 @@ public final class GameOver extends GuiLayer implements GameState {
         }));
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
-            gc.drawImage(gameOverImage, cs.toScreenX(layout.titleX), cs.toScreenY(layout.titleY),
-                    layout.titleWidth * cs.getScale(), layout.titleHeight * cs.getScale());
-            gc.drawImage(statisticsImage, cs.toScreenX(layout.statisticsBgX), cs.toScreenY(layout.statisticsBgY),
-                    layout.statisticsBgWidth * cs.getScale(), layout.statisticsBgHeight * cs.getScale());
+            gc.drawImage(gameOverImage, cs.toScreenX(LAYOUT.titleX), cs.toScreenY(LAYOUT.titleY),
+                    LAYOUT.titleWidth * cs.getScale(), LAYOUT.titleHeight * cs.getScale());
+            gc.drawImage(statisticsImage, cs.toScreenX(LAYOUT.statisticsBgX), cs.toScreenY(LAYOUT.statisticsBgY),
+                    LAYOUT.statisticsBgWidth * cs.getScale(), LAYOUT.statisticsBgHeight * cs.getScale());
             drawStatisticsText(gc, cs);
         }));
 

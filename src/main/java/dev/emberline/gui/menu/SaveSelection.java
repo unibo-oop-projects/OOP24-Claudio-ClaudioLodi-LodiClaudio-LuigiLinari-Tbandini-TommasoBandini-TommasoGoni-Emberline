@@ -32,8 +32,8 @@ import java.nio.file.Path;
  */
 public class SaveSelection extends GuiLayer implements GameState {
     private final SaveSelectionBounds bounds;
-    private final Layout layout;
     private final Serializer worldSerializer = new Serializer();
+    private static final Layout LAYOUT = ConfigLoader.loadConfig("/gui/saveSelection/saveSelectionLayout.json", Layout.class);
 
     /**
      * Enum representing the available save slots.
@@ -125,24 +125,22 @@ public class SaveSelection extends GuiLayer implements GameState {
      * Constructs a new {@code SaveSelection} instance using the default save selection bounds loaded from a configuration file.
      */
     public SaveSelection() {
-        this(ConfigLoader.loadConfig("/gui/guiBounds.json", SaveSelectionBounds.class),
-             ConfigLoader.loadConfig("/gui/saveSelection/saveSelectionLayout.json", Layout.class));
+        this(ConfigLoader.loadConfig("/gui/guiBounds.json", SaveSelectionBounds.class));
     }
 
-    private SaveSelection(final SaveSelectionBounds bounds, final Layout layout) {
+    private SaveSelection(final SaveSelectionBounds bounds) {
         super(bounds.topLeftX, bounds.topLeftY, 
               bounds.bottomRightX - bounds.topLeftX, 
               bounds.bottomRightY - bounds.topLeftY);
         this.bounds = bounds;
-        this.layout = layout;
     }
 
     private void updateLayout() {
         super.getButtons().clear();
 
-        addSaveSlot(layout.firstSlotY, Saves.SAVE1);
-        addSaveSlot(layout.secondSlotY, Saves.SAVE2);
-        addSaveSlot(layout.thirdSlotY, Saves.SAVE3);
+        addSaveSlot(LAYOUT.firstSlotY, Saves.SAVE1);
+        addSaveSlot(LAYOUT.secondSlotY, Saves.SAVE2);
+        addSaveSlot(LAYOUT.thirdSlotY, Saves.SAVE3);
 
         addBackButton();
     }
@@ -165,10 +163,10 @@ public class SaveSelection extends GuiLayer implements GameState {
             : SpriteLoader.loadSprite(SingleSpriteKey.DELETE_SAVE_SLOT_BUTTON_DISABLED).image();
 
         final GuiButton saveSlotButton = new GuiButton(
-            layout.saveSlotX, 
+            LAYOUT.saveSlotX, 
             currY,
-            layout.saveSlotWidth, 
-            layout.btnHeight,
+            LAYOUT.saveSlotWidth, 
+            LAYOUT.btnHeight,
             saveSlotImage,
             saveSlotHoverImage
         );
@@ -182,10 +180,10 @@ public class SaveSelection extends GuiLayer implements GameState {
         super.getButtons().add(saveSlotButton);
 
         final GuiButton deleteSaveSlotButton = new GuiButton(
-            layout.deleteBtnX, 
+            LAYOUT.deleteBtnX, 
             currY, 
-            layout.deleteBtnWidth, 
-            layout.btnHeight,
+            LAYOUT.deleteBtnWidth, 
+            LAYOUT.btnHeight,
             deleteSaveSlotImage,
             deleteSaveSlotHoverImage
         );
@@ -206,10 +204,10 @@ public class SaveSelection extends GuiLayer implements GameState {
 
     private void addBackButton() {
         final GuiButton backButton = new GuiButton(
-            layout.btnBackX,
-            layout.btnBackY, 
-            layout.btnBackWidth,
-            layout.btnBackHeight, 
+            LAYOUT.btnBackX,
+            LAYOUT.btnBackY, 
+            LAYOUT.btnBackWidth,
+            LAYOUT.btnBackHeight, 
             SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON).image(), 
             SpriteLoader.loadSprite(SingleSpriteKey.BACK_SIGN_BUTTON_HOVER).image()
         );
@@ -250,8 +248,8 @@ public class SaveSelection extends GuiLayer implements GameState {
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BACKGROUND, () -> {
             gc.drawImage(guiBackground, guiScreenX, guiScreenY, guiScreenWidth, guiScreenHeight);
-            gc.drawImage(windowBackground, cs.toScreenX(layout.windowBgX), cs.toScreenY(layout.windowBgY), 
-                        layout.windowBgWidth * cs.getScale(), layout.windowBgHeight * cs.getScale());
+            gc.drawImage(windowBackground, cs.toScreenX(LAYOUT.windowBgX), cs.toScreenY(LAYOUT.windowBgY), 
+                        LAYOUT.windowBgWidth * cs.getScale(), LAYOUT.windowBgHeight * cs.getScale());
         }));
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {

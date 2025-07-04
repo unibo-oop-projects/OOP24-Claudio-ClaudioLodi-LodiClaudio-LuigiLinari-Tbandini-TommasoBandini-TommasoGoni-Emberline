@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class NewBuildDialogLayer extends GuiLayer {
     // The Tower pre build linked to this dialog layer
     private final TowerPreBuild tower;
-    private static final Layout layout = ConfigLoader.loadConfig("/sprites/ui/newBuildDialogLayerLayout.json", Layout.class);
+    private static final Layout LAYOUT = ConfigLoader.loadConfig("/sprites/ui/newBuildDialogLayerLayout.json", Layout.class);
 
     private record Layout(
             @JsonProperty
@@ -60,7 +60,7 @@ public class NewBuildDialogLayer extends GuiLayer {
      * @see NewBuildDialogLayer
      */
     public NewBuildDialogLayer(final TowerPreBuild tower) {
-        super(layout.bgX, layout.bgY, layout.bgWidth, layout.bgHeight);
+        super(LAYOUT.bgX, LAYOUT.bgY, LAYOUT.bgWidth, LAYOUT.bgHeight);
         this.tower = tower;
     }
 
@@ -74,9 +74,9 @@ public class NewBuildDialogLayer extends GuiLayer {
     }
 
     private void addBuildButton() {
-        GuiButton buildButton = new PricingGuiButton(
-            layout.btnX, layout.btnY,
-            layout.btnWidth, layout.btnHeight,
+        final GuiButton buildButton = new PricingGuiButton(
+            LAYOUT.btnX, LAYOUT.btnY,
+            LAYOUT.btnWidth, LAYOUT.btnHeight,
             SpriteLoader.loadSprite(SingleSpriteKey.GENERIC_BUTTON).image(),
             -tower.getNewBuildCost(), TextLayoutType.CENTER
         );
@@ -98,7 +98,7 @@ public class NewBuildDialogLayer extends GuiLayer {
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI_HIGH, () -> {
             // Background
             Renderer.drawImage(SpriteLoader.loadSprite(SingleSpriteKey.NTDL_BACKGROUND).image(),
-                    gc, guics, layout.bgX, layout.bgY, layout.bgWidth, layout.bgHeight);
+                    gc, guics, LAYOUT.bgX, LAYOUT.bgY, LAYOUT.bgWidth, LAYOUT.bgHeight);
         }));
 
         super.render();
