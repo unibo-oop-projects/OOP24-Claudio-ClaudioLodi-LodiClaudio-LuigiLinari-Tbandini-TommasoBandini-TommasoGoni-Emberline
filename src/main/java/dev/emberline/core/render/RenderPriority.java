@@ -34,6 +34,12 @@ public enum RenderPriority {
      */
     FOG(19),
     /**
+     * Represents the rendering priority for projectile elements.
+     * <p>
+     * The associated priority value is {@code 15}.
+     */
+    PROJECTILES(15),
+    /**
      * Represents the rendering priority for enemy entities in the application.
      * <p>
      * Note: Enemies share the same priority value as buildings, allowing z-ordering
