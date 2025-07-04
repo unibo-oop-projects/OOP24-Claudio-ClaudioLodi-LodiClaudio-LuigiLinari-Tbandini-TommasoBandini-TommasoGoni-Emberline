@@ -5,6 +5,7 @@ import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.game.world.World;
 import dev.emberline.gui.event.GameOverEvent;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -37,6 +38,12 @@ public class WaveManager implements IWaveManager {
      *
      * @param world is the reference to the World
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",   // May expose internal representation by
+                                        // storing an externally mutable object
+            justification = "This is intended behavior,"
+                    + " as this class needs a reference to world to create the game over event."
+    )
     public WaveManager(final World world) {
         this.world = world;
         for (final String wavePath : WAVES_CONFIG.wavePaths) {

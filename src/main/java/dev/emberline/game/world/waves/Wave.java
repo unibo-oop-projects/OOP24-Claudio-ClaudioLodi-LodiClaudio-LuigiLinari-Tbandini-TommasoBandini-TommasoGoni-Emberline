@@ -10,6 +10,7 @@ import dev.emberline.game.world.roads.Roads;
 import dev.emberline.game.world.spawnpoints.Spawnpoints;
 import dev.emberline.game.world.spawnpoints.Spawnpoints.EnemyToSpawn;
 import dev.emberline.utility.Vector2D;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -44,6 +45,11 @@ public class Wave implements Updatable, Renderable, Serializable {
      * @param waveDirectoryPath the path of the directory containing the wave files
      * @see Wave
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",   // May expose internal representation by
+                                        // storing an externally mutable object
+            justification = "This is intended behavior as this class needs access to both the enemy and tower managers."
+    )
     public Wave(final World world, final String waveDirectoryPath) {
         this.world = world;
         this.roads = new Roads(waveDirectoryPath);

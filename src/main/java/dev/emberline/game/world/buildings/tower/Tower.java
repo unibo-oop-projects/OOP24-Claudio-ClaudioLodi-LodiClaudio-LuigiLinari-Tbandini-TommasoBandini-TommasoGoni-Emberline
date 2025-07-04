@@ -8,8 +8,10 @@ import dev.emberline.game.model.TowerInfoProvider;
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.Building;
 import dev.emberline.game.world.World;
+import dev.emberline.game.world.buildings.TowersManager;
 import dev.emberline.gui.event.SetTowerAimTypeEvent.AimType;
 import dev.emberline.utility.Vector2D;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -33,7 +35,7 @@ public class Tower extends Building implements TowerInfoProvider, Serializable {
     private static final Metadata METADATA = ConfigLoader.loadConfig(
             ConfigLoader.loadNode("/sprites/towerAssets/tower.json").get("worldDimensions"), Metadata.class);
 
-    private final World world;
+    private final TowersManager towersManager;
     private final TowerUpdateComponent towerUpdateComponent;
     private final TowerRenderComponent towerRenderComponent;
     private final Vector2D locationBottomLeft;
@@ -59,8 +61,14 @@ public class Tower extends Building implements TowerInfoProvider, Serializable {
      * @param locationBottomLeft the bottom-left corner location of the tower in the world
      * @param world the world instance where this tower exists
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",   // May expose internal representation by
+                                        // storing an externally mutable object into Renderer.canvas
+            justification = "This is intended behavior,"
+                    + " as this class needs a reference to TowersManager."
+    )
     public Tower(final Vector2D locationBottomLeft, final World world) {
-        this.world = world;
+        this.towersManager = world.getTowersManager();
         this.towerUpdateComponent = new TowerUpdateComponent(world, this);
         this.towerRenderComponent = new TowerRenderComponent(this);
         this.locationBottomLeft = locationBottomLeft;
@@ -119,8 +127,8 @@ public class Tower extends Building implements TowerInfoProvider, Serializable {
      */
     @Override
     protected void clicked() {
-        world.getTowersManager().closeNewBuildDialog();
-        world.getTowersManager().openTowerDialog(this);
+        towersManager.closeNewBuildDialog();
+        towersManager.openTowerDialog(this);
     }
 
     /**

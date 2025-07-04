@@ -7,6 +7,7 @@ import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyWithStats;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.Serial;
 import java.util.LinkedList;
@@ -52,6 +53,11 @@ public class EnemiesManager implements IEnemiesManager {
      *
      * @param world the game world where this manager lives
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",   // May expose internal representation by
+                                        // storing an externally mutable object into Renderer.canvas
+            justification = "This is intended behavior as this class uses the reference to world in multiple cases."
+    )
     public EnemiesManager(final World world) {
         this.world = world;
 

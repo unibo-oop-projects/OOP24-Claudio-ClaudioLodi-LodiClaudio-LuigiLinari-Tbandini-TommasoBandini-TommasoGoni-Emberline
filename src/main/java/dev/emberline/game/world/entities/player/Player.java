@@ -14,6 +14,7 @@ import dev.emberline.gui.event.ResetTowerInfoEvent;
 import dev.emberline.gui.event.SetTowerAimTypeEvent;
 import dev.emberline.gui.event.SetTowerInfoEvent;
 import dev.emberline.gui.event.UpgradeTowerInfoEvent;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -46,6 +47,12 @@ public class Player implements EventListener, Serializable {
      *
      * @param world the {@code World} instance that this player belongs to
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",   // May expose internal representation by
+                                        // storing an externally mutable object
+            justification = "This is intended behavior as this class needs a reference to world,"
+                    + " both for the game over event and towers."
+    )
     public Player(final World world) {
         registerEvents();
 

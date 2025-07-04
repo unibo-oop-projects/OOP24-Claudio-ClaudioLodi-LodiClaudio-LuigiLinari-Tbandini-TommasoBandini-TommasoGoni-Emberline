@@ -14,6 +14,7 @@ import dev.emberline.game.world.World;
 import dev.emberline.gui.GuiButton;
 import dev.emberline.gui.GuiLayer;
 import dev.emberline.gui.event.OpenOptionsEvent;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -69,6 +70,12 @@ public class Topbar extends GuiLayer implements EventListener {
      *              providing access to game state and necessary data.
      * @see Topbar
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",   // May expose internal representation by
+                                        // storing an externally mutable object into Renderer.canvas
+            justification = "This is intended behavior,"
+                    + " as this class needs a reference to world to get the stats it is supposed to show."
+    )
     public Topbar(final World world) {
         super(LAYOUT.bgX, LAYOUT.bgY, LAYOUT.bgWidth, LAYOUT.bgHeight);
 
