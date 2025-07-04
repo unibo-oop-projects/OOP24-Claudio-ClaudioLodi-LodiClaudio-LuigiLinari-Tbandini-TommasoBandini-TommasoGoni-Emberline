@@ -181,7 +181,7 @@ public final class GameOver extends GuiLayer implements GameState {
         gc.save();
         gc.setEffect(OPTIONS_TEXT_COLOR);
 
-        final int enemiesKilled = statistics.getEnemiesKilled();
+        final int enemiesFought = statistics.getEnemiesFought();
         final int wavesSurvived = statistics.getWavesSurvived();
         final double totalDamage = statistics.getTotalDamage();
         final int timeInGame = (int) (statistics.getTimeInGame() / 1_000_000_000.0);    // Convert nanoseconds to seconds
@@ -195,20 +195,20 @@ public final class GameOver extends GuiLayer implements GameState {
         final String timeInGameFormatted = hours > 0
                 ? String.format("%02d:%02d:%02d", hours, minutes, seconds) : String.format("%02d:%02d", minutes, seconds);
 
-        final Image enemiesKilledLabel = SpriteLoader.loadSprite(new StringSpriteKey("Enemies killed:")).image();
+        final Image enemiesFoughtLabel = SpriteLoader.loadSprite(new StringSpriteKey("Enemies fought:")).image();
         final Image wavesSurvivedLabel = SpriteLoader.loadSprite(new StringSpriteKey("Waves survived:")).image();
         final Image totalDamageLabel = SpriteLoader.loadSprite(new StringSpriteKey("Tot tower damage:")).image();
         final Image timeInGameLabel = SpriteLoader.loadSprite(new StringSpriteKey("Time in game:")).image();
 
-        final Image enemiesKilledValue = SpriteLoader.loadSprite(new StringSpriteKey(Integer.toString(enemiesKilled))).image();
+        final Image enemiesFoughtValue = SpriteLoader.loadSprite(new StringSpriteKey(Integer.toString(enemiesFought))).image();
         final Image wavesSurvivedValue = SpriteLoader.loadSprite(new StringSpriteKey(Integer.toString(wavesSurvived))).image();
         final Image totalDamageValue = SpriteLoader.loadSprite(new StringSpriteKey(String.format("%.2f", totalDamage))).image();
         final Image timeInGameValue = SpriteLoader.loadSprite(new StringSpriteKey(timeInGameFormatted)).image();
 
-        // Row 1: Enemies killed
-        drawStringImage(gc, cs, enemiesKilledLabel, layout.statisticsLabelX, layout.statisticsFirstRowY,
+        // Row 1: Enemies Fought
+        drawStringImage(gc, cs, enemiesFoughtLabel, layout.statisticsLabelX, layout.statisticsFirstRowY,
                 layout.statisticsMaxLabelWidth, layout.statisticsMaxLabelHeight);
-        drawStringImage(gc, cs, enemiesKilledValue, layout.statisticsValueX, layout.statisticsFirstRowY,
+        drawStringImage(gc, cs, enemiesFoughtValue, layout.statisticsValueX, layout.statisticsFirstRowY,
                 layout.statisticsMaxValueWidth, layout.statisticsMaxValueHeight);
 
         // Row 2: Waves survived
