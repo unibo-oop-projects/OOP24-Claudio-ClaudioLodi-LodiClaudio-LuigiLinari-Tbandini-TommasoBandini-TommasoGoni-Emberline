@@ -2,7 +2,9 @@ package dev.emberline.game.world.waves;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.config.ConfigLoader;
+import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.game.world.World;
+import dev.emberline.gui.event.GameOverEvent;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class WaveManager implements IWaveManager {
     @Serial
     private static final long serialVersionUID = -6011747010138482409L;
 
+    private final World world;
     private final List<Wave> waves = new ArrayList<>();
     private int currentWaveIndex;
 
@@ -35,6 +38,7 @@ public class WaveManager implements IWaveManager {
      * @param world is the reference to the World
      */
     public WaveManager(final World world) {
+        this.world = world;
         for (final String wavePath : WAVES_CONFIG.wavePaths) {
             if (wavePath == null || wavePath.isEmpty()) {
                 throw new IllegalArgumentException("Wave path cannot be null or empty");
@@ -68,8 +72,12 @@ public class WaveManager implements IWaveManager {
     public void update(final long elapsed) {
         getWave().update(elapsed);
 
-        if (getWave().isOver() && currentWaveIndex + 1 < waves.size()) {
-            currentWaveIndex++;
+        if (getWave().isOver()) {
+            if (currentWaveIndex + 1 < waves.size()) {
+                currentWaveIndex++;
+            } else {
+                EventDispatcher.getInstance().dispatchEvent(new GameOverEvent(this, world.getStatistics()));
+            }
         }
     }
 

@@ -15,7 +15,7 @@ public class Statistics implements Updatable, Serializable {
     @Serial
     private static final long serialVersionUID = 493178187508275976L;
 
-    private int enemiesKilled;
+    private int enemiesFought;
     private int wavesSurvived;
     private long timeInGame;
     private double totalDamage;
@@ -24,10 +24,10 @@ public class Statistics implements Updatable, Serializable {
      * Sums the enemies that died in the current update
      * to all the other enemies already dead.
      *
-     * @param enemiesKilled number of enemies killed
+     * @param enemiesFought number of enemies fought
      */
-    public void updateEnemiesKilled(final int enemiesKilled) {
-        this.enemiesKilled += enemiesKilled;
+    public void updateEnemiesFought(final int enemiesFought) {
+        this.enemiesFought += enemiesFought;
     }
 
     /**
@@ -58,8 +58,8 @@ public class Statistics implements Updatable, Serializable {
      * Returns the number of enemies killed.
      * @return the number of enemies killed
      */
-    public int getEnemiesKilled() {
-        return this.enemiesKilled;
+    public int getEnemiesFought() {
+        return this.enemiesFought;
     }
 
     /**
