@@ -17,7 +17,6 @@ public class WaveManagerWithStats implements IWaveManager {
     private final IWaveManager waveManager;
     private final Statistics statistics;
     private int nWavePre;
-    private boolean hasWon;
 
     /**
      * Constructs a new instance of {@code WaveManagerWithStats}.
