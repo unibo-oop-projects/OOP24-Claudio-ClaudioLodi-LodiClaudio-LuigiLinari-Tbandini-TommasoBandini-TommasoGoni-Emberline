@@ -33,6 +33,7 @@ public abstract class AbstractEnemy implements IEnemy {
      * @param tileHeight the height of the enemy in world space
      * @param fullHealth the full health value of the enemy
      * @param speed the speed of the enemy in tile/ns
+     * @param goldReward the gold reward from killing the enemy
      */
     protected record Metadata(
             @JsonProperty double tileWidth,
