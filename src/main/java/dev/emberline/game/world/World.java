@@ -18,10 +18,7 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serial;
-import java.io.Serializable;
+import java.io.*;
 
 /**
  * Represents the game world acting as the core container and coordinator
@@ -184,6 +181,16 @@ public class World implements GameState, Serializable {
         ) {
             EventDispatcher.getInstance().dispatchEvent(new OpenOptionsEvent(this));
         }
+    }
+
+    /*
+    This call to unregisterListener should avoid possible memory leak issues,
+    by only maintaining the active topbar in the EventDispatcher.
+     */
+    @Serial
+    private void writeObject(final ObjectOutputStream e) throws IOException, ClassNotFoundException {
+        EventDispatcher.getInstance().unregisterListener(topbar);
+        e.defaultWriteObject();
     }
 
     @Serial
