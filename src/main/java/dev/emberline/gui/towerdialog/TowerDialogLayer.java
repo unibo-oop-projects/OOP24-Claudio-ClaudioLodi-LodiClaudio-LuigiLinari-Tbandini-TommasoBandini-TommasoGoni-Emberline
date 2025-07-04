@@ -54,7 +54,7 @@ public class TowerDialogLayer extends GuiLayer {
     // Data to display on button hover
     private final Map<GuiButton, TowerStatsProvider> hoverData = new HashMap<>();
     // Layout constants for the GUI elements
-    private static final Layout layout = ConfigLoader.loadConfig("/sprites/ui/towerDialogLayer.json", Layout.class);
+    private static final Layout layout = ConfigLoader.loadConfig("/sprites/ui/towerDialogLayerLayout.json", Layout.class);
 
     /**
      * Defines layout constants used for specifying GUI element dimensions.

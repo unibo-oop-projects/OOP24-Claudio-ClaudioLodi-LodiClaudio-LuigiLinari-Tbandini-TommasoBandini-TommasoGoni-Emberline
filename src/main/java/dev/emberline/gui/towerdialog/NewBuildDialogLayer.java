@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class NewBuildDialogLayer extends GuiLayer {
     // The Tower pre build linked to this dialog layer
     private final TowerPreBuild tower;
-    private static final Layout layout = ConfigLoader.loadConfig("/sprites/ui/newBuildDialogLayer.json", Layout.class);
+    private static final Layout layout = ConfigLoader.loadConfig("/sprites/ui/newBuildDialogLayerLayout.json", Layout.class);
 
     private record Layout(
             @JsonProperty
