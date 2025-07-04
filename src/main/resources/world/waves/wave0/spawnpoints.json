@@ -17,13 +17,6 @@
     "y": 7,
     "spawnSequences": [
       {
-        "firstSpawnTimeNs": 0,
-        "spawnIntervalNs": 1000000000,
-        "enemies": [
-          "pig"
-        ]
-      },
-      {
         "firstSpawnTimeNs": 2000000000,
         "spawnIntervalNs": 1000000000,
         "enemies": [

@@ -8,16 +8,18 @@
         "spawnIntervalNs": 1000000000,
         "enemies": [
           "ogre",
-          "ogre",
           "ogre"
         ]
       },
       {
-        "firstSpawnTimeNs": 3000000000,
-        "spawnIntervalNs": 500000000,
+        "firstSpawnTimeNs": 5000000000,
+        "spawnIntervalNs": 2000000000,
         "enemies": [
           "ogre",
+          "pig",
+          "pig",
           "ogre",
+          "pig",
           "ogre"
         ]
       }
@@ -32,6 +34,17 @@
         "spawnIntervalNs": 1000000000,
         "enemies": [
           "ogre",
+          "pig",
+          "pig",
+          "ogre"
+        ]
+      },
+      {
+        "firstSpawnTimeNs": 9000000000,
+        "spawnIntervalNs": 1000000000,
+        "enemies": [
+          "ogre",
+          "pig",
           "ogre"
         ]
       }
@@ -42,13 +55,20 @@
     "y": 19,
     "spawnSequences": [
       {
-        "firstSpawnTimeNs": 0,
-        "spawnIntervalNs": 100000000,
+        "firstSpawnTimeNs": 17000000000,
+        "spawnIntervalNs": 1000000000,
         "enemies": [
+          "pig",
+          "ogre",
+          "pig",
+          "ogre",
+          "pig",
+          "ogre",
+          "pig",
           "ogre",
           "ogre",
           "pig",
-          "pig"
+          "ogre"
         ]
       }
     ]
