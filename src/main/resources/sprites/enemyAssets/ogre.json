@@ -19,7 +19,7 @@
     "tileWidth": 1,
     "tileHeight": 2,
     "fullHealth": 250,
-    "speed": 0.00000007,
+    "speed": 0.0000000007,
     "goldReward": 75
   }
 }
