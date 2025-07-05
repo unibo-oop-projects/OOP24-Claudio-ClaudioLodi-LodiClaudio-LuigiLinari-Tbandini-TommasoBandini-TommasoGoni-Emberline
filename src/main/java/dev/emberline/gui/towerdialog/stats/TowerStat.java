@@ -3,6 +3,7 @@ package dev.emberline.gui.towerdialog.stats;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
 import dev.emberline.gui.towerdialog.stats.TowerStatsViewsBuilder.TowerStatView;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.image.Image;
 
 /**
@@ -92,6 +93,10 @@ public record TowerStat(TowerStatType type, double value) {
          *
          * @return the icon associated with the tower stat type
          */
+        @SuppressFBWarnings(
+                value = "EI_EXPOSE_REP",
+                justification = "This is intended behaviour as Image is an immutable container."
+        )
         public Image getIcon() {
             return icon;
         }

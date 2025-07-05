@@ -1,5 +1,6 @@
 package dev.emberline.core.graphics;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.image.Image;
 
 /**
@@ -11,5 +12,9 @@ import javafx.scene.image.Image;
  *
  * @param image the single static {@link Image} representing the sprite
  */
+@SuppressFBWarnings(
+        value = {"EI_EXPOSE_REP2", "EI_EXPOSE_REP"},
+        justification = "This is intended behaviour as Image is an immutable container."
+)
 public record SingleSprite(Image image) implements Sprite {
 }

@@ -10,6 +10,7 @@ import dev.emberline.core.render.RenderTask;
 import dev.emberline.core.render.Renderer;
 import dev.emberline.core.sounds.AudioController;
 import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.InputEvent;
@@ -71,6 +72,10 @@ public class GuiButton implements Inputable, Renderable {
      * @param hoverSprite  The image to be displayed when the button is hovered over.
      * @see GuiButton#GuiButton(double, double, double, double, Image)
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "This is intended behaviour as Image is an immutable container."
+    )
     public GuiButton(final double x, final double y, final double width, final double height,
                      final Image normalSprite, final Image hoverSprite) {
         this.x = x;

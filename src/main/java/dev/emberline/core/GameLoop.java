@@ -126,6 +126,11 @@ public final class GameLoop extends Thread {
      *
      * @return the {@link Renderer} responsible for rendering the game state.
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "When this method is called, "
+                    + "it should return the reference to the Renderer."
+    )
     public Renderer getRenderer() {
         return renderer;
     }
@@ -135,6 +140,11 @@ public final class GameLoop extends Thread {
      *
      * @return the {@code GameRoot} associated with the game loop.
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "When this method is called, "
+                    + "it should return the reference to the GameRoot."
+    )
     public GameRoot getGameRoot() {
         return gameRoot;
     }
