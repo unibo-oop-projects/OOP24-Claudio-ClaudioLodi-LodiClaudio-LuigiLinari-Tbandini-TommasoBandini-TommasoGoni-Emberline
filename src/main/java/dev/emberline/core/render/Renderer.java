@@ -76,7 +76,7 @@ public class Renderer {
      */
     @SuppressFBWarnings(
             value = "EI_EXPOSE_REP2", // May expose internal representation by 
-                                      // storing an externally mutable object into Renderer.canvas
+                                      // storing an externally mutable object into ...
             justification = "This is intended behavior, the canvas is "
                     + "mutable and the Renderer reads its changes to keep "
                     + "up with the internal rendering logic."

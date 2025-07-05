@@ -228,8 +228,11 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D {
      */
     @Override
     public boolean equals(final Object obj) {
+        final double epsilon = 1e-5; // Tolerance for floating-point comparison
         return obj == this
-        || (obj instanceof Coordinate2D other && toPoint2D(this.x, this.y).equals(Vector2D.of(other.getX(), other.getY())));
+                || (obj instanceof Coordinate2D other
+                && Math.abs(this.x - other.x) < epsilon
+                && Math.abs(this.y - other.y) < epsilon);
     }
 
     /**
