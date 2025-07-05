@@ -56,7 +56,7 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
      * as the current game state.
      */
     @SuppressFBWarnings(
-            value = "MC_OVERRIDABLE_METHOD_IN_CONSTRUCTOR",
+            value = "MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR",
             justification = "Class is registerListener, method cannot actually be overridden"
     )
     public GameRoot() {

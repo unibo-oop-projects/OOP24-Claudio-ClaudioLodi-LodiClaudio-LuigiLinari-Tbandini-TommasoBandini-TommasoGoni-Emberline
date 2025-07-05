@@ -48,7 +48,7 @@ public class AudioController implements EventListener {
      * and sets up the media player for the soundtrack.
      */
     @SuppressFBWarnings(
-            value = "MC_OVERRIDABLE_METHOD_IN_CONSTRUCTOR",
+            value = "MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR",
             justification = "Class is final, registerListener cannot actually be overridden"
     )
     public AudioController() {
