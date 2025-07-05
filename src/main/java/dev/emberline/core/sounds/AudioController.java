@@ -14,6 +14,7 @@ import dev.emberline.preferences.PreferenceKey;
 import dev.emberline.preferences.PreferencesManager;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Platform;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -33,7 +34,7 @@ public final class AudioController implements EventListener {
     private Media musicMedia;
     private final MediaPlayer musicPlayer;
     private static final Metadata METADATA = ConfigLoader.loadConfig(METADATA_PATH, Metadata.class);
-    private final Map<SoundType, Media> cachedSfxMedia = new EnumMap<>(SoundType.class);
+    private final Map<SoundType, AudioClip> cachedSfxMedia = new EnumMap<>(SoundType.class);
 
     private record Metadata(
         @JsonProperty String MUSIC_PATH,
@@ -134,7 +135,7 @@ public final class AudioController implements EventListener {
         musicMedia = new Media(fileURL.toExternalForm());
     }
 
-    private Media getCachedSfxMedia(final SfxSoundEvent event) {
+    private AudioClip getCachedSfxMedia(final SfxSoundEvent event) {
         final SoundType type = event.getSoundType();
 
         return cachedSfxMedia.computeIfAbsent(type, t -> {
@@ -143,16 +144,17 @@ public final class AudioController implements EventListener {
                 throw new IllegalArgumentException("Sound type " + t + " not found in METADATA.");
             }
             final URL fileURL = Objects.requireNonNull(getClass().getResource(soundPath));
-            return new Media(fileURL.toExternalForm());
+            return new AudioClip(fileURL.toExternalForm());
         });
     }
 
     private void playSfx(final SfxSoundEvent event) {
-        final Media sfxMedia = getCachedSfxMedia(event);
-        final MediaPlayer sfxPlayer = new MediaPlayer(sfxMedia);
-        sfxPlayer.setVolume(PreferencesManager.getDoublePreference(PreferenceKey.SFX_VOLUME));
-        sfxPlayer.setMute(PreferencesManager.getBooleanPreference(PreferenceKey.SFX_MUTE));
-        sfxPlayer.play();
+        final AudioClip sfxMedia = getCachedSfxMedia(event);
+        if (PreferencesManager.getBooleanPreference(PreferenceKey.SFX_MUTE)) {
+            return; // Do not play sound if SFX is muted
+        }
+        sfxMedia.setVolume(PreferencesManager.getDoublePreference(PreferenceKey.SFX_VOLUME));
+        sfxMedia.play();
     }
 
     @EventHandler
