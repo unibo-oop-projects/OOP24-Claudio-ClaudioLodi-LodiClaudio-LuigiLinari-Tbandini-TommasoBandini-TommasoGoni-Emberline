@@ -118,6 +118,12 @@ public final class GameLoop extends Thread {
 
             // sleep (for fixed FPS, although I'm not sure if we actually have control over
             // the rate at which JavaFX sends screen update requests)
+            try {
+                sleep(1);
+            } catch (InterruptedException e) {
+                interrupt();
+                return;
+            }
         }
     }
 
