@@ -134,6 +134,13 @@ public final class EventDispatcher {
     // Event handlers are supposed to be private because they are invoked by the dispatcher
     // and should not be part of the public API.
     @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
+    @SuppressFBWarnings(
+            value = "DP_DO_INSIDE_DO_PRIVILEGED",
+            justification = "From spotbugs.readthedocs.io: java.security.AccessController class, "
+                    + "which contains the doPrivileged methods, got deprecated in Java 17 (see JEP 411), "
+                    + "and removed in Java 24 (see JEP 486). For this reason, this bug isn't reported in "
+                    + "classes targeted Java 17 and above."
+    )
     public void dispatchEvent(final EventObject event) {
         if (event == null) {
             throw new IllegalArgumentException("Event cannot be null");
