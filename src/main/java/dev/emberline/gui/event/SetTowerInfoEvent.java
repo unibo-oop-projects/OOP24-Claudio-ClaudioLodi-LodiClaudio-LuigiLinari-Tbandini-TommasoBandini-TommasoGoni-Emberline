@@ -51,6 +51,11 @@ public class SetTowerInfoEvent extends GuiEvent {
      *
      * @return the {@code Tower} associated with this event.
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "When this method is called, "
+                    + "it should return the reference to the Tower this class is related to."
+    )
     public Tower getTower() {
         return tower;
     }

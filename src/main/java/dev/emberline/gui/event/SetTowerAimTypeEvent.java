@@ -102,7 +102,7 @@ public class SetTowerAimTypeEvent extends GuiEvent {
      * @see SetTowerInfoEvent
      */
     @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP2",
+            value = "EI_EXPOSE_REP",
             justification = "This is intended behavior as this class needs a reference to the tower it is related to."
     )
     public SetTowerAimTypeEvent(final Object source, final Tower tower, final AimType aimType) {

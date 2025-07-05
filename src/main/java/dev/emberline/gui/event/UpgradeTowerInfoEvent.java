@@ -26,7 +26,7 @@ public class UpgradeTowerInfoEvent extends GuiEvent {
      * @see UpgradeTowerInfoEvent
      */
     @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP2",
+            value = "EI_EXPOSE_REP",
             justification = "This is intended behavior as this class needs a reference to the tower it is related to."
     )
     public UpgradeTowerInfoEvent(final Object source, final Tower tower, final UpgradableInfo<?, ?> upgradableInfo) {
@@ -40,6 +40,11 @@ public class UpgradeTowerInfoEvent extends GuiEvent {
      *
      * @return the tower associated with this event.
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "When this method is called, "
+                    + "it should return the reference to the Tower this class is related to."
+    )
     public Tower getTower() {
         return tower;
     }
