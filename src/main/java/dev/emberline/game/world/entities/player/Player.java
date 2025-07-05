@@ -51,7 +51,7 @@ public class Player implements EventListener, Serializable {
             value = {"EI_EXPOSE_REP2", "MC_OVERRIDABLE_METHOD_IN_CONSTRUCTOR"},
             justification = "This is intended behavior as this class needs a reference to world,"
                     + " both for the game over event and to interact with towers."
-                    + " Class is final, method cannot actually be overridden."
+                    + " Class is final, registerListener cannot actually be overridden."
     )
     public Player(final World world) {
         registerEvents();

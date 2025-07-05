@@ -49,7 +49,7 @@ public class AudioController implements EventListener {
      */
     @SuppressFBWarnings(
             value = "MC_OVERRIDABLE_METHOD_IN_CONSTRUCTOR",
-            justification = "Class is final, method cannot actually be overridden"
+            justification = "Class is final, registerListener cannot actually be overridden"
     )
     public AudioController() {
         registerEvents();

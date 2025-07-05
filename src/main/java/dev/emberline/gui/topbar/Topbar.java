@@ -74,7 +74,7 @@ public class Topbar extends GuiLayer implements EventListener {
             value = {"EI_EXPOSE_REP2", "MC_OVERRIDABLE_METHOD_IN_CONSTRUCTOR"},
             justification = "This is intended behavior,"
                     + " as this class needs a reference to world to get the stats it is supposed to show."
-                    + " Class is final, method cannot actually be overridden"
+                    + " Class is final, registerListener cannot actually be overridden"
     )
     public Topbar(final World world) {
         super(LAYOUT.bgX, LAYOUT.bgY, LAYOUT.bgWidth, LAYOUT.bgHeight);
