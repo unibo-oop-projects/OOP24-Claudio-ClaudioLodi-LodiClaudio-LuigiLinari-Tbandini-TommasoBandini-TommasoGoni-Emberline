@@ -1,8 +1,8 @@
 package dev.emberline.game.world.buildings;
 
 import dev.emberline.core.components.Inputable;
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.RenderComponent;
+import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.core.sounds.AudioController;
 import dev.emberline.core.sounds.event.SfxSoundEvent.SoundType;
 import dev.emberline.game.world.Building;
@@ -23,14 +23,14 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Manages the lifecycle and interactions of towers and pre-built tower in the world.
  * Responsible for rendering, updating, and handling input for towers and their associated dialogs.
  */
-public class TowersManager implements Updatable, Renderable, Inputable, Serializable {
+public class TowersManager implements UpdateComponent, RenderComponent, Inputable, Serializable {
 
     @Serial
     private static final long serialVersionUID = 8310031147169513653L;
@@ -167,7 +167,7 @@ public class TowersManager implements Updatable, Renderable, Inputable, Serializ
      * Renders the current state of the {@code TowersManager}, including its dialogs
      * and all the associated {@code Building} objects.
      *
-     * @see Renderable#render()
+     * @see RenderComponent#render()
      */
     @Override
     public void render() {

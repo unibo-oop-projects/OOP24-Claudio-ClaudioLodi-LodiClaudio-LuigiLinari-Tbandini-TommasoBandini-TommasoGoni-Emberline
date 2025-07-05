@@ -2,8 +2,8 @@ package dev.emberline.game.world;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.GameLoop;
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.RenderComponent;
+import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
@@ -20,7 +20,7 @@ import java.io.Serializable;
  * The WorldRenderComponent class is responsible for rendering the game world, specifically
  * it's underlying map. That also means keeping track of how the map changes due to its animation.
  */
-public class WorldRenderComponent implements Renderable, Updatable, Serializable {
+public class WorldRenderComponent implements RenderComponent, UpdateComponent, Serializable {
 
     @Serial
     private static final long serialVersionUID = 8505789831229582267L;
@@ -53,7 +53,7 @@ public class WorldRenderComponent implements Renderable, Updatable, Serializable
 
     /**
      * Renders the current state of the map.
-     * @see Renderable#render()
+     * @see RenderComponent#render()
      */
     @Override
     public void render() {

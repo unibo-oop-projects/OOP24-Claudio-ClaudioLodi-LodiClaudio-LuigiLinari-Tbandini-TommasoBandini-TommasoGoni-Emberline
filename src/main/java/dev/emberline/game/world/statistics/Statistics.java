@@ -1,6 +1,6 @@
 package dev.emberline.game.world.statistics;
 
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.UpdateComponent;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -10,7 +10,7 @@ import java.io.Serializable;
  * It is made such that it does not directly use other classes,
  * but relies on decorators to gather data.
  */
-public class Statistics implements Updatable, Serializable {
+public class Statistics implements UpdateComponent, Serializable {
 
     @Serial
     private static final long serialVersionUID = 493178187508275976L;

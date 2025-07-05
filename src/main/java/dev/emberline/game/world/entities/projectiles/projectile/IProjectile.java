@@ -1,7 +1,7 @@
 package dev.emberline.game.world.entities.projectiles.projectile;
 
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.RenderComponent;
+import dev.emberline.core.components.UpdateComponent;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
  * Classes implementing this interface should define the specific logic for
  * the projectile's update and rendering behavior.
  */
-public interface IProjectile extends Updatable, Renderable, Serializable {
+public interface IProjectile extends UpdateComponent, RenderComponent, Serializable {
 
     /**
      * Returns whether the projectile has hit the target.

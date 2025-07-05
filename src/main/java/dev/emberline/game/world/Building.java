@@ -2,8 +2,8 @@ package dev.emberline.game.world;
 
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.components.Inputable;
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.RenderComponent;
+import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.utility.Vector2D;
 import javafx.scene.input.InputEvent;
@@ -18,7 +18,7 @@ import java.io.Serializable;
  * Classes that extend this will have to implement the getters for the bounds and
  * the logic when the building gets clicked.
  */
-public abstract class Building implements Renderable, Updatable, Inputable, Serializable {
+public abstract class Building implements RenderComponent, UpdateComponent, Inputable, Serializable {
 
     @Serial
     private static final long serialVersionUID = -4273087203030876279L;

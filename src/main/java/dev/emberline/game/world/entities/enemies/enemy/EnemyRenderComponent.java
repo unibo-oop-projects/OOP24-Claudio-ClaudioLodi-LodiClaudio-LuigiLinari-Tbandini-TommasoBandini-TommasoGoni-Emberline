@@ -1,8 +1,8 @@
 package dev.emberline.game.world.entities.enemies.enemy;
 
 import dev.emberline.core.GameLoop;
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.RenderComponent;
+import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
@@ -15,7 +15,7 @@ import javafx.scene.paint.Paint;
 import java.io.Serial;
 import java.io.Serializable;
 
-class EnemyRenderComponent implements Renderable, Serializable {
+class EnemyRenderComponent implements RenderComponent, Serializable {
     @Serial
     private static final long serialVersionUID = -288209243117357956L;
 
@@ -85,7 +85,7 @@ class EnemyRenderComponent implements Renderable, Serializable {
      * @return the {@code Updatable} instance of the enemy's animation.
      * @see AbstractEnemy#getAnimationUpdatable()
      */
-    Updatable getAnimationUpdatable() {
+    UpdateComponent getAnimationUpdatable() {
         return enemyAnimation;
     }
 }

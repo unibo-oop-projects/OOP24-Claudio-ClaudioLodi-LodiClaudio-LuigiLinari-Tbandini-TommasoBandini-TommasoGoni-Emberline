@@ -1,6 +1,6 @@
 package dev.emberline.game.world.entities.projectiles.projectile;
 
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.ProjectileSpriteKey;
@@ -15,7 +15,7 @@ import java.io.Serializable;
  * The type of projectile to be animated is determined by the
  * {@link dev.emberline.game.model.ProjectileInfo.Type} and {@link dev.emberline.game.model.EnchantmentInfo.Type}
  */
-public class ProjectileAnimation implements Updatable, Serializable {
+public class ProjectileAnimation implements UpdateComponent, Serializable {
 
     @Serial
     private static final long serialVersionUID = 2472489217519183066L;

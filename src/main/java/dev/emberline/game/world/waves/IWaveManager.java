@@ -1,14 +1,14 @@
 package dev.emberline.game.world.waves;
 
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.RenderComponent;
+import dev.emberline.core.components.UpdateComponent;
 
 import java.io.Serializable;
 
 /**
  * Interface that represents the manager of the waves.
  */
-public interface IWaveManager extends Updatable, Renderable, Serializable {
+public interface IWaveManager extends UpdateComponent, RenderComponent, Serializable {
 
     /**
      * Returns the current {@code Wave}.

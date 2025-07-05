@@ -1,7 +1,7 @@
 package dev.emberline.game.world.entities.enemies.enemy;
 
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.RenderComponent;
+import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.utility.Vector2D;
 
@@ -15,10 +15,10 @@ import java.util.List;
  * <p>
  * Enemies implementing this interface can be updated and rendered within the game loop.
  *
- * @see Updatable
- * @see Renderable
+ * @see UpdateComponent
+ * @see RenderComponent
  */
-public interface IEnemy extends Updatable, Renderable, Serializable {
+public interface IEnemy extends UpdateComponent, RenderComponent, Serializable {
 
     /**
      * Returns the height of the enemy in the world space.

@@ -1,5 +1,6 @@
 package dev.emberline.game.world;
 
+import dev.emberline.core.components.RenderComponent;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.game.GameState;
 import dev.emberline.game.world.buildings.TowersManager;
@@ -19,10 +20,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.io.Serializable;
-import java.io.ObjectInputStream;
 
 /**
  * Represents the game world acting as the core container and coordinator
@@ -158,7 +159,7 @@ public class World implements GameState, Serializable {
     /**
      * Renders the world by calling the render methods of
      * all the visual elements inside it.
-     * @see dev.emberline.core.components.Renderable#render()
+     * @see RenderComponent#render()
      */
     @Override
     public void render() {

@@ -1,8 +1,8 @@
 package dev.emberline.game.world.entities.projectiles.projectile;
 
 import dev.emberline.core.GameLoop;
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.RenderComponent;
+import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.core.render.CoordinateSystem;
 import dev.emberline.core.render.RenderPriority;
 import dev.emberline.core.render.RenderTask;
@@ -15,7 +15,7 @@ import javafx.scene.image.Image;
 import java.io.Serial;
 import java.io.Serializable;
 
-class ProjectileRenderComponent implements Renderable, Serializable {
+class ProjectileRenderComponent implements RenderComponent, Serializable {
 
     @Serial
     private static final long serialVersionUID = 7918701324023489282L;
@@ -68,7 +68,7 @@ class ProjectileRenderComponent implements Renderable, Serializable {
         }));
     }
 
-    Updatable getAnimationUpdatable() {
+    UpdateComponent getAnimationUpdatable() {
         return projectileAnimation;
     }
 }

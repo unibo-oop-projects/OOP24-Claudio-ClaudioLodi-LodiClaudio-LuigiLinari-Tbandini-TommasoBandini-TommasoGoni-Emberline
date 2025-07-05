@@ -19,7 +19,7 @@ import dev.emberline.core.update.Updater;
  */
 
 @FunctionalInterface
-public interface Updatable {
+public interface UpdateComponent {
     /**
      * Executes the update logic defined by the implementing class.
      * <p>

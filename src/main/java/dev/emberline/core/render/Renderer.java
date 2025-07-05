@@ -1,6 +1,6 @@
 package dev.emberline.core.render;
 
-import dev.emberline.core.components.Renderable;
+import dev.emberline.core.components.RenderComponent;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.StringSpriteKey;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -51,7 +51,7 @@ public class Renderer {
     private final GraphicsContext gc;
     private final AtomicBoolean isRunningLater = new AtomicBoolean(false);
 
-    private final Renderable root;
+    private final RenderComponent root;
 
     private final CoordinateSystem worldCoordinateSystem = new CoordinateSystem(0, 0, 32, 18);
     private final CoordinateSystem guiCoordinateSystem = new CoordinateSystem(0, 0, GUICS_WIDTH, GUICS_HEIGHT);
@@ -81,7 +81,7 @@ public class Renderer {
                     + "mutable and the Renderer reads its changes to keep "
                     + "up with the internal rendering logic."
     )
-    public Renderer(final Renderable root, final Canvas canvas) {
+    public Renderer(final RenderComponent root, final Canvas canvas) {
         this.root = root;
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
@@ -90,7 +90,7 @@ public class Renderer {
     }
 
     /**
-     * Triggers the rendering process for the associated root {@link Renderable} on the attached {@link Canvas}.
+     * Triggers the rendering process for the associated root {@link RenderComponent} on the attached {@link Canvas}.
      * @see Renderer
      */
     public void render() {

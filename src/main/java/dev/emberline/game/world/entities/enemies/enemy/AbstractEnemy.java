@@ -2,7 +2,7 @@ package dev.emberline.game.world.entities.enemies.enemy;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
 import dev.emberline.utility.Vector2D;
@@ -292,7 +292,7 @@ public abstract class AbstractEnemy implements IEnemy {
      * Used to communicate from the renderComponent to the updateComponent.
      * @return the {@code Updatable} instance of the enemy's animation.
      */
-    Updatable getAnimationUpdatable() {
+    UpdateComponent getAnimationUpdatable() {
         return renderComponent.getAnimationUpdatable();
     }
 }
