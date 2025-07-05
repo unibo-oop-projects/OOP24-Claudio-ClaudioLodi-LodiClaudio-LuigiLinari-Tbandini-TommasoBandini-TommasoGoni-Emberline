@@ -2,6 +2,7 @@ package dev.emberline.gui.event;
 
 import dev.emberline.game.model.UpgradableInfo;
 import dev.emberline.game.world.buildings.tower.Tower;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.Serial;
 
@@ -24,6 +25,10 @@ public class UpgradeTowerInfoEvent extends GuiEvent {
      * @param upgradableInfo the {@code UpgradableInfo} providing details about the upgrade being applied to the tower
      * @see UpgradeTowerInfoEvent
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "This is intended behavior as this class needs a reference to the tower it is related to."
+    )
     public UpgradeTowerInfoEvent(final Object source, final Tower tower, final UpgradableInfo<?, ?> upgradableInfo) {
         super(source);
         this.tower = tower;

@@ -40,10 +40,8 @@ public class ProjectilesManager implements Updatable, Renderable, Serializable {
      * @see ProjectilesManager
      */
     @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP2",   // May expose internal representation by
-                                        // storing an externally mutable object
-            justification = "This is intended behavior as this class needs a reference to world,"
-                    + " to instantiate new Projectiles."
+            value = "EI_EXPOSE_REP2",
+            justification = "This is intended behavior as projectiles need a reference to their manager once created."
     )
     public ProjectilesManager(final World world) {
         this.projectiles = new LinkedList<>();

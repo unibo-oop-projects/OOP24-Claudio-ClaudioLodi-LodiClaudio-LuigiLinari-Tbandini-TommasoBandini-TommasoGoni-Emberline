@@ -84,6 +84,10 @@ public class World implements GameState, Serializable {
      * Returns the {@code ProjectilesManager} instance associated with the World.
      * @return the {@code ProjectilesManager} instance associated with the World.
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "When the projectiles manager is requested, World has to give its attached instance ."
+    )
     public ProjectilesManager getProjectilesManager() {
         return projectilesManager;
     }

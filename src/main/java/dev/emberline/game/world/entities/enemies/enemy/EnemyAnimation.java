@@ -5,6 +5,7 @@ import dev.emberline.core.components.Updatable;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.image.Image;
 
 import java.io.Serial;
@@ -85,6 +86,10 @@ public class EnemyAnimation implements Updatable, Serializable {
      *
      * @param enemy The AbstractEnemy instance for which the animation is to be managed.
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "This is intended behavior as this class needs a reference to the enemy it is related to."
+    )
     public EnemyAnimation(final AbstractEnemy enemy) {
         this.enemy = enemy;
         updateAnimatedSprite();

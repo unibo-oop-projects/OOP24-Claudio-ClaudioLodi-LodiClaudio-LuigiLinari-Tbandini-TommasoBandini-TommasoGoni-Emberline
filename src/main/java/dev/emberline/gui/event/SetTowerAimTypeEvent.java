@@ -7,6 +7,7 @@ import dev.emberline.game.world.buildings.tower.aimstrategy.concrete.FirstAimStr
 import dev.emberline.game.world.buildings.tower.aimstrategy.concrete.LastAimStrategy;
 import dev.emberline.game.world.buildings.tower.aimstrategy.concrete.StrongAimStrategy;
 import dev.emberline.game.world.buildings.tower.aimstrategy.concrete.WeakAimStrategy;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -100,6 +101,10 @@ public class SetTowerAimTypeEvent extends GuiEvent {
      * @param aimType the desired targeting mode for the tower
      * @see SetTowerInfoEvent
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "This is intended behavior as this class needs a reference to the tower it is related to."
+    )
     public SetTowerAimTypeEvent(final Object source, final Tower tower, final AimType aimType) {
         super(source);
         this.tower = tower;

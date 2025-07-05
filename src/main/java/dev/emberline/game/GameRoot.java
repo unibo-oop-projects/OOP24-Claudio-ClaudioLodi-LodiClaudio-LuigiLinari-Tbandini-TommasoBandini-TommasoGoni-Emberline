@@ -19,6 +19,7 @@ import dev.emberline.gui.menu.MainMenu;
 import dev.emberline.gui.menu.Options;
 import dev.emberline.gui.menu.SaveSelection;
 import dev.emberline.gui.menu.SaveSelection.Saves;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Platform;
 import javafx.scene.input.InputEvent;
 
@@ -104,6 +105,10 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
      * @param world the current game world
      * @param save  the active save slot
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "This is intended behavior as this class should store the world."
+    )
     public void setWorld(final World world, final Saves save) {
         EventDispatcher.getInstance().registerListener(this);
         EventDispatcher.getInstance().registerListener(audioController);

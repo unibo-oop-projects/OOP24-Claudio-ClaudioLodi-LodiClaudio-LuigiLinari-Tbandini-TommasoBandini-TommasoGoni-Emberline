@@ -53,8 +53,7 @@ public class TowerPreBuild extends Building implements Serializable {
      * @param towersManager the manager responsible for handling tower-related actions and dialogs
      */
     @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP2",   // May expose internal representation by
-                                        // storing an externally mutable object
+            value = "EI_EXPOSE_REP2",
             justification = "This is intended behavior as this class uses a reference to the tower manager."
     )
     public TowerPreBuild(final Vector2D locationBottomLeft, final TowersManager towersManager) {
