@@ -1,6 +1,6 @@
 package dev.emberline.game.world.buildings;
 
-import dev.emberline.core.components.Inputable;
+import dev.emberline.core.components.InputComponent;
 import dev.emberline.core.components.RenderComponent;
 import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.core.sounds.AudioController;
@@ -30,7 +30,7 @@ import java.util.Set;
  * Manages the lifecycle and interactions of towers and pre-built tower in the world.
  * Responsible for rendering, updating, and handling input for towers and their associated dialogs.
  */
-public class TowersManager implements UpdateComponent, RenderComponent, Inputable, Serializable {
+public class TowersManager implements UpdateComponent, RenderComponent, InputComponent, Serializable {
 
     @Serial
     private static final long serialVersionUID = 8310031147169513653L;

@@ -1,7 +1,7 @@
 package dev.emberline.gui;
 
 import dev.emberline.core.GameLoop;
-import dev.emberline.core.components.Inputable;
+import dev.emberline.core.components.InputComponent;
 import dev.emberline.core.components.RenderComponent;
 import dev.emberline.core.input.MouseLocation;
 import dev.emberline.core.render.CoordinateSystem;
@@ -30,7 +30,7 @@ import java.util.Objects;
  * is interactive and can track the hover state of the mouse. It also provides
  * methods for registering event handlers for various mouse interactions.
  */
-public class GuiButton implements Inputable, RenderComponent {
+public class GuiButton implements InputComponent, RenderComponent {
 
     private final Image normalSprite;
     private final Image hoverSprite; // Can be null
@@ -140,7 +140,7 @@ public class GuiButton implements Inputable, RenderComponent {
      * Processes input events to handle mouse interactions with the GUI button.
      *
      * @param inputEvent The input event to process.
-     * @see Inputable#processInput(InputEvent)
+     * @see InputComponent#processInput(InputEvent)
      */
     @Override
     public void processInput(final InputEvent inputEvent) {

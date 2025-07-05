@@ -1,6 +1,6 @@
 package dev.emberline.game;
 
-import dev.emberline.core.components.Inputable;
+import dev.emberline.core.components.InputComponent;
 import dev.emberline.core.components.RenderComponent;
 import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.core.event.EventDispatcher;
@@ -36,7 +36,7 @@ import java.util.Objects;
  * including the main menu, world (gameplay), option's menu, and game over screen.
  * The GameRoot listens for specific events to transition between these states.
  */
-public class GameRoot implements Inputable, UpdateComponent, RenderComponent, EventListener {
+public class GameRoot implements InputComponent, UpdateComponent, RenderComponent, EventListener {
     // Navigation States
     private World world;
     private final Serializer worldSerializer = new Serializer();

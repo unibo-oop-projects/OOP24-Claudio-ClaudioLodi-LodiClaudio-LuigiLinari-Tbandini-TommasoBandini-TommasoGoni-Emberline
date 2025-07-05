@@ -16,7 +16,7 @@ import javafx.scene.input.InputEvent;
  * @see dev.emberline.core.input.InputDispatcher
  */
 @FunctionalInterface
-public interface Inputable {
+public interface InputComponent {
     /**
      * Processes a given input event. Implementations should not use this method
      * to handle business logic or high-level input processing.

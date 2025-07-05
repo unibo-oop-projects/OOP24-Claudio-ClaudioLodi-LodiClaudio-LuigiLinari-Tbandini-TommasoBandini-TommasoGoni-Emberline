@@ -1,7 +1,7 @@
 package dev.emberline.gui;
 
 import dev.emberline.core.GameLoop;
-import dev.emberline.core.components.Inputable;
+import dev.emberline.core.components.InputComponent;
 import dev.emberline.core.components.RenderComponent;
 import dev.emberline.core.event.EventDispatcher;
 import dev.emberline.core.render.CoordinateSystem;
@@ -22,7 +22,7 @@ import java.util.List;
  * input events and rendering within its bounds. It is intended to be extended by
  * specialized GUI layers that implement additional functionality.
  */
-public class GuiLayer implements RenderComponent, Inputable {
+public class GuiLayer implements RenderComponent, InputComponent {
     /**
      * This list is intended to store all buttons associated with the current
      * {@code GuiLayer}, allowing centralized management of their input handling

@@ -1,6 +1,6 @@
 package dev.emberline.core.input;
 
-import dev.emberline.core.components.Inputable;
+import dev.emberline.core.components.InputComponent;
 import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.scene.input.InputEvent;
@@ -21,7 +21,7 @@ public class InputDispatcher {
 
     // This queue will be filled by JavaFX and polled by the Game Loop
     private static final Queue<InputEvent> INPUTS = new ConcurrentLinkedQueue<>();
-    private final Inputable root;
+    private final InputComponent root;
 
     /**
      * Constructs an InputDispatcher object.
@@ -31,7 +31,7 @@ public class InputDispatcher {
      *             further handling recursively.
      * @see InputDispatcher
      */
-    public InputDispatcher(final Inputable root) {
+    public InputDispatcher(final InputComponent root) {
         this.root = root;
     }
 
