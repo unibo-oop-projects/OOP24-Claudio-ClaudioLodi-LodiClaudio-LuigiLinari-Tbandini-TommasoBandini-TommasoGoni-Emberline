@@ -86,7 +86,7 @@ public final class Zoom implements Renderable, Serializable {
         final long currentTimeNs = System.nanoTime();
         accumulatorNs += currentTimeNs - previousTimeNs;
         previousTimeNs = currentTimeNs;
-        // todo: check finals
+
         double t = Math.min(accumulatorNs / SECOND_IN_NS / metadata.animationDurationSeconds, 1.0);
         if (accumulatorNs < 0) { // Animation isn't started yet
             updateCS(metadata.topLeft.fromX, metadata.topLeft.fromY, metadata.bottomRight.fromX, metadata.bottomRight.fromY);

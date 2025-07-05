@@ -1,5 +1,6 @@
 package dev.emberline.gui.topbar;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.event.EventDispatcher;
@@ -17,7 +18,6 @@ import dev.emberline.gui.event.OpenOptionsEvent;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.EventListener;
 
@@ -72,7 +72,7 @@ public class Topbar extends GuiLayer implements EventListener {
      */
     @SuppressFBWarnings(
             value = "EI_EXPOSE_REP2",   // May expose internal representation by
-                                        // storing an externally mutable object into Renderer.canvas
+                                        // storing an externally mutable object into ...
             justification = "This is intended behavior,"
                     + " as this class needs a reference to world to get the stats it is supposed to show."
     )
@@ -147,13 +147,4 @@ public class Topbar extends GuiLayer implements EventListener {
 
         super.render();
     }
-
-    // TODO when TopBar will be Sereializable
-    /*
-    @Serial
-    private void readObject(final ObjectInputStream e) throws IOException, ClassNotFoundException {
-        e.defaultReadObject();
-        registerEvents();
-    }
-    */
 }

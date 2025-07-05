@@ -55,7 +55,7 @@ public class EnemiesManager implements IEnemiesManager {
      */
     @SuppressFBWarnings(
             value = "EI_EXPOSE_REP2",   // May expose internal representation by
-                                        // storing an externally mutable object into Renderer.canvas
+                                        // storing an externally mutable object into ...
             justification = "This is intended behavior as this class uses the reference to world in multiple cases."
     )
     public EnemiesManager(final World world) {
