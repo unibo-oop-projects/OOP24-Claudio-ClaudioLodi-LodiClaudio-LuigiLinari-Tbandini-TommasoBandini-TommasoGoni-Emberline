@@ -55,7 +55,7 @@ class ProjectileRenderComponent implements RenderComponent, Serializable {
 
         final Image currentFrame = projectileAnimation.getImage();
 
-        renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
+        renderer.addRenderTask(new RenderTask(RenderPriority.PROJECTILES, () -> {
             gc.save();
 
             gc.translate(positionScreenX, positionScreenY);
