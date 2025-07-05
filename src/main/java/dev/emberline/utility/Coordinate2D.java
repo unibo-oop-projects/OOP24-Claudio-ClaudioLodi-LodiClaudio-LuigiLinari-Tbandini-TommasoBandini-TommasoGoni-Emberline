@@ -224,40 +224,6 @@ public class Coordinate2D implements dev.emberline.utility.Vector2D {
     }
 
     /**
-     * Return the unit vector representing the direction of displacement
-     * from this vector to the given vector.
-     *
-     * @param x the x coordinate of the given vector
-     * @param y the y coordinate of the given vector
-     * @return the unit vector representing the direction of displacement
-     *         from this vector to the given vector.
-     */
-    @Override
-    public dev.emberline.utility.Vector2D directionTo(final double x, final double y) {
-        final Vector2D vector = Vector2D.of(x, y);
-        final Vector2D direction;
-        if (vector.equals(Vector2D.of(this.x, this.y))) {
-            direction = Vector2D.ZERO;
-        } else {
-            direction = toPoint2D(this.x, this.y).directionTo(vector);
-        }
-        return new Coordinate2D(direction.getX(), direction.getY());
-    }
-
-    /**
-     * Return the unit vector representing the direction of displacement
-     * from this vector to the given vector.
-     *
-     * @param vector the given vector
-     * @return the unit vector representing the direction of displacement
-     *         from this vector to the given vector.
-     */
-    @Override
-    public dev.emberline.utility.Vector2D directionTo(final dev.emberline.utility.Vector2D vector) {
-        return this.directionTo(vector.getX(), vector.getY());
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -155,27 +155,6 @@ public interface Vector2D extends Serializable {
     double dotProduct(Vector2D vector);
 
     /**
-     * Return the unit vector representing the direction of displacement
-     * from this vector to the given vector.
-     *
-     * @param x the x coordinate of the given vector
-     * @param y the y coordinate of the given vector
-     * @return the unit vector representing the direction of displacement
-     *         from this vector to the given vector.
-     */
-    Vector2D directionTo(double x, double y);
-
-    /**
-     * Return the unit vector representing the direction of displacement
-     * from this vector to the given vector.
-     *
-     * @param vector the given vector
-     * @return the unit vector representing the direction of displacement
-     *         from this vector to the given vector.
-     */
-    Vector2D directionTo(Vector2D vector);
-
-    /**
      * Indicates whether some other object is "equal to" this one.
      *
      * @param obj the reference object with which to compare
