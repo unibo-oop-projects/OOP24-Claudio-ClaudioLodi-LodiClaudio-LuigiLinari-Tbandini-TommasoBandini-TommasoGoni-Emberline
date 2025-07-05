@@ -27,7 +27,7 @@ import java.util.Objects;
  * Handles game audio playback, including background music and sound effects.
  * Integrates with the event system to respond to volume and mute changes.
  */
-public class AudioController implements EventListener {
+public final class AudioController implements EventListener {
     private static final String METADATA_PATH = "/audio/audioController.json";
     private Media musicMedia;
     private final MediaPlayer musicPlayer;
