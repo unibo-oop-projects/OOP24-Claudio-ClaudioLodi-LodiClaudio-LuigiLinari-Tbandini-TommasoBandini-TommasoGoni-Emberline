@@ -14,7 +14,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO.
+ * A singleton class for managing the registration, unregistration, and dispatching
+ * of events to corresponding event listeners.
+ * <p>
+ * The {@code EventDispatcher} is designed for use in scenarios where events
+ * need to be dispatched to single or multiple listeners.
+ * <p>
+ * Listeners are expected to implement the {@link EventListener} interface and provide
+ * handler methods that are annotated with {@link EventHandler}.
+ * <p>
+ * Thread safety is not maintained for this implementation, and concurrent access
+ * should be managed appropriately case by case. The class is designed to be
+ * used in a single-threaded context or with external synchronization when used
+ * in a multithreaded environment.
  */
 @NotThreadSafe
 public final class EventDispatcher {
@@ -58,8 +70,12 @@ public final class EventDispatcher {
     }
 
     /**
-     * TODO.
-     * @param listener TODO.
+     * Registers the specified event listener with the dispatcher.
+     * The listener must implement the {@link EventListener} interface and have methods
+     * annotated with {@link EventHandler} that match the expected signature for event handlers.
+     *
+     * @param listener the event listener to register. Must not be {@code null}.
+     * @throws IllegalArgumentException if the {@code listener} is {@code null}.
      */
     public void registerListener(final EventListener listener) {
         if (listener == null) {
@@ -71,8 +87,12 @@ public final class EventDispatcher {
     }
 
     /**
-     * TODO.
-     * @param listener TODO.
+     * Unregisters the specified event listener from the dispatcher. This removes the listener
+     * and its associated event handler methods from the internal registry, preventing the listener
+     * from receiving further events.
+     *
+     * @param listener the event listener to unregister. Must not be {@code null}.
+     * @throws IllegalArgumentException if the {@code listener} is {@code null}.
      */
     public void unregisterListener(final EventListener listener) {
         if (listener == null) {
@@ -98,18 +118,21 @@ public final class EventDispatcher {
         eventHandlers.clear();
     }
 
+
     /**
      * Dispatches the specified event to all registered event listeners that have
      * handlers for the type of event being dispatched. There is no guarantee on the
      * order in which the event handlers are called.
      *
      * @param event the event to dispatch, which must be an instance of {@link EventObject}
-     *              or one of its subclasses
-     * @throws IllegalArgumentException if the event parameter is {@code null}
+     *              or one of its subclasses. Must not be {@code null}.
+     *
+     * @throws IllegalArgumentException if the event parameter is {@code null}.
+     * @throws EventHandlerInvocationException if an error occurs while invoking the event handler method.
      */
-    /* Suppressing warning for setAccessible(true) usage.
-    Event handlers are supposed to be private because they are invoked by the dispatcher
-    and should not be part of the public API. */
+    // Suppressing warning for setAccessible(true) usage.
+    // Event handlers are supposed to be private because they are invoked by the dispatcher
+    // and should not be part of the public API.
     @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
     public void dispatchEvent(final EventObject event) {
         if (event == null) {
