@@ -2,7 +2,7 @@ package dev.emberline.game.world.graphics;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.GameLoop;
-import dev.emberline.core.components.Renderable;
+import dev.emberline.core.components.RenderComponent;
 import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.SingleSpriteKey;
@@ -58,7 +58,7 @@ import java.io.Serializable;
  * <li>The `animationDelaySeconds` field defines the initial delay before the fog transition starts.</li>
  * </ul>
  */
-public final class Fog implements Renderable, Serializable {
+public final class Fog implements RenderComponent, Serializable {
 
     @Serial
     private static final long serialVersionUID = 4864461952717171977L;

@@ -2,7 +2,7 @@ package dev.emberline.game.world.graphics;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.GameLoop;
-import dev.emberline.core.components.Renderable;
+import dev.emberline.core.components.RenderComponent;
 import dev.emberline.core.config.ConfigLoader;
 
 import java.io.Serial;
@@ -16,7 +16,7 @@ import java.io.Serializable;
  * target coordinates, as well as the duration and delay of the animation sequence.
  * The configuration is loaded from a JSON file using the {@code ConfigLoader}.
  */
-public final class Zoom implements Renderable, Serializable {
+public final class Zoom implements RenderComponent, Serializable {
 
     @Serial
     private static final long serialVersionUID = -7769530860574511173L;

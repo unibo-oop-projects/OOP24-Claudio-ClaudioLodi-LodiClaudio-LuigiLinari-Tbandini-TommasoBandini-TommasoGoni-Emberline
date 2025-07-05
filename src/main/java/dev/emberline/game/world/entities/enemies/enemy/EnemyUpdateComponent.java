@@ -1,6 +1,6 @@
 package dev.emberline.game.world.entities.enemies.enemy;
 
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.game.model.effects.DummyEffect;
 import dev.emberline.game.model.effects.EnchantmentEffect;
 import dev.emberline.game.world.World;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-class EnemyUpdateComponent implements Updatable, Serializable {
+class EnemyUpdateComponent implements UpdateComponent, Serializable {
     @Serial
     private static final long serialVersionUID = 8979305885961605613L;
 

@@ -1,6 +1,6 @@
 package dev.emberline.game.world.entities.projectiles.projectile;
 
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.game.model.EnchantmentInfo;
 import dev.emberline.game.model.ProjectileInfo;
 import dev.emberline.game.world.World;
@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Stream;
 
-class ProjectileUpdateComponent implements Updatable, Serializable {
+class ProjectileUpdateComponent implements UpdateComponent, Serializable {
 
     @Serial
     private static final long serialVersionUID = -4975238003430316426L;

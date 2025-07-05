@@ -1,7 +1,7 @@
 package dev.emberline.game.world.entities.enemies.enemy;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.core.graphics.AnimatedSprite;
 import dev.emberline.core.graphics.SpriteLoader;
 import dev.emberline.core.graphics.spritekeys.EnemySpriteKey;
@@ -17,7 +17,7 @@ import java.util.Locale;
  * of an enemy in the game. This includes handling animations and updating the
  * sprite based on the enemy's state, appearance, and facing direction.
  */
-public class EnemyAnimation implements Updatable, Serializable {
+public class EnemyAnimation implements UpdateComponent, Serializable {
 
     @Serial
     private static final long serialVersionUID = -914520544245366892L;

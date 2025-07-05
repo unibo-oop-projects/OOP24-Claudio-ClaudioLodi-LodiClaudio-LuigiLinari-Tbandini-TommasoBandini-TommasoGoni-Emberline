@@ -1,7 +1,7 @@
 package dev.emberline.game.world.entities.enemies;
 
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.RenderComponent;
+import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.game.world.entities.enemies.enemy.EnemyType;
 import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.utility.Vector2D;
@@ -14,7 +14,7 @@ import java.util.List;
  * updating and rendering the entire pool and also querying which enemies are in a given area.
  * It also provides methods to check if all enemies are dead.
  */
-public interface IEnemiesManager extends Updatable, Renderable, Serializable {
+public interface IEnemiesManager extends UpdateComponent, RenderComponent, Serializable {
 
     /**
      * Adds a new enemy to the spatial hash grid in the game world.

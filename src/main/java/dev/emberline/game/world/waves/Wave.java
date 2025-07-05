@@ -1,7 +1,7 @@
 package dev.emberline.game.world.waves;
 
-import dev.emberline.core.components.Renderable;
-import dev.emberline.core.components.Updatable;
+import dev.emberline.core.components.RenderComponent;
+import dev.emberline.core.components.UpdateComponent;
 import dev.emberline.game.world.World;
 import dev.emberline.game.world.buildings.towerloader.TowerLoader;
 import dev.emberline.game.world.graphics.Fog;
@@ -20,7 +20,7 @@ import java.util.Optional;
 /**
  * The Wave class contains all the elements that characterize a single wave.
  */
-public class Wave implements Updatable, Renderable, Serializable {
+public class Wave implements UpdateComponent, RenderComponent, Serializable {
 
     @Serial
     private static final long serialVersionUID = 7347475266212681012L;

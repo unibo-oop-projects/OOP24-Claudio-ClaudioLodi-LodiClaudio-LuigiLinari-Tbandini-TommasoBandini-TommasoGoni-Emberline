@@ -17,7 +17,7 @@ import dev.emberline.core.render.Renderer;
  * @see dev.emberline.core.render.Renderer
  */
 @FunctionalInterface
-public interface Renderable {
+public interface RenderComponent {
     /**
      * Executes the rendering logic defined by the implementing class.
      * <p>
