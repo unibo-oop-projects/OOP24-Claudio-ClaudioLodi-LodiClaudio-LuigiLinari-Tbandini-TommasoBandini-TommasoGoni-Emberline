@@ -55,6 +55,10 @@ public class GameRoot implements Inputable, Updatable, Renderable, EventListener
      * Constructs a new instance of {@code GameRoot} and initializes the main menu
      * as the current game state.
      */
+    @SuppressFBWarnings(
+            value = "MC_OVERRIDABLE_METHOD_IN_CONSTRUCTOR",
+            justification = "Class is final, method cannot actually be overridden"
+    )
     public GameRoot() {
         registerEvents();
         audioController.startSoundtrack();

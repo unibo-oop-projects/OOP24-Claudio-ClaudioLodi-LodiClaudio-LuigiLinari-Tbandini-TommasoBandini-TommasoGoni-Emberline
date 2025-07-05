@@ -71,10 +71,10 @@ public class Topbar extends GuiLayer implements EventListener {
      * @see Topbar
      */
     @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP2",   // May expose internal representation by
-                                        // storing an externally mutable object into ...
+            value = {"EI_EXPOSE_REP2", "MC_OVERRIDABLE_METHOD_IN_CONSTRUCTOR"},
             justification = "This is intended behavior,"
                     + " as this class needs a reference to world to get the stats it is supposed to show."
+                    + " Class is final, method cannot actually be overridden"
     )
     public Topbar(final World world) {
         super(LAYOUT.bgX, LAYOUT.bgY, LAYOUT.bgWidth, LAYOUT.bgHeight);

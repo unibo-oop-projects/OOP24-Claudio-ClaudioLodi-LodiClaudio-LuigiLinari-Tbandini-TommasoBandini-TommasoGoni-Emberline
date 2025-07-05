@@ -12,6 +12,7 @@ import dev.emberline.core.sounds.event.ToggleMusicMuteEvent;
 import dev.emberline.core.sounds.event.ToggleSfxMuteEvent;
 import dev.emberline.preferences.PreferenceKey;
 import dev.emberline.preferences.PreferencesManager;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Platform;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -46,6 +47,10 @@ public class AudioController implements EventListener {
      * This constructor initializes the audio controller, loads the soundtrack,
      * and sets up the media player for the soundtrack.
      */
+    @SuppressFBWarnings(
+            value = "MC_OVERRIDABLE_METHOD_IN_CONSTRUCTOR",
+            justification = "Class is final, method cannot actually be overridden"
+    )
     public AudioController() {
         registerEvents();
 
