@@ -14,6 +14,7 @@ import dev.emberline.gui.towerdialog.NewBuildDialogLayer;
 import dev.emberline.gui.towerdialog.TowerDialogLayer;
 import dev.emberline.utility.Coordinate2D;
 import dev.emberline.utility.Vector2D;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 
@@ -48,6 +49,12 @@ public class TowersManager implements Updatable, Renderable, Inputable, Serializ
      * @param world the {@link World} instance to which this {@code TowersManager} belongs, providing
      *              access to game-related resources and functionality
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",   // May expose internal representation by
+            // storing an externally mutable object
+            justification = "This is intended behavior as this class needs a reference to world,"
+                    + " to instantiate new towers."
+    )
     public TowersManager(final World world) {
         this.world = world;
     }

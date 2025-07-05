@@ -11,6 +11,7 @@ import dev.emberline.game.world.entities.enemies.enemy.IEnemy;
 import dev.emberline.game.world.entities.projectiles.projectile.IProjectile;
 import dev.emberline.game.world.entities.projectiles.projectile.Projectile;
 import dev.emberline.utility.Vector2D;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -38,6 +39,12 @@ public class ProjectilesManager implements Updatable, Renderable, Serializable {
      * @param world the game world in which the {@code projectilesManager} operates.
      * @see ProjectilesManager
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",   // May expose internal representation by
+                                        // storing an externally mutable object
+            justification = "This is intended behavior as this class needs a reference to world,"
+                    + " to instantiate new Projectiles."
+    )
     public ProjectilesManager(final World world) {
         this.projectiles = new LinkedList<>();
         this.world = world;

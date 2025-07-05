@@ -51,7 +51,7 @@ public class Player implements EventListener, Serializable {
             value = "EI_EXPOSE_REP2",   // May expose internal representation by
                                         // storing an externally mutable object
             justification = "This is intended behavior as this class needs a reference to world,"
-                    + " both for the game over event and towers."
+                    + " both for the game over event and to interact with towers."
     )
     public Player(final World world) {
         registerEvents();

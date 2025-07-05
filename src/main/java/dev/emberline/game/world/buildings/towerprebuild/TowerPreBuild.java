@@ -12,6 +12,7 @@ import dev.emberline.core.render.Renderer;
 import dev.emberline.game.world.Building;
 import dev.emberline.game.world.buildings.TowersManager;
 import dev.emberline.utility.Vector2D;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -51,6 +52,11 @@ public class TowerPreBuild extends Building implements Serializable {
      * @param locationBottomLeft the bottom-left location of the tower in world coordinates
      * @param towersManager the manager responsible for handling tower-related actions and dialogs
      */
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",   // May expose internal representation by
+                                        // storing an externally mutable object
+            justification = "This is intended behavior as this class uses a reference to the tower manager."
+    )
     public TowerPreBuild(final Vector2D locationBottomLeft, final TowersManager towersManager) {
         this.locationBottomLeft = locationBottomLeft;
         this.towersManager = towersManager;
