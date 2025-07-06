@@ -140,7 +140,9 @@ public record ProjectileInfo(
             @JsonProperty double[] damageSmall,
             @JsonProperty double[] damageBig,
             @JsonProperty double[] bigDamageArea,
-            @JsonProperty double[] towerRange,
+            @JsonProperty double baseTowerRange,
+            @JsonProperty double[] towerRangeSmall,
+            @JsonProperty double[] towerRangeBig,
             @JsonProperty double baseProjectileSpeed,
             @JsonProperty double[] projectileSpeedSmall,
             @JsonProperty double[] projectileSpeedBig
@@ -217,7 +219,11 @@ public record ProjectileInfo(
      * @return the tower range radius as a double value, measured in tiles.
      */
     public double getTowerRange() {
-        return METADATA.towerRange[level];
+        return switch (type) {
+            case SMALL -> METADATA.towerRangeSmall[level];
+            case BIG -> METADATA.towerRangeBig[level];
+            case BASE -> METADATA.baseTowerRange;
+        };
     }
 
     /**
