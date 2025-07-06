@@ -40,6 +40,12 @@ public enum RenderPriority {
      */
     PROJECTILES(15),
     /**
+     * Represents the rendering priority for the radius of towers in the application.
+     * <p>
+     * The associated priority value is {@code 11}.
+     */
+    TOWER_RADIUS(11),
+    /**
      * Represents the rendering priority for enemy entities in the application.
      * <p>
      * Note: Enemies share the same priority value as buildings, allowing z-ordering
@@ -51,7 +57,7 @@ public enum RenderPriority {
     /**
      * Represents the rendering priority for buildings entities in the application.
      * <p>
-     * Note: Buildings share the same priority value as enemis, allowing z-ordering
+     * Note: Buildings share the same priority value as enemies, allowing z-ordering
      * is mandatory to determine their correct visual stacking.
      * <p>
      * The associated priority value is {@code 10}.
