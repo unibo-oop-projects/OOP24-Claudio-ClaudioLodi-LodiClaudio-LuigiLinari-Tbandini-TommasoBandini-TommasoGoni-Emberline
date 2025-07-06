@@ -116,10 +116,36 @@ public final class TowerStatsViewsBuilder {
             return type;
         }
 
-        // TowerStatView is comparable based on the stat type
+        /**
+         * @inheritDoc
+         * TowerStatView is comparable based on the stat type.
+         */
         @Override
         public int compareTo(final TowerStatView compared) {
             return this.stat.type().compareTo(compared.stat.type());
+        }
+
+         /**
+         * @inheritDoc
+         */
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof TowerStatView that)) {
+                return false;
+            }
+            return type == that.type && stat.equals(that.stat)
+                    && Objects.equals(comparedStat, that.comparedStat);
+        }
+
+        /**
+         * @inheritDoc
+         */
+        @Override
+        public int hashCode() {
+            return Objects.hash(stat, comparedStat, type);
         }
     }
 
