@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -72,6 +73,7 @@ public class EmberlineApp extends Application {
         stage.setMinWidth(MIN_WINDOW_WIDTH);
         stage.setMinHeight(MIN_WINDOW_HEIGHT);
         stage.setTitle("Emberline");
+        stage.getIcons().add(new Image(EmberlineApp.class.getResourceAsStream("/emberlineAppIcon.png")));
 
         stage.show();
 
