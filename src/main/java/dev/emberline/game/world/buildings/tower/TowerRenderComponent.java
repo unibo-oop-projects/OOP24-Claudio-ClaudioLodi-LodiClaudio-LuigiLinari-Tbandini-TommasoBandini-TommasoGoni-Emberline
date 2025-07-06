@@ -85,8 +85,8 @@ class TowerRenderComponent implements RenderComponent, Serializable {
                 + crystalSwingOffset;
 
         final double worldTowerRange = tower.getProjectileInfo().getTowerRange();
-        final double ovalScreenX = cs.toScreenX(tower.getPosition().getX() - worldTowerRange / 2);
-        final double ovalScreenY = cs.toScreenY(tower.getPosition().getY() - worldTowerRange / 2);
+        final double ovalScreenX = cs.toScreenX(tower.getPosition().getX() - worldTowerRange);
+        final double ovalScreenY = cs.toScreenY(tower.getPosition().getY() - worldTowerRange);
 
         renderer.addRenderTask(new RenderTask(RenderPriority.BUILDINGS, () -> {
             gc.save();
@@ -101,7 +101,7 @@ class TowerRenderComponent implements RenderComponent, Serializable {
             gc.restore();
 
             gc.setStroke(Color.BLACK);
-            gc.strokeOval(ovalScreenX, ovalScreenY, worldTowerRange * cs.getScale(), worldTowerRange * cs.getScale());
+            gc.strokeOval(ovalScreenX, ovalScreenY, worldTowerRange * cs.getScale() * 2, worldTowerRange * cs.getScale() * 2);
 
             gc.drawImage(bodyImage, topLeftScreenX, topLeftScreenY, screenWidth, screenHeight);
         }).enableZOrder(tower.getWorldBottomRight().getY()));
