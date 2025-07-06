@@ -102,7 +102,7 @@ public class Tower extends Building implements TowerInfoProvider, Serializable {
      */
     @Override
     public Vector2D getPosition() {
-        return locationBottomLeft.add(getWorldWidth() / 2, METADATA.baseHeight / 2);
+        return locationBottomLeft.add(getWorldWidth() / 2, -METADATA.baseHeight / 2);
     }
 
     /**

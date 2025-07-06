@@ -15,6 +15,7 @@ import dev.emberline.core.render.Renderer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.Bloom;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 
 import java.io.Serial;
@@ -83,6 +84,10 @@ class TowerRenderComponent implements RenderComponent, Serializable {
         final double crystalScreenY = cs.toScreenY(firingWorldCenterY - Metadata.CRYSTAL_HEIGHT / 2)
                 + crystalSwingOffset;
 
+        final double worldTowerRange = tower.getProjectileInfo().getTowerRange();
+        final double ovalScreenX = cs.toScreenX(tower.getPosition().getX() - worldTowerRange / 2);
+        final double ovalScreenY = cs.toScreenY(tower.getPosition().getY() - worldTowerRange / 2);
+
         renderer.addRenderTask(new RenderTask(RenderPriority.BUILDINGS, () -> {
             gc.save();
             final Rotate r = new Rotate(2 * Math.sin((System.nanoTime() - creationTimeNs) / 3e8),
@@ -94,6 +99,10 @@ class TowerRenderComponent implements RenderComponent, Serializable {
             gc.drawImage(crystalImage, crystalScreenX, crystalScreenY,
                     Metadata.CRYSTAL_WIDTH * cs.getScale(), Metadata.CRYSTAL_HEIGHT * cs.getScale());
             gc.restore();
+
+            gc.setStroke(Color.BLACK);
+            gc.strokeOval(ovalScreenX, ovalScreenY, worldTowerRange * cs.getScale(), worldTowerRange * cs.getScale());
+
             gc.drawImage(bodyImage, topLeftScreenX, topLeftScreenY, screenWidth, screenHeight);
         }).enableZOrder(tower.getWorldBottomRight().getY()));
     }
