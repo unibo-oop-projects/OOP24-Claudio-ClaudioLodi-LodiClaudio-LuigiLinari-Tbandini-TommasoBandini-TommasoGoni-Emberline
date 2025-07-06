@@ -1,5 +1,6 @@
 package dev.emberline.gui.towerdialog;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.emberline.core.GameLoop;
 import dev.emberline.core.config.ConfigLoader;
 import dev.emberline.core.graphics.SpriteLoader;
@@ -25,10 +26,16 @@ import dev.emberline.gui.towerdialog.stats.TowerStatsProvider;
 import dev.emberline.gui.towerdialog.stats.TowerStatsViewsBuilder;
 import dev.emberline.gui.towerdialog.stats.TowerStatsViewsBuilder.TowerStatView;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Bloom;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.transform.Rotate;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -55,6 +62,7 @@ public class TowerDialogLayer extends GuiLayer {
     private final Map<GuiButton, TowerStatsProvider> hoverData = new HashMap<>();
     // Layout constants for the GUI elements
     private static final Layout LAYOUT = ConfigLoader.loadConfig("/sprites/ui/towerDialogLayerLayout.json", Layout.class);
+    private final long creationTime;
 
     private record Layout(
             @JsonProperty
@@ -187,6 +195,7 @@ public class TowerDialogLayer extends GuiLayer {
     public TowerDialogLayer(final Tower tower) {
         super(LAYOUT.bgX, LAYOUT.bgY, LAYOUT.bgWidth, LAYOUT.bgHeight);
         this.tower = tower;
+        this.creationTime = System.nanoTime();
         updateLayout();
     }
 
@@ -329,6 +338,7 @@ public class TowerDialogLayer extends GuiLayer {
         final Renderer renderer = GameLoop.getInstance().getRenderer();
         final GraphicsContext gc = renderer.getGraphicsContext();
         final CoordinateSystem guics = renderer.getGuiCoordinateSystem();
+        final CoordinateSystem worldcs = renderer.getWorldCoordinateSystem();
 
         renderer.addRenderTask(new RenderTask(RenderPriority.GUI, () -> {
             // Background
@@ -344,7 +354,69 @@ public class TowerDialogLayer extends GuiLayer {
             drawSelector(gc, guics, "Projectile:", displayedProjectile, LAYOUT.selectorTotalHeight);
         }));
 
+        // Draw tower radius
+        final double currentTimeNs = System.nanoTime() - creationTime;
+        final double animationDurationNs = 1e9 / 2.;
+        final double t = easeInOutExpo(Math.min(currentTimeNs / animationDurationNs, 1.0));
+        final double worldTowerRange = tower.getProjectileInfo().getTowerRange() * t;
+        final double ovalScreenX = worldcs.toScreenX(tower.getPosition().getX() - worldTowerRange);
+        final double ovalScreenY = worldcs.toScreenY(tower.getPosition().getY() - worldTowerRange);
+        final double ovalCenterScreenX = worldcs.toScreenX(tower.getPosition().getX());
+        final double ovalCenterScreenY = worldcs.toScreenY(tower.getPosition().getY());
+
+
+        final double lineWorldWidth = 0.08; // era 0.08
+        final double lineDashes1 = 0.2 * worldcs.getScale();
+        final double lineDashes2 = 0.4 * worldcs.getScale();
+        final double lineAlpha = 0.5;
+        final double lineBloomThreshold = 0.1;
+        final double rotationAngle = System.nanoTime() / 2e8;
+
+        final double strokeWorldRadius = worldTowerRange - lineWorldWidth / 1.9;
+        final double strokeScreenX = worldcs.toScreenX(tower.getPosition().getX() - strokeWorldRadius);
+        final double strokeScreenY = worldcs.toScreenY(tower.getPosition().getY() - strokeWorldRadius);
+
+        renderer.addRenderTask(new RenderTask(RenderPriority.TOWER_RADIUS, () -> {
+            gc.save();
+            gc.setEffect(new Bloom(lineBloomThreshold));
+            gc.setGlobalAlpha(lineAlpha);
+            final Rotate r = new Rotate(rotationAngle,
+                    ovalCenterScreenX,
+                    ovalCenterScreenY);
+            gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+            gc.setLineWidth(lineWorldWidth * worldcs.getScale());
+            gc.setLineDashes(lineDashes1, lineDashes2);
+            gc.setLineCap(StrokeLineCap.ROUND);
+            gc.setStroke(Color.WHITE);
+            gc.strokeOval(strokeScreenX, strokeScreenY, strokeWorldRadius * 2 * worldcs.getScale(),
+                    strokeWorldRadius * 2 * worldcs.getScale());
+            // Draw radial gradient
+            final double secondStopOffset = 0.9;
+            final double secondStopAlpha = 0.1;
+            final int maxByteValue = 255;
+            final RadialGradient radialGradient = new RadialGradient(
+                    0, 0, ovalCenterScreenX, ovalCenterScreenY,
+                    worldTowerRange * worldcs.getScale(),
+                    false, CycleMethod.NO_CYCLE,
+                    new Stop(0, Color.TRANSPARENT),
+                    new Stop(secondStopOffset, Color.rgb(maxByteValue, maxByteValue, maxByteValue, secondStopAlpha)),
+                    new Stop(1, Color.WHITE)
+            );
+            gc.setFill(radialGradient);
+            gc.fillOval(ovalScreenX, ovalScreenY, worldTowerRange * worldcs.getScale() * 2,
+                    worldTowerRange * worldcs.getScale() * 2);
+            gc.restore();
+        }));
+
         super.render();
+    }
+
+    private static double easeInOutExpo(final double x) {
+        if (x <= 0 || x >= 1) {
+            return Math.clamp(x, 0, 1);
+        }
+        final double beforeHalfFactor = 20, afterHalfFactor = -20;
+        return x < 0.5 ? Math.pow(2, beforeHalfFactor * x - 10) / 2 : (2 - Math.pow(2, afterHalfFactor * x + 10)) / 2;
     }
 
     // STATS BUILDER HELPERS //
