@@ -46,8 +46,7 @@ public class Wave implements UpdateComponent, RenderComponent, Serializable {
      * @see Wave
      */
     @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP2",   // May expose internal representation by
-                                        // storing an externally mutable object
+            value = "EI_EXPOSE_REP2",
             justification = "This is intended behavior as this class needs access to both the enemy and tower managers."
     )
     public Wave(final World world, final String waveDirectoryPath) {

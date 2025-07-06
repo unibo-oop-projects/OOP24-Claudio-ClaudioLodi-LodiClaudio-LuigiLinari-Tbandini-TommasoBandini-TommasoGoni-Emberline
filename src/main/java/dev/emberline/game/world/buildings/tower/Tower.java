@@ -62,8 +62,7 @@ public class Tower extends Building implements TowerInfoProvider, Serializable {
      * @param world the world instance where this tower exists
      */
     @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP2",   // May expose internal representation by
-                                        // storing an externally mutable object into ...
+            value = "EI_EXPOSE_REP2",
             justification = "This is intended behavior,"
                     + " as this class needs a reference to TowersManager."
     )

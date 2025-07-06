@@ -75,8 +75,7 @@ public class Renderer {
      * @see Renderer
      */
     @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP2", // May expose internal representation by 
-                                      // storing an externally mutable object into ...
+            value = "EI_EXPOSE_REP2",
             justification = "This is intended behavior, the canvas is "
                     + "mutable and the Renderer reads its changes to keep "
                     + "up with the internal rendering logic."
@@ -157,8 +156,9 @@ public class Renderer {
      * @return the {@code GraphicsContext} used by the renderer.
      */
     @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP", // TODO
-            justification = "")
+            value = "EI_EXPOSE_REP",
+            justification = "This is intended behaviour as the GraphicsContext is used "
+                    + "to perform rendering operations on the canvas.")
     public GraphicsContext getGraphicsContext() {
         return gc;
     }
@@ -169,8 +169,9 @@ public class Renderer {
      * @return the {@code CoordinateSystem} instance representing the world coordinate system.
      */
     @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP", // TODO
-            justification = "")
+            value = "EI_EXPOSE_REP",
+            justification = "This is intended behaviour as the CoordinateSystem is used "
+                    + "to transform coordinates for rendering operations.")
     public CoordinateSystem getWorldCoordinateSystem() {
         return worldCoordinateSystem;
     }
@@ -181,8 +182,9 @@ public class Renderer {
      * @return the {@code CoordinateSystem} instance representing the GUI coordinate system.
      */
     @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP", // TODO
-            justification = "")
+            value = "EI_EXPOSE_REP",
+            justification = "This is intended behaviour as the CoordinateSystem is used "
+                    + "to transform coordinates for GUI rendering operations.")
     public CoordinateSystem getGuiCoordinateSystem() {
         return guiCoordinateSystem;
     }

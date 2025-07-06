@@ -32,8 +32,7 @@ public class EnemyWithStats implements IEnemy, Serializable {
      * @param statistics the {@link Statistics} object used to record and manage game-related data
      */
     @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP2",   // May expose internal representation by storing an externally
-                                        // mutable object into ...
+            value = "EI_EXPOSE_REP2",
             justification = "This is intended behavior as this class is a decorator for IEnemy."
     )
     public EnemyWithStats(final IEnemy newEnemy, final Statistics statistics) {

@@ -39,8 +39,7 @@ public class WaveManager implements IWaveManager {
      * @param world is the reference to the World
      */
     @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP2",   // May expose internal representation by
-                                        // storing an externally mutable object
+            value = "EI_EXPOSE_REP2",
             justification = "This is intended behavior,"
                     + " as this class needs a reference to world to create the game over event."
     )
