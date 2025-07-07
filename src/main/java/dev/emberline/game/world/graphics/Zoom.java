@@ -67,7 +67,7 @@ public final class Zoom implements RenderComponent, Serializable {
      * @return whether the animation sequence is complete.
      */
     public boolean isOver() {
-        return accumulatorNs >= metadata.animationDurationSeconds * SECOND_IN_NS;
+        return accumulatorNs > metadata.animationDurationSeconds * SECOND_IN_NS;
     }
 
     /**
