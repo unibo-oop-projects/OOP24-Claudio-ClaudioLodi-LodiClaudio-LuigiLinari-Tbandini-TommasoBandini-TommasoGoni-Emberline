@@ -1,0 +1,62 @@
+[
+  {
+    "x": 9,
+    "y": 15,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 2000000000,
+        "spawnIntervalNs": 1000000000,
+        "enemies": [
+          "ogre"
+        ]
+      },
+      {
+        "firstSpawnTimeNs": 21000000000,
+        "spawnIntervalNs": 3000000000,
+        "enemies": [
+          "ogre", "pig", "pig", "pig", "pig"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 25,
+    "y": 7,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 2000000000,
+        "spawnIntervalNs": 1000000000,
+        "enemies": [
+          "ogre", "pig"
+        ]
+      },
+      {
+        "firstSpawnTimeNs": 21000000000,
+        "spawnIntervalNs": 3000000000,
+        "enemies": [
+          "ogre", "pig", "pig", "pig"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 27,
+    "y": 19,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 2000000000,
+        "spawnIntervalNs": 1000000000,
+        "enemies": [
+          "ogre", "pig"
+        ]
+      },
+      {
+        "firstSpawnTimeNs": 21000000000,
+        "spawnIntervalNs": 3000000000,
+        "enemies": [
+          "ogre", "pig", "pig", "pig"
+        ]
+      }
+    ]
+  }
+]

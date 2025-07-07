@@ -20,6 +20,6 @@
     "tileHeight": 1,
     "fullHealth": 150,
     "speed": 0.0000000012,
-    "goldReward": 50
+    "goldReward": 10
   }
 }

@@ -1,0 +1,194 @@
+[
+  {
+    "x": 9,
+    "y": 14,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 3000000000,
+        "spawnIntervalNs": 1000000000,
+        "enemies": [
+          "ogre", "ogre", "ogre", "ogre", "pig", "ogre", "pig", "ogre",
+          "ogre", "ogre", "ogre", "ogre", "pig", "ogre", "pig", "ogre",
+          "ogre", "ogre", "ogre", "ogre", "pig", "ogre", "pig", "ogre"
+        ]
+      },
+      {
+        "firstSpawnTimeNs": 30000000000,
+        "spawnIntervalNs": 1500000000,
+        "enemies": [
+          "ogre", "ogre", "ogre", "pig", "ogre", "pig", "ogre", "ogre",
+          "ogre", "ogre", "ogre", "pig", "ogre", "pig", "ogre", "ogre",
+          "ogre", "ogre", "ogre", "pig", "ogre", "pig", "ogre", "ogre"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 25,
+    "y": 8,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 3000000000,
+        "spawnIntervalNs": 1000000000,
+        "enemies": [
+          "ogre", "ogre", "ogre", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "ogre", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "ogre", "ogre", "pig", "ogre", "ogre", "pig"
+        ]
+      },
+      {
+        "firstSpawnTimeNs": 30000000000,
+        "spawnIntervalNs": 1500000000,
+        "enemies": [
+          "ogre", "pig", "ogre", "pig", "ogre", "pig", "ogre", "ogre",
+          "ogre", "pig", "ogre", "pig", "ogre", "pig", "ogre", "ogre",
+          "ogre", "pig", "ogre", "pig", "ogre", "pig", "ogre", "ogre"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 27,
+    "y": 19,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 3000000000,
+        "spawnIntervalNs": 1000000000,
+        "enemies": [
+          "ogre", "ogre", "pig", "pig", "ogre", "ogre", "pig", "ogre", "ogre",
+          "ogre", "ogre", "pig", "pig", "ogre", "ogre", "pig", "ogre", "ogre",
+          "ogre", "ogre", "pig", "pig", "ogre", "ogre", "pig", "ogre", "ogre"
+        ]
+      },
+      {
+        "firstSpawnTimeNs": 30000000000,
+        "spawnIntervalNs": 1500000000,
+        "enemies": [
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 5,
+    "y": 5,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 3000000000,
+        "spawnIntervalNs": 1000000000,
+        "enemies": [
+          "ogre", "pig", "pig", "ogre", "ogre", "ogre", "pig", "ogre", "pig",
+          "ogre", "pig", "pig", "ogre", "ogre", "ogre", "pig", "ogre", "pig",
+          "ogre", "pig", "pig", "ogre", "ogre", "ogre", "pig", "ogre", "pig"
+        ]
+      },
+      {
+        "firstSpawnTimeNs": 30000000000,
+        "spawnIntervalNs": 1500000000,
+        "enemies": [
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 30,
+    "y": 3,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 3000000000,
+        "spawnIntervalNs": 1000000000,
+        "enemies": [
+          "ogre", "pig", "ogre", "ogre", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "pig", "ogre", "ogre", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "pig", "ogre", "ogre", "ogre", "pig", "ogre", "ogre", "pig"
+        ]
+      },
+      {
+        "firstSpawnTimeNs": 30000000000,
+        "spawnIntervalNs": 1500000000,
+        "enemies": [
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 6,
+    "y": 21,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 3000000000,
+        "spawnIntervalNs": 1000000000,
+        "enemies": [
+          "ogre", "ogre", "pig", "ogre", "pig", "ogre", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "ogre", "pig", "ogre", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "ogre", "pig", "ogre", "ogre", "ogre", "pig"
+        ]
+      },
+      {
+        "firstSpawnTimeNs": 30000000000,
+        "spawnIntervalNs": 1500000000,
+        "enemies": [
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 16,
+    "y": 6,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 3000000000,
+        "spawnIntervalNs": 1000000000,
+        "enemies": [
+          "ogre", "ogre", "ogre", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "ogre", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "ogre", "pig", "ogre", "pig", "ogre", "ogre", "pig"
+        ]
+      },
+      {
+        "firstSpawnTimeNs": 30000000000,
+        "spawnIntervalNs": 1500000000,
+        "enemies": [
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 16,
+    "y": 22,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 3000000000,
+        "spawnIntervalNs": 1000000000,
+        "enemies": [
+          "ogre", "pig", "ogre", "pig", "ogre", "ogre", "ogre", "ogre", "pig",
+          "ogre", "pig", "ogre", "pig", "ogre", "ogre", "ogre", "ogre", "pig",
+          "ogre", "pig", "ogre", "pig", "ogre", "ogre", "ogre", "ogre", "pig"
+        ]
+      },
+      {
+        "firstSpawnTimeNs": 30000000000,
+        "spawnIntervalNs": 1500000000,
+        "enemies": [
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig",
+          "ogre", "ogre", "pig", "pig", "ogre", "pig", "ogre", "ogre", "pig"
+        ]
+      }
+    ]
+  }
+]

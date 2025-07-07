@@ -1,7 +1,16 @@
 {
   "wavePaths": [
-    "/world/waves/wave0/",
-    "/world/waves/wave1/",
-    "/world/waves/wave2/"
+    "/world/waves/tutorial_0/",
+    "/world/waves/tutorial_1/",
+
+    "/world/waves/firstStage_0/",
+    "/world/waves/firstStage_1/",
+    "/world/waves/firstStage_2/",
+    "/world/waves/firstStage_3/",
+
+    "/world/waves/secondStage_0/",
+    "/world/waves/secondStage_1/",
+    "/world/waves/secondStage_2/",
+    "/world/waves/secondStage_3/"
   ]
 }

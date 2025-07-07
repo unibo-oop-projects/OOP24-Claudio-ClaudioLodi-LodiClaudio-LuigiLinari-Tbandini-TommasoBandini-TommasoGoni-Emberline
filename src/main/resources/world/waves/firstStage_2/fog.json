@@ -1,0 +1,19 @@
+{
+  "topLeft": {
+    "fromX": 6,
+    "fromY": 2,
+    "toX": 6,
+    "toY": 2
+  },
+  "bottomRight": {
+    "fromX": 34,
+    "fromY": 24,
+    "toX": 34,
+    "toY": 24
+  },
+  "blinkEnabled": false,
+  "dutyCycle": 0.6,
+  "blinkPeriodSeconds": 0.6,
+  "animationDurationSeconds": 3,
+  "animationDelaySeconds": 0
+}
