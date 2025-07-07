@@ -46,7 +46,7 @@ public class ProjectileHitListener implements Serializable {
     public void onProjectileHit(final ProjectileHitEvent e) {
         final Vector2D landingLocation = e.getLandingLocation();
         final double damage = e.getDamage();
-        final double defaultDamageArea = 0.2;
+        final double defaultDamageArea = 0.125;
         final double damageArea = e.getDamageArea().isPresent() ? e.getDamageArea().get() : defaultDamageArea;
         final Optional<EnchantmentEffect> effect = e.getEffect();
 
