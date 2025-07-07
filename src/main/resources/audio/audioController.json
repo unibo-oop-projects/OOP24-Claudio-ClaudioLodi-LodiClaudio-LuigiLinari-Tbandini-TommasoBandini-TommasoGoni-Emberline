@@ -1,0 +1,13 @@
+{
+    "MUSIC_PATH": "/audio/emberlineSoundtrack.wav",
+    "SFX_PATHS": {
+        "CLICK": "/audio/sfx/click.mp3",
+        "PROJECTILE_LANDED": "/audio/sfx/projectileLanded.mp3",
+        "OPEN_DIALOG_CHAINS": "/audio/sfx/openDialogChains.wav"
+    },
+    "MUSIC_VOLUME": 0.8,
+    "SFX_VOLUME": 1,
+    "MUSIC_MUTE": false,
+    "SFX_MUTE": false,
+    "STEP_VOLUME_AMOUNT": 0.1
+}

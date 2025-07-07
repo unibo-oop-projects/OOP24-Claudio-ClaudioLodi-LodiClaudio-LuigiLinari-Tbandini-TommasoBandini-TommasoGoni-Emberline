@@ -1,0 +1,28 @@
+[
+  {
+    "x": 9,
+    "y": 15,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 7000000000,
+        "spawnIntervalNs": 4000000000,
+        "enemies": [
+          "pig", "pig"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 25,
+    "y": 7,
+    "spawnSequences": [
+      {
+        "firstSpawnTimeNs": 9000000000,
+        "spawnIntervalNs": 5000000000,
+        "enemies": [
+          "pig", "pig", "pig"
+        ]
+      }
+    ]
+  }
+]

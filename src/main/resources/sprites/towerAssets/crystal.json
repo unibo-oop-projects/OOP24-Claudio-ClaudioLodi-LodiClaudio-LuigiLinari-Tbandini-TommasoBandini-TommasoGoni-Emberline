@@ -1,0 +1,20 @@
+{
+  "filename": "/sprites/towerAssets/towerCrystals.png",
+  "width": 32,
+  "height": 32,
+  "frames": 45,
+  "frameTimeNs": 63333333,
+  "enchant": {
+    "BASE": 0,
+    "FIRE": 32,
+    "ICE": 64
+  },
+  "worldDimensions": {
+    "width": 1.75,
+    "height": 1.75
+  },
+  "swingPeriodNs": 2096666666,
+  "swingAmplitude": 0.06,
+  "transparency": 0.7,
+  "bloomThreshold": 0.2
+}

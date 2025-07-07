@@ -1,0 +1,25 @@
+{
+  "width": 16,
+  "height": 16,
+  "frames": 8,
+  "frameTimeNs": 250000000,
+  "direction": {
+    "down": 0,
+    "up": 16,
+    "left": 32,
+    "right": 48
+  },
+  "state": {
+    "normal": 0,
+    "burning": 16,
+    "freezing": 32,
+    "dying": 48
+  },
+  "metadata": {
+    "tileWidth": 1,
+    "tileHeight": 1,
+    "fullHealth": 150,
+    "speed": 0.0000000012,
+    "goldReward": 10
+  }
+}

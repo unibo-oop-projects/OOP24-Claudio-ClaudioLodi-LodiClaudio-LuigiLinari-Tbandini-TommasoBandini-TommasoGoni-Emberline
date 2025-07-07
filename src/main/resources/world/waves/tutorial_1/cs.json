@@ -1,0 +1,16 @@
+{
+  "topLeft": {
+    "fromX": 6,
+    "fromY": 3,
+    "toX": 6,
+    "toY": 3
+  },
+  "bottomRight": {
+    "fromX": 30,
+    "fromY": 19,
+    "toX": 30,
+    "toY": 19
+  },
+  "animationDurationSeconds": 0,
+  "animationDelaySeconds": 0
+}
