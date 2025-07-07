@@ -1,18 +1,18 @@
 {
   "baseUpgradeCost": 50,
   "upgradeCosts": [
+    50,
+    75,
     100,
-    150,
-    200,
-    250,
+    125,
     0
   ],
   "resetRefunds": [
     25,
-    75,
-    150,
-    250,
-    375
+    50,
+    90,
+    130,
+    200
   ],
   "baseFireRate": 0.8,
   "fireRateSmall": [
@@ -45,11 +45,11 @@
     50
   ],
   "bigDamageArea": [
-    0.8,
-    0.9125,
-    1.025,
-    1.1375,
-    1.25
+    1,
+    1.125,
+    1.25,
+    1.375,
+    1.5
   ],
   "baseTowerRange": 3.4,
   "towerRangeSmall": [

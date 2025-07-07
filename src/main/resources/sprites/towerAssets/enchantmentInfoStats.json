@@ -1,18 +1,18 @@
 {
   "baseUpgradeCost": 50,
   "upgradeCosts": [
+    50,
+    75,
     100,
-    150,
-    200,
-    250,
+    125,
     0
   ],
   "resetRefunds": [
     25,
-    75,
-    150,
-    250,
-    375
+    50,
+    90,
+    130,
+    200
   ],
   "effectDuration": [
     3.0,
