@@ -12,10 +12,10 @@ plugins {
      * In order to create it, launch the "shadowJar" task.
      * The runnable jar will be found in build/libs/projectname-all.jar
      */
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.shadow") version "9.3.1"
     id("org.danilopianini.gradle-java-qa") version "1.75.0"
 
-    id("org.danilopianini.unibo-oop-gradle-plugin") version "1.1.41-dev07-5f402d8"
+    id("org.danilopianini.unibo-oop-gradle-plugin") version "1.1.80"
 }
 
 java { toolchain { languageVersion.set(JavaLanguageVersion.of(21)) } }
